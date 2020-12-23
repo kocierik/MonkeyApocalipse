@@ -8,7 +8,7 @@ La mappa deve avere una grafica ASCII, è possibile utilizzare solo le librerie 
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ROBBA DA FARE:
+ROBA DA FARE:
 
  LEGENDA: ✔. = fatto; ✖. = non iniziato; △. = lavoro in corso
 
