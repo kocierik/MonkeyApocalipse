@@ -4,6 +4,7 @@
 using namespace std;
 
 int main(){
-    cout << "sei bello" << endl;
+    printMenu();
+    
     return 0;
 }
