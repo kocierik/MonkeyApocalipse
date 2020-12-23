@@ -12,10 +12,6 @@ ROBA DA FARE:
 
  LEGENDA: ✔. = fatto; ✖. = non iniziato; △. = lavoro in corso
 
-Trovare il miglior nome possibile al videogioco.
-Nome attuale: “Banana Apocalypse”
-Idee: “Banana defense”, “Banana Apocalypse”, “Monkerminator”, ”Corona Monkey”
-
 Renderlo il più ganzo possibile.
 
 ✖. Menu
