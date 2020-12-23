@@ -10,35 +10,38 @@ La mappa deve avere una grafica ASCII, è possibile utilizzare solo le librerie 
 
 ROBA DA FARE:
 
- LEGENDA: ✔. = fatto; ✖. = non iniziato; △. = lavoro in corso
+LEGENDA:
+  ✔ = fatto
+  ✖ = non iniziato
+  △ = lavoro in corso
 
-Renderlo il più ganzo possibile.
+△ Renderlo il più ganzo possibile.
 
-✖. Menu
+✖ Menu
  
-✖. Apparizione del player + mappa.
+✖ Apparizione del player + mappa
 
-✖. Movimento del player nella mappa.
+✖ Movimento del player nella mappa
 
-✖. Implementare il fatto che se torni indietro trovi tutto come prima.
+✖ salvataggio della mappa per i movimenti
 
-✖. Armi per il player.
+✖ Armi per il player
 
-✖. Nemici.
+✖ Nemico
 
-✖. Più nemici.
+✖ Nemici
 
-✖. Sistema per le vite e il punteggio.
+✖ Sistema per le vite e il punteggio
 
-✖. Bonus (armi diverse, punti e vite)
+✖ Nuove tipologie di nemici
 
-✖. Morte player.
+✖ Bonus (armi diverse, punti e vite)
 
-✖.  Difficoltà sempre maggiore.
+✖ Morte player
 
-✖. Punto 3 con tutta sta roba in più.
+✖ Difficoltà sempre maggiore
 
-✖. Redpillate.
+✖ Redpillate
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
