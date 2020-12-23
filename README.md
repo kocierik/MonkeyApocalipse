@@ -12,30 +12,35 @@ ROBA DA FARE:
 
  LEGENDA: ✔. = fatto; ✖. = non iniziato; △. = lavoro in corso
 
-Trovare il miglior nome possibile al videogioco.
-Nome attuale: “Banana Apocalypse”
-Idee: “Banana defense”, “Banana Apocalypse”, “Monkerminator”, ”Corona Monkey”
-
 Renderlo il più ganzo possibile.
 
 ✖. Menu
-✖. 
+ 
 ✖. Apparizione del player + mappa.
-✖. Movimento del player nella mappa.
-✖. Implementare il fatto che se torni indietro trovi tutto come prima.
-✖. Armi per il player.
-✖. Nemici.
-✖. Più nemici.
-✖. Sistema per le vite e il punteggio.
-✖. Bonus (armi diverse, punti e vite)
-✖. Morte player.
-✖.  Difficoltà sempre maggiore.
-✖. Punto 3 con tutta sta roba in più.
-✖. Redpillate.
-✖. 
-✖. 
 
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+✖. Movimento del player nella mappa.
+
+✖. Implementare il fatto che se torni indietro trovi tutto come prima.
+
+✖. Armi per il player.
+
+✖. Nemici.
+
+✖. Più nemici.
+
+✖. Sistema per le vite e il punteggio.
+
+✖. Bonus (armi diverse, punti e vite)
+
+✖. Morte player.
+
+✖.  Difficoltà sempre maggiore.
+
+✖. Punto 3 con tutta sta roba in più.
+
+✖. Redpillate.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 TRAMA:
 In un mondo di sole scimmie, un virus si è diffuso contagiando la quasi totalità del pianeta. Le scimmie malate hanno perso ogni capacità di ragionare, intendere e di volere, trasformandosi in pazze bestie di merda in preda alla follia con un unico desiderio (causato dal virus), mangiare fino alla morte.

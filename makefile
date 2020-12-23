@@ -6,4 +6,4 @@ demo.o: main.cpp
 menu.o: menu.cpp
 	g++ -c menu.cpp
 clean:
-	rm *.o main menu
+	rm *.o main
