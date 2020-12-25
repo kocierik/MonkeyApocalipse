@@ -9,31 +9,35 @@ int main(){
   initscr();
   keypad(stdscr,TRUE);
   noecho();
-  c=getch();
+  c = getch();
   while(c!=27){
+
     switch (c){
     case KEY_RIGHT:
       x++;
       move(y,x);
       break;
     case KEY_LEFT:
+    if(x>0){
       x--;
       move(y,x);
+    }
       break;
     case KEY_UP:
+    if(y>0){
       y--;
       move(y,x);
+    }
       break;
     case KEY_DOWN:
       y++;
       move(y,x);
       break;
     default:
-      printw("%c",c);
-      x++;
       break;
     }
   c=getch();
+  refresh();
 }
 endwin();
 return 0;
