@@ -1,8 +1,8 @@
 #include <iostream>
 #include <stdio.h>
 #include <curses.h>
-#include "menu.h"
-#include "actor.h"
+#include "src/menu.h"
+#include "src/actor.h"
 using namespace std;
 
 int main(){
@@ -13,7 +13,6 @@ int main(){
 
   Actor actor(x,y);
   actor.moveCharacter(getch(),x,y);
-
   
   endwin();
   return 0;
