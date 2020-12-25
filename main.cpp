@@ -10,10 +10,8 @@ int main(){
   keypad(stdscr,TRUE);
   noecho();
   c=getch();
-  while(c!=27)
-  {
-    switch (c)
-    {
+  while(c!=27){
+    switch (c){
     case KEY_RIGHT:
       x++;
       move(y,x);
