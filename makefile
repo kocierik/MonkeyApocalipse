@@ -1,5 +1,5 @@
 demo: main.o menu.o
-	g++ -o main main.o menu.o
+	g++ -lncurses -o main main.o menu.o 
 	./main
 demo.o: main.cpp
 	g++ -c main.cpp
