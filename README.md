@@ -15,7 +15,7 @@ LEGENDA:
   ✖ = non iniziato
   △ = lavoro in corso
 
-△ Renderlo il più ganzo possibile.
+△ Rendere il gioco il più ganzo possibile.
 
 ✖ Menu
  
@@ -48,7 +48,8 @@ LEGENDA:
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 TRAMA:
-In un mondo di sole scimmie, un virus si è diffuso contagiando la quasi totalità del pianeta. Le scimmie malate hanno perso ogni capacità di ragionare, intendere e di volere, trasformandosi in pazze bestie di merda in preda alla follia con un unico desiderio (causato dal virus), mangiare fino alla morte.
+In un mondo di sole scimmie, un virus si è diffuso contagiando la quasi totalità del pianeta.
+Le scimmie infettehanno perso ogni capacità di ragionare, intendere e di volere, trasformandosi in pazze bestie di merda in preda alla follia con un unico desiderio (causato dal virus), mangiare, mangiare morte.
 Una volta finiti i cibi vegetali sono passate alla volta della sola carne e del cannibalismo della buona carne delle scimmie sane.
 
 Corri veloce come flash e fallo come un coglione per sfuggire alla furiosa fame di queste scimmie pazze bastarde. 
