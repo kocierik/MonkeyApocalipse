@@ -4,8 +4,8 @@ demo: main.o menu.o actor.o
 demo.o: main.cpp
 	g++ -c main.cpp
 menu.o: src/menu.cpp
-	g++ -c menu.cpp
+	g++ -c src/menu.cpp
 actor.o: src/actor.cpp
-	g++ -c actor.cpp
+	g++ -c src/actor.cpp
 clean:
 	rm *.o main

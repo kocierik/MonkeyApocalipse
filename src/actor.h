@@ -1,6 +1,5 @@
 #include <iostream>
 #include <curses.h>
-#include "menu.h"
 using namespace std;
 
 class Actor{

@@ -1,6 +1,5 @@
 #include <iostream>
 #include <curses.h>
-#include "menu.h"
 #include "actor.h"
 using namespace std;
 
