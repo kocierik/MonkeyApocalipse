@@ -7,10 +7,10 @@
 
     
     EnemyKamikaze::EnemyKamikaze():Character::Character(x, y, SKIN){
-        // this->direction = 0;
-        // this->x = x;
-        // this->y = y;
-        // this->SKIN = SKIN;
+//        this->direction = 0;
+        this->x = x;
+        this->y = y;
+        this->SKIN = SKIN;
     }
 
     /*
