@@ -10,7 +10,7 @@ using namespace std;
 		this->y = y;
 	}
 	void Actor::moveCharacter(int x, int y, char PLAYER){
-
+		
 		do { 	// di base abbiamo un carattere bianco se non lo settiamo 
 			mvaddch(y, x, PLAYER);	// muove il nostro carattere settato (PLAYER)
 			move(y, x);	// muove il cursore (altrimenti il carattere sarebbe sempre avanti di un blocco)
