@@ -8,7 +8,7 @@ using namespace std;
 int printMenu(){
     
      int cnt = 0;
-     int ch;	  // carattere premuto su tastiera in ascii
+     int direction;	  // carattere premuto su tastiera in ascii
      initscr();	// inizializzazione dello schermo (OBLIGATORIA)
      keypad(stdscr, TRUE);	//consento l'utilizzo dei caratteri esc, delete, enter
      cbreak();		//disabilita il buffer dei caratteri

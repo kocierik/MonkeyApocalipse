@@ -57,6 +57,21 @@ Consegne migliorie varie:
   - Definire una classe padre character (riciclando Actor)
   - Creare la sottoclasse enemy e player
 
+  - Variabili protette da aggiungere a Character:
+    - float life
+    - float speed
+  
+- Probabili classi da implementare:
+  - Classe MeeleWeapon
+    - char Meelename[30]
+    - float MeeleDamage
+    - float MeeleAttackSpeed
+
+  - Classe GunWeapon
+    - char nameWeapon[30]
+    - float bulletDamage
+    - float bulletAttackSpeed
+
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 TRAMA:

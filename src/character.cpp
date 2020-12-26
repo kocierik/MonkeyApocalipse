@@ -2,26 +2,26 @@
 #include <ncurses.h>
 #include "character.h"
 #define EMPTY ' '
-using namespace std;
 
-	Character::Character(int x, int y, char PLAYER){
-		this->ch = 0;
+	Character::Character(int x, int y, char SKIN){
+		this->direction = 0;
 		this->x = x;
 		this->y = y;
+		this->SKIN = SKIN;
 	}
-	void Character::moveCharacter(int x, int y, char PLAYER){
+	void Character::moveCharacter(int x, int y, char SKIN){
 		
-		do { 	// di base abbiamo un carattere bianco se non lo settiamo 
-			mvaddch(y, x, PLAYER);	// muove il nostro carattere settato (PLAYER)
-			move(y, x);	// muove il cursore (altrimenti il carattere sarebbe sempre avanti di un blocco)
-			refresh();	// ricarico la scheda
-			ch = getch();	//prendo in input un carattere da tastiera
+		do { 						// di base abbiamo un carattere bianco se non lo settiamo 
+			mvaddch(y, x, SKIN);	// muove il nostro carattere settato (SKIN)
+			move(y, x);				// muove il cursore (altrimenti il carattere sarebbe sempre avanti di un blocco)
+			refresh();				// ricarico la scheda
+			direction = getch();	//prendo in input un carattere da tastiera
 
-			switch (ch) {	// controllo quale carattere è stato spinto
+			switch (direction) {	// controllo quale carattere è stato spinto
 			case KEY_UP:
 				if ((y > 0)) {
 				mvaddch(y--, x, EMPTY);	
-				//y--;		// muovo il carattere
+				//y--;				// muovo il carattere
 				}
 				break;
 			case KEY_DOWN:
@@ -38,5 +38,5 @@ using namespace std;
 				break;
 			}
 		} 
-		while (ch != 27);		// fino a che l'utente non spinge il tasto esc il gioco continua
+		while (direction != 27);		// fino a che l'utente non spinge il tasto esc il gioco continua
 	}
