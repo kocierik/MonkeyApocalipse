@@ -8,7 +8,7 @@ class Actor{
         int x;
         int y;
     public:
-   		Actor(int x, int y);
-    	void moveCharacter(int ch, int x, int y);
+   		Actor(int x, int y, char PLAYER);
+    	void moveCharacter(int x, int y, char PLAYER);
 };
 
