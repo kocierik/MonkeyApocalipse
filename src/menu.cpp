@@ -33,13 +33,13 @@ int printMenu(){
             mvprintw(15,19,"       LA VENDETTA DELLA SCIMMIA COGLIONA E' APPENA COMINCIATA!                                                                    ");
             mvprintw(16,19,"                                                                                                                                   ");
                
-            if(cnt == 0) mvprintw(20,35,"==>  (⤲) START THE FIGHT!"); else mvprintw(20,35,"(⤲) START THE FIGHT!");
+            if(cnt == 0) mvprintw(20,35,"==>  (X) START THE FIGHT!"); else mvprintw(20,35,"     START THE FIGHT!    ");
 
-            if(cnt == 1) mvprintw(22,35,"==>  (¿) HOW TO PLAY"); else mvprintw(22,35,"(¿) HOW TO PLAY");
+            if(cnt == 1) mvprintw(22,35,"==>  (X) HOW TO PLAY"); else mvprintw(22,35,"     HOW TO PLAY    ");
 
-            if(cnt == 2) mvprintw(24,35,"==>  (¢) CREDITS"); else mvprintw(24,35,"(¢) CREDITS");
+            if(cnt == 2) mvprintw(24,35,"==>  (X) CREDITS"); else mvprintw(24,35,"     CREDITS      ");
 
-            if(cnt == 3) mvprintw(26,35,"==>  (µ) QUIT"); else mvprintw(26,35,"(µ) QUIT");
+            if(cnt == 3) mvprintw(26,35,"==>  (X) QUIT"); else mvprintw(26,35,"     QUIT     ");
 
             mvprintw(28,35,"Press space to continue or use the arrow to move");
             

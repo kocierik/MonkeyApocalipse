@@ -7,9 +7,8 @@ class Character{
         int direction; // Input da tastiera per il movimento del character
         int x;
         int y;
-        char SKIN;
     public:
-   		Character(int x, int y, char SKIN);
-    	void moveCharacter(int x, int y, char SKIN);
+   		Character(int x, int y);
+    	void moveCharacter(int x, int y);
 };
 

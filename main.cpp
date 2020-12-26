@@ -6,13 +6,11 @@
 #include "src/enemyKamikaze.h"
 #define SKIN '&'
 #define EMPTY ' '
-#define startx COLS/2
-#define starty LINES/2
-#define width (COLS - width) / 2
-#define height (LINES - height) / 2
-
+#define startx COLS / 2
+#define starty LINES / 2
+#define width 80
+#define height 20
 using namespace std;
-
 
 int main(){
     initscr();
@@ -21,21 +19,17 @@ int main(){
     keypad(stdscr, TRUE);	
 	int direction;
     int menuSelected = printMenu();
-
     if(menuSelected == 0){     
-        Character actor(startx, starty, SKIN);
-        
+        Character actor(startx, starty);       
         system("clear");
         do{
             WINDOW* my_win = create_newwin('|','-');
             wrefresh(my_win);
-            actor.moveCharacter(startx,starty,SKIN);
+            actor.moveCharacter(startx,starty);
             refresh();
         }
         while ((direction = getch()) != 27);
     }
-
-		
 	endwin();			
 	return 0;
 }
