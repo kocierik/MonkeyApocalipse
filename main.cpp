@@ -8,6 +8,7 @@
 using namespace std;
 
 int main(){
+        printMenu();
     int y, x; // coordinate della scheda
 
     int ch;	  // carattere premuto su tastiera in ascii
@@ -23,5 +24,6 @@ int main(){
 	actor.moveCharacter(x, y, PLAYER);
 
     endwin();				// chiusura della scheda obbligatoria
+
     return 0;
 }
