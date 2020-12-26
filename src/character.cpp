@@ -1,5 +1,5 @@
 #include <iostream>
-#include <curses.h>
+#include <ncurses.h>
 #include "character.h"
 #define EMPTY ' '
 
