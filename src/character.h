@@ -1,5 +1,5 @@
 #include <iostream>
-#include <curses.h>
+#include <ncurses.h>
 using namespace std;
 
 class Character{

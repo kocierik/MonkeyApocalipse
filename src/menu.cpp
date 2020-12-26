@@ -1,19 +1,19 @@
 #include <iostream>
 #include <stdio.h>
 #include "menu.h"
-#include "curses.h"
+#include "ncurses.h"
 using namespace std;
 
 
-void printMenu(){
+int printMenu(){
+    
      int cnt = 0;
      int ch;	  // carattere premuto su tastiera in ascii
      initscr();	// inizializzazione dello schermo (OBLIGATORIA)
      keypad(stdscr, TRUE);	//consento l'utilizzo dei caratteri esc, delete, enter
      cbreak();		//disabilita il buffer dei caratteri
      noecho();		//toglie l'eco dei tasti premuti
-    
-        system("cls");
+        
         do{
 
                     mvprintw(10,19,"       8b    d8  dP*Yb  88b 88 88  dP 888888 Yb  dP        db    88**Yb  dP*Yb   dP**b8    db    88     Yb  dP 88**Yb .dP*Y8 888888     \n");
@@ -37,11 +37,15 @@ void printMenu(){
             mvprintw(28,35,"use the arrow for navigate in the menu ");
             
             ch = getch();   
+            if(ch == KEY_ENTER && cnt == 0){
+                endwin();
+                return 0;
+            }
             if(ch == KEY_UP) cnt--;
             if(ch == KEY_DOWN) cnt++;
             if(cnt > 3) cnt = 0;
             if(cnt < 0) cnt = 3;
-            refresh();
         }while(ch != 27);
+
         endwin();  
 }
