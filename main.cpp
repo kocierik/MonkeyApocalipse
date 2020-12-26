@@ -3,7 +3,7 @@
 #include <curses.h>
 #include "src/menu.h"
 #include "src/character.h"
-#define PLAYER '&'
+#define SKIN '&'
 #define EMPTY ' '
 using namespace std;
 
@@ -11,7 +11,7 @@ int main(){
         printMenu();
     int y, x; // coordinate della scheda
 
-    int ch;	  // carattere premuto su tastiera in ascii
+    int direction;	  // carattere premuto su tastiera in ascii
     initscr();	// inizializzazione dello schermo (OBLIGATORIA)
     keypad(stdscr, TRUE);	//consento l'utilizzo dei caratteri esc, delete, enter
     cbreak();		//disabilita il buffer dei caratteri
@@ -20,8 +20,8 @@ int main(){
     y = 0;
     x = 0;
 
-	Character character(x, y, PLAYER);
-	character.moveCharacter(x, y, PLAYER);
+	Character character(x, y, SKIN);
+	character.moveCharacter(x, y, SKIN);
 
     endwin();				// chiusura della scheda obbligatoria
 

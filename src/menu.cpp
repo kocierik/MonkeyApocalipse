@@ -7,7 +7,7 @@ using namespace std;
 
 void printMenu(){
      int cnt = 0;
-     int ch;	  // carattere premuto su tastiera in ascii
+     int direction;	  // carattere premuto su tastiera in ascii
      initscr();	// inizializzazione dello schermo (OBLIGATORIA)
      keypad(stdscr, TRUE);	//consento l'utilizzo dei caratteri esc, delete, enter
      cbreak();		//disabilita il buffer dei caratteri
@@ -36,12 +36,12 @@ void printMenu(){
             mvprintw(27,35,"\n\n\n\n\n");
             mvprintw(28,35,"use the arrow for navigate in the menu ");
             
-            ch = getch();   
-            if(ch == KEY_UP) cnt--;
-            if(ch == KEY_DOWN) cnt++;
+            direction = getch();   
+            if(direction == KEY_UP) cnt--;
+            if(direction == KEY_DOWN) cnt++;
             if(cnt > 3) cnt = 0;
             if(cnt < 0) cnt = 3;
             refresh();
-        }while(ch != 27);
+        }while(direction != 27);
         endwin();  
 }
