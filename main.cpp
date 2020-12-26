@@ -2,13 +2,13 @@
 #include <stdio.h>
 #include <curses.h>
 #include "src/menu.h"
-#include "src/character.h"
+#include "src/enemyKamikaze.h"
 #define SKIN '&'
 #define EMPTY ' '
 using namespace std;
 
 int main(){
-        printMenu();
+    printMenu();
     int y, x; // coordinate della scheda
 
     int direction;	  // carattere premuto su tastiera in ascii

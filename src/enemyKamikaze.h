@@ -1,13 +1,10 @@
 #include <iostream>
 #include <curses.h>
+#include <iostream>
 #include "character.h"
 
-using namespace std;
-
-class EnemyKamikaze: public Character{
-    protected:
-        
+class EnemyKamikaze : public Character{    
     public:
-        EnemyKamikaze():Character(x, y, SKIN);
+        EnemyKamikaze();
         //void moveEnemyKamikaze(int x, int y, char SKIN);
 };

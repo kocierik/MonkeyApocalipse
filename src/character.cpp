@@ -2,7 +2,6 @@
 #include <curses.h>
 #include "character.h"
 #define EMPTY ' '
-using namespace std;
 
 	Character::Character(int x, int y, char SKIN){
 		this->direction = 0;
