@@ -9,7 +9,6 @@ using namespace std;
 		this->y = y;
 	}
 	void Actor::moveCharacter(int ch ,int x, int y){
-		ch = getch();
 		while(ch!=27){
 			switch (ch){
 				case KEY_RIGHT:
@@ -36,6 +35,8 @@ using namespace std;
 					break;
 			}
 			ch = getch();
+			
 			refresh();
+			
 		}
 	}
