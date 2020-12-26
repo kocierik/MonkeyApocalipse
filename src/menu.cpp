@@ -7,18 +7,24 @@
 #define EMPTY ' '
 #define startx (COLS - width) / 2
 #define starty (LINES - height) / 2
-#define width 300
-#define height 100
+#define width 160
+#define height 35
 using namespace std;
 
 int printMenu(){
         int cnt = 0;
         int direction;	  // carattere premuto su tastiera in ascii
-        WINDOW* menuWin = create_newwin('|','-');
+        WINDOW *menuWin;
+        menuWin = newwin(height, width, starty, startx);
+        box(menuWin, '|' , '-');	
+        touchwin(menuWin);				 
         refresh();
         do{
-            WINDOW* menuWin = create_newwin('|','-'); 
+            menuWin = newwin(height, width, starty, startx);
+            //box(menuWin, '|' , '-');	
+            refresh();
             wrefresh(menuWin);
+
             mvprintw(10,19,"       8b    d8  dP*Yb  88b 88 88  dP 888888 Yb  dP        db    88**Yb  dP*Yb   dP**b8    db    88     Yb  dP 88**Yb .dP*Y8 888888 ");
             mvprintw(11,19,"       88b  d88 dP   Yb 88Yb88 88odP  88__    YbdP        dPYb   88__dP dP   Yb dP   `*   dPYb   88      YbdP  88__dP `Ybo.* 88__  ");
             mvprintw(12,19,"       88YbdP88 Yb   dP 88 Y88 88*Yb  88**     8P        dP__Yb  88***  Yb   dP Yb       dP__Yb  88  .o   8P   88***  o.`Y8b 88**  ");
@@ -47,7 +53,7 @@ int printMenu(){
             if(cnt > 3) cnt = 0;
             if(cnt < 0) cnt = 3;
             
-
+            wrefresh(menuWin);
             refresh();
         }while(direction != 27);
     endwin();
