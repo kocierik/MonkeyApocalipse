@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <curses.h>
 #include "src/menu.h"
-#include "src/actor.h"
+#include "src/character.h"
 #define PLAYER '&'
 #define EMPTY ' '
 using namespace std;
@@ -20,8 +20,8 @@ int main(){
     y = 0;
     x = 0;
 
-	Actor actor(x, y, PLAYER);
-	actor.moveCharacter(x, y, PLAYER);
+	Character character(x, y, PLAYER);
+	character.moveCharacter(x, y, PLAYER);
 
     endwin();				// chiusura della scheda obbligatoria
 

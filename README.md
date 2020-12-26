@@ -47,6 +47,18 @@ LEGENDA:
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+Consegne migliorie varie:
+  MENU:
+  - Sistemare la freccia del menù
+  - Rimuovere / risolvere le parentesi delle voci del menù
+  - Definire i bordi della finestra di gioco (altrimenti varia da terminale in terminale)
+
+  VARIE:
+  - Definire una classe padre character (riciclando Actor)
+  - Creare la sottoclasse enemy e player
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 TRAMA:
 In un mondo di sole scimmie, un virus si è diffuso contagiando la quasi totalità del pianeta.
 Le scimmie infette hanno perso ogni capacità di ragionare, intendere e di volere, trasformandosi in pazze bestie di merda in preda alla follia con un unico desiderio (causato dal virus), mangiare, mangiare sino alla morte.

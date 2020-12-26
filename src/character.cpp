@@ -1,15 +1,15 @@
 #include <iostream>
 #include <curses.h>
-#include "actor.h"
+#include "character.h"
 #define EMPTY ' '
 using namespace std;
 
-	Actor::Actor(int x, int y, char PLAYER){
+	Character::Character(int x, int y, char PLAYER){
 		this->ch = 0;
 		this->x = x;
 		this->y = y;
 	}
-	void Actor::moveCharacter(int x, int y, char PLAYER){
+	void Character::moveCharacter(int x, int y, char PLAYER){
 		
 		do { 	// di base abbiamo un carattere bianco se non lo settiamo 
 			mvaddch(y, x, PLAYER);	// muove il nostro carattere settato (PLAYER)
