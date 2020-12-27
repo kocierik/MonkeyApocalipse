@@ -3,10 +3,10 @@
 #include "character.h"
 #define SKIN '&'
 #define EMPTY ' '
-#define startx COLS / 2
-#define starty LINES / 2
-#define width 80
-#define height 20
+#define startx (COLS - width) / 2 // coordinate del blocco
+#define starty (LINES - height) / 2 // coordinate del blocco
+#define width COLS/2 // dimesione blocco di gioco
+#define height LINES/2.5 // dimesione blocco di gioco
 #define GRASS_PAIR     1
 #define EMPTY_PAIR     1
 #define WATER_PAIR     2
