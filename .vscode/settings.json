@@ -1,6 +1,5 @@
 {
-    "files.associations": {
-        "ostream": "cpp",
-        "iostream": "cpp"
+    "cmake.configureSettings": {
+      "CMAKE_TOOLCHAIN_FILE": "[vcpkg root]/scripts/buildsystems/vcpkg.cmake"
     }
 }

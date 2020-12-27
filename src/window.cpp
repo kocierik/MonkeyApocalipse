@@ -5,10 +5,10 @@
 #include "window.h"
 #define SKIN '&'
 #define EMPTY ' '
-#define startx (COLS - width) / 2
-#define starty (LINES - height) / 2
-#define width 80
-#define height 20
+#define startx (COLS - width) / 2 // coordinate del blocco
+#define starty (LINES - height) / 2 // coordinate del blocco
+#define width 80 // dimesione blocco di gioco
+#define height 20 // dimesione blocco di gioco
 using namespace std;
 
 WINDOW *create_newwin( char borderVertical, char borderOrizontal){

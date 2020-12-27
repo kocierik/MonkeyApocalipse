@@ -7,6 +7,18 @@
 #define starty LINES / 2
 #define width 80
 #define height 20
+#define GRASS_PAIR     1
+#define EMPTY_PAIR     1
+#define WATER_PAIR     2
+#define MOUNTAIN_PAIR  3
+#define PLAYER_PAIR    4
+
+
+// int is_move_okay(int y, int x)
+// {
+//     int direction = mvinch(y, x);
+//     return (((direction & A_CHARTEXT) == ' ') || ((direction & A_CHARTEXT) == EMPTY));
+// }
 
 	Character::Character(int x, int y){
 		this->direction = 0;
@@ -22,7 +34,9 @@
 
 			switch (direction) {	// controllo quale carattere è stato spinto 	//muovo il cursore e il nostro character 
 			case KEY_UP:
-				if ((y > 0)) mvaddch(y--, x, EMPTY);	// <-------------- TROVARE EQUAZIONE BORDI
+				if ((y > 0)){
+				 mvaddch(y--, x, EMPTY);	// <-------------- TROVARE EQUAZIONE BORDI
+				}
 				break;
 			case KEY_DOWN:
 				if ((y < LINES - 1)) mvaddch(y++, x, EMPTY);			// <-------------- TROVARE EQUAZIONE BORDI
@@ -34,6 +48,7 @@
 				if (x < COLS - 1)	mvaddch(y, x++, EMPTY); // <-------------- TROVARE EQUAZIONE BORDI
 				break;
 			}
+			refresh();
 		} 
 		while (direction != 27);		// fino a che l'utente non spinge il tasto esc il gioco continua
 	}
