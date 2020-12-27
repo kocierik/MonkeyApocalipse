@@ -5,47 +5,49 @@
 #include "window.h"
 #define SKIN '&'
 #define EMPTY ' '
-#define startx (COLS - width) / 2
-#define starty (LINES - height) / 2
-#define width 160
-#define height 35
+#define startx (COLS - width) / 2.8
+#define starty (LINES - height) / 2.2
+#define width 110
+#define height 25
 using namespace std;
 
 int printMenu(){
         int cnt = 0;
         int direction;	  // carattere premuto su tastiera in ascii
         WINDOW *menuWin;
-        menuWin = newwin(height, width, starty, startx);
         
         touchwin(menuWin);				 
         refresh();
         menuWin = newwin(height, width, starty, startx);
-
+        
         do{
-            init_pair(1, COLOR_BLUE,0);
-            //init_color(10,0,0,0);
+            resizeterm(LINES,COLS);
+            box(menuWin,'|','-');
+            init_pair(1, COLOR_BLUE,0);            
             attron(COLOR_PAIR(1));
             refresh();
             wrefresh(menuWin);
-            mvprintw(9,19,"                                                                                                                                        ");
-            mvprintw(10,19,"       8b    d8  dP*Yb  88b 88 88  dP 888888 Yb  dP        db    88**Yb  dP*Yb   dP**b8    db    88     Yb  dP 88**Yb .dP*Y8 888888    ");
-            mvprintw(11,19,"       88b  d88 dP   Yb 88Yb88 88odP  88__    YbdP        dPYb   88__dP dP   Yb dP   `*   dPYb   88      YbdP  88__dP `Ybo.* 88__      ");
-            mvprintw(12,19,"       88YbdP88 Yb   dP 88 Y88 88*Yb  88**     8P        dP__Yb  88***  Yb   dP Yb       dP__Yb  88  .o   8P   88***  o.`Y8b 88**      ");
-            mvprintw(13,19,"       88 YY 88  YbodP  88  Y8 88  Yb 888888  dP        dP****Yb 88      YbodP   YboodP dP****Yb 88ood8  dP    88     8bodP* 888888    ");
-            mvprintw(14,19,"                                                                                                                                       ");
-            mvprintw(15,19,"       LA VENDETTA DELLA SCIMMIA COGLIONA E' APPENA COMINCIATA!                                                                        ");
-            mvprintw(16,19,"                                                                                                                                       ");
+        
+
+            mvprintw(11,25,"                                                                                                            ");
+            mvprintw(12,25,"    b    d  P*Y  8b 8 8  d 88888 Yb  dP        A   8**Y  P*Y   P**b8   b    8     Yb  dP 8**Y .P*Y8 88888   ");
+            mvprintw(13,25,"    8b  d8 P   Y 8Yb8 8od  8__    YbdP        PY   8__P P   Y P   `*   PY   8      YbdP  8__P `Yo.* 8__     ");
+            mvprintw(14,25,"    8Yb P8 b   d 8 Y8 8*Y  8**     8P        P__Y  8**  b   P Y       P__Y  8  .o   8P   8**  o.`Y8 8**     ");
+            mvprintw(15,25,"    8 Y  8  Ybo  8  Y 8  Y 88888  dP        P****Y 8     P*Y   YoodP P****Y 8ood8  dP    8     8oP* 88888   ");
+            mvprintw(16,25,"                                                                                                            ");
+            mvprintw(17,25,"    LA VENDETTA DELLA SCIMMIA COGLIONA E' APPENA COMINCIATA!                                                ");
+            mvprintw(18,25,"                                                                                                            ");
             attroff(COLOR_PAIR(1));
             refresh();
-            if(cnt == 0) mvprintw(20,35,"==>  (X) START THE FIGHT!"); else mvprintw(20,35,"     START THE FIGHT!    ");
+            if(cnt == 0) mvprintw(22,35,"==>  (X) START THE FIGHT!"); else mvprintw(22,35,"     START THE FIGHT!    ");
 
-            if(cnt == 1) mvprintw(22,35,"==>  (X) HOW TO PLAY"); else mvprintw(22,35,"     HOW TO PLAY    ");
+            if(cnt == 1) mvprintw(24,35,"==>  (X) HOW TO PLAY"); else mvprintw(24,35,"     HOW TO PLAY    ");
 
-            if(cnt == 2) mvprintw(24,35,"==>  (X) CREDITS"); else mvprintw(24,35,"     CREDITS      ");
+            if(cnt == 2) mvprintw(26,35,"==>  (X) CREDITS"); else mvprintw(26,35,"     CREDITS      ");
 
-            if(cnt == 3) mvprintw(26,35,"==>  (X) QUIT"); else mvprintw(26,35,"     QUIT     ");
+            if(cnt == 3) mvprintw(28,35,"==>  (X) QUIT"); else mvprintw(28,35,"     QUIT     ");
 
-            mvprintw(28,35,"Press space to continue or use the arrow to move");
+            mvprintw(30,35,"Press space to continue or use the arrow to move");
             
             direction = getch();   
             if(direction == 32 && cnt == 0){
