@@ -3,52 +3,36 @@
 #include "character.h"
 #define SKIN '&'
 #define EMPTY ' '
-#define startx (COLS - width) / 2 // coordinate del blocco
-#define starty (LINES - height) / 2 // coordinate del blocco
-#define width COLS/2 // dimesione blocco di gioco
-#define height LINES/2.5 // dimesione blocco di gioco
-#define GRASS_PAIR     1
-#define EMPTY_PAIR     1
-#define WATER_PAIR     2
-#define MOUNTAIN_PAIR  3
-#define PLAYER_PAIR    4
+#define STARTX (COLS - WIDTH) / 2 // coordinate del blocco centrale
+#define STARTY (LINES - HEIGHT) / 2 // coordinate del blocco centrale
+#define WIDTH COLS/2 // dimensione blocco di gioco
+#define HEIGHT LINES/2.5 // dimensione blocco di gioco
 
-
-// int is_move_okay(int y, int x)
-// {
-//     int direction = mvinch(y, x);
-//     return (((direction & A_CHARTEXT) == ' ') || ((direction & A_CHARTEXT) == EMPTY));
-// }
-
-	Character::Character(int x, int y){
+	Character::Character(){
 		this->direction = 0;
-		this->x = x;
-		this->y = y;
+		this->x = 0;
+		this->y = 0;
 	}
-	void Character::moveCharacter(int x, int y){
-		
+	void Character::moveCharacter(int x, int y){	
 		do { 						// di base abbiamo un carattere bianco se non lo settiamo 
 			mvaddch(y, x, SKIN);	// muove il nostro carattere settato (SKIN)
 			move(y, x);				// muove il cursore (altrimenti il carattere sarebbe sempre avanti di un blocco)
 			direction = getch();	//prendo in input un carattere da tastiera
-
-			switch (direction) {	// controllo quale carattere è stato spinto 	//muovo il cursore e il nostro character 
+			
+			switch (direction) {	// controllo quale carattere è stato spinto muovo il cursore e il nostro character 
 			case KEY_UP:
-				if ((y > 0)){
-				 mvaddch(y--, x, EMPTY);	// <-------------- TROVARE EQUAZIONE BORDI
-				}
+				if (y > 0 && y > STARTY+1) mvaddch(y--, x, EMPTY);	// <-------------- TROVARE EQUAZIONE BORDI
 				break;
 			case KEY_DOWN:
-				if ((y < LINES - 1)) mvaddch(y++, x, EMPTY);			// <-------------- TROVARE EQUAZIONE BORDI
+				if (y < LINES - 1 && y < STARTY+HEIGHT-4 ) mvaddch(y++, x, EMPTY);			// <-------------- TROVARE EQUAZIONE BORDI
 				break;
 			case KEY_LEFT: 
-				if (x > 0) mvaddch(y, x--, EMPTY);  // <-------------- TROVARE EQUAZIONE BORDI
+				if (x > 0 && x > STARTX+1) mvaddch(y, x--, EMPTY);  // <-------------- TROVARE EQUAZIONE BORDI
 				break;
 			case KEY_RIGHT:
-				if (x < COLS - 1)	mvaddch(y, x++, EMPTY); // <-------------- TROVARE EQUAZIONE BORDI
+				if (x < COLS - 1 && x < STARTX+WIDTH-3)	mvaddch(y, x++, EMPTY); // <-------------- TROVARE EQUAZIONE BORDI
 				break;
 			}
 			refresh();
-		} 
-		while (direction != 27);		// fino a che l'utente non spinge il tasto esc il gioco continua
+		} while (direction != 27);		// fino a che l'utente non spinge il tasto esc il gioco continua
 	}

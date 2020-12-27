@@ -4,20 +4,7 @@
 #include "menu.h"
 #include "window.h"
 #include <signal.h>
-#define SKIN '&'
-#define EMPTY ' '
-#define width COLS // dimesione blocco di gioco
-#define height LINES // dimesione blocco di gioco
 using namespace std;
-
-// void resizeHandler(int sig){
-//     endwin();
-//     int nh, nw;
-//     WINDOW* menuWin = newwin(nh, nw, 0, 0);
-//     getmaxyx(menuWin, nh, nw);  /* get the new screen size */
-//     refresh();
-//     //system("clear");
-// }
 
 void printTitle(){
     init_pair(1, COLOR_RED,232);
@@ -28,7 +15,7 @@ void printTitle(){
     mvprintw(14,25,"    8Yb P8 b   d 8 Y8 8*Y  8**     8P        P__Y  8**  b   P Y       P__Y  8  .o   8P   8**  o.`Y8 8**     ");
     mvprintw(15,25,"    8 Y  8  Ybo  8  Y 8  Y 88888  dP        P****Y 8     P*Y   YoodP P****Y 8ood8  dP    8     8oP* 88888   ");
     mvprintw(16,25,"                                                                                                            ");
-    mvprintw(17,25,"    LA VENDETTA DELLE SCIMMIE  E' APPENA COMINCIATA!                                                ");
+    mvprintw(17,25,"     THE REVENGE OF THE MONKEYS HAS JUST BEGUN!                                               ");
     mvprintw(18,25,"                                                                                                            ");
     attroff(COLOR_PAIR(1)); //CHIUSURA DEL COLORE ROSSO E NERO
 }
@@ -47,9 +34,7 @@ int printMenu(){
         do{           
             printTitle();
             printCommand(&cnt);
-            refresh();
-            //redrawwin(menuWin);
-            
+            refresh();            
             direction = getch();   
             if(direction == 32 && cnt == 0){
                 destroy_win(menuWin);

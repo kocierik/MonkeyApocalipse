@@ -8,7 +8,7 @@ class Character{
         int x;
         int y;
     public:
-   		Character(int x, int y);
+   		Character();
     	void moveCharacter(int x, int y);
 };
 

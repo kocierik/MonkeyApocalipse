@@ -4,24 +4,14 @@
 #include "src/menu.h"
 #include "src/window.h"
 #include "src/enemyKamikaze.h"
-#define SKIN '&'
-#define EMPTY ' '
-#define startx (COLS - width) / 2 // coordinate del blocco
-#define starty (LINES - height) / 2 // coordinate del blocco
-#define width COLS/2 // dimesione blocco di gioco
-#define height LINES/2.5 // dimesione blocco di gioco
-
-#define GRASS_PAIR     1
-#define EMPTY_PAIR     1
-#define WATER_PAIR     2
-#define MOUNTAIN_PAIR  3
-#define PLAYER_PAIR    4
+#define WIDTH COLS/2 // dimensione blocco di gioco
+#define HEIGHT LINES/2.5 // dimensione blocco di gioco
+#define STARTXPLAYER (COLS - WIDTH) / 2 // coordinate del blocco centrale
+#define STARTYPLAYER (LINES - HEIGHT) / 2 // coordinate del blocco centrale
 using namespace std;
-
 
 int main(){
     initscr();
-
     if(has_colors() == FALSE){
     	endwin();
 		printf("Your terminal does not support color\n");
@@ -31,22 +21,19 @@ int main(){
     noecho();
     keypad(stdscr, TRUE);
     use_default_colors();
-    start_color();			/* Start color 			*/
+    start_color();			
     
 	int direction;
     int menuSelected = printMenu();
     if(menuSelected == 0){     
-        Character actor(startx, starty);       
+        Character actor;       
         system("clear");
-
-        WINDOW* my_win = create_newwin('|','-');
-
-        do{            
-            actor.moveCharacter(60,23);
+        WINDOW* my_win = create_newwin('!','-');
+        do{    
+            actor.moveCharacter(STARTXPLAYER+2,STARTYPLAYER+HEIGHT/2-1);
             refresh();
             wrefresh(my_win);
-        }
-        while ((direction = getch()) != 27);
+        } while ((direction = getch()) != 27);
     }
 	endwin();			
 	return 0;
