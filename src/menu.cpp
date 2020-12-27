@@ -21,10 +21,11 @@ int printMenu(){
         menuWin = newwin(height, width, starty, startx);
         
         do{
-            resizeterm(LINES,COLS);
+            // COLORE NOME GIOCO
             box(menuWin,'|','-');
-            init_pair(1, COLOR_BLUE,0);            
+            init_pair(1, COLOR_RED,232);
             attron(COLOR_PAIR(1));
+
             refresh();
             wrefresh(menuWin);
         
@@ -37,7 +38,11 @@ int printMenu(){
             mvprintw(16,25,"                                                                                                            ");
             mvprintw(17,25,"    LA VENDETTA DELLA SCIMMIA COGLIONA E' APPENA COMINCIATA!                                                ");
             mvprintw(18,25,"                                                                                                            ");
-            attroff(COLOR_PAIR(1));
+            attroff(COLOR_PAIR(1)); //CHIUSURA DEL COLORE ROSSO E NERO
+
+
+
+
             refresh();
             if(cnt == 0) mvprintw(22,35,"==>  (X) START THE FIGHT!"); else mvprintw(22,35,"     START THE FIGHT!    ");
 

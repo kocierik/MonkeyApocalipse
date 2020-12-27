@@ -7,8 +7,8 @@
 #define EMPTY ' '
 #define startx (COLS - width) / 2 // coordinate del blocco
 #define starty (LINES - height) / 2 // coordinate del blocco
-#define width 80 // dimesione blocco di gioco
-#define height 20 // dimesione blocco di gioco
+#define width COLS/2 // dimesione blocco di gioco
+#define height LINES/2.5 // dimesione blocco di gioco
 using namespace std;
 
 WINDOW *create_newwin( char borderVertical, char borderOrizontal){
