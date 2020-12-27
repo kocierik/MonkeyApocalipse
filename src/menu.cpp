@@ -9,14 +9,14 @@ using namespace std;
 void printTitle(){
     init_pair(1, COLOR_RED,232);
     attron(COLOR_PAIR(1));
-    mvprintw(11,25,"                                                                                                            ");
-    mvprintw(12,25,"    b    d  P*Y  8b 8 8  d 88888 Yb  dP        A   8**Y  P*Y   P**b8   b    8     Yb  dP 8**Y .P*Y8 88888   ");
-    mvprintw(13,25,"    8b  d8 P   Y 8Yb8 8od  8__    YbdP        PY   8__P P   Y P   `*   PY   8      YbdP  8__P `Yo.* 8__     ");
-    mvprintw(14,25,"    8Yb P8 b   d 8 Y8 8*Y  8**     8P        P__Y  8**  b   P Y       P__Y  8  .o   8P   8**  o.`Y8 8**     ");
-    mvprintw(15,25,"    8 Y  8  Ybo  8  Y 8  Y 88888  dP        P****Y 8     P*Y   YoodP P****Y 8ood8  dP    8     8oP* 88888   ");
-    mvprintw(16,25,"                                                                                                            ");
-    mvprintw(17,25,"     THE REVENGE OF THE MONKEYS HAS JUST BEGUN!                                               ");
-    mvprintw(18,25,"                                                                                                            ");
+    mvprintw(11,30,"                                                                                                            ");
+    mvprintw(12,30,"    b    d  P*Y  8b 8 8  d 88888 Yb  dP        A   8**Y  P*Y   P**b8   b    8     Yb  dP 8**Y .P*Y8 88888   ");
+    mvprintw(13,30,"    8b  d8 P   Y 8Yb8 8od  8__    YbdP        PY   8__P P   Y P   `*   PY   8      YbdP  8__P `Yo.* 8__     ");
+    mvprintw(14,30,"    8Yb P8 b   d 8 Y8 8*Y  8**     8P        P__Y  8**  b   P Y       P__Y  8  .o   8P   8**  o.`Y8 8**     ");
+    mvprintw(15,30,"    8 Y  8  Ybo  8  Y 8  Y 88888  dP        P****Y 8     P*Y   YoodP P****Y 8ood8  dP    8     8oP* 88888   ");
+    mvprintw(16,30,"                                                                                                            ");
+    mvprintw(17,30,"     THE REVENGE OF THE MONKEYS HAS JUST BEGUN!                                               ");
+    mvprintw(18,30,"                                                                                                            ");
     attroff(COLOR_PAIR(1)); //CHIUSURA DEL COLORE ROSSO E NERO
 }
 
@@ -34,7 +34,7 @@ int printMenu(){
         do{           
             printTitle();
             printCommand(&cnt);
-            refresh();            
+            refresh();                        
             direction = getch();   
             if(direction == 32 && cnt == 0){
                 destroy_win(menuWin);
