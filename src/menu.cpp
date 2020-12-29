@@ -30,7 +30,7 @@ void printCommand(int* cnt){
 
 int printMenu(){
         int cnt, direction;	  // carattere premuto su tastiera in ascii
-        WINDOW *menuWin;		          
+        WINDOW *menuWin = NULL;		          
         do{           
             printTitle();
             printCommand(&cnt);
