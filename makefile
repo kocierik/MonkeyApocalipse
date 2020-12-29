@@ -4,8 +4,10 @@ CFLAGS =-c -Wall
 
 OBJECTS = main.o menu.o character.o enemyKamikaze.o window.o
 
+LIBRARY = -lncurses 
+
 demo: $(OBJECTS)
-	$(CC) -o main main.o menu.o character.o enemyKamikaze.o window.o -lncurses 
+	$(CC) -o main $(OBJECTS) $(LIBRARY)
 	./main
 demo.o: main.cpp
 	$(CC) $(CFLAGS) main.cpp
