@@ -23,4 +23,5 @@ WINDOW *create_newwin( char borderVertical, char borderOrizontal){
 void destroy_win(WINDOW *local_win){	
 	wrefresh(local_win);
 	delwin(local_win);
+	//system("clear");
 }

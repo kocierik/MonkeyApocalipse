@@ -10,6 +10,12 @@
 #define STARTYPLAYER (LINES - HEIGHT) / 2 // coordinate del blocco centrale
 using namespace std;
 
+
+
+void creditsInfo(){
+    
+}
+
 int main(){
     initscr();
     if(has_colors() == FALSE){
@@ -23,18 +29,37 @@ int main(){
     use_default_colors();
     start_color();			
     
+    
 	int direction;
     int menuSelected = printMenu();
-    if(menuSelected == 0){     
-        Character actor;       
-        system("clear");
-        WINDOW* my_win = create_newwin('!','-');
+
+    Character actor;     
+    WINDOW* winCredits;
+    WINDOW* winGame;
+    switch (menuSelected){
+    
+    case 0:
         do{    
+            winGame = create_newwin('!','-');
+            wrefresh(winGame);
             actor.moveCharacter(STARTXPLAYER+2,STARTYPLAYER+HEIGHT/2-1);
-            refresh();
-            wrefresh(my_win);
         } while ((direction = getch()) != 27);
+        break;
+    case 1:    
+        break;
+    case 2:     
+        winCredits = newwin(HEIGHT, WIDTH, COLS/2, LINES/2);
+        do{      
+            printTitle();      
+        }while((direction = getch()) != 27);
+        break;
+    case 3:
+        exit(1);
+        break;
     }
+
+
+
 	endwin();			
 	return 0;
 }

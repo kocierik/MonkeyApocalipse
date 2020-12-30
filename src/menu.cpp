@@ -4,7 +4,12 @@
 #include "menu.h"
 #include "window.h"
 #include <signal.h>
+#define STARTX (COLS - WIDTH) / 2 // coordinate del blocco centrale
+#define STARTY (LINES - HEIGHT) / 2 // coordinate del blocco centrale
+#define WIDTH COLS/2 // dimensione blocco di gioco
+#define HEIGHT LINES/2.5 // dimensione blocco di gioco
 using namespace std;
+
 
 void printTitle(){
     init_pair(1, COLOR_RED,232);
@@ -15,7 +20,7 @@ void printTitle(){
     mvprintw(14,30,"    8Yb P8 b   d 8 Y8 8*Y  8**     8P        P__Y  8**  b   P Y       P__Y  8  .o   8P   8**  o.`Y8 8**     ");
     mvprintw(15,30,"    8 Y  8  Ybo  8  Y 8  Y 88888  dP        P****Y 8     P*Y   YoodP P****Y 8ood8  dP    8     8oP* 88888   ");
     mvprintw(16,30,"                                                                                                            ");
-    mvprintw(17,30,"     THE REVENGE OF THE MONKEYS HAS JUST BEGUN!                                               ");
+    mvprintw(17,30,"     THE REVENGE OF THE MONKEYS HAS JUST BEGUN!                                                             ");
     mvprintw(18,30,"                                                                                                            ");
     attroff(COLOR_PAIR(1)); //CHIUSURA DEL COLORE ROSSO E NERO
 }
@@ -27,24 +32,44 @@ void printCommand(int* cnt){
     if(*cnt == 3) mvprintw(28,35,"==>  (X) QUIT"); else mvprintw(28,35,"     QUIT     ");
     mvprintw(30,35,"Press space to continue or use the arrow to move");
 }
+void resizeHandler(int sig) {
+    int y,x;
+    getmaxyx(stdscr,y, x);
+    //wresize(stdscr,y,x);
+}
 
 int printMenu(){
-        int cnt, direction;	  // carattere premuto su tastiera in ascii
-        WINDOW *menuWin = NULL;		          
-        do{           
+        int cnt, direction;	  // carattere premuto su tastiera in ascii		
+        int y,x;	 		
+	    getmaxyx(stdscr,y, x); 
+        //WINDOW* menuWin = newwin(0,0,0,0);
+        //box(menuWin, '|' , '-');	
+        do{    
             printTitle();
             printCommand(&cnt);
-            refresh();                        
-            direction = getch();   
-            if(direction == 32 && cnt == 0){
-                destroy_win(menuWin);
-                return 0;
+            //signal(SIGWINCH, resizeHandler);
+	        //wrefresh(menuWin);	        
+            //refresh();                        
+            direction = getch();
+            if(direction == 32){
+                switch (cnt){
+                case 0:
+                    system("clear");
+                    //destroy_win(menuWin);
+                    return 0;
+                case 1:
+                    return 1;
+                case 2:
+                    //system("clear");
+                    return 2;
+                case 3:
+                    return 3;
+                }
             }
             if(direction == KEY_UP) cnt--;
             if(direction == KEY_DOWN) cnt++;
             if(cnt > 3) cnt = 0;
             if(cnt < 0) cnt = 3;
-            wrefresh(menuWin);
         }while(direction != 27);
     endwin();
 }

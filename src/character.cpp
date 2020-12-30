@@ -33,6 +33,6 @@
 				if (x < COLS - 1 && x < STARTX+WIDTH-3)	mvaddch(y, x++, EMPTY); // <-------------- TROVARE EQUAZIONE BORDI
 				break;
 			}
-			refresh();
+			//refresh();
 		} while (direction != 27);		// fino a che l'utente non spinge il tasto esc il gioco continua
 	}
