@@ -31,7 +31,8 @@ int main(){
     
     
 	int direction;
-    int menuSelected = printMenu();
+    int menuSelected = 0;
+    printMenu(&menuSelected);
 
     Character actor;     
     WINDOW* winCredits;
@@ -40,6 +41,7 @@ int main(){
     
     case 0:
         do{    
+            refresh();
             winGame = create_newwin('!','-');
             wrefresh(winGame);
             actor.moveCharacter(STARTXPLAYER+2,STARTYPLAYER+HEIGHT/2-1);

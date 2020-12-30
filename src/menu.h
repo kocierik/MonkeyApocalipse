@@ -1,6 +1,6 @@
 #include <iostream>
 #include <stdio.h>
 
-int printMenu();
+void printMenu(int *menuSelected);
 void printTitle();
 void printCommand(int* cnt);

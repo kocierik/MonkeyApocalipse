@@ -32,44 +32,30 @@ void printCommand(int* cnt){
     if(*cnt == 3) mvprintw(28,35,"==>  (X) QUIT"); else mvprintw(28,35,"     QUIT     ");
     mvprintw(30,35,"Press space to continue or use the arrow to move");
 }
-void resizeHandler(int sig) {
-    int y,x;
-    getmaxyx(stdscr,y, x);
-    //wresize(stdscr,y,x);
-}
 
-int printMenu(){
+
+void printMenu(int *menuSelected){
         int cnt, direction;	  // carattere premuto su tastiera in ascii		
         int y,x;	 		
 	    getmaxyx(stdscr,y, x); 
-        //WINDOW* menuWin = newwin(0,0,0,0);
-        //box(menuWin, '|' , '-');	
+        WINDOW* winMenu;
+        winMenu = subwin(stdscr,0,0,0,0);
+        box(winMenu, '|' , '-');	
         do{    
             printTitle();
             printCommand(&cnt);
-            //signal(SIGWINCH, resizeHandler);
-	        //wrefresh(menuWin);	        
-            //refresh();                        
             direction = getch();
             if(direction == 32){
-                switch (cnt){
-                case 0:
-                    system("clear");
-                    //destroy_win(menuWin);
-                    return 0;
-                case 1:
-                    return 1;
-                case 2:
-                    //system("clear");
-                    return 2;
-                case 3:
-                    return 3;
-                }
+                //destroy_win(winMenu);
+                werase(winMenu);
+                wrefresh(winMenu);
+                *menuSelected = cnt;
+                break;
             }
             if(direction == KEY_UP) cnt--;
             if(direction == KEY_DOWN) cnt++;
             if(cnt > 3) cnt = 0;
             if(cnt < 0) cnt = 3;
         }while(direction != 27);
-    endwin();
+    //endwin();
 }
