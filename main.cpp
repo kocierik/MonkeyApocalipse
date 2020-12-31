@@ -4,18 +4,21 @@
 #include "src/menu.h"
 #include "src/window.h"
 #include "src/enemyKamikaze.h"
-#define WIDTH COLS/2 // dimensione blocco di gioco
-#define HEIGHT LINES/2.5 // dimensione blocco di gioco
-#define STARTXPLAYER (COLS - WIDTH) / 2 // coordinate del blocco centrale
-#define STARTYPLAYER (LINES - HEIGHT) / 2 // coordinate del blocco centrale
+
 using namespace std;
 
+WINDOW* winGame;
 
-
-void creditsInfo(){
-    
+void resizeWin(int sig){
+    endwin();
+    refresh();
+    clear();
+    system("clear");
+    wrefresh(winGame);
+    winGame = subwin(stdscr,17,80,10,44);
+    box(winGame, '|' , '-');
+    wrefresh(winGame);
 }
-
 int main(){
     initscr();
     if(has_colors() == FALSE){
@@ -36,21 +39,21 @@ int main(){
 
     Character actor;     
     WINDOW* winCredits;
-    WINDOW* winGame;
     switch (menuSelected){
     
     case 0:
+        winGame = subwin(stdscr,17,80,10,44);
+        touchwin(winGame);
+        //mvderwin(winGame,10,44);
         do{    
-            refresh();
-            winGame = create_newwin('!','-');
-            wrefresh(winGame);
-            actor.moveCharacter(STARTXPLAYER+2,STARTYPLAYER+HEIGHT/2-1);
+            signal (SIGWINCH, resizeWin);
+            box(winGame, '|' , '-');
+            actor.moveCharacter(48,18);
         } while ((direction = getch()) != 27);
         break;
     case 1:    
         break;
     case 2:     
-        winCredits = newwin(HEIGHT, WIDTH, COLS/2, LINES/2);
         do{      
             printTitle();      
         }while((direction = getch()) != 27);
