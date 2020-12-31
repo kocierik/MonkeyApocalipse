@@ -4,7 +4,7 @@
 #include "src/menu.h"
 #include "src/window.h"
 #include "src/enemyKamikaze.h"
-
+#include "src/credits.h"
 using namespace std;
 
 WINDOW* winGame;
@@ -55,11 +55,16 @@ int main(){
     case 1:    
         break;
     case 2:     
+        winGame = subwin(stdscr,17,80,10,44);
+        touchwin(winGame);
         do{      
             printTitle();      
+            printCredits();
+            wrefresh(winCredits);
         }while((direction = getch()) != 27);
         break;
     case 3:
+        printf("Thank you for playing our game. Have a good day!\n");
         exit(1);
         break;
     }

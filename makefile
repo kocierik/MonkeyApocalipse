@@ -1,6 +1,6 @@
 CC = g++
 CFLAGS = -c -Wall
-OBJECTS = main.o menu.o character.o enemyKamikaze.o window.o
+OBJECTS = main.o menu.o character.o enemyKamikaze.o window.o credits.o
 LIBRARY = -lncurses 
 
 demo: $(OBJECTS)
@@ -21,6 +21,9 @@ enemyKamikaze.o: src/enemyKamikaze.cpp
 
 window.o: src/window.cpp
 	$(CC) $(CFLAGS) src/window.cpp
+
+credits.o: src/credits.cpp
+	$(CC) $(CFLAGS) src/credits.cpp
 
 clean:
 	rm *.o main
