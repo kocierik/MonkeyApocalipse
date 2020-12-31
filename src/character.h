@@ -9,7 +9,7 @@ class Character{
         int y;
     public:
    		Character(int x, int y);
-    	void moveCharacter();
+    	int moveCharacter();
         int getX();
         int getY();
 };

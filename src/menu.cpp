@@ -58,5 +58,5 @@ void printMenu(int *menuSelected){
             if(cnt > 3) cnt = 0;
             if(cnt < 0) cnt = 3;
         }while(direction != 27);
-    endwin();
+    //endwin();
 }
