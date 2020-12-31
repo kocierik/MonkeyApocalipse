@@ -8,7 +8,9 @@ class Character{
         int x;
         int y;
     public:
-   		Character();
-    	void moveCharacter(int x, int y);
+   		Character(int x, int y);
+    	void moveCharacter();
+        int getX();
+        int getY();
 };
 

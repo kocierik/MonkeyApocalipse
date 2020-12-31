@@ -8,15 +8,17 @@
 using namespace std;
 
 WINDOW* winGame;
-
+Character actor(48,18);     
 void resizeWin(int sig){
     endwin();
     refresh();
     clear();
     system("clear");
     wrefresh(winGame);
+    refresh();
     winGame = subwin(stdscr,17,80,10,44);
     box(winGame, '|' , '-');
+    refresh();
     wrefresh(winGame);
 }
 int main(){
@@ -37,18 +39,17 @@ int main(){
     int menuSelected = 0;
     printMenu(&menuSelected);
 
-    Character actor;     
+    
     WINDOW* winCredits;
     switch (menuSelected){
     
     case 0:
         winGame = subwin(stdscr,17,80,10,44);
         touchwin(winGame);
-        //mvderwin(winGame,10,44);
         do{    
-            signal (SIGWINCH, resizeWin);
+            signal(SIGWINCH, resizeWin);
             box(winGame, '|' , '-');
-            actor.moveCharacter(48,18);
+            actor.moveCharacter();
         } while ((direction = getch()) != 27);
         break;
     case 1:    

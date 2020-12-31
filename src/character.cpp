@@ -4,12 +4,20 @@
 #define SKIN '&'
 #define EMPTY ' '
 
-	Character::Character(){
+	Character::Character(int x, int y){
 		this->direction = 0;
-		this->x = 0;
-		this->y = 0;
+		this->x = x;
+		this->y = y;
 	}
-	void Character::moveCharacter(int x, int y){	// 48 18
+
+	int Character::getX(){
+		return this->x;
+	}
+	int Character::getY(){
+		return this->y;
+	}
+
+	void Character::moveCharacter(){	// 48 18
 		do { 						// di base abbiamo un carattere bianco se non lo settiamo 
 			mvaddch(y, x, SKIN);	// muove il nostro carattere settato (SKIN)
 			move(y, x);				// muove il cursore (altrimenti il carattere sarebbe sempre avanti di un blocco)
