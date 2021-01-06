@@ -45,6 +45,8 @@ LEGENDA:
 
 ✖ Multiplayer
 
+✖ Scritte ganzissime + miglioramento estetica esterna al gameplay
+
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Consegne migliorie varie:
