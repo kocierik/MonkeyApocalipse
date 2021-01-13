@@ -1,7 +1,6 @@
 #include <iostream>
 #include <ncurses.h>
 
-/*
 void printCredits(){
     init_pair(2, COLOR_BLUE,232);
     attron(COLOR_PAIR(2));
@@ -13,6 +12,3 @@ void printCredits(){
     mvprintw(27,33,"                                                                                                       ");
     attroff(COLOR_PAIR(2)); //CHIUSURA DEL COLORE ROSSO E BLU
 }
-*/
-
-// Il file è obsoleto, ho semplicemente copiato la funzione in menu.cpp. Non cancello il file nel caso possa servire a qualcuno.

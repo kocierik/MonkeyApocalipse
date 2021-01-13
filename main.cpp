@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <stdio.h>
 #include <ncurses.h>
@@ -8,7 +9,7 @@
 using namespace std;
 
 WINDOW* winGame;
-Character actor(48,18);
+Character actor(48,18);   
 
 void resizeWin(int sig){
     endwin();
@@ -29,67 +30,60 @@ int main(){
 		printf("Your terminal does not support color\n");
 		exit(1);
 	}
-    cbreak();
+    cbreak();			
     noecho();
     keypad(stdscr, TRUE);
     use_default_colors();
-    start_color();
-    bool game = true;
+    start_color();			
+    bool game = true;  
     bool quitGame = true;
+    bool enterWin = false;
+    bool quitMenu = false;
 	int direction;
     int menuSelected = 0;
-    printMenu(&menuSelected);
-    // menuSelected = 10;
 
-    //WINDOW* winCredits;
-    do{
-        switch (menuSelected){
-            case 0:
-                clear();
-                wrefresh(winGame);
-                winGame = subwin(stdscr,17,80,10,44);
-                touchwin(winGame);
-                wrefresh(winGame);
-                game = true;
-                do{
-                    signal(SIGWINCH, resizeWin);
-                    box(winGame, '|' , '-');
-                    direction = actor.moveCharacter();
-                    if(direction == 27){ game = false;}
-                } while (game);
-                wrefresh(winGame);
-                endwin();
-                refresh();
-                break;
-            case 1:
-                break;
-            case 2:
-                winGame = subwin(stdscr,17,80,10,44);
-                touchwin(winGame);
-                do{
-                    // printTitle();
-                    // printCredits();
-                    // wrefresh(winCredits);
-                }while((direction = getch()) != 27);
-                break;
-            case 3:
-
-                printf("Thank you for playing our game. Have a good day!\n");
-                quitGame = false;
-                exit(1);
-                break;
-        }
-        endwin();
-        werase(winGame);
-        wrefresh(winGame);
+    do{    
+        printMenu(&menuSelected, &enterWin);
         refresh();
-        printMenu(&menuSelected);
-        wrefresh(winGame);
-        if(getch() == 27) quitGame = false;
+        if(enterWin){
+            switch (menuSelected){    
+                case 0:
+                    clear();
+                    wrefresh(winGame);
+                    winGame = subwin(stdscr,17,80,10,44);
+                    touchwin(winGame);
+                    wrefresh(winGame);
+                    game = true;
+                    do{    
+                        signal(SIGWINCH, resizeWin);
+                        box(winGame, '|' , '-');
+                        direction = actor.moveCharacter();
+                        if(direction == 27){ game = false; enterWin = false;} 
+                    } while (game);
+                    break;
+                case 1:    
+                    break;
+                case 2:     
+                    do{
+                        printTitle();      
+                        printCredits();
+                        direction = getch();
+                    }while(direction != 27);
+                    direction = 0;
+                    enterWin = false;
+                    system("clear");
+                    break;
+                case 3:
+                    printf("Thank you for playing our game. Have a good day!\n");
+                    quitGame = false;
+                    exit(1);
+                    break;
+            }
+        }
+        clear();
+        refresh();
+        if(direction == 27 && quitMenu) quitGame = false;
     }while(quitGame);
-
-
-	endwin();
+	endwin();			
 	return 0;
 }
-
