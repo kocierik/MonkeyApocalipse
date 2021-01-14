@@ -9,8 +9,8 @@ class Character{
         int y;
     public:
    		Character(int x, int y);
-    	int moveCharacter();
         int getX();
         int getY();
+    	int moveCharacter();
 };
 

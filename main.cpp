@@ -6,7 +6,9 @@
 #include "src/window.h"
 #include "src/enemyKamikaze.h"
 #include "src/credits.h"
-using namespace std;
+#include "src/bullet.h"
+#include <thread>
+
 
 WINDOW* winGame;
 Character actor(48,18);   
@@ -22,6 +24,10 @@ void resizeWin(int sig){
     box(winGame, '|' , '-');
     refresh();
     wrefresh(winGame);
+}
+void foo(int a)
+{
+    std::cout << a << '\n';
 }
 int main(){
     initscr();
@@ -39,9 +45,9 @@ int main(){
     bool quitGame = true;
     bool enterWin = false;
     bool quitMenu = false;
+    bool shoot = false;
 	int direction;
     int menuSelected = 0;
-
     do{    
         printMenu(&menuSelected, &enterWin);
         refresh();
@@ -58,6 +64,13 @@ int main(){
                         signal(SIGWINCH, resizeWin);
                         box(winGame, '|' , '-');
                         direction = actor.moveCharacter();
+                        if(direction == 32){
+                            shoot = true;
+                            Bullet bullet(actor.getX()+1,actor.getY());
+                            bullet.createBullet(bullet.getX(), bullet.getY());
+                            bullet.updateBullet();
+                            refresh();
+                        }
                         if(direction == 27){ game = false; enterWin = false;} 
                     } while (game);
                     break;

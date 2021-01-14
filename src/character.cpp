@@ -36,6 +36,5 @@
 					if (x < COLS - 1 && x < 122){ mvaddch(y, x++, EMPTY);}
 					break;
 			}
-			refresh();
-	return direction;
+		return direction;
 	}
