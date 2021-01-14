@@ -43,6 +43,8 @@ LEGENDA:
 
 ✖ Redpillate
 
+✖ Mine
+
 ✖ Multiplayer
 
 ✖ Scritte ganzissime + miglioramento estetica esterna al gameplay
