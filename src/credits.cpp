@@ -1,5 +1,5 @@
-#include <iostream>
 #include <ncurses.h>
+#include "menu.h"
 
 void printCredits(){
     init_pair(2, COLOR_BLUE,232);
@@ -11,4 +11,13 @@ void printCredits(){
     mvprintw(26,33,"                                                                                                       ");
     mvprintw(27,33,"                                                                                                       ");
     attroff(COLOR_PAIR(2)); //CHIUSURA DEL COLORE ROSSO E BLU
+}
+void credits(int direction, bool *pEnterWin){                  
+    do{
+        printTitle();      
+        printCredits();
+        direction = getch();
+    }while(direction != 27);
+    *pEnterWin = false;
+    system("clear");
 }

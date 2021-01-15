@@ -18,6 +18,6 @@
     refresh();	
   }
   void destroyBullet( SBullet *pBullet){
-	delete pBullet;
-  pBullet = NULL;
-}
+	  delete pBullet;
+    pBullet = NULL;
+  }

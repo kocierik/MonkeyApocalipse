@@ -8,7 +8,6 @@
 #define STARTY (LINES - HEIGHT) / 2 // coordinate del blocco centrale
 #define WIDTH COLS/2 // dimensione blocco di gioco
 #define HEIGHT LINES/2.5 // dimensione blocco di gioco
-using namespace std;
 
 
 void printTitle(){
@@ -60,5 +59,5 @@ void printMenu(int *menuSelected, bool *enterWin){
             if(cnt > 3) cnt = 0;
             if(cnt < 0) cnt = 3;
         }while(direction != 27);
-    //endwin();
+    system("clear");
 }
