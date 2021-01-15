@@ -23,5 +23,17 @@ WINDOW *create_newwin( char borderVertical, char borderOrizontal){
 void destroy_win(WINDOW *local_win){	
 	wrefresh(local_win);
 	delwin(local_win);
-	//system("clear");
+}
+
+void initWinScreen(){
+		if(has_colors() == FALSE){
+			endwin();
+			printf("Your terminal does not support color\n");
+			exit(1);
+		}
+    cbreak();			
+    noecho();
+    keypad(stdscr, TRUE);
+    use_default_colors();
+    start_color();	
 }

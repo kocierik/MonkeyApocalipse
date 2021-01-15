@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <stdio.h>
 #include <ncurses.h>
@@ -7,8 +6,6 @@
 #include "src/enemyKamikaze.h"
 #include "src/credits.h"
 #include "src/bullet.h"
-#include <thread>
-
 
 WINDOW* winGame;
 Character actor(48,18);   
@@ -25,22 +22,10 @@ void resizeWin(int sig){
     refresh();
     wrefresh(winGame);
 }
-void foo(int a)
-{
-    std::cout << a << '\n';
-}
+
 int main(){
     initscr();
-    if(has_colors() == FALSE){
-    	endwin();
-		printf("Your terminal does not support color\n");
-		exit(1);
-	}
-    cbreak();			
-    noecho();
-    keypad(stdscr, TRUE);
-    use_default_colors();
-    start_color();			
+    initWinScreen();
     bool game = true;  
     bool quitGame = true;
     bool enterWin = false;
@@ -66,11 +51,11 @@ int main(){
                         direction = actor.moveCharacter();
                         if(direction == 32){
                             shoot = true;
-                            Bullet bullet(actor.getX()+1,actor.getY());
-                            bullet.createBullet(bullet.getX(), bullet.getY());
-                            bullet.updateBullet();
-                            refresh();
+                            SBullet* b = createBullet(actor.getX()+1,actor.getY(),1);
+                            updateB(b);
+                            destroyBullet(b);
                         }
+                        refresh();
                         if(direction == 27){ game = false; enterWin = false;} 
                     } while (game);
                     break;
