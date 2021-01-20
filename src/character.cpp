@@ -6,23 +6,23 @@
 
 	Character::Character(int x, int y){
 		this->direction = 0;
-		this->x = x;
+		this->x = x;				// COSTRUTTORE
 		this->y = y;
 	}
 
 	int Character::getX(){
-		return this->x;
+		return this->x;			
 	}
 	int Character::getY(){
 		return this->y;
 	}
 
 	int Character::moveCharacter(){	// 48 18
-			mvaddch(y, x, SKIN);	
-			move(y,x);
+			mvaddch(y, x, SKIN);	//MUOVE IL CARATTERE						// CARATTERE E CURSORE
+			move(y,x);						// MUOVE IL CURSORE							// SONO DUE COSE SEPARATE
 			refresh();	
-			direction = getch();
-			switch (direction) {		
+			direction = getch();					// PRENDO IN INPUT UN TASTO
+			switch (direction) {		// CONTROLLO IL TASTO SPINTO
 				case KEY_UP:
 					if (y > 0 && y > 11){ mvaddch(y--, x, EMPTY);}	
 					break;
@@ -34,7 +34,7 @@
 					break;
 				case KEY_RIGHT:
 					if (x < COLS - 1 && x < 122){ mvaddch(y, x++, EMPTY);}
-					break;
+					break;			// ESCE DALLO SWITCH
 			}
-		return direction;
+		return direction;				// RITORNO LA POSIZIONE DEL CURSORE OGNI VOLTA CHE MI MUOVO
 	}

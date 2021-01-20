@@ -10,9 +10,9 @@
 #define HEIGHT LINES/2.5 // dimensione blocco di gioco
 
 
-void printTitle(){
-    init_pair(1, COLOR_RED,232);
-    attron(COLOR_PAIR(1));
+void printTitle(){      //MVPRINTW ---> PRIMO ATTRIBUTO INDICA LA X IL SECONDO LA Y COME COORDINATE
+    init_pair(1, COLOR_RED,232);        // 1 INDICA UN ID, POI METTI IL COLORE CHE VUOI
+    attron(COLOR_PAIR(1));                      // APRTURA COLORE ROSSO
     mvprintw(11,30,"                                                                                                            ");
     mvprintw(12,30,"    b    d  P*Y  8b 8 8  d 88888 Yb  dP        A   8**Y  P*Y   P**b8   b    8     Yb  dP 8**Y .P*Y8 88888   ");
     mvprintw(13,30,"    8b  d8 P   Y 8Yb8 8od  8__    YbdP        PY   8__P P   Y P   `*   PY   8      YbdP  8__P `Yo.* 8__     ");
@@ -27,7 +27,7 @@ void printTitle(){
 void printCommand(int* cnt){
     if(*cnt == 0) mvprintw(22,35,"==>  (X) START THE FIGHT!"); else mvprintw(22,35,"     START THE FIGHT!    ");
     if(*cnt == 1) mvprintw(24,35,"==>  (X) HOW TO PLAY"); else mvprintw(24,35,"     HOW TO PLAY    ");
-    if(*cnt == 2) mvprintw(26,35,"==>  (X) CREDITS"); else mvprintw(26,35,"     CREDITS      ");
+    if(*cnt == 2) mvprintw(26,35,"==>  (X) CREDITS"); else mvprintw(26,35,"     CREDITS      ");        // MUOVO CON LE FRECCE
     if(*cnt == 3) mvprintw(28,35,"==>  (X) QUIT"); else mvprintw(28,35,"     QUIT     ");
     mvprintw(30,35,"Press space to continue or use the arrow to move");
 }
@@ -36,19 +36,19 @@ void printCommand(int* cnt){
 void printMenu(int *menuSelected, bool *enterWin){
         int cnt, direction;	  // carattere premuto su tastiera in ascii		
         int y,x;	 		
-	    getmaxyx(stdscr,y, x); 
+	    getmaxyx(stdscr,y, x);                      
         WINDOW* winMenu;
-        winMenu = subwin(stdscr,0,0,1,1);
+        winMenu = subwin(stdscr,0,0,1,1);           // CREO UNA SOTTOWINDOW
         touchwin(winMenu);
         do{
         box(winMenu, '|' , '-');	
             printTitle();
             printCommand(&cnt);
             direction = getch();
-            if(direction == 32){
+            if(direction == 32){            // SE L'UTENTE SPINGE SPAZIO ENTRI IN UNA SCHERMATA DI GIOCO
                 werase(winMenu);
-                destroy_win(winMenu);
-                system("clear");
+                destroy_win(winMenu);   
+                system("clear");            // PULISCE LA WINDOW
                 refresh();
                 *menuSelected = cnt;
                 *enterWin = true;

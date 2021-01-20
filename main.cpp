@@ -9,23 +9,23 @@
 #include "src/engineGame.h"
 
 int main(){
-    initscr();
-    initWinScreen();
+    initscr();              // FUNZIONE PER UTILIZZARE NCURSES
+    initWinScreen();            // FUNZIONE PER INIZIALIZZARE LA WINDOW
     bool quitGame = true;
     bool enterWin = false;
     bool quitMenu = false;
-	int direction;
+	int direction;              //INDICA LA POSIZIONE DEL CURSORE 
     int menuSelected;
     do{    
-        printMenu(&menuSelected, &enterWin);
-        refresh();
+        printMenu(&menuSelected, &enterWin);        // NOTARE PASSO INDIRIZZO DI MEMORIA
+        refresh();          // AGGIORNA TUTTE LE PAGINE 
         if(enterWin){
-            switch (menuSelected){    
+            switch (menuSelected){          
                 case 0:
                     engineGame(direction, &enterWin);
                     break;
                 case 1:    
-                    break;
+                    break;                              // SELEZIONE DEL MENU CON LE FRECCE
                 case 2:     
                     credits(direction, &enterWin);
                     break;
@@ -38,9 +38,9 @@ int main(){
         }
         clear();
         refresh();
-        if(direction == 27 && quitMenu) quitGame = false;
+        if(direction == 27 && quitMenu) quitGame = false;       // 27 = ESC --> ESCI SE SPINGI ESC
     }while(quitGame);
-	endwin();			
+	endwin();			    // CHIUDI LA WINDOW
 	return 0;
 }
  //test macchina virtuale

@@ -5,6 +5,6 @@
 
 class EnemyKamikaze : public Character{    
     public:
-        EnemyKamikaze();
+        // EnemyKamikaze();
         //void moveEnemyKamikaze(int x, int y );
 };
