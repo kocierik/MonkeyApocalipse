@@ -28,7 +28,7 @@ void engineGame(int direction, bool *enterWin){
   touchwin(winGame);
   wrefresh(winGame);
   do{    
-      signal(SIGWINCH, resizeWin);
+      //signal(SIGWINCH, resizeWin);
       box(winGame, '|' , '-');
       direction = actor.moveCharacter();
       if(direction == 32){

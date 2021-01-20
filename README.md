@@ -53,28 +53,8 @@ LEGENDA:
 
 Consegne migliorie varie:
   MENU:
-  - Sistemare la freccia del menù
-  - Rimuovere / risolvere le parentesi delle voci del menù
-  - Definire i bordi della finestra di gioco (altrimenti varia da terminale in terminale)
-
-  VARIE:
-  - Definire una classe padre character (riciclando Actor)
-  - Creare la sottoclasse enemy e player
-
-  - Variabili protette da aggiungere a Character:
-    - float life
-    - float speed
-  
-- Probabili classi da implementare:
-  - Classe MeeleWeapon
-    - char Meelename[30]
-    - float MeeleDamage
-    - float MeeleAttackSpeed
-
-  - Classe GunWeapon
-    - char nameWeapon[30]
-    - float bulletDamage
-    - float bulletAttackSpeed
+  - Aggiungere/migliorare la pagina per how to play e credits
+  - Aggiungere la barra della vita e lo score nella schermata di gioco
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
