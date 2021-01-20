@@ -28,8 +28,8 @@ void engineGame(int direction, bool *enterWin){
   touchwin(winGame);                              
   wrefresh(winGame);
   do{    
-      signal(SIGWINCH, resizeWin);
-      box(winGame, '|' , '-');          // CREA I BORDI
+      //signal(SIGWINCH, resizeWin);
+      box(winGame, '|' , '-');
       direction = actor.moveCharacter();
       if(direction == 32){              // SE SPINGI SPAZIO SPARI
           shoot = true;
