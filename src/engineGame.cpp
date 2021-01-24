@@ -35,6 +35,7 @@ void engineGame(int direction, bool *enterWin){
           shoot = true;
           SBullet* b = createBullet(actor.getX()+1,actor.getY(),1);     // CREO UN BULLET
           updateB(b);                 // AGGIORNO LA POSIZIONE DEL BULLET
+          refresh();
           destroyBullet(b);         // DISTRUGGE IL BULLET
       }
       refresh();

@@ -1,7 +1,8 @@
 #include "bullet.h"
 #define SKIN 'o'
 #define EMPTY ' '
-#define SPEED 1
+#define SPEED 0.01
+#include <thread>
 
   SBullet* createBullet(float x, float y, float speed){
     SBullet *bullet = new SBullet();
@@ -9,13 +10,16 @@
     bullet->yPos = y;                         // SEMPLICE DEFINIZIONE DEL BULLET
     return bullet;
   }
+
   void updateB(SBullet *pBullet){
-    for (int i = pBullet->xPos; i < 122; i++){
-      mvaddch(pBullet->yPos, i-1, EMPTY);       // AGGIORNO LA POSIZONE DEL BULLET
-      mvaddch(pBullet->yPos, i, SKIN);          // SVOLGENDO TUTTO MOLTO VELOCEMENTE NOI VEDIAMO
-      move(pBullet->yPos,i);                    // IL BULLET SEMPRE INFONDO 
-    }                                           // DA FIXARE IL MOVIMENTO PIU LENTO (GUARDARE I THRED)
-    refresh();	
+    while(pBullet->xPos < 122){
+      mvaddch(pBullet->yPos, pBullet->xPos-1, EMPTY);       // AGGIORNO LA POSIZONE DEL BULLET
+      mvaddch(pBullet->yPos, pBullet->xPos, SKIN);          // SVOLGENDO TUTTO MOLTO VELOCEMENTE NOI VEDIAMO
+      pBullet->xPos +=SPEED;
+      move(pBullet->yPos,pBullet->xPos);                    // IL BULLET SEMPRE INFONDO 
+      refresh();	
+    }             
+      refresh();	
   }
   void destroyBullet( SBullet *pBullet){
 	  delete pBullet;                             // DISTRUGGE UN BULLET
