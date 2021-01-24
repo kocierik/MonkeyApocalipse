@@ -19,7 +19,6 @@
       move(pBullet->yPos,pBullet->xPos);                    // IL BULLET SEMPRE INFONDO 
       refresh();	
     }             
-      refresh();	
   }
   void destroyBullet( SBullet *pBullet){
 	  delete pBullet;                             // DISTRUGGE UN BULLET

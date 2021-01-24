@@ -21,6 +21,7 @@ void resizeWin(int sig){
 void engineGame(int direction, bool *enterWin){
   Character actor(48,18);   
   bool shoot = false;
+  int shootBullet = 0;
   bool game = true;
   clear();                  // PULISCE LO SCHERMO (NON HO BEN CAPITO NEMMENO IO COME)
   wrefresh(winGame);
@@ -31,12 +32,13 @@ void engineGame(int direction, bool *enterWin){
       //signal(SIGWINCH, resizeWin);
       box(winGame, '|' , '-');
       direction = actor.moveCharacter();
-      if(direction == 32){              // SE SPINGI SPAZIO SPARI
-          shoot = true;
-          SBullet* b = createBullet(actor.getX()+1,actor.getY(),1);     // CREO UN BULLET
-          updateB(b);                 // AGGIORNO LA POSIZIONE DEL BULLET
-          refresh();
-          destroyBullet(b);         // DISTRUGGE IL BULLET
+      if(direction == 32 && shootBullet < 3){              // SE SPINGI SPAZIO SPARI
+        shoot = true;
+        shootBullet++; 
+        SBullet* b = createBullet(actor.getX()+1,actor.getY(),1);     // CREO UN BULLET
+        updateB(b);                 // AGGIORNO LA POSIZIONE DEL BULLET
+        destroyBullet(b);         // DISTRUGGE IL BULLET
+        shootBullet--;
       }
       refresh();
       if(direction == 27){ game = false; *enterWin = false;} 
