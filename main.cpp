@@ -43,4 +43,4 @@ int main(){
 	endwin();			    // CHIUDI LA WINDOW
 	return 0;
 }
- //test macchina virtuale
+ //test macchina virtuale2
