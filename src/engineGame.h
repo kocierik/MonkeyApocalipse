@@ -1,1 +1,0 @@
-void engineGame(int direction, bool *enterWin);

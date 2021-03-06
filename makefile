@@ -1,35 +1,26 @@
 CC = g++
 CFLAGS = -c -Wall
-OBJECTS = main.o menu.o engineGame.o character.o enemyKamikaze.o bullet.o window.o credits.o
+OBJECTS = main.o engineGame.o character.o drawWindow.o player.o 
 LIBRARY = -lncurses 
 
-demo: $(OBJECTS)
+main: $(OBJECTS)
 	$(CC) -o main $(OBJECTS) $(LIBRARY)
-	./main
+	#./main
 
-demo.o: main.cpp
+main.o: main.cpp models/engineGame.hpp models/character.hpp models/drawWindow.hpp models/player.hpp
 	$(CC) $(CFLAGS) main.cpp
 
-menu.o: src/menu.cpp
-	$(CC) $(CFLAGS) src/menu.cpp
+engineGame.o: models/engineGame.cpp models/engineGame.hpp
+	$(CC) $(CFLAGS) models/engineGame.cpp
 
-engineGame.o: src/engineGame.cpp
-	$(CC) $(CFLAGS) src/engineGame.cpp
+character.o: models/character.cpp models/character.hpp
+	$(CC) $(CFLAGS) models/character.cpp
 
-character.o: src/character.cpp
-	$(CC) $(CFLAGS) src/character.cpp
+player.o: models/player.cpp models/player.hpp
+	$(CC) $(CFLAGS) models/player.cpp
 
-enemyKamikaze.o: src/enemyKamikaze.cpp
-	$(CC) $(CFLAGS) src/enemyKamikaze.cpp
-
-bullet.o: src/bullet.cpp
-	$(CC) $(CFLAGS) src/bullet.cpp
-
-window.o: src/window.cpp
-	$(CC) $(CFLAGS) src/window.cpp
-
-credits.o: src/credits.cpp
-	$(CC) $(CFLAGS) src/credits.cpp
+drawWindow.o: models/drawWindow.cpp models/drawWindow.hpp
+	$(CC) $(CFLAGS) models/drawWindow.cpp
 
 clean:
 	rm *.o main
