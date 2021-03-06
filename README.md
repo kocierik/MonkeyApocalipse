@@ -19,15 +19,13 @@ LEGENDA:
 
 ✖ Menu
  
-✖ Apparizione del player + mappa
+✔ Apparizione del player + mappa
 
-✖ Movimento del player nella mappa
+✔ Movimento del player nella mappa
 
 ✖ salvataggio della mappa per i movimenti
 
-✖ Armi per il player
-
-✖ Nemico
+✔ Armi per il player
 
 ✖ Nemici
 
@@ -47,7 +45,7 @@ LEGENDA:
 
 ✖ Multiplayer
 
-✖ Scritte ganzissime + miglioramento estetica esterna al gameplay
+△ Scritte ganzissime + miglioramento estetica esterna al gameplay
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
