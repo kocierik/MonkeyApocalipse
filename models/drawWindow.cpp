@@ -50,20 +50,26 @@ void DrawWindow::printCharacter(int x, int y, char c){
 }
 
 void DrawWindow::drawRect(int startX, int startY, int width, int heigth){
-    for(int y = 0; y < heigth; y++){
-        for(int x = 0; x < width; x++){
-            if(y == 0 || y == (heigth - 1)){
-                move(startY+y, startX+x);
-                printw("-");
-            }
-            else if(x == (width - 1) || x == 0){
-                move(startY+y, startX+x);
-                printw("|");
-            }
-            if((x==0 && y==0)||(x==0 && y==(heigth-1))||(x==(width-1) && y==0)||(x==(width-1) && y==(heigth-1))){
-                move(startY+y, startX+x);
-                printw("o");
-            }
-        }
+    for (int i = startY; i < width; ++i){
+        mvprintw(startX,i,"-");
+        mvprintw(heigth,i,"-");
     }
+    for (int i = startX; i < heigth; ++i){
+        mvprintw(i,startY,"|");
+        mvprintw(i,width,"|");
+    }
+    mvprintw(startX,width,"o");
+    mvprintw(startX,startY,"o");
+    mvprintw(heigth,startX+15,"o");
+    mvprintw(heigth,width,"o");
+}
+
+void DrawWindow::drawStats(int startX, int startY, int width, int heigth){
+    init_pair(2, COLOR_BLUE,232);           // FUNZIONI PER USARE I COLORI 
+    attron(COLOR_PAIR(2));
+    drawRect(startX-2,startY-2,width+5,heigth+4);
+
+    mvprintw(heigth+2,startX+18,"LIFE: c-c-c");
+    mvprintw(heigth+2,startX+30,"SCORE:");
+    attroff(COLOR_PAIR(2)); //CHIUSURA DEL COLORE ROSSO E BLU
 }

@@ -158,6 +158,7 @@
       clear();
       drawWindow.printCharacter(x,y,'c');
       drawWindow.drawRect(this->frameGameX, this->frameGameY, this->widht, this->height); 
+      drawWindow.drawStats(this->frameGameX, this->frameGameY, this->widht, this->height);
       shootBullet();
       refresh();
       this->shoots = destroyBullet();

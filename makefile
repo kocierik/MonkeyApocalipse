@@ -5,7 +5,7 @@ LIBRARY = -lncurses
 
 main: $(OBJECTS)
 	$(CC) -o main $(OBJECTS) $(LIBRARY)
-	#./main
+	./main
 
 main.o: main.cpp models/engineGame.hpp models/character.hpp models/drawWindow.hpp models/player.hpp
 	$(CC) $(CFLAGS) main.cpp
