@@ -4,7 +4,7 @@ OBJECTS = main.o engineGame.o character.o drawWindow.o player.o
 LIBRARY = -lncurses 
 
 main: $(OBJECTS)
-	$(CC) -o main $(OBJECTS) $(LIBRARY)
+	$(CC) -o main $(OBJECTS) $(LIBRARY) 
 	./main
 
 main.o: main.cpp models/engineGame.hpp models/character.hpp models/drawWindow.hpp models/player.hpp
@@ -24,3 +24,6 @@ drawWindow.o: models/drawWindow.cpp models/drawWindow.hpp
 
 clean:
 	rm *.o main
+
+format: 
+	clang-format -i -style=google ./**/*.cpp ./**/*.hpp
