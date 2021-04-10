@@ -1,13 +1,10 @@
+#include "character.hpp"
+#include "drawWindow.hpp"
 #include "engineGame.hpp"
-
 #include <ncurses.h>
-
 #include <cmath>
 #include <ctime>
 #include <iostream>
-
-#include "character.hpp"
-#include "drawWindow.hpp"
 
 EngineGame::EngineGame(int frameGameX, int frameGameY, int height, int width) {
   this->frameGameX = frameGameX;
@@ -31,7 +28,6 @@ void EngineGame::baseCommand() {
   use_default_colors();
   start_color();
 }
-
 Pbullet EngineGame::createBullet(int x, int y) {
   Pbullet bullet = new Bullet;
   bullet->x = x;
@@ -40,7 +36,6 @@ Pbullet EngineGame::createBullet(int x, int y) {
   bullet->next = this->shoots;
   return bullet;
 }
-
 void EngineGame::shootBullet() {
   Pbullet bullet = this->shoots;
   while (bullet != NULL) {
@@ -50,7 +45,6 @@ void EngineGame::shootBullet() {
     bullet = bullet->next;
   }
 }
-
 Pbullet EngineGame::destroyBullet() {
   if (this->shoots != NULL) {
     if (this->shoots->next != NULL) {
@@ -64,7 +58,6 @@ Pbullet EngineGame::destroyBullet() {
         }
         prec = bullet;
         bullet = bullet->next;
-        bullet = bullet->next;
       }
     } else {
       if (this->shoots->x + 2 > widht) {
@@ -76,10 +69,8 @@ Pbullet EngineGame::destroyBullet() {
   }
   return this->shoots;
 }
-
 // controllo che la posizione x y sia uno spazio vuoto
 bool EngineGame::isEmpty(int x, int y) { return mvinch(y, x) == ' '; }
-
 void EngineGame::moveCharacter(Character &character, int direction) {
   switch (direction) {  // CONTROLLO IL TASTO SPINTO
     case KEY_UP:
@@ -106,9 +97,7 @@ void EngineGame::moveCharacter(Character &character, int direction) {
       break;
   }
 }
-
-void EngineGame::choiceGame(DrawWindow drawWindow, int *direction,
-                            int *selection) {
+void EngineGame::choiceGame(DrawWindow drawWindow, int *direction, int *selection) {
   int cnt = 0;
   while (*direction != 32) {
     drawWindow.drawMenu();
@@ -122,7 +111,6 @@ void EngineGame::choiceGame(DrawWindow drawWindow, int *direction,
   }
   clear();
 }
-
 void EngineGame::engine(Character character, DrawWindow drawWindow) {
   int direction, selection;
   bool game = true;
@@ -155,9 +143,7 @@ void EngineGame::engine(Character character, DrawWindow drawWindow) {
   }
   endwin();
 }
-
-void EngineGame::runGame(Character character, DrawWindow drawWindow,
-                         int direction) {
+void EngineGame::runGame(Character character, DrawWindow drawWindow,int direction) {
   int x = 0, y = 0;
   while (!pause) {
     direction = getch();

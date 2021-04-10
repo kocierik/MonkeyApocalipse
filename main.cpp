@@ -1,6 +1,6 @@
 #include "models/drawWindow.hpp"
-#include "models/engineGame.hpp"
 #include "models/player.hpp"
+#include "models/engineGame.hpp"
 #define FRAMEGAMEX 7
 #define FRAMEGAMEY 22
 #define GAMEWIDTH 71   // 49
