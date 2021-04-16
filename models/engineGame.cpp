@@ -6,6 +6,7 @@
 #include <ctime>
 #include <iostream>
 
+
 EngineGame::EngineGame(int frameGameX, int frameGameY, int height, int width) {
   this->frameGameX = frameGameX;
   this->frameGameY = frameGameY;
@@ -97,7 +98,8 @@ void EngineGame::moveCharacter(Character &character, int direction) {
       break;
   }
 }
-void EngineGame::choiceGame(DrawWindow drawWindow, int *direction, int *selection) {
+void EngineGame::choiceGame(DrawWindow drawWindow, int *direction,
+                            int *selection) {
   int cnt = 0;
   while (*direction != 32) {
     drawWindow.drawMenu();
@@ -143,7 +145,8 @@ void EngineGame::engine(Character character, DrawWindow drawWindow) {
   }
   endwin();
 }
-void EngineGame::runGame(Character character, DrawWindow drawWindow,int direction) {
+void EngineGame::runGame(Character character, DrawWindow drawWindow,
+                         int direction) {
   int x = 0, y = 0;
   while (!pause) {
     direction = getch();
