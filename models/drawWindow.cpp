@@ -105,10 +105,11 @@ void DrawWindow::drawRect(int startX, int startY, int width, int heigth) {
   mvprintw(heigth, width, "o");
 }
 
-void DrawWindow::drawStats(int startX, int startY, int width, int heigth) {
+void DrawWindow::drawStats(int startX, int startY, int width, int heigth, long *points) {
   init_pair(2, COLOR_BLUE, 232);  // FUNZIONI PER USARE I COLORI
   attron(COLOR_PAIR(2));
-  drawRect(startX - 2, startY - 2, width + 5, heigth + 4);
+  drawRect(startX - 4, startY - 10, width + 13, heigth + 4);
+  mvprintw(startX - 2, startY + 5, "SCORE: %lu",*points);
 
   mvprintw(heigth + 2, startX + 18, "LIFE: c-c-c");
   mvprintw(heigth + 2, startX + 30, "SCORE:");

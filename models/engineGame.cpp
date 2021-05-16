@@ -22,6 +22,7 @@ EngineGame::EngineGame(int frameGameX, int frameGameY, int height, int width) {
 void EngineGame::baseCommand() {
   initscr();
   cbreak();
+  curs_set(0);
   nodelay(stdscr, TRUE);
   keypad(stdscr, true);
   curs_set(FALSE);
@@ -115,7 +116,6 @@ void EngineGame::choiceGame(DrawWindow drawWindow, int *direction,
 }
 void EngineGame::engine(Character character, DrawWindow drawWindow) {
   int direction, selection;
-  bool game = true;
   baseCommand();
   choiceGame(drawWindow, &direction, &selection);
   while (pause) {
@@ -147,7 +147,7 @@ void EngineGame::engine(Character character, DrawWindow drawWindow) {
 }
 void EngineGame::runGame(Character character, DrawWindow drawWindow,
                          int direction) {
-  int x = 0, y = 0;
+  int x = 0, y = 0; long points = 0;
   while (!pause) {
     direction = getch();
     moveCharacter(character, direction);
@@ -158,11 +158,12 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     drawWindow.drawRect(this->frameGameX, this->frameGameY, this->widht,
                         this->height);
     drawWindow.drawStats(this->frameGameX, this->frameGameY, this->widht,
-                         this->height);
+                         this->height, &points);
     shootBullet();
     refresh();
     this->shoots = destroyBullet();
     this->whileCount += 1;
+    points +=1;
     timeout(50);
     if (direction == 27) pause = true;
   }

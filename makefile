@@ -1,11 +1,11 @@
 CC = g++
 CFLAGS = -c -Wall
-OBJECTS = main.o engineGame.o character.o drawWindow.o player.o 
-LIBRARY = -lncurses 
+OBJECTS = main.o engineGame.o character.o drawWindow.o player.o
+LIBRARY = -lncurses
 
 main: $(OBJECTS)
-	$(CC) -o main $(OBJECTS) $(LIBRARY) 
-	./main
+	$(CC) -o main $(OBJECTS) $(LIBRARY)
+#	./main
 
 main.o: main.cpp models/engineGame.hpp models/character.hpp models/drawWindow.hpp models/player.hpp
 	$(CC) $(CFLAGS) main.cpp
@@ -25,5 +25,5 @@ drawWindow.o: models/drawWindow.cpp models/drawWindow.hpp
 clean:
 	rm *.o main
 
-format: 
+format:
 	clang-format -i -style=google ./**/*.cpp ./**/*.hpp
