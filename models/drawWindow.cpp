@@ -112,6 +112,5 @@ void DrawWindow::drawStats(int startX, int startY, int width, int heigth, long *
   mvprintw(startX - 2, startY + 5, "SCORE: %lu",*points);
 
   mvprintw(heigth + 2, startX + 18, "LIFE: c-c-c");
-  mvprintw(heigth + 2, startX + 30, "SCORE:");
   attroff(COLOR_PAIR(2));  // CHIUSURA DEL COLORE ROSSO E BLU
 }

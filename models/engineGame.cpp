@@ -147,14 +147,12 @@ void EngineGame::engine(Character character, DrawWindow drawWindow) {
 }
 void EngineGame::runGame(Character character, DrawWindow drawWindow,
                          int direction) {
-  int x = 0, y = 0; long points = 0;
+  long points = 0;
   while (!pause) {
     direction = getch();
     moveCharacter(character, direction);
-    x = character.getX();
-    y = character.getY();
     clear();
-    drawWindow.printCharacter(x, y, 'c');
+    drawWindow.printCharacter(character.getX(), character.getY(), character.getCharacter());
     drawWindow.drawRect(this->frameGameX, this->frameGameY, this->widht,
                         this->height);
     drawWindow.drawStats(this->frameGameX, this->frameGameY, this->widht,
