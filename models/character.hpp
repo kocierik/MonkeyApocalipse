@@ -1,3 +1,5 @@
+#define CHARACTER
+
 struct Bullet {
   int x;
   int y;

@@ -1,10 +1,13 @@
 #include "character.hpp"
+#include "enemy.hpp"
 #include "drawWindow.hpp"
 #include "engineGame.hpp"
 #include <ncurses.h>
 #include <cmath>
 #include <ctime>
 #include <iostream>
+
+
 
 
 EngineGame::EngineGame(int frameGameX, int frameGameY, int height, int width) {

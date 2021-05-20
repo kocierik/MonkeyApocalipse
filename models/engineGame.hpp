@@ -21,4 +21,5 @@ class EngineGame {
   void engine(Character character, DrawWindow printer);
   void choiceGame(DrawWindow drawWindow, int *direction, int *selection);
   void runGame(Character character, DrawWindow drawWindow, int direction);
+  // void generateEnemy(int *count, DrawWindow drawWindow, EnemyList *enemyList);
 };
