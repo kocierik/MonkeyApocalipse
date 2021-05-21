@@ -5,10 +5,11 @@
 #define ENEMY
 class Enemy : public Character {
 public:
+    Enemy();
     Enemy(int x, int y, char character, int damage, int life);
   };
 
 struct EnemyList {
-  Enemy *enemy;
+  Enemy enemy;
   EnemyList *next;
 };typedef EnemyList* pEnemyList;

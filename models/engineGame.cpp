@@ -114,17 +114,15 @@ void EngineGame::choiceGame(DrawWindow drawWindow, int *direction,
   clear();
 }
 
-pEnemyList EngineGame::generateEnemy(int count, int x, int y, char character, int damage, int life, pEnemyList enemyList) {
-  pEnemyList head= new EnemyList;
-  while(count != 0){
-   head->enemy->setX(50);
-   head->enemy->setY(10);
-   head->enemy->setCharacter('Y');
-   head->enemy->setDamage(15);
-   head->enemy->setLife(50);
-   head->next = enemyList;
+pEnemyList EngineGame::generateEnemy(int *count, int x, int y, char character, int damage, int life, pEnemyList list) {
+  pEnemyList head = new EnemyList();
+  Enemy enemy(x,y,character,damage,life);
+  while(*count > 0){
+    head->enemy = enemy;
+    head->next = list;
+    *count--;
   }
-   return head;
+  return head;
 }
 
 
@@ -162,6 +160,8 @@ void EngineGame::engine(Character character, DrawWindow drawWindow) {
 void EngineGame::runGame(Character character, DrawWindow drawWindow,
                          int direction) {
   long points = 0;
+  int monsterCount = 3;
+  pEnemyList enemyList = new EnemyList();
   while (!pause) {
     direction = getch();
     moveCharacter(character, direction);
@@ -176,8 +176,8 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     this->shoots = destroyBullet();
     this->whileCount += 1;
     points +=1;
-    // pEnemyList enemy1 = generateEnemy(3,)
-    timeout(50);
+    if(monsterCount > 0) enemyList = generateEnemy(&monsterCount,40,15,'A',10,40,enemyList);
+      timeout(50);
     if (direction == 27) pause = true;
   }
 }

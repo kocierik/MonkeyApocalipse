@@ -27,6 +27,5 @@ class EngineGame {
   void engine(Character character, DrawWindow printer);
   void choiceGame(DrawWindow drawWindow, int *direction, int *selection);
   void runGame(Character character, DrawWindow drawWindow, int direction);
-  pEnemyList generateEnemy(int count, int x, int y, char character, int damage, int life, pEnemyList enemyList);
-  // void generateEnemy(int *count, DrawWindow drawWindow, EnemyList *enemyList);
+  pEnemyList generateEnemy(int *count, int x, int y, char character, int damage, int life, pEnemyList list);
 };
