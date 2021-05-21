@@ -1,4 +1,3 @@
-#include "character.hpp"
 #include "enemy.hpp"
 #include "drawWindow.hpp"
 #include "engineGame.hpp"
@@ -6,9 +5,6 @@
 #include <cmath>
 #include <ctime>
 #include <iostream>
-
-
-
 
 EngineGame::EngineGame(int frameGameX, int frameGameY, int height, int width) {
   this->frameGameX = frameGameX;
@@ -117,6 +113,21 @@ void EngineGame::choiceGame(DrawWindow drawWindow, int *direction,
   }
   clear();
 }
+
+pEnemyList EngineGame::generateEnemy(int count, int x, int y, char character, int damage, int life, pEnemyList enemyList) {
+  pEnemyList head= new EnemyList;
+  while(count != 0){
+   head->enemy->setX(50);
+   head->enemy->setY(10);
+   head->enemy->setCharacter('Y');
+   head->enemy->setDamage(15);
+   head->enemy->setLife(50);
+   head->next = enemyList;
+  }
+   return head;
+}
+
+
 void EngineGame::engine(Character character, DrawWindow drawWindow) {
   int direction, selection;
   baseCommand();
@@ -165,6 +176,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     this->shoots = destroyBullet();
     this->whileCount += 1;
     points +=1;
+    // pEnemyList enemy1 = generateEnemy(3,)
     timeout(50);
     if (direction == 27) pause = true;
   }

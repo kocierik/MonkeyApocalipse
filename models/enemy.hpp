@@ -2,12 +2,13 @@
 #define CHARACTER
 #include "character.hpp"
 #endif
+#define ENEMY
 class Enemy : public Character {
 public:
-    Enemy(int x, int y, char character, bool isEnemy, int damage, int life);
+    Enemy(int x, int y, char character, int damage, int life);
   };
 
-struct EnemyList{
-  Enemy enemy;
+struct EnemyList {
+  Enemy *enemy;
   EnemyList *next;
 };typedef EnemyList* pEnemyList;
