@@ -7,3 +7,5 @@ Enemy::Enemy(int x, int y, char character, int damage, int life) : Character::Ch
     this->damage = damage;
     this->life = life;
 }
+
+    

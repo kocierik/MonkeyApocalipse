@@ -87,7 +87,7 @@ void EngineGame::moveCharacter(Character &character, int direction) {
         character.directionLeft();
       break;
     case KEY_RIGHT:
-      if (isEmpty(character.getX() + 1, character.getY() - 1) == true)
+      if (isEmpty(character.getX() + 1, character.getY() ) == true)
         character.directionRight();
       break;  // ESCE DALLO SWITCH
     case 'e':
@@ -122,7 +122,7 @@ pEnemyList EngineGame::generateEnemy(int *count, int x, int y, char character, i
     head->next = list;
     *count--;
   }
-  return head;
+ return head;
 }
 
 
@@ -177,6 +177,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     this->whileCount += 1;
     points +=1;
     if(monsterCount > 0) enemyList = generateEnemy(&monsterCount,40,15,'A',10,40,enemyList);
+    drawWindow.printCharacter(enemyList->enemy.getX(),enemyList->enemy.getY(),enemyList->enemy.getCharacter());
       timeout(50);
     if (direction == 27) pause = true;
   }
