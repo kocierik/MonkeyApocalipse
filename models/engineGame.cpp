@@ -40,10 +40,10 @@ Pbullet EngineGame::createBullet(int x, int y) {
 void EngineGame::shootBullet() {
   Pbullet bullet = this->shoots;
   while (bullet != NULL) {
-    bullet->x += bullet->speed;
-    move(bullet->y, bullet->x);
-    printw("--");
-    bullet = bullet->next;
+      bullet->x += bullet->speed;
+      move(bullet->y, bullet->x);
+      printw("-");
+      bullet = bullet->next;
   }
 }
 Pbullet EngineGame::destroyBullet() {
@@ -51,7 +51,7 @@ Pbullet EngineGame::destroyBullet() {
     if (this->shoots->next != NULL) {
       Pbullet bullet = this->shoots, prec = this->shoots;
       while (bullet != NULL) {
-        if (!isEmpty(bullet->x + 2, bullet->y)) {
+        if (!isEmpty(bullet->x + 1, bullet->y)) {
           prec->next = NULL;
           delete (bullet);
           bullet = NULL;
@@ -61,7 +61,7 @@ Pbullet EngineGame::destroyBullet() {
         bullet = bullet->next;
       }
     } else {
-      if (this->shoots->x + 2 > widht) {
+      if (this->shoots->x + 1 > widht) {
         delete (this->shoots);
         this->shoots = NULL;
         return NULL;
@@ -171,13 +171,13 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
                         this->height);
     drawWindow.drawStats(this->frameGameX, this->frameGameY, this->widht,
                          this->height, &points);
+    if(monsterCount > 0) enemyList = generateEnemy(&monsterCount,40,15,'A',10,40,enemyList);
+    drawWindow.printCharacter(enemyList->enemy.getX(),enemyList->enemy.getY(),enemyList->enemy.getCharacter());
     shootBullet();
     refresh();
     this->shoots = destroyBullet();
     this->whileCount += 1;
     points +=1;
-    if(monsterCount > 0) enemyList = generateEnemy(&monsterCount,40,15,'A',10,40,enemyList);
-    drawWindow.printCharacter(enemyList->enemy.getX(),enemyList->enemy.getY(),enemyList->enemy.getCharacter());
       timeout(50);
     if (direction == 27) pause = true;
   }
