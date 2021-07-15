@@ -1,5 +1,4 @@
 #include "drawWindow.hpp"
-
 #include <ncurses.h>
 
 DrawWindow::DrawWindow() {}

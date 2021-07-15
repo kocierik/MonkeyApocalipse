@@ -1,8 +1,6 @@
-#ifndef ENEMY
-#define ENEMY
-#include "enemy.hpp"
-#endif
 
+
+#include "enemy.hpp"
 
 class EngineGame {
  protected:
@@ -24,8 +22,10 @@ class EngineGame {
   Pbullet createBullet(int x, int y);
   void shootBullet();
   Pbullet destroyBullet();
+  int randomPosition(int startRange, int endRange);
   void engine(Character character, DrawWindow printer);
   void choiceGame(DrawWindow drawWindow, int *direction, int *selection);
   void runGame(Character character, DrawWindow drawWindow, int direction);
   pEnemyList generateEnemy(int *count, int x, int y, char character, int damage, int life, pEnemyList list);
+  void printEnemy(pEnemyList list, DrawWindow drawWindow);
 };

@@ -1,5 +1,5 @@
-#include "enemy.hpp"
 #include "drawWindow.hpp"
+#include "enemy.hpp"
 #include "engineGame.hpp"
 #include <ncurses.h>
 #include <cmath>
@@ -115,16 +115,25 @@ void EngineGame::choiceGame(DrawWindow drawWindow, int *direction,
 }
 
 pEnemyList EngineGame::generateEnemy(int *count, int x, int y, char character, int damage, int life, pEnemyList list) {
-  pEnemyList head = new EnemyList();
-  Enemy enemy(x,y,character,damage,life);
   while(*count > 0){
+    pEnemyList head = new EnemyList;
+    Enemy enemy(x,y,character,damage,life);
     head->enemy = enemy;
     head->next = list;
-    *count--;
-  }
- return head;
+    *count-=1;
+    return head;
+  } 
+  return list;
 }
 
+void EngineGame::printEnemy(pEnemyList list, DrawWindow drawWindow){
+  pEnemyList tmp = list;
+  while(list != NULL){
+    drawWindow.printCharacter(list->enemy.getX(),list->enemy.getY(),list->enemy.getCharacter());
+    list = list->next;
+  }
+  list = tmp;
+}
 
 void EngineGame::engine(Character character, DrawWindow drawWindow) {
   int direction, selection;
@@ -157,28 +166,32 @@ void EngineGame::engine(Character character, DrawWindow drawWindow) {
   }
   endwin();
 }
+
+int EngineGame::randomPosition(int startRange, int endRange){
+  return startRange + ( std::rand() % ( endRange - startRange + 1 ) );
+}
+
 void EngineGame::runGame(Character character, DrawWindow drawWindow,
                          int direction) {
-  long points = 0;
-  int monsterCount = 3;
-  pEnemyList enemyList = new EnemyList();
+  long points = 0;  
+  int monsterCount = 10;
+  pEnemyList enemyList = new EnemyList;
   while (!pause) {
     direction = getch();
     moveCharacter(character, direction);
     clear();
     drawWindow.printCharacter(character.getX(), character.getY(), character.getCharacter());
-    drawWindow.drawRect(this->frameGameX, this->frameGameY, this->widht,
-                        this->height);
+    drawWindow.drawRect(this->frameGameX, this->frameGameY, this->widht,this->height);
     drawWindow.drawStats(this->frameGameX, this->frameGameY, this->widht,
                          this->height, &points);
-    if(monsterCount > 0) enemyList = generateEnemy(&monsterCount,40,15,'A',10,40,enemyList);
-    drawWindow.printCharacter(enemyList->enemy.getX(),enemyList->enemy.getY(),enemyList->enemy.getCharacter());
+    enemyList = generateEnemy(&monsterCount,randomPosition(23,70),randomPosition(8,19),'A',10,40,enemyList);
+    printEnemy(enemyList,drawWindow);  // x = 23 | y = 8 HL | end | x = 70 | y = 19 | RD    
     shootBullet();
-    refresh();
     this->shoots = destroyBullet();
+    refresh();
     this->whileCount += 1;
     points +=1;
-      timeout(50);
+    timeout(50);
     if (direction == 27) pause = true;
   }
 }
