@@ -1,5 +1,4 @@
 #include "drawWindow.hpp"
-#include "enemy.hpp"
 #include "engineGame.hpp"
 #include <ncurses.h>
 #include <cmath>
