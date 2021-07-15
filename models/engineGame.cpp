@@ -166,8 +166,15 @@ void EngineGame::engine(Character character, DrawWindow drawWindow) {
   endwin();
 }
 
-int EngineGame::randomPosition(int startRange, int endRange){
-  return startRange + ( std::rand() % ( endRange - startRange + 1 ) );
+Position EngineGame::randomPosition(int startRange, int endRange){
+  Position pos;
+    pos.x = startRange + ( std::rand() % ( endRange - startRange + 1 ) );
+    pos.y = startRange + ( std::rand() % ( endRange - startRange + 1 ) );
+  while(!isEmpty(pos.x,pos.y)){
+    pos.x = startRange + ( std::rand() % ( endRange - startRange + 1 ) );
+    pos.y = startRange + ( std::rand() % ( endRange - startRange + 1 ) );
+  }
+  return pos;
 }
 
 void EngineGame::runGame(Character character, DrawWindow drawWindow,
@@ -183,7 +190,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     drawWindow.drawRect(this->frameGameX, this->frameGameY, this->widht,this->height);
     drawWindow.drawStats(this->frameGameX, this->frameGameY, this->widht,
                          this->height, &points);
-    enemyList = generateEnemy(&monsterCount,randomPosition(23,70),randomPosition(8,19),'A',10,40,enemyList);
+    enemyList = generateEnemy(&monsterCount,randomPosition(23,70).x,randomPosition(8,19).y,'A',10,40,enemyList);
     printEnemy(enemyList,drawWindow);  // x = 23 | y = 8 HL | end | x = 70 | y = 19 | RD    
     shootBullet();
     this->shoots = destroyBullet();

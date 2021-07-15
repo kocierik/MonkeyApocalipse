@@ -1,7 +1,7 @@
 
 
 #include "enemy.hpp"
-
+#include "coordinate.hpp"
 class EngineGame {
  protected:
   int frameGameX;
@@ -22,7 +22,7 @@ class EngineGame {
   Pbullet createBullet(int x, int y);
   void shootBullet();
   Pbullet destroyBullet();
-  int randomPosition(int startRange, int endRange);
+  Position randomPosition(int startRange, int endRange);
   void engine(Character character, DrawWindow printer);
   void choiceGame(DrawWindow drawWindow, int *direction, int *selection);
   void runGame(Character character, DrawWindow drawWindow, int direction);
