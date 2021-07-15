@@ -84,6 +84,34 @@ void DrawWindow::credits(int direction) {
   }
 }
 
+void DrawWindow::printHowToPlay() {  // GESTISCE LA SCHERMATA DEL HOW TO PLAY
+  init_pair(3, COLOR_YELLOW, 232); // FUNZIONI PER USARE IL COLORE GIALLO
+  attron(COLOR_PAIR(3));
+  mvprintw(10, 3, "                     _____ _____ _ _ _    _____ _____    _____ __    _____ __ __                     ");
+  mvprintw(11, 3, "                    |  |  |     | | | |  |_   _|     |  |  _  |  |  |  _  |  |  |                    ");
+  mvprintw(12, 3, "                    |     |  |  | | | |    | | |  |  |  |   __|  |__|     |_   _|                    "); 
+  mvprintw(13, 3, "                    |__|__|_____|_____|    |_| |_____|  |__|  |_____|__|__| |_|                      ");
+  mvprintw(14, 3, "                                                                                                     ");
+  attroff(COLOR_PAIR(3));   // CHIUSURA DEL COLORE GIALLO
+
+  init_pair(2, COLOR_GREEN, 232);  // FUNZIONI PER USARE IL VERDE
+  attron(COLOR_PAIR(2));
+  mvprintw(15, 3, "        PLAY THIS ADVENTURE FROM THE POINT OF VIEW OF THE MONKEY THAT STARTED THE REVOLUTION!        ");
+  mvprintw(16, 3, "                                                                                                     ");
+  mvprintw(17, 3, "                       USE THE ARROWS TO MOVE AND 'E' TO USE THE BANANACANNON.                       ");
+  mvprintw(18, 3, "          ELIMINATE THE ENEMIES, CLEAN THE ROOM, MOVE TO THE NEXT ONE AND COLLECT BANANAS!           ");
+  mvprintw(19, 3, "                                                                                                     ");
+  mvprintw(20, 3, "                                  solo dio sa cosa metteremo dopo...                                 ");
+  attroff(COLOR_PAIR(2));  // CHIUSURA DEL COLORE VERDE
+}
+void DrawWindow::HowToPlay(int direction) {
+  while (direction != 27) {
+    drawMenu();           // STAMPA IL TITOLO FINO A CHE NON SI SPINGE ESC
+    printHowToPlay();       // STAMPA LE HOW TO PLAY
+    direction = getch();  // ASPETTA UN TASTO IN INPUT
+  }
+}
+
 void DrawWindow::printCharacter(int x, int y, char c) {
   move(y, x);
   printw("%c", c);

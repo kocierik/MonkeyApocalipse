@@ -158,6 +158,7 @@ void EngineGame::engine(Character character, DrawWindow drawWindow) {
         selection = 4;
         break;
       case 1:
+        drawWindow.HowToPlay(direction);
         selection = 4;
         break;
       case 2:

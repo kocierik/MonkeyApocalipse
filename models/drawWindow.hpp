@@ -7,5 +7,7 @@ class DrawWindow {
   void printCommand(int* cnt);
   void printCredits();
   void credits(int direction);
+  void printHowToPlay();
+  void HowToPlay(int direction);
   void drawStats(int startX, int startY, int width, int heigth, long *points);
 };
