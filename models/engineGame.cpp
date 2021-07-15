@@ -28,11 +28,12 @@ void EngineGame::baseCommand() {
   use_default_colors();
   start_color();
 }
-Pbullet EngineGame::createBullet(int x, int y) {
+Pbullet EngineGame::createBullet(int x, int y, int direction) {
   Pbullet bullet = new Bullet;
   bullet->x = x;
   bullet->y = y;
   bullet->speed = 1;
+  bullet->direction = direction;
   bullet->next = this->shoots;
   return bullet;
 }
@@ -60,7 +61,7 @@ Pbullet EngineGame::destroyBullet() {
         bullet = bullet->next;
       }
     } else {
-      if (this->shoots->x + 1 > widht) {
+      if (!isEmpty(this->shoots->x + 1,this->shoots->y)) {
         delete (this->shoots);
         this->shoots = NULL;
         return NULL;
@@ -72,31 +73,42 @@ Pbullet EngineGame::destroyBullet() {
 // controllo che la posizione x y sia uno spazio vuoto
 bool EngineGame::isEmpty(int x, int y) { return mvinch(y, x) == ' '; }
 void EngineGame::moveCharacter(Character &character, int direction) {
+  int getLastMove;
   switch (direction) {  // CONTROLLO IL TASTO SPINTO
     case KEY_UP:
       if (isEmpty(character.getX(), character.getY() - 1) == true)
         character.directionUp();
+        getLastMove = KEY_UP;
       break;
     case KEY_DOWN:
       if (isEmpty(character.getX(), character.getY() + 1) == true)
         character.directionDown();
+        getLastMove = KEY_DOWN;
       break;
     case KEY_LEFT:
       if (isEmpty(character.getX() - 1, character.getY()) == true)
         character.directionLeft();
+        getLastMove = KEY_LEFT;
       break;
     case KEY_RIGHT:
       if (isEmpty(character.getX() + 1, character.getY() ) == true)
         character.directionRight();
+        getLastMove = KEY_RIGHT;
       break;  // ESCE DALLO SWITCH
     case 'e':
-      if (whileCount / 2 > 1) {
-        this->shoots = createBullet(character.getX(), character.getY());
-        whileCount = 0;
-      }
+      shootCommand(character, getLastMove);
       break;
   }
 }
+
+void EngineGame::shootCommand(Character &character, int direction){
+  if (whileCount / 2 > 1) {
+    this->shoots = createBullet(character.getX(), character.getY(),direction);
+    whileCount = 0;
+  }
+}
+
+
 void EngineGame::choiceGame(DrawWindow drawWindow, int *direction,
                             int *selection) {
   int cnt = 0;
@@ -168,8 +180,8 @@ void EngineGame::engine(Character character, DrawWindow drawWindow) {
 
 Position EngineGame::randomPosition(int startRange, int endRange){
   Position pos;
-    pos.x = startRange + ( std::rand() % ( endRange - startRange + 1 ) );
-    pos.y = startRange + ( std::rand() % ( endRange - startRange + 1 ) );
+  pos.x = startRange + ( std::rand() % ( endRange - startRange + 1 ) );
+  pos.y = startRange + ( std::rand() % ( endRange - startRange + 1 ) );
   while(!isEmpty(pos.x,pos.y)){
     pos.x = startRange + ( std::rand() % ( endRange - startRange + 1 ) );
     pos.y = startRange + ( std::rand() % ( endRange - startRange + 1 ) );
@@ -177,8 +189,7 @@ Position EngineGame::randomPosition(int startRange, int endRange){
   return pos;
 }
 
-void EngineGame::runGame(Character character, DrawWindow drawWindow,
-                         int direction) {
+void EngineGame::runGame(Character character, DrawWindow drawWindow,int direction) {
   long points = 0;  
   int monsterCount = 10;
   pEnemyList enemyList = new EnemyList;
@@ -188,8 +199,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     clear();
     drawWindow.printCharacter(character.getX(), character.getY(), character.getCharacter());
     drawWindow.drawRect(this->frameGameX, this->frameGameY, this->widht,this->height);
-    drawWindow.drawStats(this->frameGameX, this->frameGameY, this->widht,
-                         this->height, &points);
+    drawWindow.drawStats(this->frameGameX, this->frameGameY, this->widht,this->height, &points);
     enemyList = generateEnemy(&monsterCount,randomPosition(23,70).x,randomPosition(8,19).y,'A',10,40,enemyList);
     printEnemy(enemyList,drawWindow);  // x = 23 | y = 8 HL | end | x = 70 | y = 19 | RD    
     shootBullet();

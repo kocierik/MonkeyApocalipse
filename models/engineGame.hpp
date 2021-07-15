@@ -19,7 +19,7 @@ class EngineGame {
   void baseCommand();
   void moveCharacter(Character &character, int direction);
   bool isEmpty(int x, int y);
-  Pbullet createBullet(int x, int y);
+  Pbullet createBullet(int x, int y, int getLastMove);
   void shootBullet();
   Pbullet destroyBullet();
   Position randomPosition(int startRange, int endRange);
@@ -28,4 +28,5 @@ class EngineGame {
   void runGame(Character character, DrawWindow drawWindow, int direction);
   pEnemyList generateEnemy(int *count, int x, int y, char character, int damage, int life, pEnemyList list);
   void printEnemy(pEnemyList list, DrawWindow drawWindow);
+  void shootCommand(Character &character, int direction);
 };

@@ -3,6 +3,7 @@
 struct Bullet {
   int x;
   int y;
+  int direction;
   float speed;
   Bullet* next;
 };
