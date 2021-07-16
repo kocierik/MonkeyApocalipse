@@ -17,7 +17,7 @@ LEGENDA:
 
 △ Rendere il gioco il più ganzo possibile.
 
-✖ Menu
+✔ Menu
  
 ✔ Apparizione del player + mappa
 
