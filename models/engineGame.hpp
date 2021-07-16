@@ -21,7 +21,6 @@ class EngineGame {
   bool isEmpty(int x, int y);
   Pbullet createBullet(int x, int y, int getLastMove);
   void shootBullet();
-  Pbullet destroyBullet();
   Position randomPosition(int startRange, int endRange);
   void engine(Character character, DrawWindow printer);
   void choiceGame(DrawWindow drawWindow, int *direction, int *selection);
@@ -31,4 +30,5 @@ class EngineGame {
   void shootCommand(Character &character, int direction);
   void checkEnemyCollision(pEnemyList enemys);
   pEnemyList destroyEnemy(pEnemyList list, Enemy enemy);
+  Pbullet destroyBullet();
 };

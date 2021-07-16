@@ -46,35 +46,36 @@ void EngineGame::shootBullet() {
       bullet = bullet->next;
   }
 }
-Pbullet EngineGame::destroyBullet() {
-  if (this->shoots != NULL) {
-    if (this->shoots->next != NULL) {
-      Pbullet bullet = this->shoots, prec = this->shoots;
-      while (bullet != NULL) {
-        if (!isEmpty(bullet->x + 1, bullet->y)) {
-          prec->next = NULL;
-          delete (bullet);
-          bullet = NULL;
-          return (this->shoots);
-        }
-        prec = bullet;
-        bullet = bullet->next;
-      }
-    } else {
-      if (!isEmpty(this->shoots->x + 1,this->shoots->y)) {
-        delete (this->shoots);
-        this->shoots = NULL;
-        return NULL;
-      }
-    }
-  }
-  return this->shoots;
+
+Pbullet EngineGame::destroyBullet(){
+  Pbullet head = this->shoots, prev = this->shoots, tmp;
+	while (this->shoots != NULL) {
+		if (!isEmpty(this->shoots->x+1, this->shoots->y)) {
+			if (this->shoots == head) {
+				tmp = head ;
+				head = this->shoots->next;
+				delete tmp ;
+				prev = head;
+				this->shoots = head ;
+			} else {
+				tmp = prev->next ;
+				prev->next = this->shoots->next;
+				delete tmp ;
+				this->shoots = prev->next ;
+			}
+		} else {
+			prev = this->shoots;
+			this->shoots = this->shoots->next;
+		}
+ }
+  return head;
 }
+
 
 pEnemyList EngineGame::destroyEnemy(pEnemyList list, Enemy enemy){
   pEnemyList head = list, prev = list, tmp;
 	while (list != NULL) {
-		if (list->enemy.getLife() == enemy.getLife()) {
+		if (list->enemy.getX() == enemy.getX() && list->enemy.getY() == enemy.getY()) {
 			if (list == head) {
 				tmp = head ;
 				head = list->next;
@@ -101,7 +102,7 @@ void EngineGame::checkEnemyCollision(pEnemyList enemys){
   Pbullet head = this->shoots;
   while(enemys != NULL && isCollision == false){
     while(this->shoots != NULL && isCollision == false){
-      if(enemys->enemy.getX() == this->shoots->x+1 && enemys->enemy.getY() == this->shoots->y){
+      if(enemys->enemy.getX() == this->shoots->x+1 && enemys->enemy.getY() == this->shoots->y){ // FIX
         isCollision = true;
       }
       this->shoots = this->shoots->next;
