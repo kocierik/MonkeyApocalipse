@@ -71,21 +71,49 @@ Pbullet EngineGame::destroyBullet() {
   return this->shoots;
 }
 
-bool EngineGame::checkEnemyCollision(pEnemyList enemys){
+pEnemyList EngineGame::destroyEnemy(pEnemyList list, Enemy enemy){
+  pEnemyList head = list, prev = list, tmp;
+	while (list != NULL) {
+		if (list->enemy.getLife() == enemy.getLife()) {
+			if (list == head) {
+				tmp = head ;
+				head = list->next;
+				delete tmp ;
+				prev = head;
+				list = head ;
+			} else {
+				tmp = prev->next ;
+				prev->next = list->next;
+				delete tmp ;
+				list = prev->next ;
+			}
+		} else {
+			prev = list;
+			list = list->next;
+		}
+ }
+  return head;
+}
+
+
+void EngineGame::checkEnemyCollision(pEnemyList enemys){
   bool isCollision = false;
-  while(enemys != NULL && this->shoots != NULL){
-    if(enemys->enemy.getX() == this->shoots->x && enemys->enemy.getY() == this->shoots->y){
-      isCollision = true;
-      break;
+  Pbullet head = this->shoots;
+  while(enemys != NULL && isCollision == false){
+    while(this->shoots != NULL && isCollision == false){
+      if(enemys->enemy.getX() == this->shoots->x+1 && enemys->enemy.getY() == this->shoots->y){
+        isCollision = true;
+      }
+      this->shoots = this->shoots->next;
     }
+    this->shoots = head;
+    if(isCollision) break;
     enemys = enemys->next;
   }
   if(isCollision){
     enemys->enemy.decreaseLife(10);
-    if(enemys->enemy.getLife() < 0) mvprintw(10, 3, "CIIIIIAIAIAIAI");
+    if(enemys->enemy.getLife() <= 0) enemys = destroyEnemy(enemys, enemys->enemy);
   }
-
-  return isCollision;
 }
 
 // controllo che la posizione x y sia uno spazio vuoto
@@ -211,8 +239,7 @@ Position EngineGame::randomPosition(int startRange, int endRange){
 
 void EngineGame::runGame(Character character, DrawWindow drawWindow,int direction) {
   long points = 0;
-  int monsterCount = 10;
-  bool isCollision = false;
+  int monsterCount = 1;
   pEnemyList enemyList = new EnemyList;
   while (!pause) {
     direction = getch();
@@ -224,11 +251,12 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,int directio
     enemyList = generateEnemy(&monsterCount,randomPosition(23,70).x,randomPosition(8,19).y,'A',10,40,enemyList);
     printEnemy(enemyList,drawWindow);  // x = 23 | y = 8 HL | end | x = 70 | y = 19 | RD
     shootBullet();
-    isCollision = checkEnemyCollision(enemyList);
-    this->shoots = destroyBullet();
+    checkEnemyCollision(enemyList);
+    mvprintw(23, 22, "%d",enemyList->enemy.getLife());
     refresh();
     this->whileCount += 1;
     points +=1;
+    this->shoots = destroyBullet();
     timeout(50);
     if (direction == 27) pause = true;
   }
