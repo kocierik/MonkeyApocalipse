@@ -70,8 +70,27 @@ Pbullet EngineGame::destroyBullet() {
   }
   return this->shoots;
 }
+
+bool EngineGame::checkEnemyCollision(pEnemyList enemys){
+  bool isCollision = false;
+  while(enemys != NULL && this->shoots != NULL){
+    if(enemys->enemy.getX() == this->shoots->x && enemys->enemy.getY() == this->shoots->y){
+      isCollision = true;
+      break;
+    }
+    enemys = enemys->next;
+  }
+  if(isCollision){
+    enemys->enemy.decreaseLife(10);
+    if(enemys->enemy.getLife() < 0) mvprintw(10, 3, "CIIIIIAIAIAIAI");
+  }
+
+  return isCollision;
+}
+
 // controllo che la posizione x y sia uno spazio vuoto
 bool EngineGame::isEmpty(int x, int y) { return mvinch(y, x) == ' '; }
+
 void EngineGame::moveCharacter(Character &character, int direction) {
   int getLastMove;
   switch (direction) {  // CONTROLLO IL TASTO SPINTO
@@ -133,7 +152,7 @@ pEnemyList EngineGame::generateEnemy(int *count, int x, int y, char character, i
     head->next = list;
     *count-=1;
     return head;
-  } 
+  }
   return list;
 }
 
@@ -191,8 +210,9 @@ Position EngineGame::randomPosition(int startRange, int endRange){
 }
 
 void EngineGame::runGame(Character character, DrawWindow drawWindow,int direction) {
-  long points = 0;  
+  long points = 0;
   int monsterCount = 10;
+  bool isCollision = false;
   pEnemyList enemyList = new EnemyList;
   while (!pause) {
     direction = getch();
@@ -202,8 +222,9 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,int directio
     drawWindow.drawRect(this->frameGameX, this->frameGameY, this->widht,this->height);
     drawWindow.drawStats(this->frameGameX, this->frameGameY, this->widht,this->height, &points);
     enemyList = generateEnemy(&monsterCount,randomPosition(23,70).x,randomPosition(8,19).y,'A',10,40,enemyList);
-    printEnemy(enemyList,drawWindow);  // x = 23 | y = 8 HL | end | x = 70 | y = 19 | RD    
+    printEnemy(enemyList,drawWindow);  // x = 23 | y = 8 HL | end | x = 70 | y = 19 | RD
     shootBullet();
+    isCollision = checkEnemyCollision(enemyList);
     this->shoots = destroyBullet();
     refresh();
     this->whileCount += 1;

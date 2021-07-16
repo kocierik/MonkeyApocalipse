@@ -15,7 +15,7 @@ int Character::getX() { return this->x; }
 void Character::setY(int y) { this->y = y; }
 int Character::getY() { return this->y; }
 int Character::getLife() { return this->life; }
-void Character::setLife(int life) { this->life = life; }
+void Character::decreaseLife(int life) { this->life -= life; }
 int Character::getDamage() { return this->damage; }
 void Character::setDamage(int damage) { this->damage = damage; }
 char Character::getCharacter() { return this->character; }

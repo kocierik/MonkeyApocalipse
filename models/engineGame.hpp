@@ -29,4 +29,5 @@ class EngineGame {
   pEnemyList generateEnemy(int *count, int x, int y, char character, int damage, int life, pEnemyList list);
   void printEnemy(pEnemyList list, DrawWindow drawWindow);
   void shootCommand(Character &character, int direction);
+  bool checkEnemyCollision(pEnemyList enemys);
 };
