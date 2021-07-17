@@ -25,10 +25,12 @@ class EngineGame {
   void engine(Character character, DrawWindow printer);
   void choiceGame(DrawWindow drawWindow, int *direction, int *selection);
   void runGame(Character character, DrawWindow drawWindow, int direction);
-  pEnemyList generateEnemy(int *count, int x, int y, char character, int damage, int life, pEnemyList list);
+  pEnemyList generateEnemy(int *monsterCount, char character, int damage, int life, pEnemyList list);
   void printEnemy(pEnemyList list, DrawWindow drawWindow);
   void shootCommand(Character &character, int direction);
   void checkEnemyCollision(pEnemyList enemys);
   pEnemyList destroyEnemy(pEnemyList list, Enemy enemy);
   Pbullet destroyBullet();
+  void printList(pEnemyList list);
+  int lenghtList(pEnemyList list);
 };
