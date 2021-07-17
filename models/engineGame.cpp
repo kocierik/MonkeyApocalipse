@@ -96,7 +96,7 @@ pEnemyList EngineGame::destroyEnemy(pEnemyList list, Enemy enemy){
   return head;
 }
 int EngineGame::lenghtList(pEnemyList list){
-  int i = 0;
+  int i = -1;
   while (list != NULL){
     i++;
     list = list->next;
