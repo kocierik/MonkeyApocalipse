@@ -46,32 +46,102 @@ void EngineGame::shootBullet() {
       bullet = bullet->next;
   }
 }
-Pbullet EngineGame::destroyBullet() {
-  if (this->shoots != NULL) {
-    if (this->shoots->next != NULL) {
-      Pbullet bullet = this->shoots, prec = this->shoots;
-      while (bullet != NULL) {
-        if (!isEmpty(bullet->x + 1, bullet->y)) {
-          prec->next = NULL;
-          delete (bullet);
-          bullet = NULL;
-          return (this->shoots);
-        }
-        prec = bullet;
-        bullet = bullet->next;
+
+Pbullet EngineGame::destroyBullet(){
+  Pbullet head = this->shoots, prev = this->shoots, tmp;
+	while (this->shoots != NULL) {
+		if (!isEmpty(this->shoots->x+1, this->shoots->y)) {
+			if (this->shoots == head) {
+				tmp = head ;
+				head = this->shoots->next;
+				delete tmp ;
+				prev = head;
+				this->shoots = head ;
+			} else {
+				tmp = prev->next ;
+				prev->next = this->shoots->next;
+				delete tmp ;
+				this->shoots = prev->next ;
+			}
+		} else {
+			prev = this->shoots;
+			this->shoots = this->shoots->next;
+		}
+ }
+  return head;
+}
+
+
+pEnemyList EngineGame::destroyEnemy(pEnemyList list, Enemy enemy){
+  pEnemyList head = list, prev = list, tmp;
+	while (list != NULL) {
+		if (list->enemy.getX() == enemy.getX() && list->enemy.getY() == enemy.getY()) {
+			if (list == head) {
+				tmp = head ;
+				head = list->next;
+				delete tmp ;
+				prev = head;
+				list = head ;
+			} else {
+				tmp = prev->next ;
+				prev->next = list->next;
+				delete tmp ;
+				list = prev->next ;
+			}
+		} else {
+			prev = list;
+			list = list->next;
+		}
+ }
+  return head;
+}
+int EngineGame::lenghtList(pEnemyList list){
+  int i = -1;
+  while (list != NULL){
+    i++;
+    list = list->next;
+  }
+  return i;
+}
+
+void EngineGame::checkEnemyCollision(pEnemyList enemys){
+  bool isCollision = false;
+  Pbullet head = this->shoots;
+  pEnemyList tmp = enemys;
+  while(enemys != NULL && !isCollision){
+    while(this->shoots != NULL && !isCollision){
+      if(enemys->enemy.getX() == this->shoots->x+1 && enemys->enemy.getY() == this->shoots->y){
+        isCollision = true;
       }
-    } else {
-      if (!isEmpty(this->shoots->x + 1,this->shoots->y)) {
-        delete (this->shoots);
-        this->shoots = NULL;
-        return NULL;
-      }
+      this->shoots = this->shoots->next;
+    }
+  this->shoots = head;
+  if(isCollision) break;
+  else enemys = enemys->next;
+  }
+  if(isCollision){
+    enemys->enemy.decreaseLife(10);
+    if(enemys->enemy.getLife() <= 0) {
+        enemys = destroyEnemy(tmp, enemys->enemy);
     }
   }
-  return this->shoots;
 }
+
+void EngineGame::printList(pEnemyList list){
+  int i = 26;
+    mvprintw(i, 60, "enemy == %d",lenghtList(list));
+  while(list != NULL){
+    mvprintw(i, 28, "life == %d",list->enemy.getLife());
+    mvprintw(i, 10, "X == %d",list->enemy.getX());
+    mvprintw(i, 40, "Y == %d",list->enemy.getY());
+    i++;
+    list = list->next;
+  }
+}
+
 // controllo che la posizione x y sia uno spazio vuoto
 bool EngineGame::isEmpty(int x, int y) { return mvinch(y, x) == ' '; }
+
 void EngineGame::moveCharacter(Character &character, int direction) {
   int getLastMove;
   switch (direction) {  // CONTROLLO IL TASTO SPINTO
@@ -109,8 +179,7 @@ void EngineGame::shootCommand(Character &character, int direction){
 }
 
 
-void EngineGame::choiceGame(DrawWindow drawWindow, int *direction,
-                            int *selection) {
+void EngineGame::choiceGame(DrawWindow drawWindow, int *direction,int *selection) {
   int cnt = 0;
   while (*direction != 32) {
     drawWindow.drawMenu();
@@ -125,25 +194,30 @@ void EngineGame::choiceGame(DrawWindow drawWindow, int *direction,
   clear();
 }
 
-pEnemyList EngineGame::generateEnemy(int *count, int x, int y, char character, int damage, int life, pEnemyList list) {
-  while(*count > 0){
+pEnemyList EngineGame::generateEnemy(int *monsterCount, char character, int damage, int life, pEnemyList list) {
+  while(*monsterCount > 0){
+    int x = randomPosition(23,70).x;
+    int y = randomPosition(8,19).y;
     pEnemyList head = new EnemyList;
     Enemy enemy(x,y,character,damage,life);
     head->enemy = enemy;
     head->next = list;
-    *count-=1;
-    return head;
-  } 
+    *monsterCount= *monsterCount - 1;
+    list = head;
+  }
+    pEnemyList head = new EnemyList;
+    Enemy enemy(0,0,character,damage,life);
+    head->enemy = enemy;
+    head->next = list;
+    list = head;
   return list;
 }
 
 void EngineGame::printEnemy(pEnemyList list, DrawWindow drawWindow){
-  pEnemyList tmp = list;
   while(list != NULL){
     drawWindow.printCharacter(list->enemy.getX(),list->enemy.getY(),list->enemy.getCharacter());
     list = list->next;
   }
-  list = tmp;
 }
 
 void EngineGame::engine(Character character, DrawWindow drawWindow) {
@@ -191,9 +265,9 @@ Position EngineGame::randomPosition(int startRange, int endRange){
 }
 
 void EngineGame::runGame(Character character, DrawWindow drawWindow,int direction) {
-  long points = 0;  
-  int monsterCount = 10;
-  pEnemyList enemyList = new EnemyList;
+  long points = 0;
+  int monsterCount = 3;
+  pEnemyList enemyList = generateEnemy(&monsterCount,'A',10,40,enemyList);
   while (!pause) {
     direction = getch();
     moveCharacter(character, direction);
@@ -201,13 +275,14 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,int directio
     drawWindow.printCharacter(character.getX(), character.getY(), character.getCharacter());
     drawWindow.drawRect(this->frameGameX, this->frameGameY, this->widht,this->height);
     drawWindow.drawStats(this->frameGameX, this->frameGameY, this->widht,this->height, &points);
-    enemyList = generateEnemy(&monsterCount,randomPosition(23,70).x,randomPosition(8,19).y,'A',10,40,enemyList);
-    printEnemy(enemyList,drawWindow);  // x = 23 | y = 8 HL | end | x = 70 | y = 19 | RD    
+    printEnemy(enemyList,drawWindow);  // x = 23 | y = 8 HL | end | x = 70 | y = 19 | RD
     shootBullet();
-    this->shoots = destroyBullet();
-    refresh();
-    this->whileCount += 1;
+    this->whileCount += 1;    
+    checkEnemyCollision(enemyList);
     points +=1;
+    refresh();
+    this->shoots = destroyBullet();
+    printList(enemyList);
     timeout(50);
     if (direction == 27) pause = true;
   }

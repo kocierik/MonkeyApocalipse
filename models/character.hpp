@@ -32,7 +32,7 @@ class Character {
   void setCharacter(char character);
   void setDamage(int damage);
   int getDamage();
-  void setLife(int life);
+  void decreaseLife(int life);
   int getLife();
   void bulletUp();
   void directionUp();
