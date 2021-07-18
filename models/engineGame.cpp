@@ -286,6 +286,14 @@ Position EngineGame::randomPosition(int startRange, int endRange) {
   return pos;
 }
 
+void EngineGame::getInput(int &direction){
+  direction = getch();
+}
+
+void EngineGame::isPause(int &direction, bool &pause){
+  if(direction == 27) pause = true;
+}
+
 void EngineGame::runGame(Character character, DrawWindow drawWindow,
                          int direction) {
   long points = 0;
@@ -293,7 +301,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
   pEnemyList enemyList = NULL;
   enemyList = generateEnemy(&monsterCount, 'A', 10, 40, enemyList);
   while (!pause) {
-    direction = getch();
+    getInput(direction);
     moveCharacter(character, direction);
     clear();
     drawWindow.printCharacter(character.getX(), character.getY(),
@@ -302,8 +310,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
                         this->height);
     drawWindow.drawStats(this->frameGameX, this->frameGameY, this->widht,
                          this->height, &points);
-    printEnemy(enemyList,
-               drawWindow);  // x = 23 | y = 8 HL | end | x = 70 | y = 19 | RD
+    printEnemy(enemyList,drawWindow);  
     shootBullet();
     checkEnemyCollision(character,enemyList);
     checkShootEnemyCollision(enemyList);
@@ -313,6 +320,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     printList(enemyList, character);
     checkDeath(pause,character);
     timeout(50);
-    if (direction == 27) pause = true;
+    isPause(direction,pause);
   }
 }
+// x = 23 | y = 8 HL | end | x = 70 | y = 19 | RD

@@ -34,6 +34,8 @@ class EngineGame {
   void destroyBullet(Pbullet &shoots);
   void printList(pEnemyList list, Character character);
   int lenghtList(pEnemyList list);
+  void getInput(int &direction);
+  void isPause(int &direction, bool &pause);
   void increaseCount(int &whileCount, long &points);
   void checkDeath(bool &pause, Character character);
 };
