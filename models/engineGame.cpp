@@ -107,7 +107,16 @@ int EngineGame::lenghtList(pEnemyList list) {
   return i;
 }
 
-void EngineGame::checkEnemyCollision(pEnemyList enemys) {
+void EngineGame::checkEnemyCollision(Character &character, pEnemyList enemyList){
+  while (enemyList != NULL){
+    if(character.getX()+1 == enemyList->enemy.getX() && character.getY() == enemyList->enemy.getY() ){
+      character.decreaseLife(1);
+    }
+  enemyList = enemyList->next;
+  }
+}
+
+void EngineGame::checkShootEnemyCollision(pEnemyList enemys) {
   bool isCollision = false;
   Pbullet head = this->shoots;
   pEnemyList tmp = enemys;
@@ -133,11 +142,12 @@ void EngineGame::checkEnemyCollision(pEnemyList enemys) {
   }
 }
 
-void EngineGame::printList(pEnemyList list) {
+void EngineGame::printList(pEnemyList list, Character character) {
   int i = 26;
   mvprintw(i, 60, "enemy == %d", lenghtList(list));
   while (list != NULL) {
     if (list->enemy.getX() != 0) {
+      mvprintw(5, 38, "life Player == %d", character.getLife());
       mvprintw(i, 28, "life == %d", list->enemy.getLife());
       mvprintw(i, 10, "X == %d", list->enemy.getX());
       mvprintw(i, 40, "Y == %d", list->enemy.getY());
@@ -286,11 +296,12 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
                drawWindow);  // x = 23 | y = 8 HL | end | x = 70 | y = 19 | RD
     shootBullet();
     this->whileCount += 1;
-    checkEnemyCollision(enemyList);
+    checkEnemyCollision(character,enemyList);
+    checkShootEnemyCollision(enemyList);
     points += 1;
     refresh();
     this->shoots = destroyBullet();
-    printList(enemyList);
+    printList(enemyList, character);
     timeout(50);
     if (direction == 27) pause = true;
   }
