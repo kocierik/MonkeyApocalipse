@@ -129,11 +129,13 @@ void EngineGame::checkEnemyCollision(pEnemyList enemys){
 
 void EngineGame::printList(pEnemyList list){
   int i = 26;
-    mvprintw(i, 60, "enemy == %d",lenghtList(list));
+  mvprintw(i, 60, "enemy == %d",lenghtList(list));
   while(list != NULL){
-    mvprintw(i, 28, "life == %d",list->enemy.getLife());
-    mvprintw(i, 10, "X == %d",list->enemy.getX());
-    mvprintw(i, 40, "Y == %d",list->enemy.getY());
+    if(list->enemy.getX()!=0){
+      mvprintw(i, 28, "life == %d",list->enemy.getLife());
+      mvprintw(i, 10, "X == %d",list->enemy.getX());
+      mvprintw(i, 40, "Y == %d",list->enemy.getY());
+    }
     i++;
     list = list->next;
   }
@@ -143,27 +145,22 @@ void EngineGame::printList(pEnemyList list){
 bool EngineGame::isEmpty(int x, int y) { return mvinch(y, x) == ' '; }
 
 void EngineGame::moveCharacter(Character &character, int direction) {
-  int getLastMove;
   switch (direction) {  // CONTROLLO IL TASTO SPINTO
     case KEY_UP:
       if (isEmpty(character.getX(), character.getY() - 1) == true)
         character.directionUp();
-        getLastMove = KEY_UP;
       break;
     case KEY_DOWN:
       if (isEmpty(character.getX(), character.getY() + 1) == true)
         character.directionDown();
-        getLastMove = KEY_DOWN;
       break;
     case KEY_LEFT:
       if (isEmpty(character.getX() - 1, character.getY()) == true)
         character.directionLeft();
-        getLastMove = KEY_LEFT;
       break;
     case KEY_RIGHT:
       if (isEmpty(character.getX() + 1, character.getY() ) == true)
         character.directionRight();
-        getLastMove = KEY_RIGHT;
       break;  // ESCE DALLO SWITCH
     case 'e':
       if (whileCount / 2 > 1) {
@@ -201,7 +198,7 @@ pEnemyList EngineGame::generateEnemy(int *monsterCount, char character, int dama
     list = head;
   }
     pEnemyList head = new EnemyList;
-    Enemy enemy(0,0,character,damage,life);
+    Enemy enemy(0,0,' ',damage,life);
     head->enemy = enemy;
     head->next = list;
     list = head;
@@ -262,7 +259,8 @@ Position EngineGame::randomPosition(int startRange, int endRange){
 void EngineGame::runGame(Character character, DrawWindow drawWindow,int direction) {
   long points = 0;
   int monsterCount = 3;
-  pEnemyList enemyList = generateEnemy(&monsterCount,'A',10,40,enemyList);
+  pEnemyList enemyList = NULL;
+  enemyList = generateEnemy(&monsterCount,'A',10,40,enemyList);
   while (!pause) {
     direction = getch();
     moveCharacter(character, direction);
