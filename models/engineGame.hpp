@@ -1,6 +1,9 @@
 
 
+#ifndef ENEMY
+#define ENEMY
 #include "enemy.hpp"
+#endif
 #include "coordinate.hpp"
 class EngineGame {
  protected:

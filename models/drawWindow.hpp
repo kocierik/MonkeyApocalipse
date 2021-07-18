@@ -1,4 +1,8 @@
 #include "character.hpp"
+#ifndef ENEMY
+#define ENEMY
+#include "enemy.hpp"
+#endif
 class DrawWindow {
  public:
   DrawWindow();
@@ -12,4 +16,6 @@ class DrawWindow {
   void HowToPlay(int direction);
   void drawStats(int startX, int startY, int width, int heigth, long* points,
                  Character character);
+  int lenghtList(pEnemyList list);
+  void printCharacterStats(pEnemyList list, Character character);
 };

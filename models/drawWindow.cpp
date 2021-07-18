@@ -1,5 +1,4 @@
 #include "drawWindow.hpp"
-
 #include <ncurses.h>
 
 DrawWindow::DrawWindow() {}
@@ -168,4 +167,28 @@ void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
   if (character.getNumberLife() == 1)
     mvprintw(heigth + 2, startX + 18, "LIFE: c");
   attroff(COLOR_PAIR(2));  // CHIUSURA DEL COLORE ROSSO E BLU
+}
+
+int DrawWindow::lenghtList(pEnemyList list) {
+  int i = -1;
+  while (list != NULL) {
+    i++;
+    list = list->next;
+  }
+  return i;
+}
+
+void DrawWindow::printCharacterStats(pEnemyList list, Character character){
+    int i = 26;
+  mvprintw(i, 60, "enemy == %d", lenghtList(list));
+  while (list != NULL) {
+    if (list->enemy.getX() != 0) {
+      mvprintw(5, 38, "life Player == %d", character.getLife());
+      mvprintw(i, 28, "life == %d", list->enemy.getLife());
+      mvprintw(i, 10, "X == %d", list->enemy.getX());
+      mvprintw(i, 40, "Y == %d", list->enemy.getY());
+    }
+    i++;
+    list = list->next;
+  }
 }

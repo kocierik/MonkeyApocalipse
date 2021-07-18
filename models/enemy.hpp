@@ -2,7 +2,6 @@
 #define CHARACTER
 #include "character.hpp"
 #endif
-#define ENEMY
 class Enemy : public Character {
  public:
   Enemy();
