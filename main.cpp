@@ -7,7 +7,7 @@
 #define GAMEHEIGTH 20  // 13
 int main() {
   EngineGame game(FRAMEGAMEX, FRAMEGAMEY, GAMEHEIGTH, GAMEWIDTH);
-  Player character(FRAMEGAMEY + 5, FRAMEGAMEX + 5,'C', 25,100); // y - x - character - damage - life
+  Player character(FRAMEGAMEY + 5, FRAMEGAMEX + 5,'C', 25,100,3); // y - x - character - damage - life
   DrawWindow drawWindow;
   game.engine(character, drawWindow);
   return 0;

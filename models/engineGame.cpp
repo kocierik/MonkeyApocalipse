@@ -211,14 +211,14 @@ pEnemyList EngineGame::generateEnemy(int *monsterCount, char character,
     int x = randomPosition(23, 70).x;
     int y = randomPosition(8, 19).y;
     pEnemyList head = new EnemyList;
-    Enemy enemy(x, y, character, damage, life);
+    Enemy enemy(x, y, character, damage, life,1);
     head->enemy = enemy;
     head->next = list;
     *monsterCount -= 1;
     list = head;
   }
   pEnemyList head = new EnemyList;
-  Enemy enemy(0, 0, ' ', damage, life);
+  Enemy enemy(0, 0, ' ', damage, life,1);
   head->enemy = enemy;
   head->next = list;
   list = head;
@@ -233,8 +233,12 @@ void EngineGame::printEnemy(pEnemyList list, DrawWindow drawWindow) {
   }
 }
 
-void EngineGame::checkDeath(bool &pause, Character character){
-  if(character.getLife() <= 0) pause = true;
+void EngineGame::checkDeath(bool &pause, Character &character){
+  if(character.getLife() <= 0){  
+    character.setNumberLife(character.getNumberLife()-1);
+    character.setLife(100);
+  }
+  if(character.getNumberLife() <= 0) pause = true;
 }
 
 void EngineGame::engine(Character character, DrawWindow drawWindow) {
@@ -309,7 +313,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     drawWindow.drawRect(this->frameGameX, this->frameGameY, this->widht,
                         this->height);
     drawWindow.drawStats(this->frameGameX, this->frameGameY, this->widht,
-                         this->height, &points);
+                         this->height, &points, character);
     printEnemy(enemyList,drawWindow);  
     shootBullet();
     checkEnemyCollision(character,enemyList);

@@ -1,5 +1,4 @@
 #include "drawWindow.hpp"
-
 #include <ncurses.h>
 
 DrawWindow::DrawWindow() {}
@@ -156,12 +155,12 @@ void DrawWindow::drawRect(int startX, int startY, int width, int heigth) {
 }
 
 void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
-                           long* points) {
+                           long* points, Character character) {
   init_pair(2, COLOR_BLUE, 232);  // FUNZIONI PER USARE I COLORI
   attron(COLOR_PAIR(2));
   drawRect(startX - 4, startY - 11, width + 13, heigth + 4);
   mvprintw(startX - 2, startY + 5, "SCORE: %lu", *points);
 
-  mvprintw(heigth + 2, startX + 18, "LIFE: c-c-c");
+  mvprintw(heigth + 2, startX + 18, "LIFE: %d", character.getNumberLife());
   attroff(COLOR_PAIR(2));  // CHIUSURA DEL COLORE ROSSO E BLU
 }

@@ -17,23 +17,27 @@ class Character {
   bool isEnemy;
   char character;
   int life;
+  int numberLife;
   int Nbullet;
   int damage;
   Pbullet bullet;
 
  public:
-  Character(int x, int y, char character, int damage, int life);
+  Character(int x, int y, char character, int damage, int life, int numberLife);
   void setX(int x);
   int getX();
   void setY(int y);
   int getY();
   int getBullet();
+  int getNumberLife();
+  void setNumberLife(int numberLife);
   char getCharacter();
   void setCharacter(char character);
   void setDamage(int damage);
   int getDamage();
   void decreaseLife(int life);
   int getLife();
+  void setLife(int life);
   void bulletUp();
   void directionUp();
   void directionDown();
