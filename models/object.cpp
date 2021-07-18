@@ -10,3 +10,16 @@
                 - Modificatori temporanei / permanenti dei nemici
 */
 
+#include "object.hpp"
+
+Object::Object (char in_name[], int in_mapTime, int in_duration, bool in_isMalus) {
+    strcpy (this -> name, in_name);
+    this -> mapTime  = in_mapTime;
+    this -> duration = in_duration;
+    this -> isMalus = in_isMalus;
+}
+
+void Object::decrementMapTime  () { this -> mapTime  -= 1; }
+void Object::decrementDuration () { this -> duration -= 1; }
+void Object::incrementDuration () { this -> duration += 1; }
+

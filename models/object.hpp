@@ -4,7 +4,6 @@
 #define OBJECT
 #define NAMESIZE 30
 
-
 class Object {
     protected:
         char name[NAMESIZE];
@@ -19,8 +18,8 @@ class Object {
             this -> isMalus = in_isMalus;
         }
 
-        void decrementMapTime  () { this -> mapTime  -= 1; }
-        void decrementDuration () { this -> duration -= 1; }
-        void incrementDuration () { this -> duration += 1; }
+        void decrementMapTime  ();
+        void decrementDuration ();
+        void incrementDuration ();
 
 };
