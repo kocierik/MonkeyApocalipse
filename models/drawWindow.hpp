@@ -18,4 +18,5 @@ class DrawWindow {
                  Character character);
   int lenghtList(pEnemyList list);
   void printCharacterStats(pEnemyList list, Character character);
+  void printEnemy(pEnemyList list, DrawWindow drawWindow);
 };

@@ -206,14 +206,6 @@ pEnemyList EngineGame::generateEnemy(int *monsterCount, char character,
   return list;
 }
 
-void EngineGame::printEnemy(pEnemyList list, DrawWindow drawWindow) {
-  while (list != NULL) {
-    drawWindow.printCharacter(list->enemy.getX(), list->enemy.getY(),
-                              list->enemy.getCharacter());
-    list = list->next;
-  }
-}
-
 void EngineGame::checkDeath(bool &pause, Character &character) {
   if (character.getLife() <= 0) {
     character.setNumberLife(character.getNumberLife() - 1);
@@ -294,7 +286,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     drawWindow.drawStats(this->frameGameX, this->frameGameY, this->widht,
                          this->height, &points, character);
     drawWindow.printCharacterStats(enemyList, character);
-    printEnemy(enemyList, drawWindow);
+    drawWindow.printEnemy(enemyList, drawWindow);
     shootBullet();
     checkEnemyCollision(character, enemyList);
     checkShootEnemyCollision(enemyList, character);

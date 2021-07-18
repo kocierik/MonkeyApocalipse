@@ -192,3 +192,11 @@ void DrawWindow::printCharacterStats(pEnemyList list, Character character){
     list = list->next;
   }
 }
+
+void DrawWindow::printEnemy(pEnemyList list, DrawWindow drawWindow) {
+  while (list != NULL) {
+    drawWindow.printCharacter(list->enemy.getX(), list->enemy.getY(),
+                              list->enemy.getCharacter());
+    list = list->next;
+  }
+}
