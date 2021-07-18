@@ -9,5 +9,5 @@ class DrawWindow {
   void credits(int direction);
   void printHowToPlay();
   void HowToPlay(int direction);
-  void drawStats(int startX, int startY, int width, int heigth, long *points);
+  void drawStats(int startX, int startY, int width, int heigth, long* points);
 };
