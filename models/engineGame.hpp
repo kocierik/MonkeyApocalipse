@@ -27,7 +27,6 @@ class EngineGame {
   void runGame(Character character, DrawWindow drawWindow, int direction);
   pEnemyList generateEnemy(int *monsterCount, char character, int damage, int life, pEnemyList list);
   void printEnemy(pEnemyList list, DrawWindow drawWindow);
-  void shootCommand(Character &character, int direction);
   void checkEnemyCollision(pEnemyList enemys);
   pEnemyList destroyEnemy(pEnemyList list, Enemy enemy);
   Pbullet destroyBullet();

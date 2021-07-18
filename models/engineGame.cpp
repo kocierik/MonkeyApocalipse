@@ -166,18 +166,13 @@ void EngineGame::moveCharacter(Character &character, int direction) {
         getLastMove = KEY_RIGHT;
       break;  // ESCE DALLO SWITCH
     case 'e':
-      shootCommand(character, getLastMove);
+      if (whileCount / 2 > 1) {
+        this->shoots = createBullet(character.getX(), character.getY(),direction);
+        whileCount = 0;
+      }
       break;
   }
 }
-
-void EngineGame::shootCommand(Character &character, int direction){
-  if (whileCount / 2 > 1) {
-    this->shoots = createBullet(character.getX(), character.getY(),direction);
-    whileCount = 0;
-  }
-}
-
 
 void EngineGame::choiceGame(DrawWindow drawWindow, int *direction,int *selection) {
   int cnt = 0;
