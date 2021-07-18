@@ -1,7 +1,8 @@
 #include "character.hpp"
 
 #include <ncurses.h>
-Character::Character(int x, int y, char character, int damage, int life, int numberLife) {
+Character::Character(int x, int y, char character, int damage, int life,
+                     int numberLife) {
   this->direction = 0;
   this->x = x;
   this->y = y;
@@ -11,6 +12,7 @@ Character::Character(int x, int y, char character, int damage, int life, int num
   this->damage = damage;
   this->numberLife = numberLife;
 }
+Character::Character() {}
 void Character::setX(int x) { this->x = x; }
 int Character::getX() { return this->x; }
 void Character::setY(int y) { this->y = y; }

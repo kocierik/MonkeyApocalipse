@@ -24,6 +24,7 @@ class Character {
 
  public:
   Character(int x, int y, char character, int damage, int life, int numberLife);
+  Character();
   void setX(int x);
   int getX();
   void setY(int y);
