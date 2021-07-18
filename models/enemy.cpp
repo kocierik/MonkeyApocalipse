@@ -1,5 +1,5 @@
 #include "enemy.hpp"
-Enemy::Enemy() : Character::Character(x, y, character, damage, life, numberLife) {}
+Enemy::Enemy() : Character::Character() {}
 Enemy::Enemy(int x, int y, char character, int damage, int life, int numberLife)
     : Character::Character(x, y, character, damage, life, numberLife) {
   this->x = x;

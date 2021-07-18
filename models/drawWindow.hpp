@@ -10,5 +10,6 @@ class DrawWindow {
   void credits(int direction);
   void printHowToPlay();
   void HowToPlay(int direction);
-  void drawStats(int startX, int startY, int width, int heigth, long* points, Character character);
+  void drawStats(int startX, int startY, int width, int heigth, long* points,
+                 Character character);
 };
