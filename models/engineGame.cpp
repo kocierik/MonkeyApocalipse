@@ -117,7 +117,7 @@ void EngineGame::checkEnemyCollision(Character &character, pEnemyList enemyList)
 
 
 
-void EngineGame::checkShootEnemyCollision(pEnemyList enemys) {
+void EngineGame::checkShootEnemyCollision(pEnemyList enemys, Character character) {
   bool isCollision = false;
   Pbullet head = this->shoots;
   pEnemyList tmp = enemys;
@@ -136,7 +136,7 @@ void EngineGame::checkShootEnemyCollision(pEnemyList enemys) {
       enemys = enemys->next;
   }
   if (isCollision) {
-    enemys->enemy.decreaseLife(10);
+    enemys->enemy.decreaseLife(character.getDamage());
     if (enemys->enemy.getLife() <= 0) {
       enemys = destroyEnemy(tmp, enemys->enemy);
     }
@@ -214,7 +214,7 @@ pEnemyList EngineGame::generateEnemy(int *monsterCount, char character,
     Enemy enemy(x, y, character, damage, life);
     head->enemy = enemy;
     head->next = list;
-    *monsterCount = *monsterCount - 1;
+    *monsterCount -= 1;
     list = head;
   }
   pEnemyList head = new EnemyList;
@@ -299,7 +299,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
   long points = 0;
   int monsterCount = 3;
   pEnemyList enemyList = NULL;
-  enemyList = generateEnemy(&monsterCount, 'A', 10, 40, enemyList);
+  enemyList = generateEnemy(&monsterCount, 'X', 10, 100, enemyList);
   while (!pause) {
     getInput(direction);
     moveCharacter(character, direction);
@@ -313,7 +313,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     printEnemy(enemyList,drawWindow);  
     shootBullet();
     checkEnemyCollision(character,enemyList);
-    checkShootEnemyCollision(enemyList);
+    checkShootEnemyCollision(enemyList, character);
     increaseCount(this->whileCount, points);
     refresh();
     destroyBullet(this->shoots);
