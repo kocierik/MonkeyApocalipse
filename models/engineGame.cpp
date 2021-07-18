@@ -50,28 +50,27 @@ void EngineGame::shootBullet() {
   }
 }
 
-Pbullet EngineGame::destroyBullet() {
-  Pbullet head = this->shoots, prev = this->shoots, tmp;
-  while (this->shoots != NULL) {
-    if (!isEmpty(this->shoots->x + 1, this->shoots->y)) {
-      if (this->shoots == head) {
-        tmp = head;
-        head = this->shoots->next;
+void EngineGame::destroyBullet(Pbullet &shoots) {
+  Pbullet head = shoots, prev = shoots, tmp;
+  while (head != NULL) {
+    if (!isEmpty(head->x + 1, head->y)) {
+      if (head == shoots) {
+        tmp = shoots;
+        shoots = head->next;
         delete tmp;
-        prev = head;
-        this->shoots = head;
+        prev = shoots;
+        head = shoots;
       } else {
         tmp = prev->next;
-        prev->next = this->shoots->next;
+        prev->next = head->next;
         delete tmp;
-        this->shoots = prev->next;
+        head = prev->next;
       }
     } else {
-      prev = this->shoots;
-      this->shoots = this->shoots->next;
+      prev = head;
+      head = head->next;
     }
   }
-  return head;
 }
 
 pEnemyList EngineGame::destroyEnemy(pEnemyList list, Enemy enemy) {
@@ -115,6 +114,8 @@ void EngineGame::checkEnemyCollision(Character &character, pEnemyList enemyList)
   enemyList = enemyList->next;
   }
 }
+
+
 
 void EngineGame::checkShootEnemyCollision(pEnemyList enemys) {
   bool isCollision = false;
@@ -232,6 +233,10 @@ void EngineGame::printEnemy(pEnemyList list, DrawWindow drawWindow) {
   }
 }
 
+void EngineGame::checkDeath(bool &pause, Character character){
+  if(character.getLife() <= 0) pause = true;
+}
+
 void EngineGame::engine(Character character, DrawWindow drawWindow) {
   int direction, selection;
   baseCommand();
@@ -265,6 +270,11 @@ void EngineGame::engine(Character character, DrawWindow drawWindow) {
   endwin();
 }
 
+void EngineGame::increaseCount(int &whileCount, long &points){
+  whileCount += 1;
+  points += 1;
+}
+
 Position EngineGame::randomPosition(int startRange, int endRange) {
   Position pos;
   pos.x = startRange + (std::rand() % (endRange - startRange + 1));
@@ -295,13 +305,13 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     printEnemy(enemyList,
                drawWindow);  // x = 23 | y = 8 HL | end | x = 70 | y = 19 | RD
     shootBullet();
-    this->whileCount += 1;
     checkEnemyCollision(character,enemyList);
     checkShootEnemyCollision(enemyList);
-    points += 1;
+    increaseCount(this->whileCount, points);
     refresh();
-    this->shoots = destroyBullet();
+    destroyBullet(this->shoots);
     printList(enemyList, character);
+    checkDeath(pause,character);
     timeout(50);
     if (direction == 27) pause = true;
   }

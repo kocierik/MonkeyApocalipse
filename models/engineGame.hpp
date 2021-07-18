@@ -31,7 +31,9 @@ class EngineGame {
   void checkShootEnemyCollision(pEnemyList enemys);
   void checkEnemyCollision(Character &character, pEnemyList enemyList);
   pEnemyList destroyEnemy(pEnemyList list, Enemy enemy);
-  Pbullet destroyBullet();
+  void destroyBullet(Pbullet &shoots);
   void printList(pEnemyList list, Character character);
   int lenghtList(pEnemyList list);
+  void increaseCount(int &whileCount, long &points);
+  void checkDeath(bool &pause, Character character);
 };
