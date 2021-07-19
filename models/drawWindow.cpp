@@ -54,26 +54,39 @@ void DrawWindow::printCommand(int* cnt) {
 }
 
 void DrawWindow::printCredits() {
-  init_pair(2, COLOR_BLUE, 232);  // FUNZIONI PER USARE I COLORI VEDI MENU.CPP
+  
+  init_pair(3, COLOR_YELLOW, 232);   // FUNZIONI PER USARE IL COLORE GIALLO
+  attron(COLOR_PAIR(3));
+  mvprintw(10, 3, "                              ___ ___ ___ ___ ___ _____   _____ ___                                   ");
+  mvprintw(11, 3, "                             / __| _ \\ __|   \\_ _|_   _| |_   _/ _ \\                                  ");
+  mvprintw(12, 3, "                            | (__|   / _|| |) | |  | |     | || (_) |                                 ");
+  mvprintw(13, 3, "                             \\___|_|_\\___|___/___| |_|     |_| \\___/                                  ");
+  attroff(COLOR_PAIR(3));
+  // GIUSEPPE: NON HO IDEA DI COME TU FACCIA IL LINTING DEL CODICE <3
+
+  init_pair(2, COLOR_GREEN, 232);  // FUNZIONI PER USARE I COLORI VEDI MENU.CPP
   attron(COLOR_PAIR(2));
-  mvprintw(10, 3,
-           "                                                                   "
-           "                                    ");
-  mvprintw(11, 3,
-           "        ____ ____ _ _  _              ____ _  _ ____               "
-           "  ___  ____ ___  ___  ____          ");
-  mvprintw(12, 3,
-           "        |___ |__/ | |_/               |___ |\\/| |__|              "
-           "   |__] |___ |__] |__] |___          ");
-  mvprintw(13, 3,
-           "        |___ |  \\ | | \\_              |___ |  | |  |             "
-           "    |__] |___ |    |    |___          ");
   mvprintw(14, 3,
            "                                                                   "
-           "                                    ");
+           "                                   ");
   mvprintw(15, 3,
            "                                                                   "
-           "                                    ");
+           "                                   ");
+  mvprintw(16, 3,
+           "        ____ ____ _ _  _              ____ _  _ ____               "
+           "  ___  ____ ___  ___  ____         ");
+  mvprintw(17, 3,
+           "        |___ |__/ | |_/               |___ |\\/| |__|              "
+           "   |__] |___ |__] |__] |___         ");
+  mvprintw(18, 3,
+           "        |___ |  \\ | | \\_              |___ |  | |  |             "
+           "    |__] |___ |    |    |___         ");
+  mvprintw(19, 3,
+           "                                                                   "
+           "                                   ");
+  mvprintw(20, 3,
+           "                                                                   "
+           "                                   ");
   attroff(COLOR_PAIR(2));  // CHIUSURA DEL COLORE ROSSO E BLU
 }
 void DrawWindow::credits(int direction) {
