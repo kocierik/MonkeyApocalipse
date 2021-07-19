@@ -152,14 +152,16 @@ void DrawWindow::printCharacter(int x, int y, char c) {
   printw("%c", c);
 }
 
-void DrawWindow::drawRect(int startX, int startY, int width, int heigth) {
+void DrawWindow::drawRect(int startX, int startY, int width, int heigth, pEnemyList enemyList) {
   for (int i = startY; i < width; ++i) {
     mvprintw(startX, i, "-");
     mvprintw(heigth, i, "-");
   }
-  for (int i = startX; i < heigth; ++i) {
-    mvprintw(i, startY, "|");
-    mvprintw(i, width, "|");
+  if(enemyList->next != NULL){
+    for (int i = startX; i < heigth; ++i) {
+      mvprintw(i, startY, "|");
+      mvprintw(i, width, "|");
+    }
   }
   mvprintw(startX, width, "o");
   mvprintw(startX, startY, "o");
@@ -168,10 +170,10 @@ void DrawWindow::drawRect(int startX, int startY, int width, int heigth) {
 }
 
 void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
-                           long* points, Character character) {
+                           long* points, Character character, pEnemyList enemyList) {
   init_pair(2, COLOR_BLUE, 232);  // FUNZIONI PER USARE I COLORI
   attron(COLOR_PAIR(2));
-  drawRect(startX - 4, startY - 11, width + 13, heigth + 4);
+  // drawRect(startX - 4, startY - 11, width + 13, heigth + 4);
   mvprintw(startX - 2, startY + 5, "SCORE: %lu", *points);
   if (character.getNumberLife() == 3)
     mvprintw(heigth + 2, startX + 18, "LIFE: c-c-c");
@@ -189,6 +191,11 @@ int DrawWindow::lenghtList(pEnemyList list) {
     list = list->next;
   }
   return i;
+}
+
+bool DrawWindow::openRoom(pEnemyList list){
+  if(list->next == NULL) return true;
+  else return false;
 }
 
 void DrawWindow::printCharacterStats(pEnemyList list, Character character){

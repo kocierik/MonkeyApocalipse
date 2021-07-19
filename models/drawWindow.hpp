@@ -7,7 +7,7 @@ class DrawWindow {
  public:
   DrawWindow();
   void printCharacter(int x, int y, char c);
-  void drawRect(int startX, int startY, int width, int heigth);
+  void drawRect(int startX, int startY, int width, int heigth, pEnemyList enemyList);
   void drawMenu();
   void printCommand(int* cnt);
   void printCredits();
@@ -15,8 +15,9 @@ class DrawWindow {
   void printHowToPlay();
   void HowToPlay(int direction);
   void drawStats(int startX, int startY, int width, int heigth, long* points,
-                 Character character);
+                 Character character, pEnemyList enemyList);
   int lenghtList(pEnemyList list);
   void printCharacterStats(pEnemyList list, Character character);
   void printEnemy(pEnemyList list, DrawWindow drawWindow);
+  bool openRoom(pEnemyList list);
 };

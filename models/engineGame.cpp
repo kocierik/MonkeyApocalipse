@@ -119,7 +119,6 @@ pEnemyList EngineGame::destroyEnemy(pEnemyList list, Enemy enemy) {
   return head;
 }
 
-
 void EngineGame::checkEnemyCollision(Character &character,
                                      pEnemyList enemyList) {
   while (enemyList != NULL) {
@@ -168,8 +167,6 @@ void EngineGame::checkShootEnemyCollision(pEnemyList enemys,
     checkDeath(pause,character);
   }
 }
-
-
 
 // controllo che la posizione x y sia uno spazio vuoto
 bool EngineGame::isEmpty(int x, int y) { return mvinch(y, x) == ' '; }
@@ -317,9 +314,9 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     drawWindow.printCharacter(character.getX(), character.getY(),
                               character.getCharacter());
     drawWindow.drawRect(this->frameGameX, this->frameGameY, this->widht,
-                        this->height);
+                        this->height, enemyList);
     drawWindow.drawStats(this->frameGameX, this->frameGameY, this->widht,
-                         this->height, &points, character);
+                         this->height, &points, character, enemyList);
     drawWindow.printCharacterStats(enemyList, character);
     drawWindow.printEnemy(enemyList, drawWindow);
     shootBullet();
