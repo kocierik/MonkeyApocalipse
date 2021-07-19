@@ -220,26 +220,26 @@ void DrawWindow::printCharacterStats(pEnemyList list, Character character) {
   if(lenghtList(list) > 0) {
     mvprintw(i, X_ElencoNemici, "Enemy left: %d", lenghtList(list));
   }else {
-    mvprintw(i, X_ElencoNemici, "ALL ENEMY DEFEATED!");
+    mvprintw(i, X_ElencoNemici, "[ALL ENEMY DEFEATED!]");
   }
-  mvprintw(i, BarStart, "Player HP");
+  mvprintw(i, BarStart-4, "HP");
 
   //CODICE CHE GESTISCE LA BARRA DELLA VITA
   init_pair(1, COLOR_RED, 232);
   attron(COLOR_PAIR(1));
-  mvprintw(i+1, BarStart, "          "); //crea sfondo nero barra
+  mvprintw(i, BarStart, "          "); //crea sfondo nero barra
   for (cont = 0; volt <= (character.getLife()-1) / 10; volt++ ){
-    mvprintw(i+1, AddBar, "=");
+    mvprintw(i, AddBar, "=");
     AddBar++;
   }
   attroff(COLOR_PAIR(1));
-  mvprintw(i+1, BarStart-1, "["); mvprintw(i+1, BarStart+10, "]");
+  mvprintw(i, BarStart-1, "["); mvprintw(i, BarStart+10, "]");
   //FINE CODICE BARRA DELLA VITA
   
 
   while (list != NULL) {
     if (list->enemy.getX() != 0) {
-      mvprintw(i, X_ElencoNemici, "- Enemy HP %d", list->enemy.getLife());
+      mvprintw(i, X_ElencoNemici, "- Base Enemy: %d HP", list->enemy.getLife());
       //mvprintw(i, 28, "X == %d", list->enemy.getX());
       //mvprintw(i, 40, "Y == %d", list->enemy.getY());
       //HO COMMENTATO QUESTE LINEE PERCHE NON SO A COSA POSSANO SERVIRE AL GIOCATORE LE CORDINATE A SCHERMO 
