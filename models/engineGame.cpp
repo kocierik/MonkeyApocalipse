@@ -123,8 +123,11 @@ pEnemyList EngineGame::destroyEnemy(pEnemyList list, Enemy enemy) {
 void EngineGame::checkEnemyCollision(Character &character,
                                      pEnemyList enemyList) {
   while (enemyList != NULL) {
-    if (character.getX() + 1 == enemyList->enemy.getX() &&
-        character.getY() == enemyList->enemy.getY()) {
+    if ((character.getX() + 1 == enemyList->enemy.getX() && character.getY() == enemyList->enemy.getY())
+    ||  (character.getX() - 1 == enemyList->enemy.getX() && character.getY() == enemyList->enemy.getY()) 
+    ||  (character.getX() == enemyList->enemy.getX() && character.getY() + 1 == enemyList->enemy.getY())
+    ||  (character.getX() == enemyList->enemy.getX() && character.getY() -1 == enemyList->enemy.getY())
+        ) {
       character.decreaseLife(1);
     }
     enemyList = enemyList->next;

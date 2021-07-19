@@ -192,11 +192,11 @@ int DrawWindow::lenghtList(pEnemyList list) {
 }
 
 void DrawWindow::printCharacterStats(pEnemyList list, Character character){
-    int i = 26;
+  int i = 26;
   mvprintw(i, 60, "enemy == %d", lenghtList(list));
+  mvprintw(5, 38, "life Player == %d", character.getLife());
   while (list != NULL) {
     if (list->enemy.getX() != 0) {
-      mvprintw(5, 38, "life Player == %d", character.getLife());
       mvprintw(i, 28, "life == %d", list->enemy.getLife());
       mvprintw(i, 10, "X == %d", list->enemy.getX());
       mvprintw(i, 40, "Y == %d", list->enemy.getY());
