@@ -183,7 +183,7 @@ void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
                            pEnemyList enemyList) {
   init_pair(2, COLOR_BLUE, 232);  // FUNZIONI PER USARE I COLORI
   attron(COLOR_PAIR(2));
-  // drawRect(startX - 4, startY - 11, width + 13, heigth + 4);
+  drawRect(startX - 4, startY - 11, width + 13, heigth + 4, enemyList);
   mvprintw(startX - 2, startY + 5, "SCORE: %lu", *points);
   if (character.getNumberLife() == 3)
     mvprintw(heigth + 2, startX + 18, "LIFE: c-c-c");
@@ -203,8 +203,8 @@ int DrawWindow::lenghtList(pEnemyList list) {
   return i;
 }
 
-bool DrawWindow::openRoom(pEnemyList list) {
-  if (list->next == NULL)
+bool DrawWindow::openRoom(pEnemyList list, int round) {
+  if (lenghtList(list)==round)
     return true;
   else
     return false;
@@ -215,7 +215,7 @@ void DrawWindow::printCharacterStats(pEnemyList list, Character character) {
   mvprintw(i, 60, "enemy == %d", lenghtList(list));
   mvprintw(5, 38, "life Player == %d", character.getLife());
   while (list != NULL) {
-    if (list->enemy.getX() != 0) {
+    if (list->enemy.getX() != 0 || true) {
       mvprintw(i, 28, "life == %d", list->enemy.getLife());
       mvprintw(i, 10, "X == %d", list->enemy.getX());
       mvprintw(i, 40, "Y == %d", list->enemy.getY());
@@ -229,6 +229,13 @@ void DrawWindow::printEnemy(pEnemyList list, DrawWindow drawWindow) {
   while (list != NULL) {
     drawWindow.printCharacter(list->enemy.getX(), list->enemy.getY(),
                               list->enemy.getCharacter());
+    list = list->next;
+  }
+}
+void DrawWindow::changeRoom(Character &character, int &monsterCount, int &round, pEnemyList &list){
+  if(character.getX() == 71){
+    character.setX(23);
+    monsterCount = round;
     list = list->next;
   }
 }

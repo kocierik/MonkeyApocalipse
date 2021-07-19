@@ -31,14 +31,13 @@ class EngineGame {
   void choiceGame(DrawWindow drawWindow, int *direction, int *selection);
   void runGame(Character character, DrawWindow drawWindow, int direction);
   pEnemyList generateEnemy(int *monsterCount, char character, int damage,
-                           int life, pEnemyList list);
+                           int life, pEnemyList list, int &round);
   void checkShootEnemyCollision(pEnemyList enemys, Character &character,
                                 Pbullet &shoots, int isEnemy);
   void checkEnemyCollision(Character &character, pEnemyList enemyList);
   pEnemyList destroyEnemy(pEnemyList list, Enemy enemy);
   void destroyBullet(Pbullet &shoots, int isEnemy);
   void printList(pEnemyList list, Character character);
-  int lenghtList(pEnemyList list);
   void getInput(int &direction);
   void isPause(int &direction, bool &pause);
   void increaseCount(int &whileCount, long &points);
