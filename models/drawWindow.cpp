@@ -1,4 +1,5 @@
 #include "drawWindow.hpp"
+
 #include <ncurses.h>
 
 DrawWindow::DrawWindow() {}
@@ -54,13 +55,20 @@ void DrawWindow::printCommand(int* cnt) {
 }
 
 void DrawWindow::printCredits() {
-  
-  init_pair(3, COLOR_YELLOW, 232);   // FUNZIONI PER USARE IL COLORE GIALLO
+  init_pair(3, COLOR_YELLOW, 232);  // FUNZIONI PER USARE IL COLORE GIALLO
   attron(COLOR_PAIR(3));
-  mvprintw(10, 3, "                              ___ ___ ___ ___ ___ _____   _____ ___                                   ");
-  mvprintw(11, 3, "                             / __| _ \\ __|   \\_ _|_   _| |_   _/ _ \\                                  ");
-  mvprintw(12, 3, "                            | (__|   / _|| |) | |  | |     | || (_) |                                 ");
-  mvprintw(13, 3, "                             \\___|_|_\\___|___/___| |_|     |_| \\___/                                  ");
+  mvprintw(10, 3,
+           "                              ___ ___ ___ ___ ___ _____   _____ "
+           "___                                   ");
+  mvprintw(11, 3,
+           "                             / __| _ \\ __|   \\_ _|_   _| |_   _/ "
+           "_ \\                                  ");
+  mvprintw(12, 3,
+           "                            | (__|   / _|| |) | |  | |     | || "
+           "(_) |                                 ");
+  mvprintw(13, 3,
+           "                             \\___|_|_\\___|___/___| |_|     |_| "
+           "\\___/                                  ");
   attroff(COLOR_PAIR(3));
   // GIUSEPPE: NON HO IDEA DI COME TU FACCIA IL LINTING DEL CODICE <3
 
@@ -152,12 +160,13 @@ void DrawWindow::printCharacter(int x, int y, char c) {
   printw("%c", c);
 }
 
-void DrawWindow::drawRect(int startX, int startY, int width, int heigth, pEnemyList enemyList) {
+void DrawWindow::drawRect(int startX, int startY, int width, int heigth,
+                          pEnemyList enemyList) {
   for (int i = startY; i < width; ++i) {
     mvprintw(startX, i, "-");
     mvprintw(heigth, i, "-");
   }
-  if(enemyList->next != NULL){
+  if (enemyList->next != NULL) {
     for (int i = startX; i < heigth; ++i) {
       mvprintw(i, startY, "|");
       mvprintw(i, width, "|");
@@ -170,7 +179,8 @@ void DrawWindow::drawRect(int startX, int startY, int width, int heigth, pEnemyL
 }
 
 void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
-                           long* points, Character character, pEnemyList enemyList) {
+                           long* points, Character character,
+                           pEnemyList enemyList) {
   init_pair(2, COLOR_BLUE, 232);  // FUNZIONI PER USARE I COLORI
   attron(COLOR_PAIR(2));
   // drawRect(startX - 4, startY - 11, width + 13, heigth + 4);
@@ -193,12 +203,14 @@ int DrawWindow::lenghtList(pEnemyList list) {
   return i;
 }
 
-bool DrawWindow::openRoom(pEnemyList list){
-  if(list->next == NULL) return true;
-  else return false;
+bool DrawWindow::openRoom(pEnemyList list) {
+  if (list->next == NULL)
+    return true;
+  else
+    return false;
 }
 
-void DrawWindow::printCharacterStats(pEnemyList list, Character character){
+void DrawWindow::printCharacterStats(pEnemyList list, Character character) {
   int i = 26;
   mvprintw(i, 60, "enemy == %d", lenghtList(list));
   mvprintw(5, 38, "life Player == %d", character.getLife());

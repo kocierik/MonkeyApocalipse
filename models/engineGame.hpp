@@ -18,6 +18,7 @@ class EngineGame {
   bool isEnemyShoots;
   int whileCount;
   int whileCountEnemy;
+
  public:
   EngineGame(int frameGameX, int frameGameY, int heigth, int width);
   void baseCommand();
@@ -31,10 +32,11 @@ class EngineGame {
   void runGame(Character character, DrawWindow drawWindow, int direction);
   pEnemyList generateEnemy(int *monsterCount, char character, int damage,
                            int life, pEnemyList list);
-  void checkShootEnemyCollision(pEnemyList enemys, Character &character, Pbullet &shoots, int isEnemy);
+  void checkShootEnemyCollision(pEnemyList enemys, Character &character,
+                                Pbullet &shoots, int isEnemy);
   void checkEnemyCollision(Character &character, pEnemyList enemyList);
   pEnemyList destroyEnemy(pEnemyList list, Enemy enemy);
-  void destroyBullet(Pbullet &shoots,int isEnemy);
+  void destroyBullet(Pbullet &shoots, int isEnemy);
   void printList(pEnemyList list, Character character);
   int lenghtList(pEnemyList list);
   void getInput(int &direction);

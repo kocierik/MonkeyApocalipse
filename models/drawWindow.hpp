@@ -7,7 +7,8 @@ class DrawWindow {
  public:
   DrawWindow();
   void printCharacter(int x, int y, char c);
-  void drawRect(int startX, int startY, int width, int heigth, pEnemyList enemyList);
+  void drawRect(int startX, int startY, int width, int heigth,
+                pEnemyList enemyList);
   void drawMenu();
   void printCommand(int* cnt);
   void printCredits();

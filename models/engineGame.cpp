@@ -42,10 +42,11 @@ Pbullet EngineGame::createBullet(int x, int y, Pbullet &shoots) {
   return bullet;
 }
 
-void EngineGame::enemyShootBullets(pEnemyList listEnemy){
-  while(listEnemy != NULL){
-    if(this->whileCountEnemy % 20 == 0){
-      this->shootsEnemys = createBullet(listEnemy->enemy.getX(),listEnemy->enemy.getY(),this->shootsEnemys);
+void EngineGame::enemyShootBullets(pEnemyList listEnemy) {
+  while (listEnemy != NULL) {
+    if (this->whileCountEnemy % 20 == 0) {
+      this->shootsEnemys = createBullet(
+          listEnemy->enemy.getX(), listEnemy->enemy.getY(), this->shootsEnemys);
     }
     listEnemy = listEnemy->next;
   }
@@ -61,7 +62,7 @@ void EngineGame::shootBullet() {
   }
 }
 
-void EngineGame::shootEnemyBullet(){
+void EngineGame::shootEnemyBullet() {
   Pbullet bullet = this->shootsEnemys;
   while (bullet != NULL) {
     bullet->x -= bullet->speed;
@@ -122,11 +123,14 @@ pEnemyList EngineGame::destroyEnemy(pEnemyList list, Enemy enemy) {
 void EngineGame::checkEnemyCollision(Character &character,
                                      pEnemyList enemyList) {
   while (enemyList != NULL) {
-    if ((character.getX() + 1 == enemyList->enemy.getX() && character.getY() == enemyList->enemy.getY())
-    ||  (character.getX() - 1 == enemyList->enemy.getX() && character.getY() == enemyList->enemy.getY()) 
-    ||  (character.getX() == enemyList->enemy.getX() && character.getY() + 1 == enemyList->enemy.getY())
-    ||  (character.getX() == enemyList->enemy.getX() && character.getY() -1 == enemyList->enemy.getY())
-        ) {
+    if ((character.getX() + 1 == enemyList->enemy.getX() &&
+         character.getY() == enemyList->enemy.getY()) ||
+        (character.getX() - 1 == enemyList->enemy.getX() &&
+         character.getY() == enemyList->enemy.getY()) ||
+        (character.getX() == enemyList->enemy.getX() &&
+         character.getY() + 1 == enemyList->enemy.getY()) ||
+        (character.getX() == enemyList->enemy.getX() &&
+         character.getY() - 1 == enemyList->enemy.getY())) {
       character.decreaseLife(1);
     }
     enemyList = enemyList->next;
@@ -134,7 +138,8 @@ void EngineGame::checkEnemyCollision(Character &character,
 }
 
 void EngineGame::checkShootEnemyCollision(pEnemyList enemys,
-                                          Character &character, Pbullet &shoots, int isEnemy) {
+                                          Character &character, Pbullet &shoots,
+                                          int isEnemy) {
   bool isCollisionEnemy = false;
   bool isCollisionCharacter = false;
   bool pause = false;
@@ -143,12 +148,14 @@ void EngineGame::checkShootEnemyCollision(pEnemyList enemys,
   while (enemys != NULL && !isCollisionEnemy && !isCollisionCharacter) {
     while (shoots != NULL && !isCollisionEnemy && !isCollisionCharacter) {
       if ((enemys->enemy.getX() == shoots->x + isEnemy &&
-          enemys->enemy.getY() == shoots->y)&& isEnemy==1) {
+           enemys->enemy.getY() == shoots->y) &&
+          isEnemy == 1) {
         isCollisionEnemy = true;
-      } else if((character.getX() == shoots->x + isEnemy &&
-          character.getY() == shoots->y)&& isEnemy==-1){
-            isCollisionCharacter = true;
-          }
+      } else if ((character.getX() == shoots->x + isEnemy &&
+                  character.getY() == shoots->y) &&
+                 isEnemy == -1) {
+        isCollisionCharacter = true;
+      }
       shoots = shoots->next;
     }
     shoots = head;
@@ -162,9 +169,9 @@ void EngineGame::checkShootEnemyCollision(pEnemyList enemys,
     if (enemys->enemy.getLife() <= 0) {
       enemys = destroyEnemy(tmp, enemys->enemy);
     }
-  } else if(isCollisionCharacter && isEnemy == -1){
+  } else if (isCollisionCharacter && isEnemy == -1) {
     character.decreaseLife(enemys->enemy.getDamage());
-    checkDeath(pause,character);
+    checkDeath(pause, character);
   }
 }
 
@@ -192,7 +199,7 @@ void EngineGame::moveCharacter(Character &character, int direction) {
     case 'e':
       if (whileCount / 2 > 1) {
         this->shoots =
-            createBullet(character.getX(), character.getY(),this->shoots);
+            createBullet(character.getX(), character.getY(), this->shoots);
         whileCount = 0;
       }
       break;
@@ -279,7 +286,7 @@ void EngineGame::engine(Character character, DrawWindow drawWindow) {
 void EngineGame::increaseCount(int &whileCount, long &points) {
   whileCount += 1;
   points += 1;
-  this->whileCountEnemy +=1;
+  this->whileCountEnemy += 1;
 }
 
 Position EngineGame::randomPosition(int startRange, int endRange) {
@@ -298,8 +305,6 @@ void EngineGame::getInput(int &direction) { direction = getch(); }
 void EngineGame::isPause(int &direction, bool &pause) {
   if (direction == 27) pause = true;
 }
-
-
 
 void EngineGame::runGame(Character character, DrawWindow drawWindow,
                          int direction) {
@@ -323,12 +328,12 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     shootEnemyBullet();
     enemyShootBullets(enemyList);
     checkEnemyCollision(character, enemyList);
-    checkShootEnemyCollision(enemyList, character,this->shoots, 1);
-    checkShootEnemyCollision(enemyList, character,this->shootsEnemys, -1);
+    checkShootEnemyCollision(enemyList, character, this->shoots, 1);
+    checkShootEnemyCollision(enemyList, character, this->shootsEnemys, -1);
     increaseCount(this->whileCount, points);
     refresh();
-    destroyBullet(this->shoots,1);
-    destroyBullet(this->shootsEnemys,-1);
+    destroyBullet(this->shoots, 1);
+    destroyBullet(this->shootsEnemys, -1);
     checkDeath(pause, character);
     timeout(50);
     isPause(direction, pause);
