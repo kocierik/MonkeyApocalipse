@@ -34,7 +34,7 @@ void DrawWindow::drawMenu() {
   attroff(COLOR_PAIR(1));  // CHIUSURA DEL COLORE ROSSO E NERO
 }
 
-void DrawWindow::printCommand(int* cnt) {
+void DrawWindow::printCommand(int *cnt) {
   if (*cnt == 0)
     mvprintw(12, 5, "==>  (X) START THE FIGHT!");
   else
@@ -178,7 +178,7 @@ void DrawWindow::drawRect(int startX, int startY, int width, int heigth,
 }
 
 void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
-                           long* points, Character character,
+                           long *points, Character character,
                            pEnemyList enemyList) {
   init_pair(2, COLOR_BLUE, 232);  // FUNZIONI PER USARE I COLORI
   attron(COLOR_PAIR(2));
@@ -203,7 +203,7 @@ int DrawWindow::lenghtList(pEnemyList list) {
 }
 
 bool DrawWindow::openRoom(pEnemyList list, int round) {
-  if (lenghtList(list)==round)
+  if (lenghtList(list) == round)
     return true;
   else
     return false;
@@ -211,31 +211,31 @@ bool DrawWindow::openRoom(pEnemyList list, int round) {
 
 void DrawWindow::printCharacterStats(pEnemyList list, Character character) {
   int i = 22;
-  int X_ElencoNemici = 24;  //gestisce la x da dove inizia la lista dei nemici
+  int X_ElencoNemici = 24;  // gestisce la x da dove inizia la lista dei nemici
   int volt = 0;
   int cont = 0;
-  int BarStart = 58;     //gestisce dove partono gli oggetti della barra
-  int AddBar = BarStart; //cicla per aggiungere un cordinata
+  int BarStart = 58;      // gestisce dove partono gli oggetti della barra
+  int AddBar = BarStart;  // cicla per aggiungere un cordinata
 
-  if(lenghtList(list) > 0) {
+  if (lenghtList(list) > 0) {
     mvprintw(i, X_ElencoNemici, "Enemy left: %d", lenghtList(list));
-  }else {
+  } else {
     mvprintw(i, X_ElencoNemici, "[ALL ENEMY DEFEATED!]");
   }
-  mvprintw(i, BarStart-4, "HP");
+  mvprintw(i, BarStart - 4, "HP");
 
-  //CODICE CHE GESTISCE LA BARRA DELLA VITA
+  // CODICE CHE GESTISCE LA BARRA DELLA VITA
   init_pair(1, COLOR_RED, 232);
   attron(COLOR_PAIR(1));
-  mvprintw(i, BarStart, "          "); //crea sfondo nero barra
-  for (cont = 0; volt <= (character.getLife()-1) / 10; volt++ ){
+  mvprintw(i, BarStart, "          ");  // crea sfondo nero barra
+  for (cont = 0; volt <= (character.getLife() - 1) / 10; volt++) {
     mvprintw(i, AddBar, "=");
     AddBar++;
   }
   attroff(COLOR_PAIR(1));
-  mvprintw(i, BarStart-1, "["); mvprintw(i, BarStart+10, "]");
-  //FINE CODICE BARRA DELLA VITA
-  
+  mvprintw(i, BarStart - 1, "[");
+  mvprintw(i, BarStart + 10, "]");
+  // FINE CODICE BARRA DELLA VITA
 
   while (list != NULL) {
     if (list->enemy.getX() != 0) {
@@ -253,8 +253,9 @@ void DrawWindow::printEnemy(pEnemyList list, DrawWindow drawWindow) {
     list = list->next;
   }
 }
-void DrawWindow::changeRoom(Character &character, int &monsterCount, int &round, pEnemyList &list){
-  if(character.getX() == 71){
+void DrawWindow::changeRoom(Character &character, int &monsterCount, int &round,
+                            pEnemyList &list) {
+  if (character.getX() == 71) {
     character.setX(23);
     monsterCount = round;
     list = list->next;
