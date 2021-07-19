@@ -226,7 +226,7 @@ pEnemyList EngineGame::generateEnemy(int *monsterCount, char character,
                                      int damage, int life, pEnemyList list, int &round) {
   bool isEmpty = false;
   while (*monsterCount > 0) {
-    int x = randomPosition(23, 70).x;
+    int x = randomPosition(27, 70).x;
     int y = randomPosition(8, 19).y;
     pEnemyList head = new EnemyList;
     Enemy enemy(x, y, character, damage, life, 1);
