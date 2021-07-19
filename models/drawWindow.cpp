@@ -70,7 +70,6 @@ void DrawWindow::printCredits() {
            "                             \\___|_|_\\___|___/___| |_|     |_| "
            "\\___/                                  ");
   attroff(COLOR_PAIR(3));
-  // GIUSEPPE: NON HO IDEA DI COME TU FACCIA IL LINTING DEL CODICE <3
 
   init_pair(2, COLOR_GREEN, 232);  // FUNZIONI PER USARE I COLORI VEDI MENU.CPP
   attron(COLOR_PAIR(2));
@@ -186,11 +185,11 @@ void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
   drawRect(startX - 4, startY - 11, width + 13, heigth + 4, enemyList);
   mvprintw(startX - 2, startY + 5, "SCORE: %lu", *points);
   if (character.getNumberLife() == 3)
-    mvprintw(heigth + 2, startX + 18, "LIFE: c-c-c");
+    mvprintw(startX - 2, startX + 50, "LIFE: c-c-c");
   if (character.getNumberLife() == 2)
-    mvprintw(heigth + 2, startX + 18, "LIFE: c-c");
+    mvprintw(startX - 2, startX + 50, "LIFE: c-c");
   if (character.getNumberLife() == 1)
-    mvprintw(heigth + 2, startX + 18, "LIFE: c");
+    mvprintw(startX - 2, startX + 50, "LIFE: c");
   attroff(COLOR_PAIR(2));  // CHIUSURA DEL COLORE ROSSO E BLU
 }
 
@@ -211,14 +210,36 @@ bool DrawWindow::openRoom(pEnemyList list, int round) {
 }
 
 void DrawWindow::printCharacterStats(pEnemyList list, Character character) {
-  int i = 26;
-  mvprintw(i, 60, "enemy == %d", lenghtList(list));
-  mvprintw(5, 38, "life Player == %d", character.getLife());
+  int i = 22;
+  int X_ElencoNemici = 24;  //gestisce la x da dove inizia la lista dei nemici
+  int volt = 0;
+  int cont = 0;
+  int BarStart = 58;     //gestisce dove partono gli oggetti della barra
+  int AddBar = BarStart; //cicla per aggiungere un cordinata
+
+  if(lenghtList(list) > 0) {
+    mvprintw(i, X_ElencoNemici, "Enemy left: %d", lenghtList(list));
+  }else {
+    mvprintw(i, X_ElencoNemici, "[ALL ENEMY DEFEATED!]");
+  }
+  mvprintw(i, BarStart-4, "HP");
+
+  //CODICE CHE GESTISCE LA BARRA DELLA VITA
+  init_pair(1, COLOR_RED, 232);
+  attron(COLOR_PAIR(1));
+  mvprintw(i, BarStart, "          "); //crea sfondo nero barra
+  for (cont = 0; volt <= (character.getLife()-1) / 10; volt++ ){
+    mvprintw(i, AddBar, "=");
+    AddBar++;
+  }
+  attroff(COLOR_PAIR(1));
+  mvprintw(i, BarStart-1, "["); mvprintw(i, BarStart+10, "]");
+  //FINE CODICE BARRA DELLA VITA
+  
+
   while (list != NULL) {
-    if (list->enemy.getX() != 0 || true) {
-      mvprintw(i, 28, "life == %d", list->enemy.getLife());
-      mvprintw(i, 10, "X == %d", list->enemy.getX());
-      mvprintw(i, 40, "Y == %d", list->enemy.getY());
+    if (list->enemy.getX() != 0) {
+      mvprintw(i, X_ElencoNemici, "- Base Enemy: %d HP", list->enemy.getLife());
     }
     i++;
     list = list->next;
