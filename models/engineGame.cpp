@@ -223,9 +223,10 @@ void EngineGame::choiceGame(DrawWindow drawWindow, int *direction,
 }
 
 pEnemyList EngineGame::generateEnemy(int *monsterCount, char character,
-                                     int damage, int life, pEnemyList list) {
+                                     int damage, int life, pEnemyList list, int &round) {
+  bool isEmpty = false;
   while (*monsterCount > 0) {
-    int x = randomPosition(23, 70).x;
+    int x = randomPosition(27, 70).x;
     int y = randomPosition(8, 19).y;
     pEnemyList head = new EnemyList;
     Enemy enemy(x, y, character, damage, life, 1);
@@ -233,12 +234,18 @@ pEnemyList EngineGame::generateEnemy(int *monsterCount, char character,
     head->next = list;
     *monsterCount -= 1;
     list = head;
+    isEmpty = true;
   }
-  pEnemyList head = new EnemyList;
-  Enemy enemy(0, 0, ' ', damage, life, 1);
-  head->enemy = enemy;
-  head->next = list;
-  list = head;
+  if(isEmpty){
+    round+=1;
+    pEnemyList head = new EnemyList;
+    Enemy enemy(0, round, 'a', damage, life, 1);
+    head->enemy = enemy;
+    head->next = list;
+    list = head;
+    isEmpty = false;
+  }
+  
   return list;
 }
 
@@ -309,10 +316,11 @@ void EngineGame::isPause(int &direction, bool &pause) {
 void EngineGame::runGame(Character character, DrawWindow drawWindow,
                          int direction) {
   long points = 0;
-  int monsterCount = 3;
+  int monsterCount = 1;
+  int round = 1;
   pEnemyList enemyList = NULL;
-  enemyList = generateEnemy(&monsterCount, 'X', 10, 100, enemyList);
   while (!pause) {
+  enemyList = generateEnemy(&monsterCount, 'X', 10, 100, enemyList, round);
     getInput(direction);
     moveCharacter(character, direction);
     clear();
@@ -324,6 +332,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
                          this->height, &points, character, enemyList);
     drawWindow.printCharacterStats(enemyList, character);
     drawWindow.printEnemy(enemyList, drawWindow);
+    drawWindow.changeRoom(character,monsterCount,round, enemyList);
     shootBullet();
     shootEnemyBullet();
     enemyShootBullets(enemyList);

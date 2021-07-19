@@ -182,7 +182,7 @@ void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
                            pEnemyList enemyList) {
   init_pair(2, COLOR_BLUE, 232);  // FUNZIONI PER USARE I COLORI
   attron(COLOR_PAIR(2));
-  // drawRect(startX - 4, startY - 11, width + 13, heigth + 4);
+  drawRect(startX - 4, startY - 11, width + 13, heigth + 4, enemyList);
   mvprintw(startX - 2, startY + 5, "SCORE: %lu", *points);
   if (character.getNumberLife() == 3)
     mvprintw(startX - 2, startX + 50, "LIFE: c-c-c");
@@ -202,8 +202,8 @@ int DrawWindow::lenghtList(pEnemyList list) {
   return i;
 }
 
-bool DrawWindow::openRoom(pEnemyList list) {
-  if (list->next == NULL)
+bool DrawWindow::openRoom(pEnemyList list, int round) {
+  if (lenghtList(list)==round)
     return true;
   else
     return false;
@@ -240,9 +240,6 @@ void DrawWindow::printCharacterStats(pEnemyList list, Character character) {
   while (list != NULL) {
     if (list->enemy.getX() != 0) {
       mvprintw(i, X_ElencoNemici, "- Base Enemy: %d HP", list->enemy.getLife());
-      //mvprintw(i, 28, "X == %d", list->enemy.getX());
-      //mvprintw(i, 40, "Y == %d", list->enemy.getY());
-      //HO COMMENTATO QUESTE LINEE PERCHE NON SO A COSA POSSANO SERVIRE AL GIOCATORE LE CORDINATE A SCHERMO 
     }
     i++;
     list = list->next;
@@ -253,6 +250,13 @@ void DrawWindow::printEnemy(pEnemyList list, DrawWindow drawWindow) {
   while (list != NULL) {
     drawWindow.printCharacter(list->enemy.getX(), list->enemy.getY(),
                               list->enemy.getCharacter());
+    list = list->next;
+  }
+}
+void DrawWindow::changeRoom(Character &character, int &monsterCount, int &round, pEnemyList &list){
+  if(character.getX() == 71){
+    character.setX(23);
+    monsterCount = round;
     list = list->next;
   }
 }
