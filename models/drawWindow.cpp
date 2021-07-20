@@ -265,7 +265,7 @@ void DrawWindow::printCharacterStats(pEnemyList list, Character character) {
   }
 
   mvprintw(i, BarStart, "          ");                             // SFONDO NERO BARRA
-  for (cont = 0; volt <= (character.getLife() - 1) / 10; volt++) {
+  for (cont = 0; volt <= (character.getLife() - 1) / 10; volt++) { // GENERA IL SIMBOLO "=" OGNI DIECI UNITÀ DI VITA 
     mvprintw(i, AddBar, "=");
     AddBar++;
   }
