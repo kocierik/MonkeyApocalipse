@@ -2,7 +2,9 @@ struct Position {
   int x;
   int y;
   char character;
+  Position* next;
 };
+typedef Position* pPosition;
 
 class Coordinate {
  protected:

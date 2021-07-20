@@ -329,6 +329,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     drawWindow.changeRoom(character, monsterCount, round, enemyList);
     drawWindow.moveEnemy(enemyList, character, drawWindow, points);
     shootBullet();
+    drawWindow.drawMountain();
     shootEnemyBullet();
     enemyShootBullets(enemyList);
     checkEnemyCollision(character, enemyList);
