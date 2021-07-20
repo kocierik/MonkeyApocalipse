@@ -4,7 +4,6 @@
 #define ENEMY
 #include "enemy.hpp"
 #endif
-#include "coordinate.hpp"
 class EngineGame {
  protected:
   int frameGameX;
@@ -26,12 +25,11 @@ class EngineGame {
   bool isEmpty(int x, int y);
   Pbullet createBullet(int x, int y, Pbullet &shoots);
   void shootBullet();
-  Position randomPosition(int startRange, int endRange);
   void engine(Character character, DrawWindow printer);
   void choiceGame(DrawWindow drawWindow, int *direction, int *selection);
   void runGame(Character character, DrawWindow drawWindow, int direction);
   pEnemyList generateEnemy(int *monsterCount, char character, int damage,
-                           int life, pEnemyList list, int &round);
+                           int life, pEnemyList list, int &round, DrawWindow drawWindow);
   void checkShootEnemyCollision(pEnemyList enemys, Character &character,
                                 Pbullet &shoots, int isEnemy);
   void checkEnemyCollision(Character &character, pEnemyList enemyList);

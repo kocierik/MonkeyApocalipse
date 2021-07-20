@@ -1,4 +1,5 @@
 #include "character.hpp"
+#include "coordinate.hpp"
 #ifndef ENEMY
 #define ENEMY
 #include "enemy.hpp"
@@ -24,4 +25,6 @@ class DrawWindow {
                   pEnemyList &list);
   void moveEnemy(pEnemyList list, Character character, DrawWindow drawWindow,
                  long points);
+  Position randomPosition(int startRange, int endRange);
+  void drawMountain();
 };

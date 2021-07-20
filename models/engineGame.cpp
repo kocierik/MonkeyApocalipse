@@ -224,11 +224,11 @@ void EngineGame::choiceGame(DrawWindow drawWindow, int *direction,
 
 pEnemyList EngineGame::generateEnemy(int *monsterCount, char character,
                                      int damage, int life, pEnemyList list,
-                                     int &round) {
+                                     int &round, DrawWindow drawWindow) {
   bool isEmpty = false;
   while (*monsterCount > 0) {
-    int x = randomPosition(40, 70).x;
-    int y = randomPosition(8, 19).y;
+    int x = drawWindow.randomPosition(40, 70).x;
+    int y = drawWindow.randomPosition(8, 19).y;
     pEnemyList head = new EnemyList;
     Enemy enemy(x, y, character, damage, life, 1);
     head->enemy = enemy;
@@ -298,16 +298,7 @@ void EngineGame::increaseCount(int &whileCount, long &points,
   this->whileCountEnemy += 1;
 }
 
-Position EngineGame::randomPosition(int startRange, int endRange) {
-  Position pos;
-  pos.x = startRange + (std::rand() % (endRange - startRange + 1));
-  pos.y = startRange + (std::rand() % (endRange - startRange + 1));
-  while (!isEmpty(pos.x, pos.y)) {
-    pos.x = startRange + (std::rand() % (endRange - startRange + 1));
-    pos.y = startRange + (std::rand() % (endRange - startRange + 1));
-  }
-  return pos;
-}
+
 
 void EngineGame::getInput(int &direction) { direction = getch(); }
 
@@ -322,7 +313,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
   int round = 1;
   pEnemyList enemyList = NULL;
   while (!pause) {
-    enemyList = generateEnemy(&monsterCount, 'X', 10, 100, enemyList, round);
+    enemyList = generateEnemy(&monsterCount, 'X', 10, 100, enemyList, round, drawWindow);
     getInput(direction);
     moveCharacter(character, direction);
     clear();

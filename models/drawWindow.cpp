@@ -1,5 +1,7 @@
 #include "drawWindow.hpp"
-
+#include <cmath>
+#include <ctime>
+#include <iostream>
 #include <ncurses.h>
 
 DrawWindow::DrawWindow() {}
@@ -199,6 +201,23 @@ void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
     mvprintw(startX - 2, startX + 50, "LIFE: c");
   attroff(COLOR_PAIR(3));  // CHIUSURA DEL COLORE
 }
+
+
+Position DrawWindow::randomPosition(int startRange, int endRange) {
+  Position pos;
+  pos.x = startRange + (std::rand() % (endRange - startRange + 1));
+  pos.y = startRange + (std::rand() % (endRange - startRange + 1));
+  while (!(mvinch(pos.y, pos.x) == ' ')) {
+    pos.x = startRange + (std::rand() % (endRange - startRange + 1));
+    pos.y = startRange + (std::rand() % (endRange - startRange + 1));
+  }
+  return pos;
+}
+
+void DrawWindow::drawMountain(){
+
+}
+
 
 int DrawWindow::lenghtList(pEnemyList list) {
   int i = -1;
