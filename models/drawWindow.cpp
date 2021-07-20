@@ -248,6 +248,22 @@ void DrawWindow::printEnemy(pEnemyList list, DrawWindow drawWindow) {
     list = list->next;
   }
 }
+
+void DrawWindow::moveEnemy(pEnemyList list, Character character, DrawWindow drawWindow, long points){
+    while (list != NULL) {
+      if(points % 40 == 0){
+        if(character.getY() > list->enemy.getY()){
+          list->enemy.setY(list->enemy.getY()+1);
+          drawWindow.printCharacter(list->enemy.getX(), list->enemy.getY(), list->enemy.getCharacter());
+        } else if(character.getY() < list->enemy.getY()){
+            list->enemy.setY(list->enemy.getY()-1);
+            drawWindow.printCharacter(list->enemy.getX(), list->enemy.getY(), list->enemy.getCharacter());
+        }
+      }
+      list = list->next;
+    }
+}
+
 void DrawWindow::changeRoom(Character &character, int &monsterCount, int &round,
                             pEnemyList &list) {
   if (character.getX() == 71) {

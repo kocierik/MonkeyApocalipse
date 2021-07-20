@@ -334,6 +334,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     increaseCount(this->whileCount, points, enemyList);
     drawWindow.printEnemy(enemyList, drawWindow);
     drawWindow.changeRoom(character,monsterCount,round, enemyList);
+    drawWindow.moveEnemy(enemyList,character,drawWindow, points);
     shootBullet();
     shootEnemyBullet();
     enemyShootBullets(enemyList);
