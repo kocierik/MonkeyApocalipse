@@ -5,21 +5,27 @@
         . Oggetti raccoglibili:
             . Bonus / Malus: Possibili implementazioni:
                 - Modificatori di punteggio
-                - Modificatori temporanei / permanenti di armi
+                - Modificatori temporanei / permanenti alle armi
                 - Modificatori temporanei / permanenti del personaggio
                 - Modificatori temporanei / permanenti dei nemici
+
+    Prendo le coordinate
+    Genero il bonus (funzione da scrivere)
+    Lo rendo interagibile
+    Aggiungere gli effetti causati dalla sua raccolta
+
 */
 
-#include "object.hpp"
+#include "bonus.hpp"
+#define NBONUS 1
 
-Object::Object (char in_name[], int in_mapTime, int in_duration, bool in_isMalus) {
+Bonus::Bonus (char in_name[], int in_mapTime, int in_duration) {
     strcpy (this -> name, in_name);
+    this -> skin     = '?';
     this -> mapTime  = in_mapTime;
     this -> duration = in_duration;
-    this -> isMalus = in_isMalus;
 }
 
-void Object::decrementMapTime  () { this -> mapTime  -= 1; }
-void Object::decrementDuration () { this -> duration -= 1; }
-void Object::incrementDuration () { this -> duration += 1; }
-
+void Bonus::decrementMapTime  () { this -> mapTime  -= 1; }
+void Bonus::decrementDuration () { this -> duration -= 1; }
+void Bonus::incrementDuration () { this -> duration += 1; }

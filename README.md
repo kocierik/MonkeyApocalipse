@@ -27,7 +27,7 @@ LEGENDA:
 
 ✖ salvataggio della mappa per i movimenti
 
-✖ Nemici
+✔ Nemici
 
 ✖ Sistema per le vite e il punteggio
 
@@ -47,7 +47,9 @@ LEGENDA:
 
 ✖ Multiplayer
 
-△ Scritte ganzissime + miglioramento estetico generale
+✖ Classifica
+
+△ Scritte ganzissime + miglioramento estetica esterna al gameplay
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 

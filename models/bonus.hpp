@@ -1,21 +1,20 @@
-#include <stdio.h>
 #include <string.h>
 
 #define OBJECT
 #define NAMESIZE 30
 
-class Object {
+class Bonus {
     protected:
         char name[NAMESIZE];
-        int mapTime;            // Qunatità di tempo in cui sta sulla mappa prima di scomparire, qualora non venisse raccolto.
+        char skin;
+        int mapTime;            // Quantità di tempo in cui sta sulla mappa prima di scomparire, qualora non venisse raccolto.
         int duration;           // Durata dell'effetto dell'oggetto raccolto. Se < 0 allora è permanente.
-        bool isMalus;
     public:
-        Object (char in_name[], int in_mapTime, int in_duration, bool in_isMalus) {
+        Bonus (char in_name[], int in_mapTime, int in_duration) {
             strcpy (this -> name, in_name);
+            this -> skin     = '?';
             this -> mapTime  = in_mapTime;
             this -> duration = in_duration;
-            this -> isMalus = in_isMalus;
         }
 
         void decrementMapTime  ();
@@ -23,3 +22,9 @@ class Object {
         void incrementDuration ();
 
 };
+
+struct BonusList {
+    Bonus bonus;
+    BonusList* next;
+};
+typedef BonusList* pBonusList;
