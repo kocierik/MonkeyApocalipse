@@ -1,13 +1,13 @@
 CC = g++
 CFLAGS = -c -Wall
-OBJECTS = main.o engineGame.o character.o drawWindow.o player.o enemy.o coordinate.o
+OBJECTS = main.o engineGame.o character.o drawWindow.o player.o enemy.o coordinate.o bonus.o
 LIBRARY = -lncurses
 
 main: $(OBJECTS)
 	$(CC) -o main $(OBJECTS) $(LIBRARY)
 	./main
 
-main.o: main.cpp models/engineGame.hpp models/character.hpp models/drawWindow.hpp models/player.hpp models/enemy.hpp models/coordinate.hpp
+main.o: main.cpp models/engineGame.hpp models/character.hpp models/drawWindow.hpp models/player.hpp models/enemy.hpp models/coordinate.hpp models/bonus.hpp
 	$(CC) $(CFLAGS) main.cpp
 
 engineGame.o: models/engineGame.cpp models/engineGame.hpp
@@ -27,6 +27,9 @@ enemy.o: models/enemy.cpp models/enemy.hpp
 
 coordinate.o: models/coordinate.cpp models/coordinate.hpp
 	$(CC) $(CFLAGS) models/coordinate.cpp
+
+bonus.o: models/bonus.cpp models/bonus.hpp
+	$(CC) $(CFLAGS) models/bonus.cpp
 
 clean:
 	rm *.o main

@@ -2,11 +2,12 @@
 #include "engineGame.hpp"
 
 #include <ncurses.h>
-
+#include <ctime>
 #include <cmath>
 #include <ctime>
 #include <iostream>
 
+#include "bonus.hpp"
 
 EngineGame::EngineGame(int frameGameX, int frameGameY, int height, int width) {
   this->frameGameX = frameGameX;
@@ -249,6 +250,31 @@ pEnemyList EngineGame::generateEnemy(int *monsterCount, char character,
 
   return list;
 }
+
+pBonusList EngineGame::generateBonus (DrawWindow drawWindow, int *bonusCount, pBonusList list) {
+  // I parametri del costruttore che non sono presi in input, verranno determinati in base all'oggetto generato
+
+	while (*bonusCount > 0) {
+    int x = drawWindow.randomPosition (40, 70).x;
+    int y = drawWindow.randomPosition (8, 19).y;
+    pBonusList head = new BonusList;
+    srand (time (0));
+    int limit = 1, randCase = rand() % limit;
+
+    switch (randCase) {
+      case 0:
+        //Bonus tmpBonus ("FREE BANANAS", 10, -1);
+        //head -> bonus = tmpBonus;
+        //head -> next = list;
+        // NON VA BENE BISOGNA CREARE LA CLASSE APPOSITA
+      
+    }
+
+  }
+	
+}
+
+
 
 void EngineGame::checkDeath(bool &pause, Character &character) {
   if (character.getLife() <= 0) {

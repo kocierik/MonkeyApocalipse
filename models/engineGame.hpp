@@ -4,6 +4,9 @@
 #define ENEMY
 #include "enemy.hpp"
 #endif
+
+
+
 class EngineGame {
  protected:
   int frameGameX;
@@ -30,6 +33,7 @@ class EngineGame {
   void runGame(Character character, DrawWindow drawWindow, int direction);
   pEnemyList generateEnemy(int *monsterCount, char character, int damage,
                            int life, pEnemyList list, int &round, DrawWindow drawWindow);
+  pBonusList generateBonus (DrawWindow drawWindow, int *bonusCount, pBonusList list); 
   void checkShootEnemyCollision(pEnemyList enemys, Character &character,
                                 Pbullet &shoots, int isEnemy);
   void checkEnemyCollision(Character &character, pEnemyList enemyList);
