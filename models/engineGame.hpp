@@ -40,7 +40,7 @@ class EngineGame {
   void printList(pEnemyList list, Character character);
   void getInput(int &direction);
   void isPause(int &direction, bool &pause);
-  void increaseCount(int &whileCount, long &points);
+  void increaseCount(int &whileCount, long &points, pEnemyList enemyList);
   void checkDeath(bool &pause, Character &character);
   void enemyShootBullets(pEnemyList listEnemy);
   void shootEnemyBullet();

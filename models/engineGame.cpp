@@ -290,9 +290,9 @@ void EngineGame::engine(Character character, DrawWindow drawWindow) {
   endwin();
 }
 
-void EngineGame::increaseCount(int &whileCount, long &points) {
+void EngineGame::increaseCount(int &whileCount, long &points, pEnemyList enemyList) {
   whileCount += 1;
-  points += 1;
+  if(enemyList->next != NULL) points += 1;
   this->whileCountEnemy += 1;
 }
 
@@ -331,6 +331,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     drawWindow.drawStats(this->frameGameX, this->frameGameY, this->widht,
                          this->height, &points, character, enemyList);
     drawWindow.printCharacterStats(enemyList, character);
+    increaseCount(this->whileCount, points, enemyList);
     drawWindow.printEnemy(enemyList, drawWindow);
     drawWindow.changeRoom(character,monsterCount,round, enemyList);
     shootBullet();
@@ -339,7 +340,6 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     checkEnemyCollision(character, enemyList);
     checkShootEnemyCollision(enemyList, character, this->shoots, 1);
     checkShootEnemyCollision(enemyList, character, this->shootsEnemys, -1);
-    increaseCount(this->whileCount, points);
     refresh();
     destroyBullet(this->shoots, 1);
     destroyBullet(this->shootsEnemys, -1);

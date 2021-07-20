@@ -20,7 +20,6 @@ class DrawWindow {
   int lenghtList(pEnemyList list);
   void printCharacterStats(pEnemyList list, Character character);
   void printEnemy(pEnemyList list, DrawWindow drawWindow);
-  bool openRoom(pEnemyList list, int round);
   void changeRoom(Character &character, int &monsterCount, int &round,
                   pEnemyList &list);
 };

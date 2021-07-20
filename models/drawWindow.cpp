@@ -202,12 +202,7 @@ int DrawWindow::lenghtList(pEnemyList list) {
   return i;
 }
 
-bool DrawWindow::openRoom(pEnemyList list, int round) {
-  if (lenghtList(list) == round)
-    return true;
-  else
-    return false;
-}
+
 
 void DrawWindow::printCharacterStats(pEnemyList list, Character character) {
   int i = 22;
