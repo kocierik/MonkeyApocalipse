@@ -22,9 +22,10 @@ class DrawWindow {
   void printCharacterStats(pEnemyList list, Character character);
   void printEnemy(pEnemyList list, DrawWindow drawWindow);
   void changeRoom(Character &character, int &monsterCount, int &round,
-                  pEnemyList &list);
+                  pEnemyList &list, pPosition &listMountain);
   void moveEnemy(pEnemyList list, Character character, DrawWindow drawWindow,
                  long points);
   Position randomPosition(int startRange, int endRange);
-  void drawMountain();
+  pPosition generateMountain(pPosition list);
+  void printMountain(pPosition list);
 };

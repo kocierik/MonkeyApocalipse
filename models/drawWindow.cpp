@@ -238,8 +238,28 @@ Position DrawWindow::randomPosition(int startRange, int endRange) {
   return pos;
 }
 
-void DrawWindow::drawMountain(){
-  
+pPosition DrawWindow::generateMountain(pPosition list){
+  int mountainNumber = rand() % 8 + 1;
+  while(mountainNumber>0){
+    int x = randomPosition(40,70).x;
+    int y = randomPosition(8,19).y;
+    pPosition head = new Position;
+    head->x = x;
+    head->y = y;
+    head->character = '^';
+    head->next = list;
+    list = head;
+    mountainNumber--;
+  }
+  return list;
+}
+
+void DrawWindow::printMountain(pPosition list) {
+  pPosition mountainList = list;
+  while (mountainList != NULL) {
+    printCharacter(mountainList->x,mountainList->y,mountainList->character);
+    mountainList = mountainList->next;
+  }
 }
 
 
@@ -340,9 +360,10 @@ void DrawWindow::moveEnemy(pEnemyList list, Character character,
 }
 
 void DrawWindow::changeRoom(Character &character, int &monsterCount, int &round,
-                            pEnemyList &list) {
+                            pEnemyList &list, pPosition &listMountain) {
   if (character.getX() == 71) {
     character.setX(23);
+    listMountain = generateMountain(listMountain);
     monsterCount = round;
     list = list->next;
   }

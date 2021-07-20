@@ -312,6 +312,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
   int monsterCount = 1;
   int round = 1;
   pEnemyList enemyList = NULL;
+  pPosition mountainList = NULL;
   while (!pause) {
     enemyList = generateEnemy(&monsterCount, 'X', 10, 100, enemyList, round, drawWindow);
     getInput(direction);
@@ -324,12 +325,12 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     drawWindow.drawStats(this->frameGameX, this->frameGameY, this->widht,
                          this->height, &points, character, enemyList);
     drawWindow.printCharacterStats(enemyList, character);
+    drawWindow.printMountain(mountainList);
     increaseCount(this->whileCount, points, enemyList);
     drawWindow.printEnemy(enemyList, drawWindow);
-    drawWindow.changeRoom(character, monsterCount, round, enemyList);
+    drawWindow.changeRoom(character, monsterCount, round, enemyList,mountainList);
     drawWindow.moveEnemy(enemyList, character, drawWindow, points);
     shootBullet();
-    drawWindow.drawMountain();
     shootEnemyBullet();
     enemyShootBullets(enemyList);
     checkEnemyCollision(character, enemyList);
