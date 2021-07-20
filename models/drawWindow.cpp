@@ -246,7 +246,7 @@ pPosition DrawWindow::generateMountain(pPosition list){
     pPosition head = new Position;
     head->x = x;
     head->y = y;
-    head->character = '^';
+    head->skin = '^';
     head->next = list;
     list = head;
     mountainNumber--;
@@ -257,7 +257,7 @@ pPosition DrawWindow::generateMountain(pPosition list){
 void DrawWindow::printMountain(pPosition list) {
   pPosition mountainList = list;
   while (mountainList != NULL) {
-    printCharacter(mountainList->x,mountainList->y,mountainList->character);
+    printCharacter(mountainList->x,mountainList->y,mountainList->skin);
     mountainList = mountainList->next;
   }
 }
@@ -336,7 +336,7 @@ void DrawWindow::printCharacterStats(pEnemyList list, Character character) {
 void DrawWindow::printEnemy(pEnemyList list, DrawWindow drawWindow) {
   while (list != NULL) {
     drawWindow.printCharacter(list->enemy.getX(), list->enemy.getY(),
-                              list->enemy.getCharacter());
+                              list->enemy.getSkin());
     list = list->next;
   }
 }
@@ -348,11 +348,11 @@ void DrawWindow::moveEnemy(pEnemyList list, Character character,
       if (character.getY() > list->enemy.getY() && mvinch(list->enemy.getY() + 1, list->enemy.getX()) == ' ') {
         list->enemy.setY(list->enemy.getY() + 1);
         drawWindow.printCharacter(list->enemy.getX(), list->enemy.getY(),
-                                  list->enemy.getCharacter());
+                                  list->enemy.getSkin());
       } else if (character.getY() < list->enemy.getY() && mvinch(list->enemy.getY() - 1, list->enemy.getX()) == ' ') {
         list->enemy.setY(list->enemy.getY() - 1);
         drawWindow.printCharacter(list->enemy.getX(), list->enemy.getY(),
-                                  list->enemy.getCharacter());
+                                  list->enemy.getSkin());
       }
     }
     list = list->next;

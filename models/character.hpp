@@ -14,7 +14,7 @@ class Character {
   int x;
   int y;
   bool isEnemy;
-  char character;
+  char skin;
   int life;
   int numberLife;
   int Nbullet;
@@ -31,8 +31,8 @@ class Character {
   int getBullet();
   int getNumberLife();
   void setNumberLife(int numberLife);
-  char getCharacter();
-  void setCharacter(char character);
+  char getSkin();
+  void setSkin(char skin);
   void setDamage(int damage);
   int getDamage();
   void decreaseLife(int life);

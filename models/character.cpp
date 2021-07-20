@@ -1,12 +1,12 @@
 #include "character.hpp"
 
 #include <ncurses.h>
-Character::Character(int x, int y, char character, int damage, int life,
+Character::Character(int x, int y, char skin, int damage, int life,
                      int numberLife) {
   this->direction = 0;
   this->x = x;
   this->y = y;
-  this->character = character;
+  this->skin = skin;
   this->life = life;
   this->Nbullet = 0;
   this->damage = damage;
@@ -24,8 +24,8 @@ void Character::setNumberLife(int numberLife) { this->numberLife = numberLife; }
 void Character::decreaseLife(int life) { this->life -= life; }
 int Character::getDamage() { return this->damage; }
 void Character::setDamage(int damage) { this->damage = damage; }
-char Character::getCharacter() { return this->character; }
-void Character::setCharacter(char character) { this->character = character; }
+char Character::getSkin() { return this->skin; }
+void Character::setSkin(char skin) { this->skin = skin; }
 void Character::directionUp() { this->y--; }
 void Character::directionDown() { this->y++; }
 void Character::directionRight() { this->x++; }

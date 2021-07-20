@@ -8,14 +8,14 @@
 #define OBJECT
 #define NAMESIZE 30
 
-class Bonus : public Coordinate {
+class Item : public Coordinate {
     protected:
         char name[NAMESIZE];
         int mapTime;            // Quantità di tempo in cui sta sulla mappa prima di scomparire, qualora non venisse raccolto.
         int duration;           // Durata dell'effetto dell'oggetto raccolto. Se < 0 allora è permanente.
     public:
-        Bonus ();
-        Bonus (Position point, char in_name[], int in_mapTime, int in_duration);
+        Item ();
+        Item (char in_name[], int in_mapTime, int in_duration);
         
         void decrementMapTime  ();
         void decrementDuration ();
@@ -23,8 +23,8 @@ class Bonus : public Coordinate {
 
 };
 
-struct BonusList {
-    Bonus bonus;
-    BonusList* next;
+struct ItemList {
+    Item bonus;
+    ItemList* next;
 };
-typedef BonusList* pBonusList;
+typedef ItemList* pItemList;

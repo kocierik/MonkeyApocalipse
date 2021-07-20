@@ -17,11 +17,10 @@
 
 */
 
-#include "bonus.hpp"
-#define NBONUS 1        // Conteggio dei vari tipi di bonus esistenti
+#include "item.hpp"
 
-Bonus::Bonus () : Coordinate::Coordinate (point) {}
-Bonus::Bonus (Position point, char in_name[], int in_mapTime, int in_duration) : Coordinate::Coordinate (point) {
+Item::Item () : Coordinate::Coordinate (point) {}
+Item::Item (char in_name[], int in_mapTime, int in_duration) : Coordinate::Coordinate (point) {
     strcpy (this -> name, in_name);
     //this -> skin     = '?';
     this -> mapTime  = in_mapTime;
@@ -29,6 +28,6 @@ Bonus::Bonus (Position point, char in_name[], int in_mapTime, int in_duration) :
 }
 
 
-void Bonus::decrementMapTime  () { this -> mapTime  -= 1; }
-void Bonus::decrementDuration () { this -> duration -= 1; }
-void Bonus::incrementDuration () { this -> duration += 1; }
+void Item::decrementMapTime  () { this -> mapTime  -= 1; }
+void Item::decrementDuration () { this -> duration -= 1; }
+void Item::incrementDuration () { this -> duration += 1; }

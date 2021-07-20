@@ -1,7 +1,7 @@
 struct Position {
   int x;
   int y;
-  char character;
+  char skin;
   Position* next;
 };
 typedef Position* pPosition;
@@ -11,6 +11,7 @@ class Coordinate {
   Position point;
 
  public:
+  Coordinate();
   Coordinate(Position point);
   void setPosition(Position point);
   char getCharacter();

@@ -7,7 +7,7 @@
 #include <ctime>
 #include <iostream>
 
-#include "bonus.hpp"
+#define NBONUS 1    // Numero di tipologie di bonus esistenti
 
 EngineGame::EngineGame(int frameGameX, int frameGameY, int height, int width) {
   this->frameGameX = frameGameX;
@@ -177,25 +177,34 @@ void EngineGame::checkShootEnemyCollision(pEnemyList enemys,
 }
 
 // controllo che la posizione x y sia uno spazio vuoto
-bool EngineGame::isEmpty(int x, int y) { return mvinch(y, x) == ' '; }
+bool EngineGame::isEmpty (int x, int y) { return mvinch(y, x) == ' '; }
+bool EngineGame::isBonus (int x, int y) { return mvinch(y, x) == '?'; }
 
-void EngineGame::moveCharacter(Character &character, int direction) {
+void EngineGame::moveCharacter(Character &character, int direction, pPosition bonusList) {
   switch (direction) {  // CONTROLLO IL TASTO SPINTO
     case KEY_UP:
-      if (isEmpty(character.getX(), character.getY() - 1) == true)
+      if (isEmpty (character.getX(), character.getY() - 1)) {
         character.directionUp();
+        if (isBonus (character.getX(), character.getY() - 1)) getBonus (character.getX(), character.getY() - 1, bonusList);
+      }
       break;
     case KEY_DOWN:
-      if (isEmpty(character.getX(), character.getY() + 1) == true)
+      if (isEmpty (character.getX(), character.getY() + 1)) {
         character.directionDown();
+        if (isBonus (character.getX(), character.getY() + 1)) getBonus (character.getX(), character.getY() + 1, bonusList);
+      }
       break;
     case KEY_LEFT:
-      if (isEmpty(character.getX() - 1, character.getY()) == true)
+      if (isEmpty (character.getX() - 1, character.getY())) {
         character.directionLeft();
+        if (isBonus (character.getX() - 1, character.getY())) getBonus (character.getX() - 1, character.getY(), bonusList);
+      }
       break;
     case KEY_RIGHT:
-      if (isEmpty(character.getX() + 1, character.getY()) == true)
+      if (isEmpty (character.getX() + 1, character.getY())) {
         character.directionRight();
+        if (isBonus (character.getX() + 1, character.getY())) getBonus (character.getX() + 1, character.getY(), bonusList);
+      }
       break;  // ESCE DALLO SWITCH
     case 'e':
       if (whileCount / 2 > 1) {
@@ -251,29 +260,54 @@ pEnemyList EngineGame::generateEnemy(int *monsterCount, char character,
   return list;
 }
 
-pBonusList EngineGame::generateBonus (DrawWindow drawWindow, int *bonusCount, pBonusList list) {
-  // I parametri del costruttore che non sono presi in input, verranno determinati in base all'oggetto generato
-
-	while (*bonusCount > 0) {
-    int x = drawWindow.randomPosition (40, 70).x;
-    int y = drawWindow.randomPosition (8, 19).y;
-    pBonusList head = new BonusList;
-    srand (time (0));
-    int limit = 1, randCase = rand() % limit;
-
-    switch (randCase) {
-      case 0:
-        //Bonus tmpBonus ("FREE BANANAS", 10, -1);
-        //head -> bonus = tmpBonus;
-        //head -> next = list;
-        // NON VA BENE BISOGNA CREARE LA CLASSE APPOSITA
-      
-    }
-
-  }
-	
+pPosition EngineGame::generateOneBonus (DrawWindow drawWindow, int *bonusCount, pPosition list) {
+  /**
+   * Genera SOLO la posizione di un bonus e la inserisce in cima alla lista data
+   * DUBBIO: Perchè nei parametri da errore se si scrive "Position list" anzochè "Position* list"? 
+  */
+  pPosition head = new Position;
+  head -> x = drawWindow.randomPosition (40, 70).x;
+  head -> y = drawWindow.randomPosition (8, 19).y;
+  head -> skin = '?';
+  head -> next = list;
+  return head;
 }
 
+void getBonus (int x, int y, pPosition bonusList) {
+  pPosition tmphead = bonusList;
+  bool control = true;
+
+  while (bonusList -> next != NULL && control) {
+    // Appena si trova il bonus raccolto nella lista, si attiva un effetto e lo si elimina da quest'ultima
+    if (bonusList -> x == x && bonusList -> y == y && bonusList -> skin == '?') {
+      srand (time (0));
+      int randCase = rand() % NBONUS;   // Per n casi dello switch ci saranno n+1 tipologie di bonus, e dunque NBONUS = n + 1
+
+      // Per ogni malus ci sono 2 bonus, oppure per ogni malus ci sono 3 bonus (il tutto al fine di incentivarne la raccolta ed equilibrare gli effetti)
+      switch (randCase) {
+        case 0:
+          // Bonus: +500 banana points
+          break;
+        case 1:
+          // Bonus: Moltiplicatore di punteggio
+          break;
+        case 2:
+          // Malus: Personaggio immobile per n secondi
+          break;
+        case 3:
+          // 
+          break;
+        case 4:
+          // 
+          break;
+        default:
+          control = false;
+          break;
+      }
+    }
+    bonusList = bonusList -> next;
+  }
+} 
 
 
 void EngineGame::checkDeath(bool &pause, Character &character) {
@@ -325,7 +359,6 @@ void EngineGame::increaseCount(int &whileCount, long &points,
 }
 
 
-
 void EngineGame::getInput(int &direction) { direction = getch(); }
 
 void EngineGame::isPause(int &direction, bool &pause) {
@@ -335,21 +368,22 @@ void EngineGame::isPause(int &direction, bool &pause) {
 void EngineGame::runGame(Character character, DrawWindow drawWindow,
                          int direction) {
   long points = 0;
-  int monsterCount = 1;
+  int monsterCount = 1, bonusCount = 1;
   int round = 1;
   pEnemyList enemyList = NULL;
-  pPosition mountainList = NULL;
+  pPosition bonusList = NULL, mountainList = NULL;
   while (!pause) {
-    enemyList = generateEnemy(&monsterCount, 'X', 10, 100, enemyList, round, drawWindow);
+    enemyList = generateEnemy (&monsterCount, 'X', 10, 100, enemyList, round, drawWindow);
+    bonusList = generateOneBonus (drawWindow, &bonusCount, bonusList);  // Funzione da completare a livello semantico
     getInput(direction);
-    moveCharacter(character, direction);
+    moveCharacter(character, direction, bonusList);
     clear();
     drawWindow.printCharacter(character.getX(), character.getY(),
-                              character.getCharacter());
+                              character.getSkin());
     drawWindow.drawRect(this->frameGameX, this->frameGameY, this->widht,
                         this->height, enemyList);
     drawWindow.drawStats(this->frameGameX, this->frameGameY, this->widht,
-                         this->height, &points, character, enemyList);
+                        this->height, &points, character, enemyList);
     drawWindow.printCharacterStats(enemyList, character);
     drawWindow.printMountain(mountainList);
     increaseCount(this->whileCount, points, enemyList);
