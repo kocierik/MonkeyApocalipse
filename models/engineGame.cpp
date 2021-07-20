@@ -223,7 +223,8 @@ void EngineGame::choiceGame(DrawWindow drawWindow, int *direction,
 }
 
 pEnemyList EngineGame::generateEnemy(int *monsterCount, char character,
-                                     int damage, int life, pEnemyList list, int &round) {
+                                     int damage, int life, pEnemyList list,
+                                     int &round) {
   bool isEmpty = false;
   while (*monsterCount > 0) {
     int x = randomPosition(40, 70).x;
@@ -236,8 +237,8 @@ pEnemyList EngineGame::generateEnemy(int *monsterCount, char character,
     list = head;
     isEmpty = true;
   }
-  if(isEmpty){
-    round+=1;
+  if (isEmpty) {
+    round += 1;
     pEnemyList head = new EnemyList;
     Enemy enemy(0, 0, ' ', damage, life, 1);
     head->enemy = enemy;
@@ -245,7 +246,7 @@ pEnemyList EngineGame::generateEnemy(int *monsterCount, char character,
     list = head;
     isEmpty = false;
   }
-  
+
   return list;
 }
 
@@ -290,9 +291,10 @@ void EngineGame::engine(Character character, DrawWindow drawWindow) {
   endwin();
 }
 
-void EngineGame::increaseCount(int &whileCount, long &points, pEnemyList enemyList) {
+void EngineGame::increaseCount(int &whileCount, long &points,
+                               pEnemyList enemyList) {
   whileCount += 1;
-  if(enemyList->next != NULL) points += 1;
+  if (enemyList->next != NULL) points += 1;
   this->whileCountEnemy += 1;
 }
 
@@ -320,7 +322,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
   int round = 1;
   pEnemyList enemyList = NULL;
   while (!pause) {
-  enemyList = generateEnemy(&monsterCount, 'X', 10, 100, enemyList, round);
+    enemyList = generateEnemy(&monsterCount, 'X', 10, 100, enemyList, round);
     getInput(direction);
     moveCharacter(character, direction);
     clear();
@@ -333,8 +335,8 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     drawWindow.printCharacterStats(enemyList, character);
     increaseCount(this->whileCount, points, enemyList);
     drawWindow.printEnemy(enemyList, drawWindow);
-    drawWindow.changeRoom(character,monsterCount,round, enemyList);
-    drawWindow.moveEnemy(enemyList,character,drawWindow, points);
+    drawWindow.changeRoom(character, monsterCount, round, enemyList);
+    drawWindow.moveEnemy(enemyList, character, drawWindow, points);
     shootBullet();
     shootEnemyBullet();
     enemyShootBullets(enemyList);

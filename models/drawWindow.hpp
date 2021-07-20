@@ -22,5 +22,6 @@ class DrawWindow {
   void printEnemy(pEnemyList list, DrawWindow drawWindow);
   void changeRoom(Character &character, int &monsterCount, int &round,
                   pEnemyList &list);
-  void moveEnemy(pEnemyList list, Character character, DrawWindow drawWindow, long points);
+  void moveEnemy(pEnemyList list, Character character, DrawWindow drawWindow,
+                 long points);
 };
