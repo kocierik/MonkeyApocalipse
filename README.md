@@ -47,6 +47,8 @@ LEGENDA:
 
 ✖ Classifica
 
+✖ Teletrasporto
+
 △ Scritte ganzissime + miglioramento estetica esterna al gameplay
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
