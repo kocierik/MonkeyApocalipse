@@ -4,6 +4,13 @@
 
 DrawWindow::DrawWindow() {}
 
+/*
+  I COLORI HANNO ID:
+  - ROSSO = 1
+  - VERDE = 2
+  - GIALLO = 3
+*/
+
 void DrawWindow::drawMenu() {
   init_pair(1, COLOR_RED, 232);  // 1 INDICA UN ID, POI METTI IL COLORE CHE VUOI
   attron(COLOR_PAIR(1));         // APRTURA COLORE ROSSO
@@ -180,8 +187,8 @@ void DrawWindow::drawRect(int startX, int startY, int width, int heigth,
 void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
                            long *points, Character character,
                            pEnemyList enemyList) {
-  init_pair(2, COLOR_BLUE, 232);  // FUNZIONI PER USARE I COLORI
-  attron(COLOR_PAIR(2));
+  init_pair(3, COLOR_YELLOW, 232);  // FUNZIONI PER USARE I COLORI
+  attron(COLOR_PAIR(3));
   drawRect(startX - 4, startY - 11, width + 13, heigth + 4, enemyList);
   mvprintw(startX - 2, startY + 5, "SCORE: %lu", *points);
   if (character.getNumberLife() == 3)
@@ -190,7 +197,7 @@ void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
     mvprintw(startX - 2, startX + 50, "LIFE: c-c");
   if (character.getNumberLife() == 1)
     mvprintw(startX - 2, startX + 50, "LIFE: c");
-  attroff(COLOR_PAIR(2));  // CHIUSURA DEL COLORE ROSSO E BLU
+  attroff(COLOR_PAIR(3));  // CHIUSURA DEL COLORE
 }
 
 int DrawWindow::lenghtList(pEnemyList list) {
@@ -209,26 +216,45 @@ void DrawWindow::printCharacterStats(pEnemyList list, Character character) {
   int cont = 0;
   int BarStart = 58;      // gestisce dove partono gli oggetti della barra
   int AddBar = BarStart;  // cicla per aggiungere un cordinata
+  int healtColorPair;
 
   if (lenghtList(list) > 0) {
     mvprintw(i, X_ElencoNemici, "Enemy left: %d", lenghtList(list));
   } else {
     mvprintw(i, X_ElencoNemici, "[ALL ENEMY DEFEATED!]");
   }
-  mvprintw(i, BarStart - 4, "HP");
+  
 
-  // CODICE CHE GESTISCE LA BARRA DELLA VITA
-  init_pair(1, COLOR_RED, 232);
-  attron(COLOR_PAIR(1));
-  mvprintw(i, BarStart, "          ");  // crea sfondo nero barra
+  // CODICE CHE GESTISCE LA BARRA DELLA VITA ------------------------------------------------------------------------------
+
+  mvprintw(i, BarStart - 4, "HP");                                 // MOSTRA LA SCRITTA HP PRIMA DELLA BARRA
+
+  if(character.getLife() > 60) {                                   // GESTISCE IL COLORE DELLA BARRA TRA 100 E 61
+    healtColorPair = 2;
+    init_pair(healtColorPair, COLOR_GREEN, 232);
+    attron(COLOR_PAIR(healtColorPair));
+  }
+  if (character.getLife() >= 25 && character.getLife() <= 60) {    // GESTISCE IL COLORE DELLA BARRA TRA 50 E 25
+    healtColorPair = 3;
+    init_pair(healtColorPair, COLOR_YELLOW, 232);
+    attron(COLOR_PAIR(healtColorPair));
+  }
+  if (character.getLife() < 25) {                                  // GESTISCE IL COLORE DELLA BARRA TRA 24 E 0
+    healtColorPair = 1;
+    init_pair(healtColorPair, COLOR_RED, 232);
+    attron(COLOR_PAIR(healtColorPair));
+  }
+
+  mvprintw(i, BarStart, "          ");                             // SFONDO NERO BARRA
   for (cont = 0; volt <= (character.getLife() - 1) / 10; volt++) {
     mvprintw(i, AddBar, "=");
     AddBar++;
   }
-  attroff(COLOR_PAIR(1));
-  mvprintw(i, BarStart - 1, "[");
+  attroff(COLOR_PAIR(healtColorPair));                             
+  mvprintw(i, BarStart - 1, "[");                                  // GERERA I CARATTERI PER IL CONTENITORE DELLA VITA 
   mvprintw(i, BarStart + 10, "]");
-  // FINE CODICE BARRA DELLA VITA
+
+  // FINE CODICE BARRA DELLA VITA ------------------------------------------------------------------------------------------
 
   while (list != NULL) {
     if (list->enemy.getX() != 0) {
