@@ -27,7 +27,7 @@ LEGENDA:
 
 ✔ Armi per il player
 
-✖ Nemici
+✔ Nemici
 
 ✖ Sistema per le vite e il punteggio
 
