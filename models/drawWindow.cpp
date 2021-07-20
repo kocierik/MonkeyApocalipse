@@ -7,10 +7,18 @@
 DrawWindow::DrawWindow() {}
 
 /*
+  I COLORI SONO INPARENTATI DA UN ID (IL PRIMO VALORE DI INIT_PAIR)
   I COLORI HANNO ID:
   - ROSSO = 1
   - VERDE = 2
   - GIALLO = 3
+  - bianco = 4
+
+  (questi sono riservati solo per la barra della salute):
+  - ROSSO = 5
+  - GIALLO = 6
+  - VERDE = 7
+  - BLACK = 8;
 */
 
 void DrawWindow::drawMenu() {
@@ -44,23 +52,34 @@ void DrawWindow::drawMenu() {
 }
 
 void DrawWindow::printCommand(int *cnt) {
-  if (*cnt == 0)
-    mvprintw(12, 5, "==>  (X) START THE FIGHT!");
-  else
-    mvprintw(12, 5, "     START THE FIGHT!    ");
-  if (*cnt == 1)
-    mvprintw(14, 5, "==>  (X) HOW TO PLAY");
-  else
-    mvprintw(14, 5, "     HOW TO PLAY    ");
-  if (*cnt == 2)
-    mvprintw(16, 5, "==>  (X) CREDITS");
-  else
-    mvprintw(16, 5, "     CREDITS      ");  // MUOVO CON LE FRECCE
-  if (*cnt == 3)
-    mvprintw(18, 5, "==>  (X) QUIT");
-  else
-    mvprintw(18, 5, "     QUIT     ");
-  mvprintw(20, 5, "Press space to continue or use the arrow to move.");
+  init_pair(4, COLOR_WHITE, COLOR_RED);
+
+  if (*cnt == 0){
+    attron(COLOR_PAIR(4));
+    mvprintw(12, 5, "==>  (X) START THE FIGHT! ");
+    attroff(COLOR_PAIR(4));
+  }else{
+    mvprintw(12, 5, "     START THE FIGHT!     ");}
+  if (*cnt == 1){
+    attron(COLOR_PAIR(4));
+    mvprintw(14, 5, "==>  (?) HOW TO PLAY ");
+    attroff(COLOR_PAIR(4));
+  }else{
+    mvprintw(14, 5, "     HOW TO PLAY     ");}
+  if (*cnt == 2){
+    attron(COLOR_PAIR(4));
+    mvprintw(16, 5, "==>  (©) CREDITS ");
+    attroff(COLOR_PAIR(4));
+  }else{
+    mvprintw(16, 5, "     CREDITS       "); }
+  if (*cnt == 3){
+    attron(COLOR_PAIR(4));
+    mvprintw(18, 5, "<==  (X) QUIT ");
+    attroff(COLOR_PAIR(4));
+  }else{
+    mvprintw(18, 5, "     QUIT      ");}
+
+  mvprintw(21, 5, "Press space to continue or use the arrow to move.");
 }
 
 void DrawWindow::printCredits() {
@@ -249,24 +268,29 @@ void DrawWindow::printCharacterStats(pEnemyList list, Character character) {
   mvprintw(i, BarStart - 4, "HP");                                 // MOSTRA LA SCRITTA HP PRIMA DELLA BARRA
 
   if(character.getLife() > 60) {                                   // GESTISCE IL COLORE DELLA BARRA TRA 100 E 61
-    healtColorPair = 2;
-    init_pair(healtColorPair, COLOR_GREEN, 232);
+    healtColorPair = 6;
+    init_pair(healtColorPair, COLOR_GREEN, COLOR_GREEN);
     attron(COLOR_PAIR(healtColorPair));
   }
   if (character.getLife() >= 25 && character.getLife() <= 60) {    // GESTISCE IL COLORE DELLA BARRA TRA 50 E 25
-    healtColorPair = 3;
-    init_pair(healtColorPair, COLOR_YELLOW, 232);
+    healtColorPair = 5;
+    init_pair(healtColorPair, COLOR_YELLOW, COLOR_YELLOW);
     attron(COLOR_PAIR(healtColorPair));
   }
   if (character.getLife() < 25) {                                  // GESTISCE IL COLORE DELLA BARRA TRA 24 E 0
-    healtColorPair = 1;
-    init_pair(healtColorPair, COLOR_RED, 232);
+    healtColorPair = 4;
+    init_pair(healtColorPair, COLOR_RED, COLOR_RED);
     attron(COLOR_PAIR(healtColorPair));
   }
 
+  init_pair(8, 233, 233);
+  attron(COLOR_PAIR(8));
   mvprintw(i, BarStart, "          ");                             // SFONDO NERO BARRA
-  for (cont = 0; volt <= (character.getLife() - 1) / 10; volt++) { // GENERA IL SIMBOLO "=" OGNI DIECI UNITÀ DI VITA 
-    mvprintw(i, AddBar, "=");
+  attroff(COLOR_PAIR(8));
+
+  attron(COLOR_PAIR(healtColorPair));
+  for (cont = 0; volt <= (character.getLife() - 1) / 10; volt++) { // GENERA IL SIMBOLO " " OGNI DIECI UNITÀ DI VITA 
+    mvprintw(i, AddBar, " ");
     AddBar++;
   }
   attroff(COLOR_PAIR(healtColorPair));                             
