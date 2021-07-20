@@ -4,6 +4,11 @@
 #include <iostream>
 #include <ncurses.h>
 
+#define FRAMEGAMEX 7
+#define FRAMEGAMEY 22
+#define GAMEWIDTH 71   // 49
+#define GAMEHEIGTH 20  // 13
+
 DrawWindow::DrawWindow() {}
 
 /*
@@ -215,7 +220,7 @@ Position DrawWindow::randomPosition(int startRange, int endRange) {
 }
 
 void DrawWindow::drawMountain(){
-
+  
 }
 
 
