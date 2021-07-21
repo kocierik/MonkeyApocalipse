@@ -57,7 +57,10 @@ void EngineGame::shootBullet() {
   while (bullet != NULL) {
     bullet->x += bullet->speed;
     move(bullet->y, bullet->x);
+    init_pair(10, COLOR_YELLOW, -1); // SPARA BANANE GIALLE
+    attron(COLOR_PAIR(10));
     printw("-");
+    attroff(COLOR_PAIR(10));
     bullet = bullet->next;
   }
 }
@@ -343,9 +346,9 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     destroyBullet(this->shoots, 1);
     destroyBullet(this->shootsEnemys, -1);
     checkDeath(pause, character);
-    mvprintw(0, 0, "roomLenght: %d", drawWindow.lenghtRoom(listRoom));
-    mvprintw(1, 0, "round: %d", round);
-    mvprintw(2, 0, "MAXround: %d", maxRound);
+    mvprintw(24, 54, "ROOM:        %d", drawWindow.lenghtRoom(listRoom));
+    mvprintw(25, 54, "ROUND:       %d", round);
+    mvprintw(26, 54, "ROUND MAX:   %d", maxRound);
     timeout(50);
     isPause(direction, pause);
   }

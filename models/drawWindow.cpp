@@ -15,11 +15,14 @@ DrawWindow::DrawWindow() {}
 
 /*
   I COLORI SONO INPARENTATI DA UN ID (IL PRIMO VALORE DI INIT_PAIR)
-  I COLORI HANNO ID:
+  I COLORI HANNO ID IN BASE AL LORO UTILIZZO:
   - ROSSO = 1
   - VERDE = 2
   - GIALLO = 3
-  - bianco = 4
+  - BIANCO = 4
+  - PROIETTILI GIALLI = 10
+  - GIALLO BORDO = 11
+  . MENU = 12
 
   (questi sono riservati solo per la barra della salute):
   - ROSSO = 5
@@ -59,33 +62,33 @@ void DrawWindow::drawMenu() {
 }
 
 void DrawWindow::printCommand(int *cnt) {
-  init_pair(4, COLOR_WHITE, COLOR_RED);
+  init_pair(12, COLOR_WHITE, COLOR_RED);
 
   if (*cnt == 0) {
-    attron(COLOR_PAIR(4));
-    mvprintw(12, 5, "==>  (X) START THE FIGHT! ");
-    attroff(COLOR_PAIR(4));
+    attron(COLOR_PAIR(12));
+    mvprintw(12, 5, ">>>  (+) START THE FIGHT! ");
+    attroff(COLOR_PAIR(12));
   } else {
     mvprintw(12, 5, "     START THE FIGHT!     ");
   }
   if (*cnt == 1) {
-    attron(COLOR_PAIR(4));
-    mvprintw(14, 5, "==>  (?) HOW TO PLAY ");
-    attroff(COLOR_PAIR(4));
+    attron(COLOR_PAIR(12));
+    mvprintw(14, 5, ">>>  (?) HOW TO PLAY ");
+    attroff(COLOR_PAIR(12));
   } else {
     mvprintw(14, 5, "     HOW TO PLAY     ");
   }
   if (*cnt == 2) {
-    attron(COLOR_PAIR(4));
-    mvprintw(16, 5, "==>  (©) CREDITS ");
-    attroff(COLOR_PAIR(4));
+    attron(COLOR_PAIR(12));
+    mvprintw(16, 5, ">>>  (©) CREDITS ");
+    attroff(COLOR_PAIR(12));
   } else {
     mvprintw(16, 5, "     CREDITS       ");
   }
   if (*cnt == 3) {
-    attron(COLOR_PAIR(4));
-    mvprintw(18, 5, "<==  (X) QUIT ");
-    attroff(COLOR_PAIR(4));
+    attron(COLOR_PAIR(12));
+    mvprintw(18, 5, "<<<  (X) QUIT ");
+    attroff(COLOR_PAIR(12));
   } else {
     mvprintw(18, 5, "     QUIT      ");
   }
@@ -224,16 +227,23 @@ void DrawWindow::drawRect(int startX, int startY, int width, int heigth,
 void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
                            long *points, Character character,
                            pEnemyList enemyList) {
-  init_pair(3, COLOR_YELLOW, 232);  // FUNZIONI PER USARE I COLORI
+  mvprintw(startX - 2, startY + 5, "SCORE:");
+  mvprintw(startX - 2, startX + 47, "LIFE:");
+
+  init_pair(11, COLOR_YELLOW, 232); 
+  attron(COLOR_PAIR(11));
+  drawRect(startX - 4, startY - 11, width + 13, heigth + 9, enemyList, 0);
+  attroff(COLOR_PAIR(11));
+
+  init_pair(3, COLOR_YELLOW, -1);  // FUNZIONI PER USARE I COLORI
   attron(COLOR_PAIR(3));
-  drawRect(startX - 4, startY - 11, width + 13, heigth + 4, enemyList, 0);
-  mvprintw(startX - 2, startY + 5, "SCORE: %lu", *points);
+  mvprintw(startX - 2, startY + 12, "%lu", *points);
   if (character.getNumberLife() == 3)
-    mvprintw(startX - 2, startX + 50, "LIFE: c-c-c");
+    mvprintw(startX - 2, startX + 53, "[c] [c] [c]");
   if (character.getNumberLife() == 2)
-    mvprintw(startX - 2, startX + 50, "LIFE: c-c");
+    mvprintw(startX - 2, startX + 53, "[c] [c]");
   if (character.getNumberLife() == 1)
-    mvprintw(startX - 2, startX + 50, "LIFE: c");
+    mvprintw(startX - 2, startX + 53, "[c]");
   attroff(COLOR_PAIR(3));  // CHIUSURA DEL COLORE
 }
 
@@ -293,6 +303,7 @@ int DrawWindow::lenghtRoom(pRoom list) {
 
 void DrawWindow::printCharacterStats(pEnemyList list, Character character) {
   int i = 22;
+  int reachBound = 0;       // VEDI RIGA 363
   int X_ElencoNemici = 24;  // gestisce la x da dove inizia la lista dei nemici
   int volt = 0;
   int cont = 0;
@@ -349,11 +360,12 @@ void DrawWindow::printCharacterStats(pEnemyList list, Character character) {
   // FINE CODICE BARRA DELLA VITA
   // ------------------------------------------------------------------------------------------
 
-  while (list != NULL) {
+  while (list != NULL && reachBound < 6) {  // REACHBOUND SERVE A DETERMINARE IL LIMITE DI NEMICI VISUALIZZABILI NELLA LISTA DELL'HUD
     if (list->enemy.getX() != 0) {
-      mvprintw(i, X_ElencoNemici, "- Base Enemy: %d HP", list->enemy.getLife());
+      mvprintw(i, X_ElencoNemici, "- Base Hunter: %d HP", list->enemy.getLife());
     }
     i++;
+    reachBound++;
     list = list->next;
   }
 }
