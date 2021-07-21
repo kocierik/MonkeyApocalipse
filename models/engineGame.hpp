@@ -1,5 +1,3 @@
-
-
 #ifndef ENEMY
 #define ENEMY
 #include "enemy.hpp"
@@ -31,6 +29,8 @@ class EngineGame {
 
   void destroyBullet(Pbullet &shoots, int isEnemy);
   pEnemyList destroyEnemy(pEnemyList list, Enemy enemy);
+  pPosition deleteBonus (pPosition list, pPosition bonus);
+
   void checkEnemyCollision(Character &character, pEnemyList enemyList);
   void checkShootEnemyCollision(pEnemyList enemys, Character &character,
                                 Pbullet &shoots, int isEnemy);
@@ -43,7 +43,7 @@ class EngineGame {
   pEnemyList generateEnemy(int *monsterCount, char character, int damage,
                            int life, pEnemyList list, int &round, DrawWindow drawWindow);
   pPosition generateOneBonus (DrawWindow drawWindow, int *bonusCount, pPosition list);
-  void getBonus (int x, int y, pPosition bonusList, long &points);
+  pPosition getBonus (int x, int y, pPosition bonusList, long &points);
 
   void checkDeath(bool &pause, Character &character);
   void engine(Character character, DrawWindow printer);

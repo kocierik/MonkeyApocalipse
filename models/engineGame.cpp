@@ -121,6 +121,30 @@ pEnemyList EngineGame::destroyEnemy(pEnemyList list, Enemy enemy) {
   return head;
 }
 
+pPosition EngineGame::deleteBonus (pPosition list, pPosition bonus) {
+  pPosition head = list, prev = list, tmp;
+  while (list != NULL) {
+    if (list -> x == bonus -> x) {
+      if (list == head) {
+        tmp = head;
+        head = list -> next;
+        delete tmp;
+        prev = head;
+        list = head;
+      } else {
+        tmp = prev -> next;
+        prev -> next = list -> next;
+        delete tmp;
+        list = prev -> next;
+      }
+    } else {
+      prev = list;
+      list = list -> next;
+    }
+  }
+  return head;
+}
+
 void EngineGame::checkEnemyCollision(Character &character,
                                      pEnemyList enemyList) {
   while (enemyList != NULL) {
@@ -277,49 +301,50 @@ pPosition EngineGame::generateOneBonus (DrawWindow drawWindow, int *bonusCount, 
   return head;
 }
 
-void getBonus (int x, int y, pPosition bonusList, long &points) {
-  pPosition tmphead = bonusList;
-  bool control = true;
+pPosition EngineGame::getBonus (int x, int y, pPosition bonusList, long &points) {
+  pPosition tmpHead = bonusList;
 
-  while (bonusList -> next != NULL && control) {
+  while (bonusList -> next != NULL) {
     // Appena si trova il bonus raccolto nella lista, si attiva un effetto e lo si elimina da quest'ultima
     if (bonusList -> x == x && bonusList -> y == y && bonusList -> skin == '?') {
       srand (time (0));
       int randCase = rand() % NBONUS;   // Per n casi dello switch ci saranno n+1 tipologie di bonus, e dunque NBONUS = n + 1
 
       /* Bonus/Malus da implementare
-          - Moltiplicatore di punteggio
-          - Personaggio immobile per n secondi
+          - B: Moltiplicatore di punteggio
+          - M: Personaggio immobile per n secondi
+          - M: "Banana fragrance"
 
         Per ogni bonus/malus scrivere a schermo relativo messaggio
       */
       // Per ogni malus ci sono 2 bonus, oppure per ogni malus ci sono 3 bonus (il tutto al fine di incentivarne la raccolta ed equilibrare gli effetti)
       switch (randCase) {
-        case 0:     // Bonus name: "Bunch of bananas"
+        case 0:     // Bonus name: "BUNCH OF BANANAS"
           points += 50;
           break;
-        case 1:     // Bonus name: "Crate of bananas"
+        case 1:     // Bonus name: "CRATE OF BANANAS"
           points += 300;
           break;
-        case 2:     // Bonus name: "Supply of bananas"
+        case 2:     // Bonus name: "SUPPLY OF BANANAS"
           points += 1000;
           break;
-        case 3:     // Malus name: "Rotten bananas"
+        case 3:     // Malus name: "ROTTEN BANANAS"
           points -= 100;
           break;
-        case 4:     // Malus name: "Banana spider"
+        case 4:     // Malus name: "BANANAS SPIDER"
           // Si toglie un po' di vita
           break;
         
-        
         default:
-          control = false;
-          break;
+          bonusList = deleteBonus (tmpHead, bonusList);
+          return bonusList;
+          //break;
       }
     }
     bonusList = bonusList -> next;
   }
-} 
+  return NULL;
+}
 
 
 void EngineGame::checkDeath(bool &pause, Character &character) {
