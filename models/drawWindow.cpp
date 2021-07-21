@@ -243,7 +243,6 @@ pPosition DrawWindow::generateMountain(pPosition list){
   while(mountainNumber>0){
     // srand((int) time(0));
     int x = randomPosition(40,70).x;
-    // srand((int) time(0));
     int y = randomPosition(8,19).y;
     pPosition head = new Position;
     head->x = x;
@@ -379,18 +378,25 @@ pRoom DrawWindow::saveRoom(pPosition listMountain, pRoom listRoom){
   return listRoom;
 }
 
-void DrawWindow::changeRoom(Character &character, int &monsterCount, int &round,
-                            pEnemyList &list, pPosition &listMountain, pRoom &listRoom) {
-  bool isEmpty = false;
-  if (character.getX() == GAMEWIDTH) {
-    character.setX(23);
-    listRoom->listMountain = generateMountain(listMountain);
-    listRoom = saveRoom(listMountain,listRoom);
-    monsterCount = round;
-    list = list->next;
-    isEmpty = true;
-  } else if(character.getX() == 22 ){
+pRoom DrawWindow::changeRoom(Character &character, int &monsterCount, int &round,
+                            pEnemyList &list, pPosition &listMountain, pRoom listRoom, int &maxRound) {
+  if(character.getX() == GAMEWIDTH) {
+    if(maxRound>lenghtRoom(listRoom)){ 
+      listRoom = listRoom->prec;
+      return listRoom;
+    }
+    else{
+      character.setX(23);
+      listRoom->listMountain = generateMountain(listMountain);
+      listRoom = saveRoom(listMountain,listRoom);
+      monsterCount = round;
+      list = list->next;
+      maxRound+=1;
+    }
+  } else if(character.getX() == 22){
     character.setX(GAMEWIDTH-1);
+    listRoom = listRoom->next; 
+    round-=1;
   }
-
+    return listRoom;
 }
