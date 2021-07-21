@@ -29,6 +29,8 @@ LEGENDA:
 
 ✔ Nemici
 
+✖ Dare una vita alle montagne
+
 ✖ Sistema per le vite e il punteggio
 
 ✖ Nuove tipologie di nemici
