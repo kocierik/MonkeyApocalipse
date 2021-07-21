@@ -5,10 +5,10 @@
 #include "enemy.hpp"
 #endif
 
-struct Room{
+struct Room {
   pPosition listMountain;
-  Room* next;
-  Room* prec;
+  Room *next;
+  Room *prec;
 };
 typedef Room *pRoom;
 
@@ -31,7 +31,8 @@ class DrawWindow {
   void printCharacterStats(pEnemyList list, Character character);
   void printEnemy(pEnemyList list, DrawWindow drawWindow);
   pRoom changeRoom(Character &character, int &monsterCount, int &round,
-                  pEnemyList &list, pPosition &listMountain, pRoom listRoom, int &maxRound);
+                   pEnemyList &list, pPosition &listMountain, pRoom listRoom,
+                   int &maxRound);
   void moveEnemy(pEnemyList list, Character character, DrawWindow drawWindow,
                  long points);
   Position randomPosition(int startRange, int endRange);

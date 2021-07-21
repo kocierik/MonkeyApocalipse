@@ -298,8 +298,6 @@ void EngineGame::increaseCount(int &whileCount, long &points,
   this->whileCountEnemy += 1;
 }
 
-
-
 void EngineGame::getInput(int &direction) { direction = getch(); }
 
 void EngineGame::isPause(int &direction, bool &pause) {
@@ -316,8 +314,10 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
   pPosition mountainList = NULL;
   pRoom listRoom = new Room;
   while (!pause) {
-    listRoom = drawWindow.changeRoom(character, monsterCount, round, enemyList,mountainList,listRoom, maxRound);
-    enemyList = generateEnemy(&monsterCount, 'X', 10, 100, enemyList, round, drawWindow);
+    listRoom = drawWindow.changeRoom(character, monsterCount, round, enemyList,
+                                     mountainList, listRoom, maxRound);
+    enemyList = generateEnemy(&monsterCount, 'X', 10, 100, enemyList, round,
+                              drawWindow);
     getInput(direction);
     moveCharacter(character, direction);
     clear();
@@ -328,7 +328,8 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     drawWindow.drawStats(this->frameGameX, this->frameGameY, this->widht,
                          this->height, &points, character, enemyList);
     drawWindow.printCharacterStats(enemyList, character);
-    if(drawWindow.lenghtRoom(listRoom) > 1) drawWindow.printMountain(listRoom->next->listMountain);
+    if (drawWindow.lenghtRoom(listRoom) > 1)
+      drawWindow.printMountain(listRoom->next->listMountain);
     increaseCount(this->whileCount, points, enemyList);
     drawWindow.printEnemy(enemyList, drawWindow);
     drawWindow.moveEnemy(enemyList, character, drawWindow, points);

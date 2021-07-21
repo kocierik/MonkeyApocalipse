@@ -29,7 +29,8 @@ class EngineGame {
   void choiceGame(DrawWindow drawWindow, int *direction, int *selection);
   void runGame(Character character, DrawWindow drawWindow, int direction);
   pEnemyList generateEnemy(int *monsterCount, char character, int damage,
-                           int life, pEnemyList list, int &round, DrawWindow drawWindow);
+                           int life, pEnemyList list, int &round,
+                           DrawWindow drawWindow);
   void checkShootEnemyCollision(pEnemyList enemys, Character &character,
                                 Pbullet &shoots, int isEnemy);
   void checkEnemyCollision(Character &character, pEnemyList enemyList);
