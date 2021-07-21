@@ -183,27 +183,31 @@ bool EngineGame::isBonus (int x, int y) { return mvinch(y, x) == '?'; }
 void EngineGame::moveCharacter(Character &character, int direction, pPosition bonusList) {
   switch (direction) {  // CONTROLLO IL TASTO SPINTO
     case KEY_UP:
-      if (isEmpty (character.getX(), character.getY() - 1)) {
+      if (isEmpty (character.getX(), character.getY() - 1)) character.directionUp();
+      else if (isBonus (character.getX(), character.getY() - 1)) {
         character.directionUp();
-        if (isBonus (character.getX(), character.getY() - 1)) getBonus (character.getX(), character.getY() - 1, bonusList);
+        getBonus (character.getX(), character.getY(), bonusList);
       }
       break;
     case KEY_DOWN:
-      if (isEmpty (character.getX(), character.getY() + 1)) {
+      if (isEmpty (character.getX(), character.getY() + 1)) character.directionDown();
+      else if (isBonus (character.getX(), character.getY() + 1)) {
         character.directionDown();
-        if (isBonus (character.getX(), character.getY() + 1)) getBonus (character.getX(), character.getY() + 1, bonusList);
+        getBonus (character.getX(), character.getY(), bonusList);
       }
       break;
     case KEY_LEFT:
-      if (isEmpty (character.getX() - 1, character.getY())) {
-        character.directionLeft();
-        if (isBonus (character.getX() - 1, character.getY())) getBonus (character.getX() - 1, character.getY(), bonusList);
+      if (isEmpty (character.getX() - 1, character.getY())) character.directionLeft();
+      else if (isBonus (character.getX() - 1, character.getY())) {
+          character.directionLeft();
+          getBonus (character.getX(), character.getY(), bonusList);
       }
       break;
     case KEY_RIGHT:
-      if (isEmpty (character.getX() + 1, character.getY())) {
+      if (isEmpty (character.getX() + 1, character.getY())) character.directionRight();
+      else if (isBonus (character.getX() + 1, character.getY())) {
         character.directionRight();
-        if (isBonus (character.getX() + 1, character.getY())) getBonus (character.getX() + 1, character.getY(), bonusList);
+        getBonus (character.getX(), character.getY(), bonusList);
       }
       break;  // ESCE DALLO SWITCH
     case 'e':
