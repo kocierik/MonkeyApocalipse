@@ -260,7 +260,7 @@ void EngineGame::choiceGame(DrawWindow drawWindow, int *direction,
   clear();
 }
 
-pEnemyList EngineGame::generateEnemy(int *monsterCount, char character,
+pEnemyList EngineGame::generateEnemy(int *monsterCount, char skin,
                                      int damage, int life, pEnemyList list,
                                      int &round, DrawWindow drawWindow) {
   bool isEmpty = false;
@@ -268,7 +268,7 @@ pEnemyList EngineGame::generateEnemy(int *monsterCount, char character,
     int x = drawWindow.randomPosition(40, 70).x;
     int y = drawWindow.randomPosition(8, 19).y;
     pEnemyList head = new EnemyList;
-    Enemy enemy(x, y, character, damage, life, 1);
+    Enemy enemy(x, y, skin, damage, life, 1);
     head->enemy = enemy;
     head->next = list;
     *monsterCount -= 1;
@@ -288,17 +288,26 @@ pEnemyList EngineGame::generateEnemy(int *monsterCount, char character,
   return list;
 }
 
-pPosition EngineGame::generateOneBonus (DrawWindow drawWindow, int *bonusCount, pPosition list) {
+pPosition EngineGame::generateBonus (DrawWindow drawWindow, int *bonusCount, pPosition bonusList) {
   /**
-   * Genera SOLO la posizione di un bonus e la inserisce in cima alla lista data
-   * DUBBIO: Perchè nei parametri da errore se si scrive "Position list" anzochè "Position* list"? 
-  */
+   * Genera SOLO la posizione di un bonus e la inserisce in cima alla lista data.
   pPosition head = new Position;
   head -> x = drawWindow.randomPosition (40, 70).x;
   head -> y = drawWindow.randomPosition (8, 19).y;
   head -> skin = '?';
-  head -> next = list;
+  head -> next = bonusList;
   return head;
+  */
+  while (*bonusCount > 0) {
+    pPosition tmpHead = new Position;
+    tmpHead -> x = drawWindow.randomPosition (40, 70).x;
+    tmpHead -> y = drawWindow.randomPosition (8, 19).y;
+    tmpHead -> skin = '?';
+    tmpHead -> next = bonusList;
+    bonusList = tmpHead;
+    *bonusCount -= 1;
+  }
+  return bonusList;
 }
 
 pPosition EngineGame::getBonus (int x, int y, pPosition bonusList, long &points) {
@@ -313,7 +322,12 @@ pPosition EngineGame::getBonus (int x, int y, pPosition bonusList, long &points)
       /* Bonus/Malus da implementare
           - B: Moltiplicatore di punteggio
           - M: Personaggio immobile per n secondi
-          - M: "Banana fragrance"
+          - M: "Banana fragrance" Spawn di n nemici
+        
+        PROBLEMA:
+          - Cordinate sempre identiche
+          - Non vi sono effetto quando ci si va sopra
+          - Qunado si va sopra, la 'C' svanisce e rimane il '?'
 
         Per ogni bonus/malus scrivere a schermo relativo messaggio
       */
@@ -395,7 +409,6 @@ void EngineGame::increaseCount(int &whileCount, long &points,
   this->whileCountEnemy += 1;
 }
 
-
 void EngineGame::getInput(int &direction) { direction = getch(); }
 
 void EngineGame::isPause(int &direction, bool &pause) {
@@ -411,7 +424,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
   pPosition bonusList = NULL, mountainList = NULL;
   while (!pause) {
     enemyList = generateEnemy (&monsterCount, 'X', 10, 100, enemyList, round, drawWindow);
-    bonusList = generateOneBonus (drawWindow, &bonusCount, bonusList);  // Funzione da completare a livello semantico
+    bonusList = generateBonus (drawWindow, &bonusCount, bonusList);  // Funzione da completare a livello semantico
     getInput(direction);
     moveCharacter(character, direction, bonusList, points);
     clear();
@@ -423,9 +436,11 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
                         this->height, &points, character, enemyList);
     drawWindow.printCharacterStats(enemyList, character);
     drawWindow.printMountain(mountainList);
+    drawWindow.printBonus (bonusList);
     increaseCount(this->whileCount, points, enemyList);
     drawWindow.printEnemy(enemyList, drawWindow);
-    drawWindow.changeRoom(character, monsterCount, round, enemyList,mountainList);
+    drawWindow.changeRoom(character, monsterCount, bonusCount, round, enemyList, mountainList);
+    
     drawWindow.moveEnemy(enemyList, character, drawWindow, points);
     shootBullet();
     shootEnemyBullet();

@@ -26,8 +26,8 @@ class EngineGame {
   void enemyShootBullets(pEnemyList listEnemy);
   void shootBullet();
   void shootEnemyBullet();
-
   void destroyBullet(Pbullet &shoots, int isEnemy);
+
   pEnemyList destroyEnemy(pEnemyList list, Enemy enemy);
   pPosition deleteBonus (pPosition list, pPosition bonus);
 
@@ -40,9 +40,9 @@ class EngineGame {
   void moveCharacter(Character &character, int direction, pPosition bonusList, long &points);
   void choiceGame(DrawWindow drawWindow, int *direction, int *selection);
 
-  pEnemyList generateEnemy(int *monsterCount, char character, int damage,
+  pEnemyList generateEnemy(int *monsterCount, char skin, int damage,
                            int life, pEnemyList list, int &round, DrawWindow drawWindow);
-  pPosition generateOneBonus (DrawWindow drawWindow, int *bonusCount, pPosition list);
+  pPosition generateBonus (DrawWindow drawWindow, int *bonusCount, pPosition bonusList);
   pPosition getBonus (int x, int y, pPosition bonusList, long &points);
 
   void checkDeath(bool &pause, Character &character);

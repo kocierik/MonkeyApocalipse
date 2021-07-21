@@ -12,7 +12,7 @@
 DrawWindow::DrawWindow() {}
 
 /*
-  I COLORI SONO INPARENTATI DA UN ID (IL PRIMO VALORE DI INIT_PAIR)
+  I COLORI SONO IMPARENTATI DA UN ID (IL PRIMO VALORE DI INIT_PAIR)
   I COLORI HANNO ID:
   - ROSSO = 1
   - VERDE = 2
@@ -359,12 +359,21 @@ void DrawWindow::moveEnemy(pEnemyList list, Character character,
   }
 }
 
-void DrawWindow::changeRoom(Character &character, int &monsterCount, int &round,
+void DrawWindow::printBonus (pPosition bonusList) {
+  while (bonusList != NULL) {
+    printCharacter (bonusList -> x, bonusList -> y, bonusList -> skin);
+    bonusList = bonusList -> next;
+  }
+}
+
+void DrawWindow::changeRoom(Character &character, int &monsterCount, int &bonusCounter, int &round,
                             pEnemyList &list, pPosition &listMountain) {
   if (character.getX() == 71) {
     character.setX(23);
     listMountain = generateMountain(listMountain);
     monsterCount = round;
+    if (round <= 6) bonusCounter = (int)(round / 2);
+    else bonusCounter = 3;
     list = list->next;
   }
 }
