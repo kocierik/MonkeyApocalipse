@@ -4,6 +4,14 @@
 #define ENEMY
 #include "enemy.hpp"
 #endif
+
+struct Room{
+  pPosition listMountain;
+  Room* next;
+  Room* prec;
+};
+typedef Room *pRoom;
+
 class DrawWindow {
  public:
   DrawWindow();
@@ -19,13 +27,15 @@ class DrawWindow {
   void drawStats(int startX, int startY, int width, int heigth, long *points,
                  Character character, pEnemyList enemyList);
   int lenghtList(pEnemyList list);
+  int lenghtRoom(pRoom list);
   void printCharacterStats(pEnemyList list, Character character);
   void printEnemy(pEnemyList list, DrawWindow drawWindow);
   void changeRoom(Character &character, int &monsterCount, int &round,
-                  pEnemyList &list, pPosition &listMountain);
+                  pEnemyList &list, pPosition &listMountain, pRoom &listRoom);
   void moveEnemy(pEnemyList list, Character character, DrawWindow drawWindow,
                  long points);
   Position randomPosition(int startRange, int endRange);
   pPosition generateMountain(pPosition list);
   void printMountain(pPosition list);
+  pRoom saveRoom(pPosition listMountain, pRoom listRoom);
 };

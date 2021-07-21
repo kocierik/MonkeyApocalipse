@@ -232,8 +232,8 @@ Position DrawWindow::randomPosition(int startRange, int endRange) {
   pos.x = startRange + (std::rand() % (endRange - startRange + 1));
   pos.y = startRange + (std::rand() % (endRange - startRange + 1));
   while (!(mvinch(pos.y, pos.x) == ' ')) {
-    pos.x = startRange + (std::rand() % (endRange - startRange + 1));
-    pos.y = startRange + (std::rand() % (endRange - startRange + 1));
+    pos.x = startRange + (std::rand() % (endRange - startRange) + 1);
+    pos.y = startRange + (std::rand() % (endRange - startRange) + 1);
   }
   return pos;
 }
@@ -241,7 +241,9 @@ Position DrawWindow::randomPosition(int startRange, int endRange) {
 pPosition DrawWindow::generateMountain(pPosition list){
   int mountainNumber = rand() % 8 + 1;
   while(mountainNumber>0){
+    // srand((int) time(0));
     int x = randomPosition(40,70).x;
+    // srand((int) time(0));
     int y = randomPosition(8,19).y;
     pPosition head = new Position;
     head->x = x;
@@ -254,7 +256,7 @@ pPosition DrawWindow::generateMountain(pPosition list){
   return list;
 }
 
-void DrawWindow::printMountain(pPosition list) {
+void DrawWindow::printMountain(pPosition list) {      // FIX
   pPosition mountainList = list;
   while (mountainList != NULL) {
     printCharacter(mountainList->x,mountainList->y,mountainList->character);
@@ -265,6 +267,15 @@ void DrawWindow::printMountain(pPosition list) {
 
 int DrawWindow::lenghtList(pEnemyList list) {
   int i = -1;
+  while (list != NULL) {
+    i++;
+    list = list->next;
+  }
+  return i;
+}
+
+int DrawWindow::lenghtRoom(pRoom list) {
+  int i = 0;
   while (list != NULL) {
     i++;
     list = list->next;
@@ -359,12 +370,27 @@ void DrawWindow::moveEnemy(pEnemyList list, Character character,
   }
 }
 
+pRoom DrawWindow::saveRoom(pPosition listMountain, pRoom listRoom){
+  pRoom head = new Room;
+  head->listMountain = listMountain;
+  head->next = listRoom;
+  listRoom->prec = head;
+  listRoom = head;
+  return listRoom;
+}
+
 void DrawWindow::changeRoom(Character &character, int &monsterCount, int &round,
-                            pEnemyList &list, pPosition &listMountain) {
-  if (character.getX() == 71) {
+                            pEnemyList &list, pPosition &listMountain, pRoom &listRoom) {
+  bool isEmpty = false;
+  if (character.getX() == GAMEWIDTH) {
     character.setX(23);
-    listMountain = generateMountain(listMountain);
+    listRoom->listMountain = generateMountain(listMountain);
+    listRoom = saveRoom(listMountain,listRoom);
     monsterCount = round;
     list = list->next;
+    isEmpty = true;
+  } else if(character.getX() == 22 ){
+    character.setX(GAMEWIDTH-1);
   }
+
 }

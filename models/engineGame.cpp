@@ -313,6 +313,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
   int round = 1;
   pEnemyList enemyList = NULL;
   pPosition mountainList = NULL;
+  pRoom listRoom = new Room;
   while (!pause) {
     enemyList = generateEnemy(&monsterCount, 'X', 10, 100, enemyList, round, drawWindow);
     getInput(direction);
@@ -325,10 +326,10 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     drawWindow.drawStats(this->frameGameX, this->frameGameY, this->widht,
                          this->height, &points, character, enemyList);
     drawWindow.printCharacterStats(enemyList, character);
-    drawWindow.printMountain(mountainList);
+    if(drawWindow.lenghtRoom(listRoom) > 1) drawWindow.printMountain(listRoom->next->listMountain);
     increaseCount(this->whileCount, points, enemyList);
     drawWindow.printEnemy(enemyList, drawWindow);
-    drawWindow.changeRoom(character, monsterCount, round, enemyList,mountainList);
+    drawWindow.changeRoom(character, monsterCount, round, enemyList,mountainList,listRoom);
     drawWindow.moveEnemy(enemyList, character, drawWindow, points);
     shootBullet();
     shootEnemyBullet();
@@ -340,6 +341,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     destroyBullet(this->shoots, 1);
     destroyBullet(this->shootsEnemys, -1);
     checkDeath(pause, character);
+    mvprintw(0, 0, "%d", drawWindow.lenghtRoom(listRoom));
     timeout(50);
     isPause(direction, pause);
   }
