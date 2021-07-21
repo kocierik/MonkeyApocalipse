@@ -324,7 +324,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     drawWindow.printCharacter(character.getX(), character.getY(),
                               character.getCharacter());
     drawWindow.drawRect(this->frameGameX, this->frameGameY, this->widht,
-                        this->height, enemyList);
+                        this->height, enemyList, round);
     drawWindow.drawStats(this->frameGameX, this->frameGameY, this->widht,
                          this->height, &points, character, enemyList);
     drawWindow.printCharacterStats(enemyList, character);

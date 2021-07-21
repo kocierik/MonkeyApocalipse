@@ -17,7 +17,7 @@ class DrawWindow {
   DrawWindow();
   void printCharacter(int x, int y, char c);
   void drawRect(int startX, int startY, int width, int heigth,
-                pEnemyList enemyList);
+                pEnemyList enemyList, int round);
   void drawMenu();
   void printCommand(int *cnt);
   void printCredits();
