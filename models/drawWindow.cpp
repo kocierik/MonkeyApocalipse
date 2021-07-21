@@ -193,7 +193,7 @@ void DrawWindow::printCharacter(int x, int y, char c) {
 }
 
 void DrawWindow::drawRect(int startX, int startY, int width, int heigth,
-                          pEnemyList enemyList) {
+                          pEnemyList enemyList, int round) {
   for (int i = startY; i < width; ++i) {
     mvprintw(startX, i, "-");
     mvprintw(heigth, i, "-");
@@ -202,6 +202,11 @@ void DrawWindow::drawRect(int startX, int startY, int width, int heigth,
     for (int i = startX; i < heigth; ++i) {
       mvprintw(i, startY, "|");
       mvprintw(i, width, "|");
+    }
+  }
+  if(round==1){
+    for (int i = startX; i < heigth; ++i) {
+      mvprintw(i, startY, "|");
     }
   }
   mvprintw(startX, width, "o");
@@ -215,7 +220,7 @@ void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
                            pEnemyList enemyList) {
   init_pair(3, COLOR_YELLOW, 232);  // FUNZIONI PER USARE I COLORI
   attron(COLOR_PAIR(3));
-  drawRect(startX - 4, startY - 11, width + 13, heigth + 4, enemyList);
+  drawRect(startX - 4, startY - 11, width + 13, heigth + 4, enemyList,0);
   mvprintw(startX - 2, startY + 5, "SCORE: %lu", *points);
   if (character.getNumberLife() == 3)
     mvprintw(startX - 2, startX + 50, "LIFE: c-c-c");
@@ -383,9 +388,10 @@ pRoom DrawWindow::changeRoom(Character &character, int &monsterCount, int &round
   if(character.getX() == GAMEWIDTH) {
     if(maxRound>lenghtRoom(listRoom)){ 
       listRoom = listRoom->prec;
-      return listRoom;
+      round+=1;
+      character.setX(23);
     }
-    else{
+    else if(maxRound == lenghtRoom(listRoom)){
       character.setX(23);
       listRoom->listMountain = generateMountain(listMountain);
       listRoom = saveRoom(listMountain,listRoom);
@@ -398,5 +404,5 @@ pRoom DrawWindow::changeRoom(Character &character, int &monsterCount, int &round
     listRoom = listRoom->next; 
     round-=1;
   }
-    return listRoom;
+  return listRoom;
 }
