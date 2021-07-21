@@ -202,7 +202,7 @@ void DrawWindow::printCharacter(int x, int y, char c) {
 }
 
 void DrawWindow::drawRect(int startX, int startY, int width, int heigth,
-                          pEnemyList enemyList, int round, bool isScreenBound) {
+                          pEnemyList enemyList, int round, bool isScreenBound) {  // isScreenBound SI UNA PER FLAGGARE CHE È IL RETTANGOLO CHE DELIMITA LO SCHERMO, QUINDI NON DEVE APRIRSI
   for (int i = startY; i < width; ++i) {
     mvprintw(startX, i, "-");
     mvprintw(heigth, i, "-");
