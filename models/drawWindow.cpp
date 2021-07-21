@@ -202,12 +202,12 @@ void DrawWindow::printCharacter(int x, int y, char c) {
 }
 
 void DrawWindow::drawRect(int startX, int startY, int width, int heigth,
-                          pEnemyList enemyList, int round) {
+                          pEnemyList enemyList, int round, bool isScreenBound) {
   for (int i = startY; i < width; ++i) {
     mvprintw(startX, i, "-");
     mvprintw(heigth, i, "-");
   }
-  if (enemyList->next != NULL) {
+  if (enemyList->next != NULL || isScreenBound) {
     for (int i = startX; i < heigth; ++i) {
       mvprintw(i, startY, "|");
       mvprintw(i, width, "|");
@@ -232,7 +232,7 @@ void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
 
   init_pair(11, COLOR_YELLOW, 232); 
   attron(COLOR_PAIR(11));
-  drawRect(startX - 4, startY - 11, width + 13, heigth + 9, enemyList, 0);
+  drawRect(startX - 4, startY - 11, width + 13, heigth + 9, enemyList, 0, true);
   attroff(COLOR_PAIR(11));
 
   init_pair(3, COLOR_YELLOW, -1);  // FUNZIONI PER USARE I COLORI
