@@ -37,13 +37,13 @@ class EngineGame {
   bool isEmpty(int x, int y);
   bool isBonus (int x, int y);
 
-  void moveCharacter(Character &character, int direction, pPosition bonusList);
+  void moveCharacter(Character &character, int direction, pPosition bonusList, long &points);
   void choiceGame(DrawWindow drawWindow, int *direction, int *selection);
 
   pEnemyList generateEnemy(int *monsterCount, char character, int damage,
                            int life, pEnemyList list, int &round, DrawWindow drawWindow);
   pPosition generateOneBonus (DrawWindow drawWindow, int *bonusCount, pPosition list);
-  void getBonus (int x, int y, pPosition bonusList);
+  void getBonus (int x, int y, pPosition bonusList, long &points);
 
   void checkDeath(bool &pause, Character &character);
   void engine(Character character, DrawWindow printer);

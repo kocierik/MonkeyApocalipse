@@ -180,34 +180,34 @@ void EngineGame::checkShootEnemyCollision(pEnemyList enemys,
 bool EngineGame::isEmpty (int x, int y) { return mvinch(y, x) == ' '; }
 bool EngineGame::isBonus (int x, int y) { return mvinch(y, x) == '?'; }
 
-void EngineGame::moveCharacter(Character &character, int direction, pPosition bonusList) {
+void EngineGame::moveCharacter(Character &character, int direction, pPosition bonusList, long &points) {
   switch (direction) {  // CONTROLLO IL TASTO SPINTO
     case KEY_UP:
       if (isEmpty (character.getX(), character.getY() - 1)) character.directionUp();
       else if (isBonus (character.getX(), character.getY() - 1)) {
         character.directionUp();
-        getBonus (character.getX(), character.getY(), bonusList);
+        getBonus (character.getX(), character.getY(), bonusList, points);
       }
       break;
     case KEY_DOWN:
       if (isEmpty (character.getX(), character.getY() + 1)) character.directionDown();
       else if (isBonus (character.getX(), character.getY() + 1)) {
         character.directionDown();
-        getBonus (character.getX(), character.getY(), bonusList);
+        getBonus (character.getX(), character.getY(), bonusList, points);
       }
       break;
     case KEY_LEFT:
       if (isEmpty (character.getX() - 1, character.getY())) character.directionLeft();
       else if (isBonus (character.getX() - 1, character.getY())) {
           character.directionLeft();
-          getBonus (character.getX(), character.getY(), bonusList);
+          getBonus (character.getX(), character.getY(), bonusList, points);
       }
       break;
     case KEY_RIGHT:
       if (isEmpty (character.getX() + 1, character.getY())) character.directionRight();
       else if (isBonus (character.getX() + 1, character.getY())) {
         character.directionRight();
-        getBonus (character.getX(), character.getY(), bonusList);
+        getBonus (character.getX(), character.getY(), bonusList, points);
       }
       break;  // ESCE DALLO SWITCH
     case 'e':
@@ -277,7 +277,7 @@ pPosition EngineGame::generateOneBonus (DrawWindow drawWindow, int *bonusCount, 
   return head;
 }
 
-void getBonus (int x, int y, pPosition bonusList) {
+void getBonus (int x, int y, pPosition bonusList, long &points) {
   pPosition tmphead = bonusList;
   bool control = true;
 
@@ -287,23 +287,31 @@ void getBonus (int x, int y, pPosition bonusList) {
       srand (time (0));
       int randCase = rand() % NBONUS;   // Per n casi dello switch ci saranno n+1 tipologie di bonus, e dunque NBONUS = n + 1
 
+      /* Bonus/Malus da implementare
+          - Moltiplicatore di punteggio
+          - Personaggio immobile per n secondi
+
+        Per ogni bonus/malus scrivere a schermo relativo messaggio
+      */
       // Per ogni malus ci sono 2 bonus, oppure per ogni malus ci sono 3 bonus (il tutto al fine di incentivarne la raccolta ed equilibrare gli effetti)
       switch (randCase) {
-        case 0:
-          // Bonus: +500 banana points
+        case 0:     // Bonus name: "Bunch of bananas"
+          points += 50;
           break;
-        case 1:
-          // Bonus: Moltiplicatore di punteggio
+        case 1:     // Bonus name: "Crate of bananas"
+          points += 300;
           break;
-        case 2:
-          // Malus: Personaggio immobile per n secondi
+        case 2:     // Bonus name: "Supply of bananas"
+          points += 1000;
           break;
-        case 3:
-          // 
+        case 3:     // Malus name: "Rotten bananas"
+          points -= 100;
           break;
-        case 4:
-          // 
+        case 4:     // Malus name: "Banana spider"
+          // Si toglie un po' di vita
           break;
+        
+        
         default:
           control = false;
           break;
@@ -380,7 +388,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     enemyList = generateEnemy (&monsterCount, 'X', 10, 100, enemyList, round, drawWindow);
     bonusList = generateOneBonus (drawWindow, &bonusCount, bonusList);  // Funzione da completare a livello semantico
     getInput(direction);
-    moveCharacter(character, direction, bonusList);
+    moveCharacter(character, direction, bonusList, points);
     clear();
     drawWindow.printCharacter(character.getX(), character.getY(),
                               character.getSkin());
