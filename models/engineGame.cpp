@@ -317,6 +317,15 @@ void EngineGame::increaseCount(int &whileCount, long &points,
   this->whileCountEnemy += 1;
 }
 
+void EngineGame::money(int &bananas, pEnemyList enemyList, int maxRound, int &roundPayed){ // SISTEMA DI VALUTA CHE GENERA DA 1 A 3 BANANE AD OGNI CLEAR DEL LIVELLO
+  srand(time(NULL));
+  if(enemyList->next == NULL && maxRound != roundPayed){       // CONTROLLA CHE LA STANZA SIA PULITA E CHE L'ULTIMO ROUND SIA STATO PAGATO
+    bananas = bananas + rand() % 3 + 1;
+    roundPayed++;
+  }
+
+}
+
 void EngineGame::getInput(int &direction) { direction = getch(); }
 
 void EngineGame::isPause(int &direction, bool &pause) {
@@ -325,6 +334,8 @@ void EngineGame::isPause(int &direction, bool &pause) {
 
 void EngineGame::runGame(Character character, DrawWindow drawWindow,
                          int direction) {
+  int bananas = 0;
+  int roundPayed = 0;
   long points = 0;
   int monsterCount = 1;
   int round = 0;
@@ -356,15 +367,17 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     shootEnemyBullet();
     enemyShootBullets(enemyList);
     checkEnemyCollision(character, enemyList);
+    money(bananas, enemyList, maxRound, roundPayed);
     checkShootEnemyCollision(enemyList, character, this->shoots, 1);
     checkShootEnemyCollision(enemyList, character, this->shootsEnemys, -1);
     refresh();
     destroyBullet(this->shoots, 1);
     destroyBullet(this->shootsEnemys, -1);
     checkDeath(pause, character);
-    mvprintw(24, 54, "ROOM:        %d", drawWindow.lenghtRoom(listRoom));
-    mvprintw(25, 54, "ROUND:       %d", round);
-    mvprintw(26, 54, "ROUND MAX:   %d", maxRound);
+    mvprintw(24, 54, "BANANAS:     %d", bananas);
+    mvprintw(25, 54, "ROOM:        %d", drawWindow.lenghtRoom(listRoom));
+    mvprintw(26, 54, "ROUND:       %d", round);
+    mvprintw(27, 54, "ROUND MAX:   %d", maxRound);
     timeout(50);
     isPause(direction, pause);
   }

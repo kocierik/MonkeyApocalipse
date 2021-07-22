@@ -43,4 +43,5 @@ class EngineGame {
   void checkDeath(bool &pause, Character &character);
   void enemyShootBullets(pEnemyList listEnemy);
   void shootEnemyBullet();
+  void money(int &bananas, pEnemyList enemyList, int maxRound, int &roundPayed);
 };
