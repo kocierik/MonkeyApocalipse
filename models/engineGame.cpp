@@ -78,7 +78,7 @@ void EngineGame::shootEnemyBullet() {
 void EngineGame::destroyBullet(Pbullet &shoots, int isEnemy) {
   Pbullet head = shoots, prev = shoots, tmp;
   while (head != NULL) {
-    if (!isEmpty(head->x + isEnemy, head->y)) {
+    if (!isEmpty(head->x + isEnemy, head->y) || head->x > 70) {
       if (head == shoots) {
         tmp = shoots;
         shoots = head->next;

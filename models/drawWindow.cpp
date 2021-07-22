@@ -241,11 +241,11 @@ void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
   attron(COLOR_PAIR(3));
   mvprintw(startX - 2, startY + 12, "%lu", *points);
   if (character.getNumberLife() == 3)
-    mvprintw(startX - 2, startX + 53, "[c] [c] [c]");
+    mvprintw(startX - 2, startY + 38, "[c] [c] [c]");
   if (character.getNumberLife() == 2)
-    mvprintw(startX - 2, startX + 53, "[c] [c]");
+    mvprintw(startX - 2, startY + 38, "[c] [c]");
   if (character.getNumberLife() == 1)
-    mvprintw(startX - 2, startX + 53, "[c]");
+    mvprintw(startX - 2, startY + 38, "[c]");
   attroff(COLOR_PAIR(3));  // CHIUSURA DEL COLORE
 
   init_pair(3, COLOR_YELLOW, -1);  // FUNZIONI PER USARE I COLORI
@@ -337,22 +337,22 @@ void DrawWindow::printCharacterStats(pEnemyList list, Character character) {
   // CODICE CHE GESTISCE LA BARRA DELLA VITA
   // ------------------------------------------------------------------------------
 
-  mvprintw(i, BarStart - 4, "HP");  // MOSTRA LA SCRITTA HP PRIMA DELLA BARRA
+  mvprintw(i, BarStart - 4, "HP");                         // MOSTRA LA SCRITTA HP PRIMA DELLA BARRA
 
   if (character.getLife() >
-      60) {  // GESTISCE IL COLORE DELLA BARRA TRA 100 E 61
+      60) {                                                // GESTISCE IL COLORE DELLA BARRA TRA 100 E 61
     healtColorPair = 6;
     init_pair(healtColorPair, COLOR_GREEN, COLOR_GREEN);
     attron(COLOR_PAIR(healtColorPair));
   }
   if (character.getLife() >= 25 &&
       character.getLife() <=
-          60) {  // GESTISCE IL COLORE DELLA BARRA TRA 50 E 25
+          60) {                                            // GESTISCE IL COLORE DELLA BARRA TRA 50 E 25
     healtColorPair = 5;
     init_pair(healtColorPair, COLOR_YELLOW, COLOR_YELLOW);
     attron(COLOR_PAIR(healtColorPair));
   }
-  if (character.getLife() < 25) {  // GESTISCE IL COLORE DELLA BARRA TRA 24 E 0
+  if (character.getLife() < 25) {                          // GESTISCE IL COLORE DELLA BARRA TRA 24 E 0
     healtColorPair = 4;
     init_pair(healtColorPair, COLOR_RED, COLOR_RED);
     attron(COLOR_PAIR(healtColorPair));
@@ -360,12 +360,12 @@ void DrawWindow::printCharacterStats(pEnemyList list, Character character) {
 
   init_pair(8, 233, 233);
   attron(COLOR_PAIR(8));
-  mvprintw(i, BarStart, "          ");  // SFONDO NERO BARRA
+  mvprintw(i, BarStart, "          ");                     // SFONDO NERO BARRA
   attroff(COLOR_PAIR(8));
 
   attron(COLOR_PAIR(healtColorPair));
   for (cont = 0; volt <= (character.getLife() - 1) / 10;
-       volt++) {  // GENERA IL SIMBOLO " " OGNI DIECI UNITÀ DI VITA
+       volt++) {                                           // GENERA IL SIMBOLO " " OGNI DIECI UNITÀ DI VITA
     mvprintw(i, AddBar, " ");
     AddBar++;
   }
