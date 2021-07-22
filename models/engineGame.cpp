@@ -78,7 +78,7 @@ void EngineGame::shootEnemyBullet() {
 void EngineGame::destroyBullet(Pbullet &shoots, int isEnemy) {
   Pbullet head = shoots, prev = shoots, tmp;
   while (head != NULL) {
-    if (!isEmpty(head->x + isEnemy, head->y) || head->x > 70) {
+    if (!isEmpty(head->x + isEnemy, head->y) || head->x > 70 || head->x < 23) {
       if (head == shoots) {
         tmp = shoots;
         shoots = head->next;
@@ -191,6 +191,7 @@ void EngineGame::checkShootEnemyCollision(pEnemyList enemys,
 bool EngineGame::isEmpty(int x, int y) { return mvinch(y, x) == ' '; }
 
 void EngineGame::moveCharacter(Character &character, int direction, int &bananas, int &powerUpDMG) {
+  int upgradeCost = 20;
   switch (direction) {  // CONTROLLO IL TASTO SPINTO
     case KEY_UP:
       if (isEmpty(character.getX(), character.getY() - 1) == true)
@@ -218,16 +219,16 @@ void EngineGame::moveCharacter(Character &character, int direction, int &bananas
       break;
     case 'q':           // CONTROLLA L'AQUISTO DI VITE, MASSIMO 3
     case 'Q':          
-      if (bananas >= 20 && character.getNumberLife() < 3) {
+      if (bananas >= upgradeCost && character.getNumberLife() < 3) {
         character.setNumberLife(character.getNumberLife() + 1);
-        bananas = bananas - 20;
+        bananas = bananas - upgradeCost;
       }
       break;
-    case 'r':           // CONTROLLA L'AQUISTO DI POWERUP AL DANNO, SONO ACQUISTABILI AL MASSIMO DURANTE TUTTA LA RUN
+    case 'r':           // CONTROLLA L'AQUISTO DI POWERUP AL DANNO, SONO ACQUISTABILI AL MASSIMO 4 DURANTE TUTTA LA RUN
     case 'R':          
-      if (bananas >= 20 && powerUpDMG < 3) {
-        character.setDamage(character.getDamage() + 15);
-        bananas = bananas - 20;
+      if (bananas >= upgradeCost && powerUpDMG < 4) {
+        character.setDamage(character.getDamage() + 10);
+        bananas = bananas - upgradeCost;
         powerUpDMG++;
       }
       break;
@@ -389,9 +390,9 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     destroyBullet(this->shoots, 1);
     destroyBullet(this->shootsEnemys, -1);
     checkDeath(pause, character);
-    mvprintw(25, 54, "BANANAS:     %d", bananas);
-    mvprintw(26, 54, "ROOM:        %d", drawWindow.lenghtRoom(listRoom));
-    mvprintw(27, 54, "ROUND MAX:   %d", maxRound);
+    mvprintw(25, 52, "BANANAS                 %d", bananas);
+    mvprintw(26, 52, "ROOM                  %d/%d", drawWindow.lenghtRoom(listRoom), maxRound);
+    mvprintw(27, 52, "ROUND MAX               %d", maxRound);
     timeout(50);
     isPause(direction, pause);
   }

@@ -24,6 +24,7 @@ DrawWindow::DrawWindow() {}
   - GIALLO BORDO = 11
   - MENU = 12
   - DANNO ROSSO = 13
+  - MONTAGNE = 15
 
   (questi sono riservati solo per la barra della salute):
   - ROSSO = 5
@@ -35,28 +36,28 @@ DrawWindow::DrawWindow() {}
 void DrawWindow::drawMenu() {
   init_pair(1, COLOR_RED, 232);  // 1 INDICA UN ID, POI METTI IL COLORE CHE VUOI
   attron(COLOR_PAIR(1));         // APRTURA COLORE ROSSO
-  mvprintw(1, 0,
+  mvprintw(1, 2,
            "                                                                   "
            "                                         ");
-  mvprintw(2, 0,
+  mvprintw(2, 2,
            "    b    d  P*Y  8b 8 8  d 88888 Yb  dP        A   8**Y  P*Y   "
            "P**b8   b    8     Yb  dP 8**Y .P*Y8 88888   ");
-  mvprintw(3, 0,
+  mvprintw(3, 2,
            "    8b  d8 P   Y 8Yb8 8od  8__    YbdP        PY   8__P P   Y P   "
            "`*   PY   8      YbdP  8__P `Yo.* 8__     ");
-  mvprintw(4, 0,
+  mvprintw(4, 2,
            "    8Yb P8 b   d 8 Y8 8*Y  8**     8P        P__Y  8**  b   P Y    "
            "   P__Y  8  .o   8P   8**  o.`Y8 8**     ");
-  mvprintw(5, 0,
+  mvprintw(5, 2,
            "    8 Y  8  Ybo  8  Y 8  Y 88888  dP        P****Y 8     P*Y   "
            "YoodP P****Y 8ood8  dP    8     8oP* 88888   ");
-  mvprintw(6, 0,
+  mvprintw(6, 2,
            "                                                                   "
            "                                         ");
-  mvprintw(7, 0,
+  mvprintw(7, 2,
            "     THE REVENGE OF THE MONKEYS HAS JUST BEGUN!                    "
            "                                         ");
-  mvprintw(8, 0,
+  mvprintw(8, 2,
            "                                                                   "
            "                                         ");
   attroff(COLOR_PAIR(1));  // CHIUSURA DEL COLORE ROSSO E NERO
@@ -183,10 +184,16 @@ void DrawWindow::printHowToPlay() {  // GESTISCE LA SCHERMATA DEL HOW TO PLAY
            "ONE AND COLLECT BANANAS!           ");
   mvprintw(19, 3,
            "                                                                   "
+           "                                  ");                                                                       //.
+  mvprintw(20, 3, "                         WITH YOUR BANANAS YOU WILL BE ABLE TO BUY UPGRADES                          ");
+  mvprintw(21, 3, "                        FOR THE BANANACANNON OR BUY BACK LIVES YOU HAVE LOST                         ");
+  mvprintw(22, 3,
+           "                                                                   "
            "                                  ");
-  mvprintw(20, 3,
-           "                                  solo dio sa cosa metteremo "
-           "dopo...                                 ");
+  mvprintw(23, 3, "                   WHEN YOU HAVE %d BANANAS PRESS 'R' TO UPGRADE THE BANANA CANNON                   ", 20);
+  mvprintw(24, 3, "                                  OR 'Q' TO RECOVER A LOST LIFE                                      ");
+
+  
   attroff(COLOR_PAIR(2));  // CHIUSURA DEL COLORE VERDE
 }
 void DrawWindow::HowToPlay(int direction) {
@@ -228,11 +235,13 @@ void DrawWindow::drawRect(int startX, int startY, int width, int heigth,
 void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
                            long *points, Character character,
                            pEnemyList enemyList, int powerUp) {
+  int powerUp_y = 52;
+  int powerUp_x = 23;
   mvprintw(startX - 2, startY + 5, "SCORE:");
   mvprintw(startX - 2, startX + 47, "LIFE:");
-  mvprintw(23, 49, "POWERUP");
+  mvprintw(powerUp_x, powerUp_y, "POWER-UP");
 
-  init_pair(11, COLOR_YELLOW, 232); 
+  init_pair(11, COLOR_WHITE, 232); 
   attron(COLOR_PAIR(11));
   drawRect(startX - 4, startY - 11, width + 13, heigth + 9, enemyList, 0, true);
   attroff(COLOR_PAIR(11));
@@ -241,24 +250,26 @@ void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
   attron(COLOR_PAIR(3));
   mvprintw(startX - 2, startY + 12, "%lu", *points);
   if (character.getNumberLife() == 3)
-    mvprintw(startX - 2, startY + 38, "[c] [c] [c]");
+    mvprintw(startX - 2, startY + 38, "[C] [C] [C]");
   if (character.getNumberLife() == 2)
-    mvprintw(startX - 2, startY + 38, "[c] [c]");
+    mvprintw(startX - 2, startY + 38, "[C] [C] [ ]");
   if (character.getNumberLife() == 1)
-    mvprintw(startX - 2, startY + 38, "[c]");
+    mvprintw(startX - 2, startY + 38, "[C] [ ] [ ]");
   attroff(COLOR_PAIR(3));  // CHIUSURA DEL COLORE
 
   init_pair(3, COLOR_YELLOW, -1);  // FUNZIONI PER USARE I COLORI
   attron(COLOR_PAIR(3));
   mvprintw(startX - 2, startY + 12, "%lu", *points);
+  if (powerUp == 4)
+    mvprintw(powerUp_x, powerUp_y + 10, "[X] [X] [X] [X]");
   if (powerUp == 3)
-    mvprintw(23, 57, "[x] [x] [x]");
+    mvprintw(powerUp_x, powerUp_y + 10, "[X] [X] [X] [ ]");
   if (powerUp == 2)
-    mvprintw(23, 57, "[x] [x] [ ]");
+    mvprintw(powerUp_x, powerUp_y + 10, "[X] [X] [ ] [ ]");
   if (powerUp == 1)
-    mvprintw(23, 57, "[x] [ ] [ ]");
+    mvprintw(powerUp_x, powerUp_y + 10, "[X] [ ] [ ] [ ]");
   if (powerUp == 0)
-    mvprintw(23, 57, "[ ] [ ] [ ]");
+    mvprintw(powerUp_x, powerUp_y + 10, "[ ] [ ] [ ] [ ]");
   attroff(COLOR_PAIR(3));  // CHIUSURA DEL COLORE
 
   
@@ -295,7 +306,10 @@ pPosition DrawWindow::generateMountain(pPosition list) {
 void DrawWindow::printMountain(pPosition list) {  // FIX
   pPosition mountainList = list;
   while (mountainList != NULL) {
+    init_pair(15, COLOR_YELLOW, -1);
+    attron(COLOR_PAIR(15));
     printCharacter(mountainList->x, mountainList->y, mountainList->character);
+    attroff(COLOR_PAIR(15));
     mountainList = mountainList->next;
   }
 }
@@ -324,7 +338,7 @@ void DrawWindow::printCharacterStats(pEnemyList list, Character character) {
   int X_ElencoNemici = 19;  // gestisce la x da dove inizia la lista dei nemici
   int volt = 0;
   int cont = 0;
-  int BarStart = 58;      // gestisce dove partono gli oggetti della barra
+  int BarStart = 56;      // gestisce dove partono gli oggetti della barra
   int AddBar = BarStart;  // cicla per aggiungere un cordinata
   int healtColorPair;
 
@@ -360,11 +374,11 @@ void DrawWindow::printCharacterStats(pEnemyList list, Character character) {
 
   init_pair(8, 233, 233);
   attron(COLOR_PAIR(8));
-  mvprintw(i, BarStart, "          ");                     // SFONDO NERO BARRA
+  mvprintw(i, BarStart, "                    ");                     // SFONDO NERO BARRA
   attroff(COLOR_PAIR(8));
 
   attron(COLOR_PAIR(healtColorPair));
-  for (cont = 0; volt <= (character.getLife() - 1) / 10;
+  for (cont = 0; volt <= (character.getLife() - 1) / 5;
        volt++) {                                           // GENERA IL SIMBOLO " " OGNI DIECI UNITÀ DI VITA
     mvprintw(i, AddBar, " ");
     AddBar++;
@@ -372,7 +386,7 @@ void DrawWindow::printCharacterStats(pEnemyList list, Character character) {
   attroff(COLOR_PAIR(healtColorPair));
   mvprintw(i, BarStart - 1,
            "[");  // GERERA I CARATTERI PER IL CONTENITORE DELLA VITA
-  mvprintw(i, BarStart + 10, "]");
+  mvprintw(i, BarStart + 20, "]");
 
   // FINE CODICE BARRA DELLA VITA
   // ------------------------------------------------------------------------------------------
