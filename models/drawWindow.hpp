@@ -25,7 +25,7 @@ class DrawWindow {
   void printHowToPlay();
   void HowToPlay(int direction);
   void drawStats(int startX, int startY, int width, int heigth, long *points,
-                 Character character, pEnemyList enemyList);
+                 Character character, pEnemyList enemyList, int powerUp);
   int lenghtList(pEnemyList list);
   int lenghtRoom(pRoom list);
   void printCharacterStats(pEnemyList list, Character character);

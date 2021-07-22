@@ -190,7 +190,7 @@ void EngineGame::checkShootEnemyCollision(pEnemyList enemys,
 // controllo che la posizione x y sia uno spazio vuoto
 bool EngineGame::isEmpty(int x, int y) { return mvinch(y, x) == ' '; }
 
-void EngineGame::moveCharacter(Character &character, int direction) {
+void EngineGame::moveCharacter(Character &character, int direction, int &bananas, int &powerUpDMG) {
   switch (direction) {  // CONTROLLO IL TASTO SPINTO
     case KEY_UP:
       if (isEmpty(character.getX(), character.getY() - 1) == true)
@@ -209,17 +209,26 @@ void EngineGame::moveCharacter(Character &character, int direction) {
         character.directionRight();
       break;  // ESCE DALLO SWITCH
     case 'e':
+    case 'E':
       if (whileCount / 2 > 1) {
         this->shoots =
             createBullet(character.getX(), character.getY(), this->shoots);
         whileCount = 0;
       }
       break;
-    case 'E':          // SERVE A FAR SPARARE ANCHE SE SI È IN CAPS LOCK
-      if (whileCount / 2 > 1) {
-        this->shoots =
-            createBullet(character.getX(), character.getY(), this->shoots);
-        whileCount = 0;
+    case 'q':           // CONTROLLA L'AQUISTO DI VITE, MASSIMO 3
+    case 'Q':          
+      if (bananas >= 20 && character.getNumberLife() < 3) {
+        character.setNumberLife(character.getNumberLife() + 1);
+        bananas = bananas - 20;
+      }
+      break;
+    case 'r':           // CONTROLLA L'AQUISTO DI POWERUP AL DANNO, SONO ACQUISTABILI AL MASSIMO DURANTE TUTTA LA RUN
+    case 'R':          
+      if (bananas >= 20 && powerUpDMG < 3) {
+        character.setDamage(character.getDamage() + 15);
+        bananas = bananas - 20;
+        powerUpDMG++;
       }
       break;
   }
@@ -272,9 +281,11 @@ pEnemyList EngineGame::generateEnemy(int *monsterCount, char character,
 void EngineGame::checkDeath(bool &pause, Character &character) {
   if (character.getLife() <= 0) {
     character.setNumberLife(character.getNumberLife() - 1);
-    character.setLife(100);
+    if(character.getNumberLife() > 0) { character.setLife(100); }
   }
-  if (character.getNumberLife() <= 0) pause = true;
+  if (character.getNumberLife() <= 0){
+    pause = true;
+  }
 }
 
 void EngineGame::engine(Character character, DrawWindow drawWindow) {
@@ -326,14 +337,18 @@ void EngineGame::money(int &bananas, pEnemyList enemyList, int maxRound, int &ro
 
 }
 
+
+
 void EngineGame::getInput(int &direction) { direction = getch(); }
 
 void EngineGame::isPause(int &direction, bool &pause) {
   if (direction == 27) pause = true;
 }
 
+
 void EngineGame::runGame(Character character, DrawWindow drawWindow,
                          int direction) {
+  int powerUpDMG = 0; // NUMERO DI POWERUP AL DANNO AQUISTATI
   int bananas = 0;
   int roundPayed = 0;
   long points = 0;
@@ -349,14 +364,14 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     enemyList = generateEnemy(&monsterCount, 'X', 10, 100, enemyList, round,
                               drawWindow);
     getInput(direction);
-    moveCharacter(character, direction);
+    moveCharacter(character, direction, bananas, powerUpDMG);
     clear();
     drawWindow.printCharacter(character.getX(), character.getY(),
                               character.getCharacter());
     drawWindow.drawRect(this->frameGameX, this->frameGameY, this->widht,
                         this->height, enemyList, round, false);
     drawWindow.drawStats(this->frameGameX, this->frameGameY, this->widht,
-                         this->height, &points, character, enemyList);
+                         this->height, &points, character, enemyList, powerUpDMG);
     drawWindow.printCharacterStats(enemyList, character);
     if (drawWindow.lenghtRoom(listRoom) > 1)
       drawWindow.printMountain(listRoom->next->listMountain);
@@ -374,9 +389,8 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     destroyBullet(this->shoots, 1);
     destroyBullet(this->shootsEnemys, -1);
     checkDeath(pause, character);
-    mvprintw(24, 54, "BANANAS:     %d", bananas);
-    mvprintw(25, 54, "ROOM:        %d", drawWindow.lenghtRoom(listRoom));
-    mvprintw(26, 54, "ROUND:       %d", round);
+    mvprintw(25, 54, "BANANAS:     %d", bananas);
+    mvprintw(26, 54, "ROOM:        %d", drawWindow.lenghtRoom(listRoom));
     mvprintw(27, 54, "ROUND MAX:   %d", maxRound);
     timeout(50);
     isPause(direction, pause);

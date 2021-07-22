@@ -21,7 +21,7 @@ class EngineGame {
  public:
   EngineGame(int frameGameX, int frameGameY, int heigth, int width);
   void baseCommand();
-  void moveCharacter(Character &character, int direction);
+  void moveCharacter(Character &character, int direction, int &bananas, int &powerUpDMG);
   bool isEmpty(int x, int y);
   Pbullet createBullet(int x, int y, Pbullet &shoots);
   void shootBullet();

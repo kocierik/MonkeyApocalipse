@@ -227,9 +227,10 @@ void DrawWindow::drawRect(int startX, int startY, int width, int heigth,
 
 void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
                            long *points, Character character,
-                           pEnemyList enemyList) {
+                           pEnemyList enemyList, int powerUp) {
   mvprintw(startX - 2, startY + 5, "SCORE:");
   mvprintw(startX - 2, startX + 47, "LIFE:");
+  mvprintw(23, 49, "POWERUP");
 
   init_pair(11, COLOR_YELLOW, 232); 
   attron(COLOR_PAIR(11));
@@ -246,6 +247,21 @@ void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
   if (character.getNumberLife() == 1)
     mvprintw(startX - 2, startX + 53, "[c]");
   attroff(COLOR_PAIR(3));  // CHIUSURA DEL COLORE
+
+  init_pair(3, COLOR_YELLOW, -1);  // FUNZIONI PER USARE I COLORI
+  attron(COLOR_PAIR(3));
+  mvprintw(startX - 2, startY + 12, "%lu", *points);
+  if (powerUp == 3)
+    mvprintw(23, 57, "[x] [x] [x]");
+  if (powerUp == 2)
+    mvprintw(23, 57, "[x] [x] [ ]");
+  if (powerUp == 1)
+    mvprintw(23, 57, "[x] [ ] [ ]");
+  if (powerUp == 0)
+    mvprintw(23, 57, "[ ] [ ] [ ]");
+  attroff(COLOR_PAIR(3));  // CHIUSURA DEL COLORE
+
+  
 }
 
 Position DrawWindow::randomPosition(int startRange, int endRange) {
@@ -305,7 +321,7 @@ int DrawWindow::lenghtRoom(pRoom list) {
 void DrawWindow::printCharacterStats(pEnemyList list, Character character) {
   int i = 22;
   int reachBound = 0;       // VEDI RIGA 363
-  int X_ElencoNemici = 24;  // gestisce la x da dove inizia la lista dei nemici
+  int X_ElencoNemici = 19;  // gestisce la x da dove inizia la lista dei nemici
   int volt = 0;
   int cont = 0;
   int BarStart = 58;      // gestisce dove partono gli oggetti della barra
