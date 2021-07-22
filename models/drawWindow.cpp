@@ -22,7 +22,8 @@ DrawWindow::DrawWindow() {}
   - BIANCO = 4
   - PROIETTILI GIALLI = 10
   - GIALLO BORDO = 11
-  . MENU = 12
+  - MENU = 12
+  - DANNO ROSSO = 13
 
   (questi sono riservati solo per la barra della salute):
   - ROSSO = 5

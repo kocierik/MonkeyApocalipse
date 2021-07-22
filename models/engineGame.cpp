@@ -59,7 +59,7 @@ void EngineGame::shootBullet() {
     move(bullet->y, bullet->x);
     init_pair(10, COLOR_YELLOW, -1); // SPARA BANANE GIALLE
     attron(COLOR_PAIR(10));
-    printw("-");
+    printw("~");
     attroff(COLOR_PAIR(10));
     bullet = bullet->next;
   }
@@ -135,6 +135,10 @@ void EngineGame::checkEnemyCollision(Character &character,
         (character.getX() == enemyList->enemy.getX() &&
          character.getY() - 1 == enemyList->enemy.getY())) {
       character.decreaseLife(1);
+      init_pair(13, COLOR_RED, -1);
+      attron(COLOR_PAIR(13));
+      mvprintw(character.getY(), character.getX(), "C");   // GENERA UN CARATTERE ROSSO QUANDO SI SOTTO IL NEMICO
+      attroff(COLOR_PAIR(13));
     }
     enemyList = enemyList->next;
   }
@@ -175,6 +179,11 @@ void EngineGame::checkShootEnemyCollision(pEnemyList enemys,
   } else if (isCollisionCharacter && isEnemy == -1) {
     character.decreaseLife(enemys->enemy.getDamage());
     checkDeath(pause, character);
+
+    init_pair(13, COLOR_RED, -1);
+    attron(COLOR_PAIR(13));
+    mvprintw(character.getY(), character.getX(), "C");    // GENERA UN CARATTERE ROSSO QUANDO SI VIENE COLPITI
+    attroff(COLOR_PAIR(13));
   }
 }
 
@@ -200,6 +209,13 @@ void EngineGame::moveCharacter(Character &character, int direction) {
         character.directionRight();
       break;  // ESCE DALLO SWITCH
     case 'e':
+      if (whileCount / 2 > 1) {
+        this->shoots =
+            createBullet(character.getX(), character.getY(), this->shoots);
+        whileCount = 0;
+      }
+      break;
+    case 'E':          // SERVE A FAR SPARARE ANCHE SE SI È IN CAPS LOCK
       if (whileCount / 2 > 1) {
         this->shoots =
             createBullet(character.getX(), character.getY(), this->shoots);
