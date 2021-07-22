@@ -58,7 +58,10 @@ void EngineGame::shootBullet() {
   while (bullet != NULL) {
     bullet->x += bullet->speed;
     move(bullet->y, bullet->x);
-    printw("-");
+    init_pair(10, COLOR_YELLOW, -1); // SPARA BANANE GIALLE
+    attron(COLOR_PAIR(10));
+    printw("~");
+    attroff(COLOR_PAIR(10));
     bullet = bullet->next;
   }
 }
@@ -157,6 +160,10 @@ void EngineGame::checkEnemyCollision(Character &character,
         (character.getX() == enemyList->enemy.getX() &&
          character.getY() - 1 == enemyList->enemy.getY())) {
       character.decreaseLife(1);
+      init_pair(13, COLOR_RED, -1);
+      attron(COLOR_PAIR(13));
+      mvprintw(character.getY(), character.getX(), "C");   // GENERA UN CARATTERE ROSSO QUANDO SI SOTTO IL NEMICO
+      attroff(COLOR_PAIR(13));
     }
     enemyList = enemyList->next;
   }
@@ -197,6 +204,11 @@ void EngineGame::checkShootEnemyCollision(pEnemyList enemys,
   } else if (isCollisionCharacter && isEnemy == -1) {
     character.decreaseLife(enemys->enemy.getDamage());
     checkDeath(pause, character);
+
+    init_pair(13, COLOR_RED, -1);
+    attron(COLOR_PAIR(13));
+    mvprintw(character.getY(), character.getX(), "C");    // GENERA UN CARATTERE ROSSO QUANDO SI VIENE COLPITI
+    attroff(COLOR_PAIR(13));
   }
 }
 
@@ -235,6 +247,13 @@ void EngineGame::moveCharacter(Character &character, int direction, pPosition bo
       }
       break;  // ESCE DALLO SWITCH
     case 'e':
+      if (whileCount / 2 > 1) {
+        this->shoots =
+            createBullet(character.getX(), character.getY(), this->shoots);
+        whileCount = 0;
+      }
+      break;
+    case 'E':          // SERVE A FAR SPARARE ANCHE SE SI È IN CAPS LOCK
       if (whileCount / 2 > 1) {
         this->shoots =
             createBullet(character.getX(), character.getY(), this->shoots);
@@ -419,28 +438,32 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
                          int direction) {
   long points = 0;
   int monsterCount = 1, bonusCount = 1;
-  int round = 1;
+  int round = 0;
+  int maxRound = 1;
   pEnemyList enemyList = NULL;
-  pPosition bonusList = NULL, mountainList = NULL;
+  pPosition mountainList = NULL, bonusList = NULL;
+  pRoom listRoom = new Room;
   while (!pause) {
+    listRoom = drawWindow.changeRoom(character, monsterCount, bonusCount, round, enemyList, mountainList, listRoom, maxRound);
     enemyList = generateEnemy (&monsterCount, 'X', 10, 100, enemyList, round, drawWindow);
-    bonusList = generateBonus (drawWindow, &bonusCount, bonusList);  // Funzione da completare a livello semantico
+    bonusList = generateBonus (drawWindow, &bonusCount, bonusList);
+
     getInput(direction);
     moveCharacter(character, direction, bonusList, points);
     clear();
     drawWindow.printCharacter(character.getX(), character.getY(),
                               character.getSkin());
     drawWindow.drawRect(this->frameGameX, this->frameGameY, this->widht,
-                        this->height, enemyList);
+                        this->height, enemyList, round, false);
     drawWindow.drawStats(this->frameGameX, this->frameGameY, this->widht,
                         this->height, &points, character, enemyList);
     drawWindow.printCharacterStats(enemyList, character);
-    drawWindow.printMountain(mountainList);
-    drawWindow.printBonus (bonusList);
+    if (drawWindow.lenghtRoom(listRoom) > 1) {
+      drawWindow.printMountain(listRoom->next->listMountain);
+      drawWindow.printBonus (bonusList);
+    }
     increaseCount(this->whileCount, points, enemyList);
     drawWindow.printEnemy(enemyList, drawWindow);
-    drawWindow.changeRoom(character, monsterCount, bonusCount, round, enemyList, mountainList);
-    
     drawWindow.moveEnemy(enemyList, character, drawWindow, points);
     shootBullet();
     shootEnemyBullet();
@@ -452,6 +475,9 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     destroyBullet(this->shoots, 1);
     destroyBullet(this->shootsEnemys, -1);
     checkDeath(pause, character);
+    mvprintw(24, 54, "ROOM:        %d", drawWindow.lenghtRoom(listRoom));
+    mvprintw(25, 54, "ROUND:       %d", round);
+    mvprintw(26, 54, "ROUND MAX:   %d", maxRound);
     timeout(50);
     isPause(direction, pause);
   }

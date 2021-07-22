@@ -29,6 +29,10 @@ LEGENDA:
 
 ✔ Nemici
 
+✖ Dare una vita alle montagne
+
+✖ Aggiungere schermata ddi game over quando si muore
+
 ✖ Sistema per le vite e il punteggio
 
 ✖ Bonus (armi diverse, punti e vite)
