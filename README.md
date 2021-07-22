@@ -31,6 +31,8 @@ LEGENDA:
 
 ✖ Dare una vita alle montagne
 
+✖ Aggiungere schermata ddi game over quando si muore
+
 ✖ Sistema per le vite e il punteggio
 
 ✖ Nuove tipologie di nemici
