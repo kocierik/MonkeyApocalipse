@@ -22,6 +22,8 @@ class EngineGame {
   void printList(pEnemyList list, Character character);
 
   void baseCommand();
+  void moveCharacter(Character &character, int direction, pPosition bonusList, int &points, int &bananas, int &powerUpDMG);
+  bool isEmpty(int x, int y);
   Pbullet createBullet(int x, int y, Pbullet &shoots);
   void enemyShootBullets(pEnemyList listEnemy);
   void shootBullet();
@@ -37,7 +39,7 @@ class EngineGame {
   bool isEmpty(int x, int y);
   bool isBonus (int x, int y);
 
-  void moveCharacter(Character &character, int direction, pPosition bonusList, long &points);
+  void moveCharacter(Character &character, int direction, pPosition bonusList, long &points, int &bananas, int &powerUpDMG);
   void choiceGame(DrawWindow drawWindow, int *direction, int *selection);
 
   pEnemyList generateEnemy(int *monsterCount, char skin, int damage,
@@ -53,4 +55,5 @@ class EngineGame {
   void isPause(int &direction, bool &pause);
   void runGame(Character character, DrawWindow drawWindow, int direction);
 
+  void money(int &bananas, pEnemyList enemyList, int maxRound, int &roundPayed);
 };

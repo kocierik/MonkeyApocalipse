@@ -79,7 +79,7 @@ void EngineGame::shootEnemyBullet() {
 void EngineGame::destroyBullet(Pbullet &shoots, int isEnemy) {
   Pbullet head = shoots, prev = shoots, tmp;
   while (head != NULL) {
-    if (!isEmpty(head->x + isEnemy, head->y)) {
+    if (!isEmpty(head->x + isEnemy, head->y) || head->x > 70 || head->x < 23) {
       if (head == shoots) {
         tmp = shoots;
         shoots = head->next;
@@ -216,7 +216,8 @@ void EngineGame::checkShootEnemyCollision(pEnemyList enemys,
 bool EngineGame::isEmpty (int x, int y) { return mvinch(y, x) == ' '; }
 bool EngineGame::isBonus (int x, int y) { return mvinch(y, x) == '?'; }
 
-void EngineGame::moveCharacter(Character &character, int direction, pPosition bonusList, long &points) {
+void EngineGame::moveCharacter(Character &character, int direction, pPosition bonusList, long &points, int &bananas, int &powerUpDMG) {
+  int upgradeCost = 20;
   switch (direction) {  // CONTROLLO IL TASTO SPINTO
     case KEY_UP:
       if (isEmpty (character.getX(), character.getY() - 1)) character.directionUp();
@@ -247,17 +248,26 @@ void EngineGame::moveCharacter(Character &character, int direction, pPosition bo
       }
       break;  // ESCE DALLO SWITCH
     case 'e':
+    case 'E':
       if (whileCount / 2 > 1) {
         this->shoots =
             createBullet(character.getX(), character.getY(), this->shoots);
         whileCount = 0;
       }
       break;
-    case 'E':          // SERVE A FAR SPARARE ANCHE SE SI È IN CAPS LOCK
-      if (whileCount / 2 > 1) {
-        this->shoots =
-            createBullet(character.getX(), character.getY(), this->shoots);
-        whileCount = 0;
+    case 'q':           // CONTROLLA L'AQUISTO DI VITE, MASSIMO 3
+    case 'Q':          
+      if (bananas >= upgradeCost && character.getNumberLife() < 3) {
+        character.setNumberLife(character.getNumberLife() + 1);
+        bananas = bananas - upgradeCost;
+      }
+      break;
+    case 'r':           // CONTROLLA L'AQUISTO DI POWERUP AL DANNO, SONO ACQUISTABILI AL MASSIMO 4 DURANTE TUTTA LA RUN
+    case 'R':          
+      if (bananas >= upgradeCost && powerUpDMG < 4) {
+        character.setDamage(character.getDamage() + 10);
+        bananas = bananas - upgradeCost;
+        powerUpDMG++;
       }
       break;
   }
@@ -383,9 +393,11 @@ pPosition EngineGame::getBonus (int x, int y, pPosition bonusList, long &points)
 void EngineGame::checkDeath(bool &pause, Character &character) {
   if (character.getLife() <= 0) {
     character.setNumberLife(character.getNumberLife() - 1);
-    character.setLife(100);
+    if(character.getNumberLife() > 0) { character.setLife(100); }
   }
-  if (character.getNumberLife() <= 0) pause = true;
+  if (character.getNumberLife() <= 0){
+    pause = true;
+  }
 }
 
 void EngineGame::engine(Character character, DrawWindow drawWindow) {
@@ -428,14 +440,29 @@ void EngineGame::increaseCount(int &whileCount, long &points,
   this->whileCountEnemy += 1;
 }
 
+void EngineGame::money(int &bananas, pEnemyList enemyList, int maxRound, int &roundPayed){ // SISTEMA DI VALUTA CHE GENERA DA 1 A 3 BANANE AD OGNI CLEAR DEL LIVELLO
+  srand(time(NULL));
+  if(enemyList->next == NULL && maxRound != roundPayed){       // CONTROLLA CHE LA STANZA SIA PULITA E CHE L'ULTIMO ROUND SIA STATO PAGATO
+    bananas = bananas + rand() % 3 + 1;
+    roundPayed++;
+  }
+
+}
+
+
+
 void EngineGame::getInput(int &direction) { direction = getch(); }
 
 void EngineGame::isPause(int &direction, bool &pause) {
   if (direction == 27) pause = true;
 }
 
+
 void EngineGame::runGame(Character character, DrawWindow drawWindow,
                          int direction) {
+  int powerUpDMG = 0; // NUMERO DI POWERUP AL DANNO AQUISTATI
+  int bananas = 0;
+  int roundPayed = 0;
   long points = 0;
   int monsterCount = 1, bonusCount = 1;
   int round = 0;
@@ -449,14 +476,14 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     bonusList = generateBonus (drawWindow, &bonusCount, bonusList);
 
     getInput(direction);
-    moveCharacter(character, direction, bonusList, points);
+    moveCharacter(character, direction, bonusList, points, bananas, powerUpDMG);
     clear();
     drawWindow.printCharacter(character.getX(), character.getY(),
                               character.getSkin());
     drawWindow.drawRect(this->frameGameX, this->frameGameY, this->widht,
                         this->height, enemyList, round, false);
     drawWindow.drawStats(this->frameGameX, this->frameGameY, this->widht,
-                        this->height, &points, character, enemyList);
+                         this->height, &points, character, enemyList, powerUpDMG);
     drawWindow.printCharacterStats(enemyList, character);
     if (drawWindow.lenghtRoom(listRoom) > 1) {
       drawWindow.printMountain(listRoom->next->listMountain);
@@ -469,15 +496,16 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     shootEnemyBullet();
     enemyShootBullets(enemyList);
     checkEnemyCollision(character, enemyList);
+    money(bananas, enemyList, maxRound, roundPayed);
     checkShootEnemyCollision(enemyList, character, this->shoots, 1);
     checkShootEnemyCollision(enemyList, character, this->shootsEnemys, -1);
     refresh();
     destroyBullet(this->shoots, 1);
     destroyBullet(this->shootsEnemys, -1);
     checkDeath(pause, character);
-    mvprintw(24, 54, "ROOM:        %d", drawWindow.lenghtRoom(listRoom));
-    mvprintw(25, 54, "ROUND:       %d", round);
-    mvprintw(26, 54, "ROUND MAX:   %d", maxRound);
+    mvprintw(25, 52, "BANANAS                 %d", bananas);
+    mvprintw(26, 52, "ROOM                  %d/%d", drawWindow.lenghtRoom(listRoom), maxRound);
+    mvprintw(27, 52, "ROUND MAX               %d", maxRound);
     timeout(50);
     isPause(direction, pause);
   }
