@@ -38,7 +38,7 @@ class EngineGame {
   bool isEmpty(int x, int y);
   bool isBonus (int x, int y);
 
-  void moveCharacter(Character &character, int direction, pPosition bonusList, long &points, int &bananas, int &powerUpDMG);
+  void moveCharacter(Character &character, int direction, pPosition &bonusList, long &points, int &bananas, int &powerUpDMG);
   void choiceGame(DrawWindow drawWindow, int *direction, int *selection);
 
   pEnemyList generateEnemy(int *monsterCount, char skin, int damage,

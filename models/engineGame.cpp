@@ -7,7 +7,7 @@
 #include <ctime>
 #include <iostream>
 
-#define NBONUS 1    // Numero di tipologie di bonus esistenti
+#define NBONUS 4    // Numero di tipologie di bonus esistenti + 1
 
 EngineGame::EngineGame(int frameGameX, int frameGameY, int height, int width) {
   this->frameGameX = frameGameX;
@@ -127,7 +127,7 @@ pEnemyList EngineGame::destroyEnemy(pEnemyList list, Enemy enemy) {
 pPosition EngineGame::deleteBonus (pPosition list, pPosition bonus) {
   pPosition head = list, prev = list, tmp;
   while (list != NULL) {
-    if (list -> x == bonus -> x) {
+    if (list -> x == bonus -> x && list -> y == bonus -> y) {
       if (list == head) {
         tmp = head;
         head = list -> next;
@@ -216,35 +216,35 @@ void EngineGame::checkShootEnemyCollision(pEnemyList enemys,
 bool EngineGame::isEmpty (int x, int y) { return mvinch(y, x) == ' '; }
 bool EngineGame::isBonus (int x, int y) { return mvinch(y, x) == '?'; }
 
-void EngineGame::moveCharacter(Character &character, int direction, pPosition bonusList, long &points, int &bananas, int &powerUpDMG) {
+void EngineGame::moveCharacter(Character &character, int direction, pPosition &bonusList, long &points, int &bananas, int &powerUpDMG) {
   int upgradeCost = 20;
   switch (direction) {  // CONTROLLO IL TASTO SPINTO
     case KEY_UP:
       if (isEmpty (character.getX(), character.getY() - 1)) character.directionUp();
       else if (isBonus (character.getX(), character.getY() - 1)) {
+        bonusList = getBonus (character.getX(), character.getY() - 1, bonusList, points);
         character.directionUp();
-        getBonus (character.getX(), character.getY(), bonusList, points);
       }
       break;
     case KEY_DOWN:
       if (isEmpty (character.getX(), character.getY() + 1)) character.directionDown();
       else if (isBonus (character.getX(), character.getY() + 1)) {
+        bonusList = getBonus (character.getX(), character.getY() + 1, bonusList, points);
         character.directionDown();
-        getBonus (character.getX(), character.getY(), bonusList, points);
       }
       break;
     case KEY_LEFT:
       if (isEmpty (character.getX() - 1, character.getY())) character.directionLeft();
       else if (isBonus (character.getX() - 1, character.getY())) {
-          character.directionLeft();
-          getBonus (character.getX(), character.getY(), bonusList, points);
+        bonusList = getBonus (character.getX() - 1, character.getY(), bonusList, points);
+        character.directionLeft();
       }
       break;
     case KEY_RIGHT:
       if (isEmpty (character.getX() + 1, character.getY())) character.directionRight();
       else if (isBonus (character.getX() + 1, character.getY())) {
+        bonusList = getBonus (character.getX() + 1, character.getY(), bonusList, points);
         character.directionRight();
-        getBonus (character.getX(), character.getY(), bonusList, points);
       }
       break;  // ESCE DALLO SWITCH
     case 'e':
@@ -319,13 +319,7 @@ pEnemyList EngineGame::generateEnemy(int *monsterCount, char skin,
 
 pPosition EngineGame::generateBonus (DrawWindow drawWindow, int *bonusCount, pPosition bonusList) {
   /**
-   * Genera SOLO la posizione di un bonus e la inserisce in cima alla lista data.
-  pPosition head = new Position;
-  head -> x = drawWindow.randomPosition (40, 70).x;
-  head -> y = drawWindow.randomPosition (8, 19).y;
-  head -> skin = '?';
-  head -> next = bonusList;
-  return head;
+   * Genera la lista dei bonus (coordinate e skin), l'effetto di tali bonus è decretato altrove.
   */
   while (*bonusCount > 0) {
     pPosition tmpHead = new Position;
@@ -345,6 +339,7 @@ pPosition EngineGame::getBonus (int x, int y, pPosition bonusList, long &points)
   while (bonusList -> next != NULL) {
     // Appena si trova il bonus raccolto nella lista, si attiva un effetto e lo si elimina da quest'ultima
     if (bonusList -> x == x && bonusList -> y == y && bonusList -> skin == '?') {
+      bool end = false;
       srand (time (0));
       int randCase = rand() % NBONUS;   // Per n casi dello switch ci saranno n+1 tipologie di bonus, e dunque NBONUS = n + 1
 
@@ -354,9 +349,8 @@ pPosition EngineGame::getBonus (int x, int y, pPosition bonusList, long &points)
           - M: "Banana fragrance" Spawn di n nemici
         
         PROBLEMA:
-          - Cordinate sempre identiche
-          - Non vi sono effetto quando ci si va sopra
-          - Qunado si va sopra, la 'C' svanisce e rimane il '?'
+          - (Solo) Il primo dei bonus viene spawnato sempre nella stessa posizione, non viene raccolto ed oscura il giocatore
+          - I bonus si accumulano sulla schermata di gioco e non rimangono nelle rispettive stanze
 
         Per ogni bonus/malus scrivere a schermo relativo messaggio
       */
@@ -364,29 +358,32 @@ pPosition EngineGame::getBonus (int x, int y, pPosition bonusList, long &points)
       switch (randCase) {
         case 0:     // Bonus name: "BUNCH OF BANANAS"
           points += 50;
+          end = true;
           break;
         case 1:     // Bonus name: "CRATE OF BANANAS"
           points += 300;
+          end = true;
           break;
         case 2:     // Bonus name: "SUPPLY OF BANANAS"
           points += 1000;
+          end = true;
           break;
         case 3:     // Malus name: "ROTTEN BANANAS"
           points -= 100;
+          end = true;
           break;
-        case 4:     // Malus name: "BANANAS SPIDER"
+        //case 4:     // Malus name: "BANANAS SPIDER"
           // Si toglie un po' di vita
-          break;
-        
-        default:
-          bonusList = deleteBonus (tmpHead, bonusList);
-          return bonusList;
           //break;
+      }
+      if (end) {
+        bonusList = deleteBonus (tmpHead, bonusList);
+        return bonusList;
       }
     }
     bonusList = bonusList -> next;
   }
-  return NULL;
+  return tmpHead;
 }
 
 
