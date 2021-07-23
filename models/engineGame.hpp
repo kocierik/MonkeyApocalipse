@@ -23,7 +23,6 @@ class EngineGame {
 
   void baseCommand();
   void moveCharacter(Character &character, int direction, pPosition bonusList, int &points, int &bananas, int &powerUpDMG);
-  bool isEmpty(int x, int y);
   Pbullet createBullet(int x, int y, Pbullet &shoots);
   void enemyShootBullets(pEnemyList listEnemy);
   void shootBullet();
