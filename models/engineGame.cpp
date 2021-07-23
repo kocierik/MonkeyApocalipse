@@ -222,28 +222,28 @@ void EngineGame::moveCharacter(Character &character, int direction, pPosition &b
     case KEY_UP:
       if (isEmpty (character.getX(), character.getY() - 1)) character.directionUp();
       else if (isBonus (character.getX(), character.getY() - 1)) {
-        bonusList = getBonus (character.getX(), character.getY() - 1, bonusList, points);
+        bonusList = getBonus (character.getX(), character.getY() - 1, bonusList, points, character);
         character.directionUp();
       }
       break;
     case KEY_DOWN:
       if (isEmpty (character.getX(), character.getY() + 1)) character.directionDown();
       else if (isBonus (character.getX(), character.getY() + 1)) {
-        bonusList = getBonus (character.getX(), character.getY() + 1, bonusList, points);
+        bonusList = getBonus (character.getX(), character.getY() + 1, bonusList, points, character);
         character.directionDown();
       }
       break;
     case KEY_LEFT:
       if (isEmpty (character.getX() - 1, character.getY())) character.directionLeft();
       else if (isBonus (character.getX() - 1, character.getY())) {
-        bonusList = getBonus (character.getX() - 1, character.getY(), bonusList, points);
+        bonusList = getBonus (character.getX() - 1, character.getY(), bonusList, points, character);
         character.directionLeft();
       }
       break;
     case KEY_RIGHT:
       if (isEmpty (character.getX() + 1, character.getY())) character.directionRight();
       else if (isBonus (character.getX() + 1, character.getY())) {
-        bonusList = getBonus (character.getX() + 1, character.getY(), bonusList, points);
+        bonusList = getBonus (character.getX() + 1, character.getY(), bonusList, points, character);
         character.directionRight();
       }
       break;  // ESCE DALLO SWITCH
@@ -333,7 +333,7 @@ pPosition EngineGame::generateBonus (DrawWindow drawWindow, int *bonusCount, pPo
   return bonusList;
 }
 
-pPosition EngineGame::getBonus (int x, int y, pPosition bonusList, long &points) {
+pPosition EngineGame::getBonus (int x, int y, pPosition bonusList, long &points, Character &character) {
   pPosition tmpHead = bonusList;
 
   while (bonusList -> next != NULL) {
@@ -341,7 +341,7 @@ pPosition EngineGame::getBonus (int x, int y, pPosition bonusList, long &points)
     if (bonusList -> x == x && bonusList -> y == y && bonusList -> skin == '?') {
       bool end = false;
       srand (time (0));
-      int randCase = rand() % NBONUS;   // Per n casi dello switch ci saranno n+1 tipologie di bonus, e dunque NBONUS = n + 1
+      int randCase = rand() % NBONUS;   // 0 <= randCase <= NBONUS
 
       /* Bonus/Malus da implementare
           - B: Moltiplicatore di punteggio
@@ -351,6 +351,7 @@ pPosition EngineGame::getBonus (int x, int y, pPosition bonusList, long &points)
         PROBLEMA:
           - (Solo) Il primo dei bonus viene spawnato sempre nella stessa posizione, non viene raccolto ed oscura il giocatore
           - I bonus si accumulano sulla schermata di gioco e non rimangono nelle rispettive stanze
+          - I bonus sono ancora corpi solidi
 
         Per ogni bonus/malus scrivere a schermo relativo messaggio
       */
@@ -372,9 +373,21 @@ pPosition EngineGame::getBonus (int x, int y, pPosition bonusList, long &points)
           points -= 100;
           end = true;
           break;
-        //case 4:     // Malus name: "BANANAS SPIDER"
-          // Si toglie un po' di vita
-          //break;
+        case 4:     // Malus name: "BANANAS SPIDER"
+          character.setLife (character.getLife() - 10);
+          end = true;
+          break;
+        case 5:     // Malus name: "MONKEY TRAP"
+          if (character.getLife() > 30)
+            character.setLife (character.getLife() - 30);
+          else
+            character.setLife (1);
+          end = true;
+          break;
+        case 6:     // Malus name: "BANANA FRAGRANCE"
+
+          end = true;
+          break;
       }
       if (end) {
         bonusList = deleteBonus (tmpHead, bonusList);
