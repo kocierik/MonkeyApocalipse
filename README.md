@@ -23,23 +23,27 @@ LEGENDA:
 
 ✔ Movimento del player nella mappa
 
-✖ salvataggio della mappa per i movimenti
+✔ salvataggio della mappa per i movimenti
 
 ✔ Armi per il player
 
 ✔ Nemici
 
+△ Bonus (armi diverse, punti e vite)
+
 ✖ Dare una vita alle montagne
 
-✖ Aggiungere schermata ddi game over quando si muore
+✖ Aggiungere schermata di game over quando si muore
 
 ✖ Sistema per le vite e il punteggio
 
 ✖ Nuove tipologie di nemici
 
-✖ Bonus (armi diverse, punti e vite)
+✖ Cambiare arma con un tasto (+ relativa possibilità di ottenere, in modi differenti, le armi)
 
-✖ Morte player
+✖ Aggiungere le munizioni (dunque rimuovere lo sparo illimitato)
+
+✖ Drop causale di "cose" alla morte dei nemici (il drop non è assicurato)
 
 ✖ Difficoltà sempre maggiore
 
