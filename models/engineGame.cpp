@@ -78,7 +78,8 @@ void EngineGame::shootEnemyBullet() {
 void EngineGame::destroyBullet(Pbullet &shoots, int isEnemy) {
   Pbullet head = shoots, prev = shoots, tmp;
   while (head != NULL) {
-    if (!isEmpty(head->x + isEnemy, head->y) || head->x > 70 || head->x < 23) {
+    bool tmpCondition = !isEmpty(head->x + isEnemy, head->y) && !isBonus(head->x + isEnemy, head->y);
+    if (tmpCondition || head->x > 70 || head->x < 23) {
       if (head == shoots) {
         tmp = shoots;
         shoots = head->next;
@@ -168,8 +169,7 @@ void EngineGame::checkEnemyCollision(Character &character,
   }
 }
 
-void EngineGame::checkShootEnemyCollision(pEnemyList enemys,
-                                          Character &character, Pbullet &shoots,
+void EngineGame::checkShootEnemyCollision(pEnemyList enemys, Character &character, Pbullet &shoots,
                                           int isEnemy) {
   bool isCollisionEnemy = false;
   bool isCollisionCharacter = false;
@@ -345,14 +345,12 @@ pPosition EngineGame::getBonus (DrawWindow drawWindow, int x, int y, pPosition b
       int randCase = rand() % N_SWITCH_CASE;   // 0 <= randCase <= N_SWITCH_CASE
 
       /* Bonus/Malus da implementare
-          - B: Moltiplicatore di punteggio
+          - B: Moltiplicatore di punteggio che dura per n secondi
           - M: Personaggio immobile per n secondi
-          - M: "Banana fragrance" Spawn di n nemici
         
         PROBLEMA:
           - (Solo) Il primo dei bonus viene spawnato sempre nella stessa posizione, non viene raccolto ed oscura il giocatore
           - I bonus si accumulano sulla schermata di gioco e non rimangono nelle rispettive stanze
-          - I bonus sono ancora corpi solidi
 
         Per ogni bonus/malus scrivere a schermo relativo messaggio
       */
