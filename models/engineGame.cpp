@@ -2,12 +2,11 @@
 #include "engineGame.hpp"
 
 #include <ncurses.h>
-#include <ctime>
 #include <cmath>
 #include <ctime>
 #include <iostream>
 
-#define NBONUS 4    // Numero di tipologie di bonus esistenti + 1
+#define N_SWITCH_CASE 5    // Numero di casi dello switch che gestisce i bonus. Equivale a: n bonus - 1
 
 EngineGame::EngineGame(int frameGameX, int frameGameY, int height, int width) {
   this->frameGameX = frameGameX;
@@ -216,34 +215,36 @@ void EngineGame::checkShootEnemyCollision(pEnemyList enemys,
 bool EngineGame::isEmpty (int x, int y) { return mvinch(y, x) == ' '; }
 bool EngineGame::isBonus (int x, int y) { return mvinch(y, x) == '?'; }
 
-void EngineGame::moveCharacter(Character &character, int direction, pPosition &bonusList, long &points, int &bananas, int &powerUpDMG) {
+void EngineGame::moveCharacter (DrawWindow drawWindow, Character &character, int direction,
+                                pPosition &bonusList, pEnemyList enemyList, int round,
+                                long &points, int &bananas, int &powerUpDMG) {
   int upgradeCost = 20;
   switch (direction) {  // CONTROLLO IL TASTO SPINTO
     case KEY_UP:
       if (isEmpty (character.getX(), character.getY() - 1)) character.directionUp();
       else if (isBonus (character.getX(), character.getY() - 1)) {
-        bonusList = getBonus (character.getX(), character.getY() - 1, bonusList, points, character);
+        bonusList = getBonus (drawWindow, character.getX(), character.getY() - 1, bonusList, enemyList, round, points, character);
         character.directionUp();
       }
       break;
     case KEY_DOWN:
       if (isEmpty (character.getX(), character.getY() + 1)) character.directionDown();
       else if (isBonus (character.getX(), character.getY() + 1)) {
-        bonusList = getBonus (character.getX(), character.getY() + 1, bonusList, points, character);
+        bonusList = getBonus (drawWindow, character.getX(), character.getY() + 1, bonusList, enemyList, round, points, character);
         character.directionDown();
       }
       break;
     case KEY_LEFT:
       if (isEmpty (character.getX() - 1, character.getY())) character.directionLeft();
       else if (isBonus (character.getX() - 1, character.getY())) {
-        bonusList = getBonus (character.getX() - 1, character.getY(), bonusList, points, character);
+        bonusList = getBonus (drawWindow, character.getX() - 1, character.getY(), bonusList, enemyList, round, points, character);
         character.directionLeft();
       }
       break;
     case KEY_RIGHT:
       if (isEmpty (character.getX() + 1, character.getY())) character.directionRight();
       else if (isBonus (character.getX() + 1, character.getY())) {
-        bonusList = getBonus (character.getX() + 1, character.getY(), bonusList, points, character);
+        bonusList = getBonus (drawWindow, character.getX() + 1, character.getY(), bonusList, enemyList, round, points, character);
         character.directionRight();
       }
       break;  // ESCE DALLO SWITCH
@@ -333,15 +334,15 @@ pPosition EngineGame::generateBonus (DrawWindow drawWindow, int *bonusCount, pPo
   return bonusList;
 }
 
-pPosition EngineGame::getBonus (int x, int y, pPosition bonusList, long &points, Character &character) {
+pPosition EngineGame::getBonus (DrawWindow drawWindow, int x, int y, pPosition bonusList, pEnemyList enemyList, int round, long &points, Character &character) {
   pPosition tmpHead = bonusList;
+  srand (time (0));
 
   while (bonusList -> next != NULL) {
     // Appena si trova il bonus raccolto nella lista, si attiva un effetto e lo si elimina da quest'ultima
     if (bonusList -> x == x && bonusList -> y == y && bonusList -> skin == '?') {
       bool end = false;
-      srand (time (0));
-      int randCase = rand() % NBONUS;   // 0 <= randCase <= NBONUS
+      int randCase = rand() % N_SWITCH_CASE;   // 0 <= randCase <= N_SWITCH_CASE
 
       /* Bonus/Malus da implementare
           - B: Moltiplicatore di punteggio
@@ -374,20 +375,31 @@ pPosition EngineGame::getBonus (int x, int y, pPosition bonusList, long &points,
           end = true;
           break;
         case 4:     // Malus name: "BANANAS SPIDER"
-          character.setLife (character.getLife() - 10);
+          if (character.getLife() > 10)
+            character.setLife (character.getLife() - 10);
+          else if (character.getLife() > 1 && character.getLife() <= 10)
+            character.setLife (1);
+          else      // Se ha 1 di vita, muore
+            character.setLife (character.getLife() - 1);
           end = true;
           break;
         case 5:     // Malus name: "MONKEY TRAP"
           if (character.getLife() > 30)
             character.setLife (character.getLife() - 30);
-          else
+          else if (character.getLife() > 1 && character.getLife() <= 30)
+            character.setLife (1);
+          else      // Se ha 1 di vita, muore
             character.setLife (1);
           end = true;
           break;
+        /*
         case 6:     // Malus name: "BANANA FRAGRANCE"
-
+          int tmpQuantity = 3, tmpRound = round;
+          enemyList = generateEnemy (&tmpQuantity, 'X', 10, 100, enemyList, tmpRound, drawWindow);
+          drawWindow.printEnemy (enemyList, drawWindow);
           end = true;
           break;
+          */
       }
       if (end) {
         bonusList = deleteBonus (tmpHead, bonusList);
@@ -486,7 +498,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     bonusList = generateBonus (drawWindow, &bonusCount, bonusList);
 
     getInput(direction);
-    moveCharacter(character, direction, bonusList, points, bananas, powerUpDMG);
+    moveCharacter(drawWindow, character, direction, bonusList, enemyList, round, points, bananas, powerUpDMG);
     clear();
     drawWindow.printCharacter(character.getX(), character.getY(),
                               character.getSkin());
