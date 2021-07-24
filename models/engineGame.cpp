@@ -425,11 +425,13 @@ void EngineGame::checkDeath(bool &pause, Character &character) {
   }
 }
 
-void EngineGame::checkMountainDamage (Pbullet bulletList, int isEnemy, pPosition &mountainList, int damage) {
+void EngineGame::checkMountainDamage (Pbullet bulletList, bool isPlayer, pPosition &mountainList, int damage) {
   pPosition tmpMountainList = mountainList;
+  int extraRange = -2;
+  if (isPlayer) extraRange = 2;
   while (bulletList != NULL) {
     while (tmpMountainList != NULL) {
-        if (bulletList -> x + 2 == tmpMountainList -> x && bulletList -> y == tmpMountainList -> y) {
+        if (bulletList -> x + extraRange == tmpMountainList -> x && bulletList -> y == tmpMountainList -> y) {
           tmpMountainList -> life -= damage;
           if(tmpMountainList -> life <= 0) mountainList = deletePosition (mountainList, tmpMountainList);
         }
@@ -538,9 +540,9 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     if (drawWindow.lenghtRoom(listRoom) > 1) {
       drawWindow.printMountain(listRoom->next->listMountain);
       drawWindow.printBonus (bonusList);
-      // printList(listRoom->next->listMountain);
-    checkMountainDamage (this->shoots, 1, listRoom->next->listMountain, 1);      // FIX
-    checkMountainDamage (this->shootsEnemys, -1, listRoom->next->listMountain, 1);  // FIX
+       printList(listRoom->next->listMountain);
+    checkMountainDamage (this->shoots, true, listRoom->next->listMountain, 1);      // FIX
+    checkMountainDamage (this->shootsEnemys, false, listRoom->next->listMountain, 1);  // FIX
     }
     increaseCount(this->whileCount, points, enemyList);
     drawWindow.printEnemy(enemyList, drawWindow);
