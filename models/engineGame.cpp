@@ -360,6 +360,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
   pPosition mountainList = NULL;
   pRoom listRoom = new Room;
   while (!pause) {
+    float pointsOnScreen = points / 3;
     listRoom = drawWindow.changeRoom(character, monsterCount, round, enemyList,
                                      mountainList, listRoom, maxRound);
     enemyList = generateEnemy(&monsterCount, 'X', 10, 100, enemyList, round,
@@ -372,7 +373,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     drawWindow.drawRect(this->frameGameX, this->frameGameY, this->widht,
                         this->height, enemyList, round, false);
     drawWindow.drawStats(this->frameGameX, this->frameGameY, this->widht,
-                         this->height, &points, character, enemyList, powerUpDMG);
+                         this->height, &pointsOnScreen, character, enemyList, powerUpDMG);
     drawWindow.printCharacterStats(enemyList, character);
     if (drawWindow.lenghtRoom(listRoom) > 1)
       drawWindow.printMountain(listRoom->next->listMountain);
