@@ -35,7 +35,7 @@ class DrawWindow {
   void moveEnemy(pEnemyList list, Character character, DrawWindow drawWindow,
                  long points);
   Position randomPosition(int startRange, int endRange);
-  pPosition generateMountain(pPosition list);
+  pPosition generateMountain(pPosition list, int &mountainNumber);
   void printMountain(pPosition list);
   void printBonus (pPosition bonusList);
 

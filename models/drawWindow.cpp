@@ -286,9 +286,8 @@ Position DrawWindow::randomPosition(int startRange, int endRange) {
   return pos;
 }
 
-pPosition DrawWindow::generateMountain(pPosition list) {
-  int mountainNumber = rand() % 8 + 1;
-  while (mountainNumber > 0) {
+pPosition DrawWindow::generateMountain(pPosition list, int &mountainCount) {
+  while (mountainCount > 0) {
     // srand((int) time(0));
     int x = randomPosition(40, 70).x;
     int y = randomPosition(8, 19).y;
@@ -296,9 +295,10 @@ pPosition DrawWindow::generateMountain(pPosition list) {
     head->x = x;
     head->y = y;
     head->skin = '^';
+    head->life = 3;
     head->next = list;
     list = head;
-    mountainNumber--;
+    mountainCount -= 1;
   }
   return list;
 }
@@ -431,8 +431,10 @@ void DrawWindow::moveEnemy(pEnemyList list, Character character,
 }
 
 void DrawWindow::printBonus (pPosition bonusList) {
+  bool first = true;
   while (bonusList != NULL) {
-    printCharacter (bonusList -> x, bonusList -> y, bonusList -> skin);
+    if (first) first = false;
+    else printCharacter (bonusList -> x, bonusList -> y, bonusList -> skin);
     bonusList = bonusList -> next;
   }
 }
@@ -457,7 +459,8 @@ pRoom DrawWindow::changeRoom(Character &character, int &monsterCount,
       character.setX(23);
     } else if (maxRound == lenghtRoom(listRoom)) {
       character.setX(23);
-      listRoom->listMountain = generateMountain(listMountain);
+      int mountainCount = rand() % 8 + 1;
+      listRoom->listMountain = generateMountain(listMountain, mountainCount);
       listRoom = saveRoom(listMountain, listRoom);
       monsterCount = round;
       if (round <= 6) bonusCounter = (int)(round / 2);

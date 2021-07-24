@@ -124,10 +124,14 @@ pEnemyList EngineGame::destroyEnemy(pEnemyList list, Enemy enemy) {
   return head;
 }
 
-pPosition EngineGame::deleteBonus (pPosition list, pPosition bonus) {
+pPosition EngineGame::deletePosition (pPosition list, pPosition toDelete, int space) {
+  /**
+   * Essendo bonus e montagne la stessa tipologia di dato, questa funzione
+   * elimina un elemento toDelete da una lista, che sia di bonus o di montagne.
+  */
   pPosition head = list, prev = list, tmp;
   while (list != NULL) {
-    if (list -> x == bonus -> x && list -> y == bonus -> y) {
+    if (list -> x == toDelete -> x + space && list -> y == toDelete -> y) {
       if (list == head) {
         tmp = head;
         head = list -> next;
@@ -184,7 +188,7 @@ void EngineGame::checkShootEnemyCollision(pEnemyList enemys, Character &characte
         isCollisionEnemy = true;
       } else if ((character.getX() == shoots->x + isEnemy &&
                   character.getY() == shoots->y) &&
-                 isEnemy == -1) {
+                  isEnemy == -1) {
         isCollisionCharacter = true;
       }
       shoots = shoots->next;
@@ -212,8 +216,9 @@ void EngineGame::checkShootEnemyCollision(pEnemyList enemys, Character &characte
 }
 
 // controllo che la posizione x y sia uno spazio vuoto
-bool EngineGame::isEmpty (int x, int y) { return mvinch(y, x) == ' '; }
-bool EngineGame::isBonus (int x, int y) { return mvinch(y, x) == '?'; }
+bool EngineGame::isEmpty    (int x, int y) { return mvinch(y, x) == ' '; }
+bool EngineGame::isBonus    (int x, int y) { return mvinch(y, x) == '?'; }
+bool EngineGame::isMountain (int x, int y) { return mvinch(y, x) == '^'; }
 
 void EngineGame::moveCharacter (DrawWindow drawWindow, Character &character, int direction,
                                 pPosition &bonusList, pEnemyList enemyList, int round,
@@ -322,6 +327,7 @@ pPosition EngineGame::generateBonus (DrawWindow drawWindow, int *bonusCount, pPo
   /**
    * Genera la lista dei bonus (coordinate e skin), l'effetto di tali bonus è decretato altrove.
   */
+  srand(time(0));
   while (*bonusCount > 0) {
     pPosition tmpHead = new Position;
     tmpHead -> x = drawWindow.randomPosition (40, 70).x;
@@ -400,7 +406,7 @@ pPosition EngineGame::getBonus (DrawWindow drawWindow, int x, int y, pPosition b
           */
       }
       if (end) {
-        bonusList = deleteBonus (tmpHead, bonusList);
+        bonusList = deletePosition (tmpHead, bonusList, 0);
         return bonusList;
       }
     }
@@ -409,7 +415,6 @@ pPosition EngineGame::getBonus (DrawWindow drawWindow, int x, int y, pPosition b
   return tmpHead;
 }
 
-
 void EngineGame::checkDeath(bool &pause, Character &character) {
   if (character.getLife() <= 0) {
     character.setNumberLife(character.getNumberLife() - 1);
@@ -417,6 +422,23 @@ void EngineGame::checkDeath(bool &pause, Character &character) {
   }
   if (character.getNumberLife() <= 0){
     pause = true;
+  }
+}
+
+void EngineGame::checkMountainDamage (Pbullet bulletList, int isEnemy, pPosition &mountainList, int damage) {
+  pPosition tmpMountainList = mountainList;
+  while (bulletList != NULL) {
+
+    while (tmpMountainList != NULL) {
+        if (bulletList -> x + isEnemy == tmpMountainList -> x && bulletList -> y == tmpMountainList -> y) {
+          tmpMountainList -> life -= damage;
+          if (tmpMountainList -> life <= 0) mountainList = deletePosition (mountainList, tmpMountainList, 1);
+        }
+      tmpMountainList = tmpMountainList -> next;
+    }
+    tmpMountainList = mountainList;
+
+    bulletList = bulletList -> next;
   }
 }
 
@@ -488,7 +510,8 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
   int round = 0;
   int maxRound = 1;
   pEnemyList enemyList = NULL;
-  pPosition mountainList = NULL, bonusList = NULL;
+  pPosition mountainList = NULL;
+  pPosition bonusList = new Position;
   pRoom listRoom = new Room;
   while (!pause) {
     listRoom = drawWindow.changeRoom(character, monsterCount, bonusCount, round, enemyList, mountainList, listRoom, maxRound);
@@ -520,6 +543,10 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     checkShootEnemyCollision(enemyList, character, this->shoots, 1);
     checkShootEnemyCollision(enemyList, character, this->shootsEnemys, -1);
     refresh();
+
+    checkMountainDamage (this->shoots, 1, mountainList, 1);
+    checkMountainDamage (this->shootsEnemys, -1, mountainList, 1);
+    
     destroyBullet(this->shoots, 1);
     destroyBullet(this->shootsEnemys, -1);
     checkDeath(pause, character);

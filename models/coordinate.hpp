@@ -2,6 +2,7 @@ struct Position {
   int x;
   int y;
   char skin;
+  int life;
   Position* next;
 };
 typedef Position* pPosition;
