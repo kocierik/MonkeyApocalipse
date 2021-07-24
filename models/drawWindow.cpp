@@ -414,11 +414,13 @@ void DrawWindow::moveEnemy(pEnemyList list, Character character,
   while (list != NULL) {
     if (points % 40 == 0) {
       if (character.getY() > list->enemy.getY() &&
-          mvinch(list->enemy.getY() + 1, list->enemy.getX()) == ' ') {
+          (mvinch(list->enemy.getY() + 1, list->enemy.getX()) == ' ' ||
+           mvinch(list->enemy.getY() + 1, list->enemy.getX()) == '?')) {
         list->enemy.setY(list->enemy.getY() + 1);
         drawWindow.printCharacter(list->enemy.getX(), list->enemy.getY(),
                                   list->enemy.getSkin());
-      } else if (character.getY() < list->enemy.getY() && mvinch(list->enemy.getY() - 1, list->enemy.getX()) == ' ') {
+      } else if (character.getY() < list->enemy.getY() && (mvinch(list->enemy.getY() - 1, list->enemy.getX()) == ' ' ||
+                 mvinch(list->enemy.getY() - 1, list->enemy.getX()) == '?')) {
         list->enemy.setY(list->enemy.getY() - 1);
         drawWindow.printCharacter(list->enemy.getX(), list->enemy.getY(),
                                   list->enemy.getSkin());
