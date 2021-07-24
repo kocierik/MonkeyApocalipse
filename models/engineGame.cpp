@@ -124,14 +124,14 @@ pEnemyList EngineGame::destroyEnemy(pEnemyList list, Enemy enemy) {
   return head;
 }
 
-pPosition EngineGame::deletePosition (pPosition list, pPosition toDelete, int space) {
+pPosition EngineGame::deletePosition (pPosition list, pPosition toDelete) {
   /**
    * Essendo bonus e montagne la stessa tipologia di dato, questa funzione
    * elimina un elemento toDelete da una lista, che sia di bonus o di montagne.
   */
   pPosition head = list, prev = list, tmp;
   while (list != NULL) {
-    if (list -> x == toDelete -> x + space && list -> y == toDelete -> y) {
+    if (list ->x == toDelete -> x && list -> y == toDelete -> y) {
       if (list == head) {
         tmp = head;
         head = list -> next;
@@ -406,7 +406,7 @@ pPosition EngineGame::getBonus (DrawWindow drawWindow, int x, int y, pPosition b
           */
       }
       if (end) {
-        bonusList = deletePosition (tmpHead, bonusList, 0);
+        bonusList = deletePosition (tmpHead, bonusList);
         return bonusList;
       }
     }
@@ -428,11 +428,10 @@ void EngineGame::checkDeath(bool &pause, Character &character) {
 void EngineGame::checkMountainDamage (Pbullet bulletList, int isEnemy, pPosition &mountainList, int damage) {
   pPosition tmpMountainList = mountainList;
   while (bulletList != NULL) {
-
     while (tmpMountainList != NULL) {
-        if (bulletList -> x + isEnemy == tmpMountainList -> x && bulletList -> y == tmpMountainList -> y) {
+        if (bulletList -> x + 2 == tmpMountainList -> x && bulletList -> y == tmpMountainList -> y) {
           tmpMountainList -> life -= damage;
-          if (tmpMountainList -> life <= 0) mountainList = deletePosition (mountainList, tmpMountainList, 1);
+          if(tmpMountainList -> life <= 0) mountainList = deletePosition (mountainList, tmpMountainList);
         }
       tmpMountainList = tmpMountainList -> next;
     }
@@ -491,6 +490,14 @@ void EngineGame::money(int &bananas, pEnemyList enemyList, int maxRound, int &ro
 
 }
 
+void EngineGame::printList(pPosition list){
+  int i = 2;
+  while (list != NULL){
+    mvprintw(i, 0, "Vita montagna  %d", list->life);
+    list = list->next;
+    i++;
+  }
+}
 
 
 void EngineGame::getInput(int &direction) { direction = getch(); }
@@ -510,7 +517,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
   int round = 0;
   int maxRound = 1;
   pEnemyList enemyList = NULL;
-  pPosition mountainList = NULL;
+  pPosition mountainList = new Position;
   pPosition bonusList = new Position;
   pRoom listRoom = new Room;
   while (!pause) {
@@ -531,6 +538,9 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     if (drawWindow.lenghtRoom(listRoom) > 1) {
       drawWindow.printMountain(listRoom->next->listMountain);
       drawWindow.printBonus (bonusList);
+      // printList(listRoom->next->listMountain);
+    checkMountainDamage (this->shoots, 1, listRoom->next->listMountain, 1);      // FIX
+    checkMountainDamage (this->shootsEnemys, -1, listRoom->next->listMountain, 1);  // FIX
     }
     increaseCount(this->whileCount, points, enemyList);
     drawWindow.printEnemy(enemyList, drawWindow);
@@ -543,9 +553,6 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     checkShootEnemyCollision(enemyList, character, this->shoots, 1);
     checkShootEnemyCollision(enemyList, character, this->shootsEnemys, -1);
     refresh();
-
-    checkMountainDamage (this->shoots, 1, mountainList, 1);
-    checkMountainDamage (this->shootsEnemys, -1, mountainList, 1);
     
     destroyBullet(this->shoots, 1);
     destroyBullet(this->shootsEnemys, -1);

@@ -19,8 +19,7 @@ class EngineGame {
 
  public:
   EngineGame(int frameGameX, int frameGameY, int heigth, int width);
-  void printList(pEnemyList list, Character character);
-
+  void printList(pPosition list);
   void baseCommand();
   Pbullet createBullet(int x, int y, Pbullet &shoots);
   void enemyShootBullets(pEnemyList listEnemy);
@@ -29,7 +28,7 @@ class EngineGame {
 
   void destroyBullet(Pbullet &shoots, int isEnemy);
   pEnemyList destroyEnemy  (pEnemyList list, Enemy enemy);
-  pPosition deletePosition (pPosition list, pPosition bonus, int space);
+  pPosition deletePosition (pPosition list, pPosition bonus);
 
 
   void checkEnemyCollision(Character &character, pEnemyList enemyList);

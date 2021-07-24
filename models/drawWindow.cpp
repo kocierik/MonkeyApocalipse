@@ -295,7 +295,7 @@ pPosition DrawWindow::generateMountain(pPosition list, int &mountainCount) {
     head->x = x;
     head->y = y;
     head->skin = '^';
-    head->life = 3;
+    head->life = 30;
     head->next = list;
     list = head;
     mountainCount -= 1;
