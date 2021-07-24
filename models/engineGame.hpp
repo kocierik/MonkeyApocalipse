@@ -44,4 +44,5 @@ class EngineGame {
   void enemyShootBullets(pEnemyList listEnemy);
   void shootEnemyBullet();
   void money(int &bananas, pEnemyList enemyList, int maxRound, int &roundPayed);
+  void pointOnScreen( float &pointOnScreen, pEnemyList EnemyList);
 };
