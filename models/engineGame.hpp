@@ -61,4 +61,5 @@ class EngineGame {
   void runGame(Character character, DrawWindow drawWindow, int direction);
 
   void money(int &bananas, pEnemyList enemyList, int maxRound, int &roundPayed);
+  void pointOnScreen( float &pointOnScreen, pEnemyList EnemyList);
 };

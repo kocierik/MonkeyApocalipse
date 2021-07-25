@@ -508,6 +508,10 @@ void EngineGame::isPause(int &direction, bool &pause) {
   if (direction == 27) pause = true;
 }
 
+void EngineGame::pointOnScreen( float &pointOnScreen, pEnemyList EnemyList){   //GESTISCE QUANTO VELOCEMENTE AUMENTA IL PUNTEGGIO A SCHERMO
+  if (EnemyList->next != NULL) pointOnScreen = pointOnScreen + 0.5;
+}
+
 
 void EngineGame::runGame(Character character, DrawWindow drawWindow,
                          int direction) {
@@ -516,6 +520,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
   int roundPayed = 0;
   long points = 0;
   int monsterCount = 1, bonusCount = 1;
+  float pointsOnScreen = 0;
   int round = 0;
   int maxRound = 1;
   pEnemyList enemyList = NULL;
@@ -529,13 +534,15 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
 
     getInput(direction);
     moveCharacter(drawWindow, character, direction, bonusList, enemyList, round, points, bananas, powerUpDMG);
+    //moveCharacter(character, direction, bananas, powerUpDMG);
+    pointOnScreen(pointsOnScreen, enemyList);
     clear();
     drawWindow.printCharacter(character.getX(), character.getY(),
                               character.getSkin());
     drawWindow.drawRect(this->frameGameX, this->frameGameY, this->widht,
                         this->height, enemyList, round, false);
     drawWindow.drawStats(this->frameGameX, this->frameGameY, this->widht,
-                         this->height, &points, character, enemyList, powerUpDMG);
+                         this->height, &pointsOnScreen, character, enemyList, powerUpDMG);
     drawWindow.printCharacterStats(enemyList, character);
     if (drawWindow.lenghtRoom(listRoom) > 1) {
       drawWindow.printMountain(listRoom->next->listMountain);
