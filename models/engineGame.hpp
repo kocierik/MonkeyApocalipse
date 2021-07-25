@@ -41,13 +41,13 @@ class EngineGame {
   void choiceGame(DrawWindow drawWindow, int *direction, int *selection);
   void moveCharacter (DrawWindow drawWindow, Character &character, int direction,
                       pPosition &bonusList, pEnemyList enemyList, int round,
-                      long &points, int &bananas, int &powerUpDMG);
+                      float &pointsOnScreen, int &bananas, int &powerUpDMG);
 
   pPosition generateBonus (DrawWindow drawWindow, int *bonusCount, pPosition bonusList);
   pEnemyList generateEnemy(int *monsterCount, char skin, int damage,
                            int life, pEnemyList list, int &round, DrawWindow drawWindow);
   pPosition getBonus (DrawWindow drawWindow, int x, int y, pPosition bonusList,
-                      pEnemyList enemyList, int round, long &points, Character &character);
+                      pEnemyList enemyList, int round, float &pointsOnScreen, Character &character);
 
   void checkDeath(bool &pause, Character &character);
 
