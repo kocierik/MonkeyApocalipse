@@ -449,29 +449,29 @@ void DrawWindow::printBonus(pPosition bonusList) {
   }
 }
 
-pRoom DrawWindow::saveRoom(pPosition listMountain, pRoom listRoom) {
+pRoom DrawWindow::saveRoom(pPosition mountainList, pRoom roomList) {
   pRoom head = new Room;
-  head->listMountain = listMountain;
-  head->next = listRoom;
-  listRoom->prec = head;
-  listRoom = head;
-  return listRoom;
+  head->mountainList = mountainList;
+  head->next = roomList;
+  roomList->prec = head;
+  roomList = head;
+  return roomList;
 }
 
 pRoom DrawWindow::changeRoom(Character &character, int &monsterCount,
                              int &bonusCounter, int &round, pEnemyList &list,
-                             pPosition &listMountain, pRoom listRoom,
+                             pPosition &mountainList, pRoom roomList,
                              int &maxRound) {
   if (character.getX() == GAMEWIDTH) {
-    if (maxRound > lenghtRoom(listRoom)) {
-      listRoom = listRoom->prec;
+    if (maxRound > lenghtRoom(roomList)) {
+      roomList = roomList->prec;
       round += 1;
       character.setX(23);
-    } else if (maxRound == lenghtRoom(listRoom)) {
+    } else if (maxRound == lenghtRoom(roomList)) {
       character.setX(23);
       int mountainCount = rand() % 8 + 1;
-      listRoom->listMountain = generateMountain(listMountain, mountainCount);
-      listRoom = saveRoom(listMountain, listRoom);
+      roomList->mountainList = generateMountain(mountainList, mountainCount);
+      roomList = saveRoom(mountainList, roomList);
       monsterCount = round;
       if (round <= 6)
         bonusCounter = (int)(round / 2);
@@ -482,8 +482,8 @@ pRoom DrawWindow::changeRoom(Character &character, int &monsterCount,
     }
   } else if (character.getX() == 22) {
     character.setX(GAMEWIDTH - 1);
-    listRoom = listRoom->next;
+    roomList = roomList->next;
     round -= 1;
   }
-  return listRoom;
+  return roomList;
 }

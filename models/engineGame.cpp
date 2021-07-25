@@ -569,11 +569,11 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
   pEnemyList enemyList = NULL;
   pPosition mountainList = new Position;
   pPosition bonusList = new Position;
-  pRoom listRoom = new Room;
+  pRoom roomList = new Room;
   while (!pause) {
-    listRoom =
+    roomList =
         drawWindow.changeRoom(character, monsterCount, bonusCount, round,
-                              enemyList, mountainList, listRoom, maxRound);
+                              enemyList, mountainList, roomList, maxRound);
     enemyList = generateEnemy(&monsterCount, 'X', 10, 100, enemyList, round,
                               drawWindow);
     bonusList = generateBonus(drawWindow, &bonusCount, bonusList);
@@ -591,14 +591,14 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
                          this->height, &pointsOnScreen, character, enemyList,
                          powerUpDMG);
     drawWindow.printCharacterStats(enemyList, character);
-    if (drawWindow.lenghtRoom(listRoom) > 1) {
-      drawWindow.printMountain(listRoom->next->listMountain);
+    if (drawWindow.lenghtRoom(roomList) > 1) {
+      drawWindow.printMountain(roomList->next->mountainList);
       drawWindow.printBonus(bonusList);
-      // printList(listRoom->next->listMountain);
-      checkMountainDamage(this->shoots, true, listRoom->next->listMountain,
+      // printList(roomList->next->mountainList);
+      checkMountainDamage(this->shoots, true, roomList->next->mountainList,
                           1);  // FIX
       checkMountainDamage(this->shootsEnemys, false,
-                          listRoom->next->listMountain, 1);  // FIX
+                          roomList->next->mountainList, 1);  // FIX
     }
     increaseCount(this->whileCount, points, enemyList);
     drawWindow.printEnemy(enemyList, drawWindow);
@@ -617,7 +617,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     checkDeath(pause, character);
     mvprintw(25, 52, "BANANAS                 %d", bananas);
     mvprintw(26, 52, "ROOM                  %d/%d",
-             drawWindow.lenghtRoom(listRoom), maxRound);
+             drawWindow.lenghtRoom(roomList), maxRound);
     mvprintw(27, 52, "ROUND MAX               %d", maxRound);
     timeout(50);
     isPause(direction, pause);
