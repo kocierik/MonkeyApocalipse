@@ -184,16 +184,24 @@ void DrawWindow::printHowToPlay() {  // GESTISCE LA SCHERMATA DEL HOW TO PLAY
            "ONE AND COLLECT BANANAS!           ");
   mvprintw(19, 3,
            "                                                                   "
-           "                                  ");                                                                       //.
-  mvprintw(20, 3, "                         WITH YOUR BANANAS YOU WILL BE ABLE TO BUY UPGRADES                          ");
-  mvprintw(21, 3, "                        FOR THE BANANACANNON OR BUY BACK LIVES YOU HAVE LOST                         ");
+           "                                  ");  //.
+  mvprintw(20, 3,
+           "                         WITH YOUR BANANAS YOU WILL BE ABLE TO BUY "
+           "UPGRADES                          ");
+  mvprintw(21, 3,
+           "                        FOR THE BANANACANNON OR BUY BACK LIVES YOU "
+           "HAVE LOST                         ");
   mvprintw(22, 3,
            "                                                                   "
            "                                  ");
-  mvprintw(23, 3, "                   WHEN YOU HAVE %d BANANAS PRESS 'R' TO UPGRADE THE BANANA CANNON                   ", 20);
-  mvprintw(24, 3, "                                  OR 'Q' TO RECOVER A LOST LIFE                                      ");
+  mvprintw(23, 3,
+           "                   WHEN YOU HAVE %d BANANAS PRESS 'R' TO UPGRADE "
+           "THE BANANA CANNON                   ",
+           20);
+  mvprintw(24, 3,
+           "                                  OR 'Q' TO RECOVER A LOST LIFE    "
+           "                                  ");
 
-  
   attroff(COLOR_PAIR(2));  // CHIUSURA DEL COLORE VERDE
 }
 void DrawWindow::HowToPlay(int direction) {
@@ -209,8 +217,11 @@ void DrawWindow::printCharacter(int x, int y, char c) {
   printw("%c", c);
 }
 
-void DrawWindow::drawRect(int startX, int startY, int width, int heigth,
-                          pEnemyList enemyList, int round, bool isScreenBound) {  // isScreenBound SI UNA PER FLAGGARE CHE È IL RETTANGOLO CHE DELIMITA LO SCHERMO, QUINDI NON DEVE APRIRSI
+void DrawWindow::drawRect(
+    int startX, int startY, int width, int heigth, pEnemyList enemyList,
+    int round, bool isScreenBound) {  // isScreenBound SI UNA PER FLAGGARE CHE È
+                                      // IL RETTANGOLO CHE DELIMITA LO SCHERMO,
+                                      // QUINDI NON DEVE APRIRSI
   for (int i = startY; i < width; ++i) {
     mvprintw(startX, i, "-");
     mvprintw(heigth, i, "-");
@@ -241,7 +252,7 @@ void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
   mvprintw(startX - 2, startX + 47, "LIFE:");
   mvprintw(powerUp_x, powerUp_y, "POWER-UP");
 
-  init_pair(11, COLOR_WHITE, 232); 
+  init_pair(11, COLOR_WHITE, 232);
   attron(COLOR_PAIR(11));
   drawRect(startX - 4, startY - 11, width + 13, heigth + 9, enemyList, 0, true);
   attroff(COLOR_PAIR(11));
@@ -260,19 +271,12 @@ void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
   init_pair(3, COLOR_YELLOW, -1);  // FUNZIONI PER USARE I COLORI
   attron(COLOR_PAIR(3));
   mvprintw(startX - 2, startY + 12, "%.0f", *points);
-  if (powerUp == 4)
-    mvprintw(powerUp_x, powerUp_y + 10, "[X] [X] [X] [X]");
-  if (powerUp == 3)
-    mvprintw(powerUp_x, powerUp_y + 10, "[X] [X] [X] [ ]");
-  if (powerUp == 2)
-    mvprintw(powerUp_x, powerUp_y + 10, "[X] [X] [ ] [ ]");
-  if (powerUp == 1)
-    mvprintw(powerUp_x, powerUp_y + 10, "[X] [ ] [ ] [ ]");
-  if (powerUp == 0)
-    mvprintw(powerUp_x, powerUp_y + 10, "[ ] [ ] [ ] [ ]");
+  if (powerUp == 4) mvprintw(powerUp_x, powerUp_y + 10, "[X] [X] [X] [X]");
+  if (powerUp == 3) mvprintw(powerUp_x, powerUp_y + 10, "[X] [X] [X] [ ]");
+  if (powerUp == 2) mvprintw(powerUp_x, powerUp_y + 10, "[X] [X] [ ] [ ]");
+  if (powerUp == 1) mvprintw(powerUp_x, powerUp_y + 10, "[X] [ ] [ ] [ ]");
+  if (powerUp == 0) mvprintw(powerUp_x, powerUp_y + 10, "[ ] [ ] [ ] [ ]");
   attroff(COLOR_PAIR(3));  // CHIUSURA DEL COLORE
-
-  
 }
 
 Position DrawWindow::randomPosition(int startRange, int endRange) {
@@ -351,22 +355,22 @@ void DrawWindow::printCharacterStats(pEnemyList list, Character character) {
   // CODICE CHE GESTISCE LA BARRA DELLA VITA
   // ------------------------------------------------------------------------------
 
-  mvprintw(i, BarStart - 4, "HP");                         // MOSTRA LA SCRITTA HP PRIMA DELLA BARRA
+  mvprintw(i, BarStart - 4, "HP");  // MOSTRA LA SCRITTA HP PRIMA DELLA BARRA
 
   if (character.getLife() >
-      60) {                                                // GESTISCE IL COLORE DELLA BARRA TRA 100 E 61
+      60) {  // GESTISCE IL COLORE DELLA BARRA TRA 100 E 61
     healtColorPair = 6;
     init_pair(healtColorPair, COLOR_GREEN, COLOR_GREEN);
     attron(COLOR_PAIR(healtColorPair));
   }
   if (character.getLife() >= 25 &&
       character.getLife() <=
-          60) {                                            // GESTISCE IL COLORE DELLA BARRA TRA 50 E 25
+          60) {  // GESTISCE IL COLORE DELLA BARRA TRA 50 E 25
     healtColorPair = 5;
     init_pair(healtColorPair, COLOR_YELLOW, COLOR_YELLOW);
     attron(COLOR_PAIR(healtColorPair));
   }
-  if (character.getLife() < 25) {                          // GESTISCE IL COLORE DELLA BARRA TRA 24 E 0
+  if (character.getLife() < 25) {  // GESTISCE IL COLORE DELLA BARRA TRA 24 E 0
     healtColorPair = 4;
     init_pair(healtColorPair, COLOR_RED, COLOR_RED);
     attron(COLOR_PAIR(healtColorPair));
@@ -374,12 +378,12 @@ void DrawWindow::printCharacterStats(pEnemyList list, Character character) {
 
   init_pair(8, 233, 233);
   attron(COLOR_PAIR(8));
-  mvprintw(i, BarStart, "                    ");                     // SFONDO NERO BARRA
+  mvprintw(i, BarStart, "                    ");  // SFONDO NERO BARRA
   attroff(COLOR_PAIR(8));
 
   attron(COLOR_PAIR(healtColorPair));
   for (cont = 0; volt <= (character.getLife() - 1) / 5;
-       volt++) {                                           // GENERA IL SIMBOLO " " OGNI DIECI UNITÀ DI VITA
+       volt++) {  // GENERA IL SIMBOLO " " OGNI DIECI UNITÀ DI VITA
     mvprintw(i, AddBar, " ");
     AddBar++;
   }
@@ -391,9 +395,12 @@ void DrawWindow::printCharacterStats(pEnemyList list, Character character) {
   // FINE CODICE BARRA DELLA VITA
   // ------------------------------------------------------------------------------------------
 
-  while (list != NULL && reachBound < 6) {  // REACHBOUND SERVE A DETERMINARE IL LIMITE DI NEMICI VISUALIZZABILI NELLA LISTA DELL'HUD
+  while (list != NULL &&
+         reachBound < 6) {  // REACHBOUND SERVE A DETERMINARE IL LIMITE DI
+                            // NEMICI VISUALIZZABILI NELLA LISTA DELL'HUD
     if (list->enemy.getX() != 0) {
-      mvprintw(i, X_ElencoNemici, "- Base Hunter: %d HP", list->enemy.getLife());
+      mvprintw(i, X_ElencoNemici, "- Base Hunter: %d HP",
+               list->enemy.getLife());
     }
     i++;
     reachBound++;
@@ -419,8 +426,9 @@ void DrawWindow::moveEnemy(pEnemyList list, Character character,
         list->enemy.setY(list->enemy.getY() + 1);
         drawWindow.printCharacter(list->enemy.getX(), list->enemy.getY(),
                                   list->enemy.getSkin());
-      } else if (character.getY() < list->enemy.getY() && (mvinch(list->enemy.getY() - 1, list->enemy.getX()) == ' ' ||
-                 mvinch(list->enemy.getY() - 1, list->enemy.getX()) == '?')) {
+      } else if (character.getY() < list->enemy.getY() &&
+                 (mvinch(list->enemy.getY() - 1, list->enemy.getX()) == ' ' ||
+                  mvinch(list->enemy.getY() - 1, list->enemy.getX()) == '?')) {
         list->enemy.setY(list->enemy.getY() - 1);
         drawWindow.printCharacter(list->enemy.getX(), list->enemy.getY(),
                                   list->enemy.getSkin());
@@ -430,12 +438,14 @@ void DrawWindow::moveEnemy(pEnemyList list, Character character,
   }
 }
 
-void DrawWindow::printBonus (pPosition bonusList) {
+void DrawWindow::printBonus(pPosition bonusList) {
   bool first = true;
   while (bonusList != NULL) {
-    if (first) first = false;
-    else printCharacter (bonusList -> x, bonusList -> y, bonusList -> skin);
-    bonusList = bonusList -> next;
+    if (first)
+      first = false;
+    else
+      printCharacter(bonusList->x, bonusList->y, bonusList->skin);
+    bonusList = bonusList->next;
   }
 }
 
@@ -463,8 +473,10 @@ pRoom DrawWindow::changeRoom(Character &character, int &monsterCount,
       listRoom->listMountain = generateMountain(listMountain, mountainCount);
       listRoom = saveRoom(listMountain, listRoom);
       monsterCount = round;
-      if (round <= 6) bonusCounter = (int)(round / 2);
-      else bonusCounter = 3;
+      if (round <= 6)
+        bonusCounter = (int)(round / 2);
+      else
+        bonusCounter = 3;
       list = list->next;
       maxRound += 1;
     }

@@ -27,31 +27,33 @@ class EngineGame {
   void shootEnemyBullet();
 
   void destroyBullet(Pbullet &shoots, int isEnemy);
-  pEnemyList destroyEnemy  (pEnemyList list, Enemy enemy);
-  pPosition deletePosition (pPosition list, pPosition bonus);
-
+  pEnemyList destroyEnemy(pEnemyList list, Enemy enemy);
+  pPosition deletePosition(pPosition list, pPosition bonus);
 
   void checkEnemyCollision(Character &character, pEnemyList enemyList);
   void checkShootEnemyCollision(pEnemyList enemys, Character &character,
                                 Pbullet &shoots, int isEnemy);
-  bool isEmpty    (int x, int y);
-  bool isBonus    (int x, int y);
-  bool isMountain (int x, int y);
+  bool isEmpty(int x, int y);
+  bool isBonus(int x, int y);
+  bool isMountain(int x, int y);
 
   void choiceGame(DrawWindow drawWindow, int *direction, int *selection);
-  void moveCharacter (DrawWindow drawWindow, Character &character, int direction,
-                      pPosition &bonusList, pEnemyList enemyList, int round,
-                      float &pointsOnScreen, int &bananas, int &powerUpDMG);
+  void moveCharacter(DrawWindow drawWindow, Character &character, int direction,
+                     pPosition &bonusList, pEnemyList enemyList, int round,
+                     float &pointsOnScreen, int &bananas, int &powerUpDMG);
 
-  pPosition generateBonus (DrawWindow drawWindow, int *bonusCount, pPosition bonusList);
-  pEnemyList generateEnemy(int *monsterCount, char skin, int damage,
-                           int life, pEnemyList list, int &round, DrawWindow drawWindow);
-  pPosition getBonus (DrawWindow drawWindow, int x, int y, pPosition bonusList,
-                      pEnemyList enemyList, int round, float &pointsOnScreen, Character &character);
+  pPosition generateBonus(DrawWindow drawWindow, int *bonusCount,
+                          pPosition bonusList);
+  pEnemyList generateEnemy(int *monsterCount, char skin, int damage, int life,
+                           pEnemyList list, int &round, DrawWindow drawWindow);
+  pPosition getBonus(DrawWindow drawWindow, int x, int y, pPosition bonusList,
+                     pEnemyList enemyList, int round, float &pointsOnScreen,
+                     Character &character);
 
   void checkDeath(bool &pause, Character &character);
 
-  void checkMountainDamage (Pbullet bulletList, bool isPlayer, pPosition &mountainList, int damage);
+  void checkMountainDamage(Pbullet bulletList, bool isPlayer,
+                           pPosition &mountainList, int damage);
 
   void engine(Character character, DrawWindow printer);
   void increaseCount(int &whileCount, long &points, pEnemyList enemyList);
@@ -61,5 +63,5 @@ class EngineGame {
   void runGame(Character character, DrawWindow drawWindow, int direction);
 
   void money(int &bananas, pEnemyList enemyList, int maxRound, int &roundPayed);
-  void pointOnScreen( float &pointOnScreen, pEnemyList EnemyList);
+  void pointOnScreen(float &pointOnScreen, pEnemyList EnemyList);
 };

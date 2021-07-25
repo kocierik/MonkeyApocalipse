@@ -30,14 +30,15 @@ class DrawWindow {
   int lenghtRoom(pRoom list);
   void printCharacterStats(pEnemyList list, Character character);
   void printEnemy(pEnemyList list, DrawWindow drawWindow);
-  pRoom changeRoom(Character &character, int &monsterCount, int &bonusCount, int &round,
-                   pEnemyList &list, pPosition &listMountain, pRoom listRoom, int &maxRound);
+  pRoom changeRoom(Character &character, int &monsterCount, int &bonusCount,
+                   int &round, pEnemyList &list, pPosition &listMountain,
+                   pRoom listRoom, int &maxRound);
   void moveEnemy(pEnemyList list, Character character, DrawWindow drawWindow,
                  long points);
   Position randomPosition(int startRange, int endRange);
   pPosition generateMountain(pPosition list, int &mountainNumber);
   void printMountain(pPosition list);
-  void printBonus (pPosition bonusList);
+  void printBonus(pPosition bonusList);
 
   pRoom saveRoom(pPosition listMountain, pRoom listRoom);
 };
