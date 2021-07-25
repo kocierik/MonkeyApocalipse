@@ -25,13 +25,13 @@ LEGENDA:
 
 ✔ Sparo del player
 
-✖ salvataggio della mappa per i movimenti
+✔ Salvataggio della mappa per i movimenti
 
 ✔ Nemici
 
-✖ Dare una vita alle montagne
+✔ Montagne distruttibili
 
-✖ Aggiungere schermata ddi game over quando si muore
+✖ Aggiungere schermata di game over quando si muore
 
 ✖ Sistema per le vite e il punteggio
 

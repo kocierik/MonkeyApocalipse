@@ -540,7 +540,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     if (drawWindow.lenghtRoom(listRoom) > 1) {
       drawWindow.printMountain(listRoom->next->listMountain);
       drawWindow.printBonus (bonusList);
-       printList(listRoom->next->listMountain);
+      //printList(listRoom->next->listMountain);
     checkMountainDamage (this->shoots, true, listRoom->next->listMountain, 1);      // FIX
     checkMountainDamage (this->shootsEnemys, false, listRoom->next->listMountain, 1);  // FIX
     }
