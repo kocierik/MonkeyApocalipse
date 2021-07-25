@@ -14,8 +14,8 @@
 DrawWindow::DrawWindow() {}
 
 /*
-  I COLORI SONO INPARENTATI DA UN ID (IL PRIMO VALORE DI INIT_PAIR)
-  I COLORI HANNO ID IN BASE AL LORO UTILIZZO:
+  I COLORI SONO IMPARENTATI DA UN ID (IL PRIMO VALORE DI INIT_PAIR)
+  I COLORI HANNO ID:
   - ROSSO = 1
   - VERDE = 2
   - GIALLO = 3
@@ -286,19 +286,19 @@ Position DrawWindow::randomPosition(int startRange, int endRange) {
   return pos;
 }
 
-pPosition DrawWindow::generateMountain(pPosition list) {
-  int mountainNumber = rand() % 8 + 1;
-  while (mountainNumber > 0) {
+pPosition DrawWindow::generateMountain(pPosition list, int &mountainCount) {
+  while (mountainCount > 0) {
     // srand((int) time(0));
     int x = randomPosition(40, 70).x;
     int y = randomPosition(8, 19).y;
     pPosition head = new Position;
     head->x = x;
     head->y = y;
-    head->character = '^';
+    head->skin = '^';
+    head->life = 30;
     head->next = list;
     list = head;
-    mountainNumber--;
+    mountainCount -= 1;
   }
   return list;
 }
@@ -308,7 +308,7 @@ void DrawWindow::printMountain(pPosition list) {  // FIX
   while (mountainList != NULL) {
     init_pair(15, COLOR_YELLOW, -1);
     attron(COLOR_PAIR(15));
-    printCharacter(mountainList->x, mountainList->y, mountainList->character);
+    printCharacter(mountainList->x, mountainList->y, mountainList->skin);
     attroff(COLOR_PAIR(15));
     mountainList = mountainList->next;
   }
@@ -404,7 +404,7 @@ void DrawWindow::printCharacterStats(pEnemyList list, Character character) {
 void DrawWindow::printEnemy(pEnemyList list, DrawWindow drawWindow) {
   while (list != NULL) {
     drawWindow.printCharacter(list->enemy.getX(), list->enemy.getY(),
-                              list->enemy.getCharacter());
+                              list->enemy.getSkin());
     list = list->next;
   }
 }
@@ -414,18 +414,28 @@ void DrawWindow::moveEnemy(pEnemyList list, Character character,
   while (list != NULL) {
     if (points % 40 == 0) {
       if (character.getY() > list->enemy.getY() &&
-          mvinch(list->enemy.getY() + 1, list->enemy.getX()) == ' ') {
+          (mvinch(list->enemy.getY() + 1, list->enemy.getX()) == ' ' ||
+           mvinch(list->enemy.getY() + 1, list->enemy.getX()) == '?')) {
         list->enemy.setY(list->enemy.getY() + 1);
         drawWindow.printCharacter(list->enemy.getX(), list->enemy.getY(),
-                                  list->enemy.getCharacter());
-      } else if (character.getY() < list->enemy.getY() &&
-                 mvinch(list->enemy.getY() - 1, list->enemy.getX()) == ' ') {
+                                  list->enemy.getSkin());
+      } else if (character.getY() < list->enemy.getY() && (mvinch(list->enemy.getY() - 1, list->enemy.getX()) == ' ' ||
+                 mvinch(list->enemy.getY() - 1, list->enemy.getX()) == '?')) {
         list->enemy.setY(list->enemy.getY() - 1);
         drawWindow.printCharacter(list->enemy.getX(), list->enemy.getY(),
-                                  list->enemy.getCharacter());
+                                  list->enemy.getSkin());
       }
     }
     list = list->next;
+  }
+}
+
+void DrawWindow::printBonus (pPosition bonusList) {
+  bool first = true;
+  while (bonusList != NULL) {
+    if (first) first = false;
+    else printCharacter (bonusList -> x, bonusList -> y, bonusList -> skin);
+    bonusList = bonusList -> next;
   }
 }
 
@@ -439,7 +449,7 @@ pRoom DrawWindow::saveRoom(pPosition listMountain, pRoom listRoom) {
 }
 
 pRoom DrawWindow::changeRoom(Character &character, int &monsterCount,
-                             int &round, pEnemyList &list,
+                             int &bonusCounter, int &round, pEnemyList &list,
                              pPosition &listMountain, pRoom listRoom,
                              int &maxRound) {
   if (character.getX() == GAMEWIDTH) {
@@ -449,9 +459,12 @@ pRoom DrawWindow::changeRoom(Character &character, int &monsterCount,
       character.setX(23);
     } else if (maxRound == lenghtRoom(listRoom)) {
       character.setX(23);
-      listRoom->listMountain = generateMountain(listMountain);
+      int mountainCount = rand() % 8 + 1;
+      listRoom->listMountain = generateMountain(listMountain, mountainCount);
       listRoom = saveRoom(listMountain, listRoom);
       monsterCount = round;
+      if (round <= 6) bonusCounter = (int)(round / 2);
+      else bonusCounter = 3;
       list = list->next;
       maxRound += 1;
     }

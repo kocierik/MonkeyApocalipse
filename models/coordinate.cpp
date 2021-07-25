@@ -6,4 +6,4 @@ void Coordinate::setPosition(Position point) { this->point = point; }
 
 Position Coordinate::getPosition() { return this->point; }
 
-char Coordinate::getCharacter() { return point.character; }
+char Coordinate::getCharacter() { return point.skin; }

@@ -23,19 +23,19 @@ LEGENDA:
 
 ✔ Movimento del player nella mappa
 
-✔ salvataggio della mappa per i movimenti
+✔ Sparo del player
 
-✔ Armi per il player
+✔ Salvataggio della mappa per i movimenti
 
 ✔ Nemici
 
+✔ Montagne distruttibili
+
+✔ Sistema per le vite e il punteggio
+
 △ Bonus (armi diverse, punti e vite)
 
-✖ Dare una vita alle montagne
-
 ✖ Aggiungere schermata di game over quando si muore
-
-✖ Sistema per le vite e il punteggio
 
 ✖ Nuove tipologie di nemici
 
@@ -45,11 +45,15 @@ LEGENDA:
 
 ✖ Drop causale di "cose" alla morte dei nemici (il drop non è assicurato)
 
-✖ Difficoltà sempre maggiore
-
-✖ Redpillate
+✖ Messaggi a schermo durante la parita (p.e: "Hai raccolto *nome arma*", "Bonus *nome bonus", ecc.)
 
 ✖ Mine
+
+✖ Vari tipi di nemici
+
+✖ Difficoltà sempre maggiore
+
+✖ Redpillate (p.e: frasi randomiche nel menù stile minecraft)
 
 ✖ Multiplayer
 
@@ -69,11 +73,11 @@ Consegne migliorie varie:
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 TRAMA:
-In un mondo di sole scimmie, un virus si è diffuso contagiando la quasi totalità del pianeta.
-Le scimmie infette hanno perso ogni capacità di ragionare, intendere e di volere, trasformandosi in pazze bestie di merda in preda alla follia con un unico desiderio (causato dal virus), mangiare, mangiare sino alla morte.
-Una volta finiti i cibi vegetali sono passate alla volta della carne dandosi al cannibalismo divorando le scimmie ancora sane.
+  In un mondo di sole scimmie, un virus si è diffuso contagiando la quasi totalità del pianeta.
+  Le scimmie infette hanno perso ogni capacità di ragionare, intendere e di volere, trasformandosi in pazze bestie di merda in preda alla follia con un unico desiderio (causato dal virus), mangiare, mangiare sino alla morte.
+  Una volta finiti i cibi vegetali sono passate alla volta della carne dandosi al cannibalismo divorando le scimmie ancora sane.
 
-Corri veloce come flash e fallo come un veloce coglione per sfuggire alla furioso appetito di queste pazze scimmie bastarde. 
-Trova ed usa armi di vario tipo per fargli il culo e salvare il tuo, dato che te lo vogliono letteralmente mangiare.
+  Corri veloce come flash e fallo come un veloce coglione per sfuggire alla furioso appetito di queste pazze scimmie bastarde. 
+  Trova ed usa armi di vario tipo per fargli il culo e salvare il tuo, dato che te lo vogliono letteralmente mangiare.
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
