@@ -172,7 +172,7 @@ void EngineGame::checkEnemyCollision(Character &character,
       init_pair(13, COLOR_RED, -1);
       attron(COLOR_PAIR(13));
       mvprintw(character.getY(), character.getX(),
-               "C");  // GENERA UN CARATTERE ROSSO QUANDO SI SOTTO IL NEMICO
+               "C");  // GENERA UN CARATTERE ROSSO QUANDO SI VIENE ATTACATI
       attroff(COLOR_PAIR(13));
     }
     enemyList = enemyList->next;
@@ -378,6 +378,7 @@ pPosition EngineGame::getBonus(DrawWindow drawWindow, int x, int y,
     if (bonusList->x == x && bonusList->y == y && bonusList->skin == '?') {
       bool end = false;
       int randCase = rand() % N_SWITCH_CASE;  // 0 <= randCase <= N_SWITCH_CASE
+      //int randCase = 5; UTILIZZATO PER TEST SU BONUS SPECIFICI
 
       /* Bonus/Malus da implementare
           - B: Moltiplicatore di punteggio che dura per n secondi
@@ -412,21 +413,11 @@ pPosition EngineGame::getBonus(DrawWindow drawWindow, int x, int y,
           end = true;
           break;
         case 4:  // Malus name: "BANANAS SPIDER"
-          if (character.getLife() > 10)
-            character.setLife(character.getLife() - 10);
-          else if (character.getLife() > 1 && character.getLife() <= 10)
-            character.setLife(1);
-          else  // Se ha 1 di vita, muore
-            character.setLife(character.getLife() - 1);
+          character.decreaseLife(10);
           end = true;
           break;
         case 5:  // Malus name: "MONKEY TRAP"
-          if (character.getLife() > 30)
-            character.setLife(character.getLife() - 30);
-          else if (character.getLife() > 1 && character.getLife() <= 30)
-            character.setLife(1);
-          else  // Se ha 1 di vita, muore
-            character.setLife(1);
+          character.decreaseLife(30);
           end = true;
           break;
           /*
