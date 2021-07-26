@@ -232,19 +232,22 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
                                int direction, pPosition &bonusList,
                                pEnemyList enemyList, int round,
                                float &pointsOnScreen, int &bananas,
-                               int &powerUpDMG, bool &bonusPicked, int &bonustype) {
-  int upgradeCost = 20;
+                               int &powerUpDMG, bool &bonusPicked, int &bonusType, int &bonusTime, 
+                               bool &upgradeBuyed, int &upgradeType, int &upgradeTime) {
+  int upgradeCost = 1;
   srand(time(0));
   switch (direction) {  // CONTROLLO IL TASTO SPINTO
     case KEY_UP: // --------------------------------------------------------
       if (isEmpty(character.getX(), character.getY() - 1))
         character.directionUp();
       else if (isBonus(character.getX(), character.getY() - 1)) {
-        bonusPicked = true;
-        bonustype = rand() % N_SWITCH_CASE;
+        bonusTime = 0;          // RESETTA IL TEMPO DI APPARIZIONE SE IL TIMER 
+                                // ERA GIA ATTIVO PER IL PRECEDENTE BONUS.
+        bonusPicked = true;     // FLAG CHE INDICA SE È STATO RACCOLTO
+        bonusType = rand() % N_SWITCH_CASE;
         bonusList =
             getBonus(drawWindow, character.getX(), character.getY() - 1,
-                     bonusList, enemyList, round, pointsOnScreen, character, bonustype);
+                     bonusList, enemyList, round, pointsOnScreen, character, bonusType);
         character.directionUp();
       }
       break;
@@ -252,11 +255,12 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
       if (isEmpty(character.getX(), character.getY() + 1))
         character.directionDown();
       else if (isBonus(character.getX(), character.getY() + 1)) {
+        bonusTime = 0;
         bonusPicked = true;
-        bonustype = rand() % N_SWITCH_CASE;
+        bonusType = rand() % N_SWITCH_CASE;
         bonusList =
             getBonus(drawWindow, character.getX(), character.getY() + 1,
-                     bonusList, enemyList, round, pointsOnScreen, character, bonustype);
+                     bonusList, enemyList, round, pointsOnScreen, character, bonusType);
         character.directionDown();
       }
       break;
@@ -264,11 +268,12 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
       if (isEmpty(character.getX() - 1, character.getY()))
         character.directionLeft();
       else if (isBonus(character.getX() - 1, character.getY())) {
-        bonusPicked = true;
-        bonustype = rand() % N_SWITCH_CASE;
+        bonusTime = 0;          
+        bonusPicked = true;   
+        bonusType = rand() % N_SWITCH_CASE;  // GENERA IL TIPO DI BONUS.
         bonusList =
             getBonus(drawWindow, character.getX() - 1, character.getY(),
-                     bonusList, enemyList, round, pointsOnScreen, character, bonustype);
+                     bonusList, enemyList, round, pointsOnScreen, character, bonusType);
         character.directionLeft();
       }
       break;
@@ -276,14 +281,15 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
       if (isEmpty(character.getX() + 1, character.getY()))
         character.directionRight();
       else if (isBonus(character.getX() + 1, character.getY())) {
+        bonusTime = 0;
         bonusPicked = true;
-        bonustype = rand() % N_SWITCH_CASE;
+        bonusType = rand() % N_SWITCH_CASE;
         bonusList =
             getBonus(drawWindow, character.getX() + 1, character.getY(),
-                     bonusList, enemyList, round, pointsOnScreen, character, bonustype);
+                     bonusList, enemyList, round, pointsOnScreen, character, bonusType);
         character.directionRight();
       }
-      break;  // ESCE DALLO SWITCH
+      break;
     case 'e': // -----------------------------------------------------------
     case 'E':
       if (whileCount / 2 > 1) {
@@ -295,6 +301,9 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
     case 'q':  // CONTROLLA L'AQUISTO DI VITE, MASSIMO 3 -------------------
     case 'Q':
       if (bananas >= upgradeCost && character.getNumberLife() < 3) {
+        upgradeBuyed = true;  // INDICA CHE È STATO COMPRATO UN UPGRADE
+        upgradeType = 0;      // INDICA IL TIPO DI UPGRADE.
+        upgradeTime = 0;      // RESETTA IL TEMPO DI APPARIZIONE SE HAI COMPRATO UN ALTRO UPGRADE
         character.setNumberLife(character.getNumberLife() + 1);
         bananas = bananas - upgradeCost;
       }
@@ -303,6 +312,9 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
                // MASSIMO 4 DURANTE TUTTA LA RUN
     case 'R':
       if (bananas >= upgradeCost && powerUpDMG < 4) {
+        upgradeBuyed = true;
+        upgradeType = 1;
+        upgradeTime = 0;
         character.setDamage(character.getDamage() + 10);
         bananas = bananas - upgradeCost;
         powerUpDMG++;
@@ -311,38 +323,54 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
   }
 }
 
-void EngineGame::showBonus(bool &bonusPicked, int bonustype, int &bonusTime){
+void EngineGame::showBonus(bool &upgradeBuyed, int &upgradeType, int &upgradeTime, bool &bonusPicked, int bonustype, int &bonusTime){
   int x = 25;
   int y = 6;
+  int timeLimit = 30;
   
   if(bonusPicked == true && bonustype == 0){
     mvprintw(y, x, "BUNCH OF BANANAS [+50]");
     bonusTime++;
-    }
+  }
   else if(bonusPicked == true && bonustype == 1){
     mvprintw(y, x, "CRATE OF BANANAS [+300]");
     bonusTime++;
-    }
+  }
   else if(bonusPicked == true && bonustype == 2){
     mvprintw(y, x, "SUPPLY OF BANANAS [+1000]");
     bonusTime++;
-    }
+  }
   else if(bonusPicked == true && bonustype == 3){
     mvprintw(y, x, "ROTTEN BANANAS [-100]");
     bonusTime++;
-    }
+  }
   else if(bonusPicked == true && bonustype == 4){
     mvprintw(y, x, "BANANAS SPIDER [-10 HP]");
     bonusTime++;
-    }
+  }
   else if(bonusPicked == true && bonustype == 5){
     mvprintw(y, x, "MONKEY TRAP [-30 HP]");
     bonusTime++;
-    }
+  }
 
-  if(bonusTime>30){ 
+  if(bonusTime>timeLimit){           // LASCIA IL BONUS VISIBILE PER "X" CICLI
     bonusPicked = false;
-    bonusTime = 0;
+    bonusTime = 0;            // RESETTA IL TIMER PER IL PROSSIMO BONUS UNA VOLTA SCADUTO
+  }
+
+
+  if(upgradeBuyed == true && upgradeType == 0){
+    mvprintw(y, x + 29, "MORE LIFE!");
+    upgradeTime++;
+    }
+  else if(upgradeBuyed == true && upgradeType == 1){
+    mvprintw(y, x + 29, "DAMAGE UPGRADE!");
+    upgradeTime++;
+  }
+
+  if(upgradeTime>timeLimit + 10){      // STESSO DI SOPRA MA CON GLI UPGRADE
+    upgradeBuyed = false;
+    upgradeTime = 0;
   }
 }
 
@@ -595,8 +623,11 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
   int powerUpDMG = 0;  // NUMERO DI POWERUP AL DANNO AQUISTATI
   int bananas = 0;
   int roundPayed = 0;
+  bool upgradeBuyed = false;
+  int upgradeType = 0;
+  int upgradeTime = 0;
   bool bonusPicked = false;
-  int bonustype = 0;
+  int bonusType = 0;
   int bonusTime = 0;
   long points = 0;
   int monsterCount = 1, bonusCount = 1;
@@ -617,7 +648,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
 
     getInput(direction);
     moveCharacter(drawWindow, character, direction, bonusList, enemyList, round,
-                  pointsOnScreen, bananas, powerUpDMG, bonusPicked, bonustype);
+                  pointsOnScreen, bananas, powerUpDMG, bonusPicked, bonusType, bonusTime, upgradeBuyed, upgradeType, upgradeTime);
     pointOnScreen(pointsOnScreen, enemyList);
     clear();
     drawWindow.printCharacter(character.getX(), character.getY(),
@@ -656,7 +687,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     mvprintw(26, 52, "ROOM                  %d/%d",
              drawWindow.lenghtRoom(roomList), maxRound);
     mvprintw(27, 52, "ROUND MAX               %d", maxRound);
-    showBonus(bonusPicked, bonustype, bonusTime);
+    showBonus(upgradeBuyed, upgradeType, upgradeTime, bonusPicked, bonusType, bonusTime);
     timeout(50);
     isPause(direction, pause);
   }
