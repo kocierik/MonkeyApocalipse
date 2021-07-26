@@ -234,7 +234,7 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
                                float &pointsOnScreen, int &bananas,
                                int &powerUpDMG, bool &bonusPicked, int &bonusType, int &bonusTime, 
                                bool &upgradeBuyed, int &upgradeType, int &upgradeTime) {
-  int upgradeCost = 1;
+  int upgradeCost = 10;
   srand(time(0));
   switch (direction) {  // CONTROLLO IL TASTO SPINTO
     case KEY_UP: // --------------------------------------------------------
