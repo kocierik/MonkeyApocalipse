@@ -232,58 +232,67 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
                                int direction, pPosition &bonusList,
                                pEnemyList enemyList, int round,
                                float &pointsOnScreen, int &bananas,
-                               int &powerUpDMG) {
+                               int &powerUpDMG, bool &bonusPicked, int &bonustype) {
   int upgradeCost = 20;
+  srand(time(0));
   switch (direction) {  // CONTROLLO IL TASTO SPINTO
-    case KEY_UP:
+    case KEY_UP: // --------------------------------------------------------
       if (isEmpty(character.getX(), character.getY() - 1))
         character.directionUp();
       else if (isBonus(character.getX(), character.getY() - 1)) {
+        bonusPicked = true;
+        bonustype = rand() % N_SWITCH_CASE;
         bonusList =
             getBonus(drawWindow, character.getX(), character.getY() - 1,
-                     bonusList, enemyList, round, pointsOnScreen, character);
+                     bonusList, enemyList, round, pointsOnScreen, character, bonustype);
         character.directionUp();
       }
       break;
-    case KEY_DOWN:
+    case KEY_DOWN: // ------------------------------------------------------
       if (isEmpty(character.getX(), character.getY() + 1))
         character.directionDown();
       else if (isBonus(character.getX(), character.getY() + 1)) {
+        bonusPicked = true;
+        bonustype = rand() % N_SWITCH_CASE;
         bonusList =
             getBonus(drawWindow, character.getX(), character.getY() + 1,
-                     bonusList, enemyList, round, pointsOnScreen, character);
+                     bonusList, enemyList, round, pointsOnScreen, character, bonustype);
         character.directionDown();
       }
       break;
-    case KEY_LEFT:
+    case KEY_LEFT: // ------------------------------------------------------
       if (isEmpty(character.getX() - 1, character.getY()))
         character.directionLeft();
       else if (isBonus(character.getX() - 1, character.getY())) {
+        bonusPicked = true;
+        bonustype = rand() % N_SWITCH_CASE;
         bonusList =
             getBonus(drawWindow, character.getX() - 1, character.getY(),
-                     bonusList, enemyList, round, pointsOnScreen, character);
+                     bonusList, enemyList, round, pointsOnScreen, character, bonustype);
         character.directionLeft();
       }
       break;
-    case KEY_RIGHT:
+    case KEY_RIGHT: // -----------------------------------------------------
       if (isEmpty(character.getX() + 1, character.getY()))
         character.directionRight();
       else if (isBonus(character.getX() + 1, character.getY())) {
+        bonusPicked = true;
+        bonustype = rand() % N_SWITCH_CASE;
         bonusList =
             getBonus(drawWindow, character.getX() + 1, character.getY(),
-                     bonusList, enemyList, round, pointsOnScreen, character);
+                     bonusList, enemyList, round, pointsOnScreen, character, bonustype);
         character.directionRight();
       }
       break;  // ESCE DALLO SWITCH
-    case 'e':
+    case 'e': // -----------------------------------------------------------
     case 'E':
       if (whileCount / 2 > 1) {
         this->shoots =
             createBullet(character.getX(), character.getY(), this->shoots);
         whileCount = 0;
       }
-      break;
-    case 'q':  // CONTROLLA L'AQUISTO DI VITE, MASSIMO 3
+      break; 
+    case 'q':  // CONTROLLA L'AQUISTO DI VITE, MASSIMO 3 -------------------
     case 'Q':
       if (bananas >= upgradeCost && character.getNumberLife() < 3) {
         character.setNumberLife(character.getNumberLife() + 1);
@@ -301,6 +310,33 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
       break;
   }
 }
+
+void EngineGame::showBonus(bool &bonusPicked, int bonustype){
+  if(bonusPicked == true && bonustype == 0){
+    mvprintw(6, 30, "BUNCH OF BANANAS + 50");
+    bonusPicked = false;
+    }
+  else if(bonusPicked == true && bonustype == 1){
+    mvprintw(6, 30, "CRATE OF BANANAS + 300");
+    bonusPicked = false;
+    }
+  else if(bonusPicked == true && bonustype == 2){
+    mvprintw(6, 30, "SUPPLY OF BANANAS + 1000");
+    bonusPicked = false;
+    }
+  else if(bonusPicked == true && bonustype == 3){
+    mvprintw(6, 30, "ROTTEN BANANAS - 100");
+    bonusPicked = false;
+    }
+  else if(bonusPicked == true && bonustype == 4){
+    mvprintw(6, 30, "BANANAS SPIDER - 10 HP");
+    bonusPicked = false;
+    }
+  else if(bonusPicked == true && bonustype == 5){
+    mvprintw(6, 30, "MONKEY TRAP - 30 HP");
+    bonusPicked = false;
+    }
+  }
 
 void EngineGame::choiceGame(DrawWindow drawWindow, int *direction,
                             int *selection) {
@@ -368,17 +404,15 @@ pPosition EngineGame::generateBonus(DrawWindow drawWindow, int *bonusCount,
 pPosition EngineGame::getBonus(DrawWindow drawWindow, int x, int y,
                                pPosition bonusList, pEnemyList enemyList,
                                int round, float &pointsOnScreen,
-                               Character &character) {
+                               Character &character, int &bonusType) {
   pPosition tmpHead = bonusList;
-  srand(time(0));
 
   while (bonusList->next != NULL) {
     // Appena si trova il bonus raccolto nella lista, si attiva un effetto e lo
     // si elimina da quest'ultima
     if (bonusList->x == x && bonusList->y == y && bonusList->skin == '?') {
       bool end = false;
-      int randCase = rand() % N_SWITCH_CASE;  // 0 <= randCase <= N_SWITCH_CASE
-      //int randCase = 5; UTILIZZATO PER TEST SU BONUS SPECIFICI
+      //bonusType = 0; <---- USATO SOLAMENTE PER I TEST PER BONUS SPECIFICI
 
       /* Bonus/Malus da implementare
           - B: Moltiplicatore di punteggio che dura per n secondi
@@ -395,7 +429,7 @@ pPosition EngineGame::getBonus(DrawWindow drawWindow, int x, int y,
       // Per ogni malus ci sono 2 bonus, oppure per ogni malus ci sono 3 bonus
       // (il tutto al fine di incentivarne la raccolta ed equilibrare gli
       // effetti)
-      switch (randCase) {
+      switch (bonusType) {
         case 0:  // Bonus name: "BUNCH OF BANANAS"
           pointsOnScreen += 50;
           end = true;
@@ -552,6 +586,8 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
   int powerUpDMG = 0;  // NUMERO DI POWERUP AL DANNO AQUISTATI
   int bananas = 0;
   int roundPayed = 0;
+  bool bonusPicked = false;
+  int bonustype = 0;
   long points = 0;
   int monsterCount = 1, bonusCount = 1;
   float pointsOnScreen = 0;
@@ -571,7 +607,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
 
     getInput(direction);
     moveCharacter(drawWindow, character, direction, bonusList, enemyList, round,
-                  pointsOnScreen, bananas, powerUpDMG);
+                  pointsOnScreen, bananas, powerUpDMG, bonusPicked, bonustype);
     pointOnScreen(pointsOnScreen, enemyList);
     clear();
     drawWindow.printCharacter(character.getX(), character.getY(),
@@ -610,6 +646,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     mvprintw(26, 52, "ROOM                  %d/%d",
              drawWindow.lenghtRoom(roomList), maxRound);
     mvprintw(27, 52, "ROUND MAX               %d", maxRound);
+    showBonus(bonusPicked, bonustype);
     timeout(50);
     isPause(direction, pause);
   }

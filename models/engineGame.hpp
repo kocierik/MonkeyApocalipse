@@ -40,7 +40,7 @@ class EngineGame {
   void choiceGame(DrawWindow drawWindow, int *direction, int *selection);
   void moveCharacter(DrawWindow drawWindow, Character &character, int direction,
                      pPosition &bonusList, pEnemyList enemyList, int round,
-                     float &pointsOnScreen, int &bananas, int &powerUpDMG);
+                     float &pointsOnScreen, int &bananas, int &powerUpDMG, bool &bonusPicked, int &bonustype);
 
   pPosition generateBonus(DrawWindow drawWindow, int *bonusCount,
                           pPosition bonusList);
@@ -48,7 +48,7 @@ class EngineGame {
                            pEnemyList list, int &round, DrawWindow drawWindow);
   pPosition getBonus(DrawWindow drawWindow, int x, int y, pPosition bonusList,
                      pEnemyList enemyList, int round, float &pointsOnScreen,
-                     Character &character);
+                     Character &character, int &bonusType);
 
   void checkDeath(bool &pause, Character &character);
 
@@ -64,4 +64,5 @@ class EngineGame {
 
   void money(int &bananas, pEnemyList enemyList, int maxRound, int &roundPayed);
   void pointOnScreen(float &pointOnScreen, pEnemyList EnemyList);
+  void showBonus(bool &bonusPicked, int bonustype);
 };
