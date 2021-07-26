@@ -64,5 +64,5 @@ class EngineGame {
 
   void money(int &bananas, pEnemyList enemyList, int maxRound, int &roundPayed);
   void pointOnScreen(float &pointOnScreen, pEnemyList EnemyList);
-  void showBonus(bool &bonusPicked, int bonustype);
+  void showBonus(bool &bonusPicked, int bonustype, int &bonusTime);
 };

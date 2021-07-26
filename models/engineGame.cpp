@@ -311,32 +311,41 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
   }
 }
 
-void EngineGame::showBonus(bool &bonusPicked, int bonustype){
+void EngineGame::showBonus(bool &bonusPicked, int bonustype, int &bonusTime){
+  int x = 25;
+  int y = 6;
+  
   if(bonusPicked == true && bonustype == 0){
-    mvprintw(6, 30, "BUNCH OF BANANAS + 50");
-    bonusPicked = false;
+    mvprintw(y, x, "BUNCH OF BANANAS [+50]");
+    bonusTime++;
     }
   else if(bonusPicked == true && bonustype == 1){
-    mvprintw(6, 30, "CRATE OF BANANAS + 300");
-    bonusPicked = false;
+    mvprintw(y, x, "CRATE OF BANANAS [+300]");
+    bonusTime++;
     }
   else if(bonusPicked == true && bonustype == 2){
-    mvprintw(6, 30, "SUPPLY OF BANANAS + 1000");
-    bonusPicked = false;
+    mvprintw(y, x, "SUPPLY OF BANANAS [+1000]");
+    bonusTime++;
     }
   else if(bonusPicked == true && bonustype == 3){
-    mvprintw(6, 30, "ROTTEN BANANAS - 100");
-    bonusPicked = false;
+    mvprintw(y, x, "ROTTEN BANANAS [-100]");
+    bonusTime++;
     }
   else if(bonusPicked == true && bonustype == 4){
-    mvprintw(6, 30, "BANANAS SPIDER - 10 HP");
-    bonusPicked = false;
+    mvprintw(y, x, "BANANAS SPIDER [-10 HP]");
+    bonusTime++;
     }
   else if(bonusPicked == true && bonustype == 5){
-    mvprintw(6, 30, "MONKEY TRAP - 30 HP");
-    bonusPicked = false;
+    mvprintw(y, x, "MONKEY TRAP [-30 HP]");
+    bonusTime++;
     }
+
+  if(bonusTime>30){ 
+    bonusPicked = false;
+    bonusTime = 0;
   }
+}
+
 
 void EngineGame::choiceGame(DrawWindow drawWindow, int *direction,
                             int *selection) {
@@ -588,6 +597,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
   int roundPayed = 0;
   bool bonusPicked = false;
   int bonustype = 0;
+  int bonusTime = 0;
   long points = 0;
   int monsterCount = 1, bonusCount = 1;
   float pointsOnScreen = 0;
@@ -646,7 +656,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     mvprintw(26, 52, "ROOM                  %d/%d",
              drawWindow.lenghtRoom(roomList), maxRound);
     mvprintw(27, 52, "ROUND MAX               %d", maxRound);
-    showBonus(bonusPicked, bonustype);
+    showBonus(bonusPicked, bonustype, bonusTime);
     timeout(50);
     isPause(direction, pause);
   }
