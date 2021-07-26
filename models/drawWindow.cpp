@@ -25,6 +25,8 @@ DrawWindow::DrawWindow() {}
   - MENU = 12
   - DANNO ROSSO = 13
   - MONTAGNE = 15
+  - LOSE SCREEN rosso = 16
+  - LOSE SCREEN verde = 17
 
   (questi sono riservati solo per la barra della salute):
   - ROSSO = 5
@@ -95,7 +97,7 @@ void DrawWindow::printCommand(int *cnt) {
     mvprintw(18, 5, "     QUIT      ");
   }
 
-  mvprintw(21, 5, "Press space to continue or use the arrow to move.");
+  mvprintw(21, 5, "Press [SPACE] to continue or use the arrow to move.");
 }
 
 void DrawWindow::printCredits() {
@@ -138,7 +140,7 @@ void DrawWindow::printCredits() {
   mvprintw(20, 3,
            "                                                                   "
            "                                   ");
-  attroff(COLOR_PAIR(2));  // CHIUSURA DEL COLORE ROSSO E BLU
+  attroff(COLOR_PAIR(2)); 
 }
 void DrawWindow::credits(int direction) {
   while (direction != 27) {
@@ -177,7 +179,7 @@ void DrawWindow::printHowToPlay() {  // GESTISCE LA SCHERMATA DEL HOW TO PLAY
            "                                                                   "
            "                                  ");
   mvprintw(17, 3,
-           "                       USE THE ARROWS TO MOVE AND 'E' TO USE THE "
+           "                       USE THE ARROWS TO MOVE AND [E] TO USE THE "
            "BANANACANNON.                       ");
   mvprintw(18, 3,
            "          ELIMINATE THE ENEMIES, CLEAN THE ROOM, MOVE TO THE NEXT "
@@ -195,11 +197,11 @@ void DrawWindow::printHowToPlay() {  // GESTISCE LA SCHERMATA DEL HOW TO PLAY
            "                                                                   "
            "                                  ");
   mvprintw(23, 3,
-           "                   WHEN YOU HAVE %d BANANAS PRESS 'R' TO UPGRADE "
+           "                   WHEN YOU HAVE %d BANANAS PRESS [R] TO UPGRADE "
            "THE BANANA CANNON                   ",
            20);
   mvprintw(24, 3,
-           "                                  OR 'Q' TO RECOVER A LOST LIFE    "
+           "                                  OR [Q] TO RECOVER A LOST LIFE    "
            "                                  ");
 
   attroff(COLOR_PAIR(2));  // CHIUSURA DEL COLORE VERDE
@@ -486,4 +488,38 @@ pRoom DrawWindow::changeRoom(Character &character, int &monsterCount,
     round -= 1;
   }
   return roomList;
+}
+
+void DrawWindow::printLoseScreen(){
+  init_pair(16, COLOR_RED, 232);  
+  attron(COLOR_PAIR(16));
+    mvprintw(3, 3,  "                                                                                                 ");
+    mvprintw(4, 3,  "                          __ _  __ _ _ __ ___   ___    _____   _____ _ __                        ");
+    mvprintw(5, 3,  "                         / _` |/ _` | '_ ` _ \\ / _ \\  / _ \\ \\ / / _ \\ '__|                       ");
+    mvprintw(6, 3,  "                        | (_| | (_| | | | | | |  __/ | (_) \\ V /  __/ |                          ");
+    mvprintw(7, 3,  "                         \\__, |\\__,_|_| |_| |_|\\___|  \\___/ \\_/ \\___|_|                          ");
+    mvprintw(8, 3,  "                         |___/                                                                   ");
+    mvprintw(9, 3,  "                                                                                                 ");
+    mvprintw(10, 3, "                                                                                                 ");
+  attroff(COLOR_PAIR(16));
+
+  init_pair(17, COLOR_GREEN, 232);  
+  attron(COLOR_PAIR(17));
+    mvprintw(11, 3, "               HUNTERS HAVE TRACKED YOU, SURROUNDED AND FINALLY THEY KILLED YOU...               ");
+    mvprintw(12, 3, "                                                                                                 ");
+    mvprintw(13, 3, "                             YOUR LIFE GOES AWAY WITH YOUR REVENGE.                              ");
+    mvprintw(14, 3, "                                                                                                 ");
+    mvprintw(15, 3, "            BUT DON'T GET MAD, THERE ARE THOUSANDS OF MONKEYS READY TO REBELL AGAIN...           ");
+    mvprintw(16, 3, "                                      ...SOONER OR THEN...                                       ");
+    mvprintw(17, 3, "                                                                                                 ");
+    mvprintw(18, 3, "                                          press [ESC]                                            ");
+    mvprintw(19, 3, "                                                                                                 ");
+  attroff(COLOR_PAIR(17)); 
+}
+
+void DrawWindow::loseScreen(int direction) {
+  while (direction != 27) {
+    printLoseScreen();    // STAMPA GLI AUTORI DEL GIOCO
+    direction = getch();  // ASPETTA UN TASTO IN INPUT
+  }
 }

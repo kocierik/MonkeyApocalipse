@@ -552,6 +552,8 @@ void EngineGame::engine(Character character, DrawWindow drawWindow) {
       case 0:
         pause = false;
         runGame(character, drawWindow, direction);
+        clear();
+        drawWindow.loseScreen(direction);
         selection = 4;
         break;
       case 1:

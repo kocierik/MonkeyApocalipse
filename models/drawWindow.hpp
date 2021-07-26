@@ -24,6 +24,8 @@ class DrawWindow {
   void credits(int direction);
   void printHowToPlay();
   void HowToPlay(int direction);
+  void printLoseScreen();
+  void loseScreen(int direction);
   void drawStats(int startX, int startY, int width, int heigth, float *points,
                  Character character, pEnemyList enemyList, int powerUp);
   int lenghtList(pEnemyList list);
@@ -41,4 +43,6 @@ class DrawWindow {
   void printBonus(pPosition bonusList);
 
   pRoom saveRoom(pPosition mountainList, pRoom roomList);
+  
+  
 };
