@@ -8,7 +8,7 @@
 #include <iostream>
 
 
-#define N_SWITCH_CASE 5 // Numero di casi dello switch che gestisce i bonus. Equivale a: n bonus - 1
+#define N_SWITCH_CASE 11 // Numero di casi dello switch che gestisce i bonus. Equivale a: n bonus - 1
 
 EngineGame::EngineGame(int frameGameX, int frameGameY, int height, int width) {
   this->frameGameX = frameGameX;
@@ -293,8 +293,8 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
     case 'e': // -----------------------------------------------------------
     case 'E':
       if (whileCount / 2 > 1) {
-        this->shoots =
-            createBullet (character.getX(), character.getY(), this->shoots, character.getGun());
+        this->shoots = createBullet (character.getX(), character.getY(),
+                                     this->shoots, character.getGun());
         whileCount = 0;
       }
       break; 
@@ -328,30 +328,18 @@ void EngineGame::showBonus(bool &upgradeBuyed, int &upgradeType, int &upgradeTim
   int y = 6;
   int timeLimit = 30;
   
-  if(bonusPicked == true && bonustype == 0){
-    mvprintw(y, x, "BUNCH OF BANANAS [+50]");
-    bonusTime++;
-  }
-  else if(bonusPicked == true && bonustype == 1){
-    mvprintw(y, x, "CRATE OF BANANAS [+300]");
-    bonusTime++;
-  }
-  else if(bonusPicked == true && bonustype == 2){
-    mvprintw(y, x, "SUPPLY OF BANANAS [+1000]");
-    bonusTime++;
-  }
-  else if(bonusPicked == true && bonustype == 3){
-    mvprintw(y, x, "ROTTEN BANANAS [-100]");
-    bonusTime++;
-  }
-  else if(bonusPicked == true && bonustype == 4){
-    mvprintw(y, x, "BANANAS SPIDER [-10 HP]");
-    bonusTime++;
-  }
-  else if(bonusPicked == true && bonustype == 5){
-    mvprintw(y, x, "MONKEY TRAP [-30 HP]");
-    bonusTime++;
-  }
+  if      (bonusPicked == true && bonustype == 0)  { mvprintw (y, x, "BUNCH OF BANANAS [+50]");    bonusTime++; }
+  else if (bonusPicked == true && bonustype == 1)  { mvprintw (y, x, "CRATE OF BANANAS [+300]");   bonusTime++; }
+  else if (bonusPicked == true && bonustype == 2)  { mvprintw (y, x, "SUPPLY OF BANANAS [+1000]"); bonusTime++; }
+  else if (bonusPicked == true && bonustype == 3)  { mvprintw (y, x, "ROTTEN BANANAS [-100]");     bonusTime++; }
+  else if (bonusPicked == true && bonustype == 4)  { mvprintw (y, x, "BANANAS SPIDER [-10 HP]");   bonusTime++; }
+  else if (bonusPicked == true && bonustype == 5)  { mvprintw (y, x, "MONKEY TRAP [-30 HP]");      bonusTime++; }
+  else if (bonusPicked == true && bonustype == 6)  { mvprintw (y, x, "EAT 1 BANANA [+10 HP]");     bonusTime++; }
+  else if (bonusPicked == true && bonustype == 7)  { mvprintw (y, x, "EAT 2 BANANA [+20 HP]");     bonusTime++; }
+  else if (bonusPicked == true && bonustype == 8)  { mvprintw (y, x, "BANANA SMOOTHIE [+40 HP]");  bonusTime++; }
+  else if (bonusPicked == true && bonustype == 9)  { mvprintw (y, x, "PEEL LOADER [+12 AMMO]");    bonusTime++; }
+  else if (bonusPicked == true && bonustype == 10) { mvprintw (y, x, "PEEL LOADER [+20 AMMO]");    bonusTime++; }
+  else if (bonusPicked == true && bonustype == 11) { mvprintw (y, x, "PEACE MISSION [+100 AMMO]"); bonusTime++; }
 
   if(bonusTime>timeLimit){           // LASCIA IL BONUS VISIBILE PER "X" CICLI
     bonusPicked = false;
@@ -446,11 +434,6 @@ pPosition EngineGame::getBonus(DrawWindow drawWindow, int x, int y,
   while (bonusList->next != NULL) {
     if (bonusList->x == x && bonusList->y == y && bonusList->skin == '?') {
       bool end = false;
-      /* Bonus/Malus da implementare
-        PROBLEMA:
-          - I bonus si accumulano sulla schermata di gioco e non rimangono nelle
-            rispettive stanze
-      */
       switch (bonusType) {
         case 0:  // Bonus name: "BUNCH OF BANANAS"
           pointsOnScreen += 50;
@@ -476,8 +459,32 @@ pPosition EngineGame::getBonus(DrawWindow drawWindow, int x, int y,
           character.decreaseLife(30);
           end = true;
           break;
+        case 6:  // Bonus name: "EAT 1 BANANA [+10 HP]"
+          character.increaseLife (10);
+          end = true;
+          break;
+        case 7:  // Bonus name: "EAT 2 BANANA [+20 HP]"
+          character.increaseLife (20);
+          end = true;
+          break;
+        case 8:  // Bonus name: "BANANA SMOOTHIE [+40 HP]"
+          character.increaseLife (40);
+          end = true;
+          break;
+        case 9:  // Bonus name: "PEEL LOADER [+12 AMMO]"
+          character.getGun().increaseAmmo (12);
+          end = true;
+          break;
+        case 10:  // Bonus name: "PEEL BOX [+20 AMMO]"
+          character.getGun().increaseAmmo (20);
+          end = true;
+          break;
+        case 11:  // Bonus name: "PEACE MISSION [+100 AMMO]"
+          character.getGun().increaseAmmo (100);
+          end = true;
+          break;
           /*
-          case 6:     // Malus name: "BANANA FRAGRANCE"
+          case n:     // Malus name: "BANANA FRAGRANCE"
             int tmpQuantity = 3, tmpRound = round;
             enemyList = generateEnemy (&tmpQuantity, 'X', 10, 100, enemyList,
           tmpRound, drawWindow); drawWindow.printEnemy (enemyList, drawWindow);
