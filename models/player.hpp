@@ -4,5 +4,5 @@
 #endif
 class Player : public Character {
  public:
-  Player(int x, int y, char skin, int damage, int life, int numberLife);
+  Player(int x, int y, char skin, int life, int numberLife, Gun gun);
 };
