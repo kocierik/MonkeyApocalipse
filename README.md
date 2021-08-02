@@ -39,6 +39,8 @@ LEGENDA:
 
 ✖ Nuove tipologie di nemici
 
+✖ I bonus si accumulano di stanza in stanza
+
 ✖ Cambiare arma con un tasto (+ relativa possibilità di ottenere, in modi differenti, le armi)
 
 ✖ Aggiungere le munizioni (dunque rimuovere lo sparo illimitato)

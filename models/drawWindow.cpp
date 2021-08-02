@@ -343,7 +343,6 @@ void DrawWindow::printCharacterStats(pEnemyList list, Character character) {
   int reachBound = 0;       // VEDI RIGA 363
   int X_ElencoNemici = 19;  // gestisce la x da dove inizia la lista dei nemici
   int volt = 0;
-  int cont = 0;
   int BarStart = 56;      // gestisce dove partono gli oggetti della barra
   int AddBar = BarStart;  // cicla per aggiungere un cordinata
   int healtColorPair;
@@ -384,7 +383,7 @@ void DrawWindow::printCharacterStats(pEnemyList list, Character character) {
   attroff(COLOR_PAIR(8));
 
   attron(COLOR_PAIR(healtColorPair));
-  for (cont = 0; volt <= (character.getLife() - 1) / 5;
+  for (int cont = 0; volt <= (character.getLife() - 1) / 5;
        volt++) {  // GENERA IL SIMBOLO " " OGNI DIECI UNITÀ DI VITA
     mvprintw(i, AddBar, " ");
     AddBar++;

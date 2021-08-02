@@ -8,9 +8,7 @@
 #include <iostream>
 
 
-#define N_SWITCH_CASE \
-  5  // Numero di casi dello switch che gestisce i bonus. Equivale a: n bonus -
-     // 1
+#define N_SWITCH_CASE 5 // Numero di casi dello switch che gestisce i bonus. Equivale a: n bonus - 1
 
 EngineGame::EngineGame(int frameGameX, int frameGameY, int height, int width) {
   this->frameGameX = frameGameX;
@@ -131,8 +129,8 @@ pEnemyList EngineGame::destroyEnemy(pEnemyList list, Enemy enemy) {
 
 pPosition EngineGame::deletePosition(pPosition list, pPosition toDelete) {
   /**
-   * Essendo bonus e montagne la stessa tipologia di dato, questa funzione
-   * elimina un elemento toDelete da una lista, che sia di bonus o di montagne.
+   * Essendo bonus e montagne la stessa tipologia di dato (pPosition), questa funzione
+   * elimina un elemento (toDelete) da una lista, che sia un bonus o una montagna.
    */
   pPosition head = list, prev = list, tmp;
   while (list != NULL) {
@@ -171,8 +169,7 @@ void EngineGame::checkEnemyCollision(Character &character,
       character.decreaseLife(1);
       init_pair(13, COLOR_RED, -1);
       attron(COLOR_PAIR(13));
-      mvprintw(character.getY(), character.getX(),
-               "C");  // GENERA UN CARATTERE ROSSO QUANDO SI VIENE ATTACATI
+      mvprintw(character.getY(), character.getX(), "C");  // GENERA UN CARATTERE ROSSO QUANDO SI VIENE ATTACATI
       attroff(COLOR_PAIR(13));
     }
     enemyList = enemyList->next;
@@ -190,12 +187,10 @@ void EngineGame::checkShootEnemyCollision(pEnemyList enemys,
   while (enemys != NULL && !isCollisionEnemy && !isCollisionCharacter) {
     while (shoots != NULL && !isCollisionEnemy && !isCollisionCharacter) {
       if ((enemys->enemy.getX() == shoots->x + isEnemy &&
-           enemys->enemy.getY() == shoots->y) &&
-          isEnemy == 1) {
+           enemys->enemy.getY() == shoots->y) && isEnemy == 1) {
         isCollisionEnemy = true;
       } else if ((character.getX() == shoots->x + isEnemy &&
-                  character.getY() == shoots->y) &&
-                 isEnemy == -1) {
+                  character.getY() == shoots->y) && isEnemy == -1) {
         isCollisionCharacter = true;
       }
       shoots = shoots->next;
@@ -217,13 +212,12 @@ void EngineGame::checkShootEnemyCollision(pEnemyList enemys,
 
     init_pair(13, COLOR_RED, -1);
     attron(COLOR_PAIR(13));
-    mvprintw(character.getY(), character.getX(),
-             "C");  // GENERA UN CARATTERE ROSSO QUANDO SI VIENE COLPITI
+    mvprintw(character.getY(), character.getX(), "C");  // GENERA UN CARATTERE ROSSO QUANDO SI VIENE COLPITI
     attroff(COLOR_PAIR(13));
   }
 }
 
-// controllo che la posizione x y sia uno spazio vuoto
+// Controllo che la posizione x y sia uno spazio vuoto
 bool EngineGame::isEmpty(int x, int y) { return mvinch(y, x) == ' '; }
 bool EngineGame::isBonus(int x, int y) { return mvinch(y, x) == '?'; }
 bool EngineGame::isMountain(int x, int y) { return mvinch(y, x) == '^'; }
@@ -244,7 +238,7 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
         bonusTime = 0;          // RESETTA IL TEMPO DI APPARIZIONE SE IL TIMER 
                                 // ERA GIA ATTIVO PER IL PRECEDENTE BONUS.
         bonusPicked = true;     // FLAG CHE INDICA SE È STATO RACCOLTO
-        bonusType = rand() % N_SWITCH_CASE;
+        bonusType = rand() % N_SWITCH_CASE;   // 0 <= bonusType <= N_SWITCH_CASE
         bonusList =
             getBonus(drawWindow, character.getX(), character.getY() - 1,
                      bonusList, enemyList, round, pointsOnScreen, character, bonusType);
@@ -443,29 +437,9 @@ pPosition EngineGame::getBonus(DrawWindow drawWindow, int x, int y,
                                int round, float &pointsOnScreen,
                                Character &character, int &bonusType) {
   pPosition tmpHead = bonusList;
-
   while (bonusList->next != NULL) {
-    // Appena si trova il bonus raccolto nella lista, si attiva un effetto e lo
-    // si elimina da quest'ultima
     if (bonusList->x == x && bonusList->y == y && bonusList->skin == '?') {
       bool end = false;
-      //bonusType = 0; <---- USATO SOLAMENTE PER I TEST PER BONUS SPECIFICI
-
-      /* Bonus/Malus da implementare
-          - B: Moltiplicatore di punteggio che dura per n secondi
-          - M: Personaggio immobile per n secondi
-
-        PROBLEMA:
-          - (Solo) Il primo dei bonus viene spawnato sempre nella stessa
-        posizione, non viene raccolto ed oscura il giocatore
-          - I bonus si accumulano sulla schermata di gioco e non rimangono nelle
-        rispettive stanze
-
-        Per ogni bonus/malus scrivere a schermo relativo messaggio
-      */
-      // Per ogni malus ci sono 2 bonus, oppure per ogni malus ci sono 3 bonus
-      // (il tutto al fine di incentivarne la raccolta ed equilibrare gli
-      // effetti)
       switch (bonusType) {
         case 0:  // Bonus name: "BUNCH OF BANANAS"
           pointsOnScreen += 50;
@@ -622,20 +596,17 @@ void EngineGame::pointOnScreen(
 
 void EngineGame::runGame(Character character, DrawWindow drawWindow,
                          int direction) {
-  int powerUpDMG = 0;  // NUMERO DI POWERUP AL DANNO AQUISTATI
-  int bananas = 0;
-  int roundPayed = 0;
   bool upgradeBuyed = false;
-  int upgradeType = 0;
-  int upgradeTime = 0;
   bool bonusPicked = false;
-  int bonusType = 0;
-  int bonusTime = 0;
-  long points = 0;
-  int monsterCount = 1, bonusCount = 1;
   float pointsOnScreen = 0;
-  int round = 0;
-  int maxRound = 1;
+  long points = 0;
+  int powerUpDMG = 0;  // NUMERO DI POWERUP AL DANNO AQUISTATI 
+  int bananas = 0; 
+  int roundPayed = 0;
+  int bonusTime = 0, upgradeTime = 0;
+  int bonusType = 0, upgradeType = 0;
+  int monsterCount = 1, bonusCount = 1;
+  int round = 0, maxRound = 1;
   pEnemyList enemyList = NULL;
   pPosition mountainList = new Position;
   pPosition bonusList = new Position;
@@ -648,7 +619,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
                               drawWindow);
     bonusList = generateBonus(drawWindow, &bonusCount, bonusList);
 
-    getInput(direction);
+    getInput (direction);
     moveCharacter(drawWindow, character, direction, bonusList, enemyList, round,
                   pointsOnScreen, bananas, powerUpDMG, bonusPicked, bonusType, bonusTime, upgradeBuyed, upgradeType, upgradeTime);
     pointOnScreen(pointsOnScreen, enemyList);
@@ -661,20 +632,21 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
                          this->height, &pointsOnScreen, character, enemyList,
                          powerUpDMG);
     drawWindow.printCharacterStats(enemyList, character);
-    if (drawWindow.lenghtRoom(roomList) > 1) {
-      drawWindow.printMountain(roomList->next->mountainList);
-      drawWindow.printBonus(bonusList);
+    if (drawWindow.lenghtRoom (roomList) > 1) {
+      drawWindow.printMountain (roomList->next->mountainList);
+      drawWindow.printBonus    (bonusList);
       // printList(roomList->next->mountainList);
-      checkMountainDamage(this->shoots, true, roomList->next->mountainList,
-                          1);  // FIX
-      checkMountainDamage(this->shootsEnemys, false,
-                          roomList->next->mountainList, 1);  // FIX
+      checkMountainDamage(this->shoots, true, roomList->next->mountainList, 1);
+      checkMountainDamage(this->shootsEnemys, false, roomList->next->mountainList, 1);
     }
+
     increaseCount(this->whileCount, points, enemyList);
     drawWindow.printEnemy(enemyList, drawWindow);
     drawWindow.moveEnemy(enemyList, character, drawWindow, points);
+
     shootBullet();
     shootEnemyBullet();
+    
     enemyShootBullets(enemyList);
     checkEnemyCollision(character, enemyList);
     money(bananas, enemyList, maxRound, roundPayed);
