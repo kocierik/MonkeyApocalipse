@@ -66,7 +66,7 @@ class EngineGame {
   void isPause(int &direction, bool &pause);
   void runGame(Character character, DrawWindow drawWindow, int direction);
 
-  void money(int &bananas, pEnemyList enemyList, int maxRound, int &roundPayed, Gun &playerGun);
+  void money(int &bananas, pEnemyList enemyList, int maxRound, int &roundPayed, Character &character);
   void pointOnScreen(float &pointOnScreen, pEnemyList EnemyList);
   void showBonus(bool &upgradeBuyed, int &upgradeType, int &upgradeTime, bool &bonusPicked, int bonusType, int &bonusTime);
 };

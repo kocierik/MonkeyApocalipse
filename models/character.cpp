@@ -36,3 +36,7 @@ void Character::directionLeft () { this->x--; }
 
 Gun  Character::getGun        () { return this->gun; }
 void Character::setGun        (Gun in_gun) { this -> gun = in_gun; }
+void Character::setAmmo(int ammo) { this -> gun.setAmmo(ammo); }
+int Character::getAmmo() { return this -> gun.getAmmo(); }
+void Character::decreaseAmmo(int lessAmmo) { this -> gun.setAmmo(gun.getAmmo() - lessAmmo); }
+void Character::increaseAmmo(int plusAmmo) { this -> gun.setAmmo(gun.getAmmo() + plusAmmo); }

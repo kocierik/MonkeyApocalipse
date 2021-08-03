@@ -21,7 +21,6 @@ class Character {
   int life;
   int numberLife;
   int Nbullet;
-  //int damage;
   Gun gun;
   Pbullet bullet;
 
@@ -53,4 +52,8 @@ class Character {
   
   Gun  getGun        ();
   void setGun        (Gun in_gun);
+  void setAmmo (int lessAmmo);
+  int  getAmmo ();
+  void decreaseAmmo (int lessAmmo);
+  void increaseAmmo (int plusAmmo);
 };

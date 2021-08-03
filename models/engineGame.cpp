@@ -294,9 +294,9 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
     case 'E':
       if (whileCount / 2 > 1) {
         if(character.getGun().getAmmo() > 0){
+          character.setAmmo(character.getAmmo() - 1);
           this->shoots = createBullet (character.getX(), character.getY(),
                                        this->shoots, character.getGun());
-          character.getGun().setAmmo(character.getGun().getAmmo()-1);
           whileCount = 0;
         }
       }
@@ -581,16 +581,17 @@ void EngineGame::increaseCount(int &whileCount, long &points,
 }
 
 void EngineGame::money (int &bananas, pEnemyList enemyList, int maxRound,
-                        int &roundPayed, Gun &playerGun) {  // SISTEMA DI VALUTA CHE GENERA DA 1 A 3 BANANE AD OGNI
+                        //int &roundPayed, Gun &playerGun) {  // SISTEMA DI VALUTA CHE GENERA DA 1 A 3 BANANE AD OGNI
+                        int &roundPayed, Character &character) {  // SISTEMA DI VALUTA CHE GENERA DA 1 A 3 BANANE AD OGNI
                         // CLEAR DEL LIVELLO
   srand(time(NULL));
   if (enemyList->next == NULL &&
       maxRound != roundPayed) {  // CONTROLLA CHE LA STANZA SIA PULITA E CHE
                                  // L'ULTIMO ROUND SIA STATO PAGATO
     bananas = bananas + rand() % 3 + 1;
-    if(maxRound >= 0 && maxRound <= 5){ playerGun.setAmmo(playerGun.getAmmo() + 40); }
-    else if (maxRound > 5 && maxRound <= 10) {playerGun.setAmmo(playerGun.getAmmo() + 80);}
-    else if (maxRound > 10) {playerGun.setAmmo(playerGun.getAmmo() + 150);}
+    if(maxRound >= 0 && maxRound <= 5){ character.increaseAmmo(25); }
+    else if (maxRound > 5 && maxRound <= 10) { character.increaseAmmo(45); }
+    else if (maxRound > 10) { character.increaseAmmo(80); }
     roundPayed++;
   }
 }
@@ -659,8 +660,8 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow, int directi
         drawWindow.printMountain (roomList->next->mountainList);
         drawWindow.printBonus(bonusList);
         // printList(roomList->next->mountainList);
-        checkMountainDamage(this->shoots, true, roomList->next->mountainList, 1);  // FIX
-        checkMountainDamage(this->shootsEnemys, false, roomList->next->mountainList, 1);  // FIX
+        checkMountainDamage(this->shoots, true, roomList->next->mountainList, 1);
+        checkMountainDamage(this->shootsEnemys, false, roomList->next->mountainList, 1);
     }
 
     increaseCount(this->whileCount, points, enemyList);
@@ -673,10 +674,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow, int directi
     enemyShootBullets(enemyList);
     checkEnemyCollision(character, enemyList);
     
-    Gun tmp = character.getGun();
-    money(bananas, enemyList, maxRound, roundPayed, tmp);
-    character.setGun(tmp);
-
+    money(bananas, enemyList, maxRound, roundPayed, character);
     checkShootEnemyCollision(enemyList, character, this->shoots, 1);
     checkShootEnemyCollision(enemyList, character, this->shootsEnemys, -1);
     refresh();
