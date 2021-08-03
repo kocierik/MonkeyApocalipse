@@ -23,9 +23,9 @@ class EngineGame {
   void baseCommand();
   Pbullet createBullet(int x, int y, Pbullet &shoots, Gun gun);
   void enemyShootBullets(pEnemyList listEnemy);
-  
+
   void shootBullet(Gun playerGun);
-  //void shootEnemyBullet(Gun enemyGun);
+  // void shootEnemyBullet(Gun enemyGun);
   void shootEnemyBullet();
 
   void destroyBullet(Pbullet &shoots, int isEnemy);
@@ -42,7 +42,7 @@ class EngineGame {
   void choiceGame(DrawWindow drawWindow, int *direction, int *selection);
   void moveCharacter(DrawWindow drawWindow, Character &character, int direction,
                      pPosition &bonusList, pEnemyList enemyList, int round,
-                     float &pointsOnScreen, int &bananas, int &powerUpDMG, 
+                     float &pointsOnScreen, int &bananas, int &powerUpDMG,
                      bool &bonusPicked, int &bonustype, int &bonusTime,
                      bool &upgradeBuyed, int &upgradeType, int &upgradeTime);
 
@@ -66,7 +66,9 @@ class EngineGame {
   void isPause(int &direction, bool &pause);
   void runGame(Character character, DrawWindow drawWindow, int direction);
 
-  void money(int &bananas, pEnemyList enemyList, int maxRound, int &roundPayed, Character &character);
+  void money(int &bananas, pEnemyList enemyList, int maxRound, int &roundPayed,
+             Character &character);
   void pointOnScreen(float &pointOnScreen, pEnemyList EnemyList);
-  void showBonus(bool &upgradeBuyed, int &upgradeType, int &upgradeTime, bool &bonusPicked, int bonusType, int &bonusTime);
+  void showBonus(bool &upgradeBuyed, int &upgradeType, int &upgradeTime,
+                 bool &bonusPicked, int bonusType, int &bonusTime);
 };
