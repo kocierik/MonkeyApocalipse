@@ -447,25 +447,6 @@ pEnemyList EngineGame::generateEnemy(int *monsterCount, char skin, Gun gun,
   return list;
 }
 
-pPosition EngineGame::generateBonus(DrawWindow drawWindow, int *bonusCount,
-                                    pPosition bonusList) {
-  /**
-   * Genera la lista dei bonus (coordinate e skin), l'effetto di tali bonus è
-   * decretato altrove.
-   */
-  srand(time(0));
-  while (*bonusCount > 0) {
-    pPosition tmpHead = new Position;
-    tmpHead->x = drawWindow.randomPosition(40, 70).x;
-    tmpHead->y = drawWindow.randomPosition(8, 19).y;
-    tmpHead->skin = '?';
-    tmpHead->next = bonusList;
-    bonusList = tmpHead;
-    *bonusCount -= 1;
-  }
-  return bonusList;
-}
-
 pPosition EngineGame::getBonus(DrawWindow drawWindow, int x, int y,
                                pPosition bonusList, pEnemyList enemyList,
                                int round, float &pointsOnScreen,
@@ -684,10 +665,11 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
   while (!pause) {
     roomList =
         drawWindow.changeRoom(character, monsterCount, bonusCount, round,
-                              enemyList, mountainList, roomList, maxRound);
+                              enemyList, mountainList, bonusList, roomList,
+                              maxRound);
     enemyList = generateEnemy(&monsterCount, 'X', basicEnemyGun, 100, enemyList,
                               round, drawWindow);
-    bonusList = generateBonus(drawWindow, &bonusCount, bonusList);
+    bonusList = drawWindow.generateBonus(bonusList, &bonusCount);
 
     getInput(direction);
     moveCharacter(drawWindow, character, direction, bonusList, enemyList, round,

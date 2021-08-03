@@ -46,10 +46,11 @@ class EngineGame {
                      bool &bonusPicked, int &bonustype, int &bonusTime,
                      bool &upgradeBuyed, int &upgradeType, int &upgradeTime);
 
-  pPosition generateBonus(DrawWindow drawWindow, int *bonusCount,
-                          pPosition bonusList);
   pEnemyList generateEnemy(int *monsterCount, char skin, Gun gun, int life,
                            pEnemyList list, int &round, DrawWindow drawWindow);
+  
+  
+  
   pPosition getBonus(DrawWindow drawWindow, int x, int y, pPosition bonusList,
                      pEnemyList enemyList, int round, float &pointsOnScreen,
                      Character &character, int &bonusType);

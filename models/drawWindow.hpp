@@ -7,6 +7,7 @@
 
 struct Room {
   pPosition mountainList;
+  pPosition bonusList;
   Room *next;
   Room *prec;
 };
@@ -34,12 +35,16 @@ class DrawWindow {
   void printCharacterStats(pEnemyList list, Character character);
   void printEnemy(pEnemyList list, DrawWindow drawWindow);
   pRoom changeRoom(Character &character, int &monsterCount, int &bonusCount,
-                   int &round, pEnemyList &list, pPosition &mountainList,
+                   int &round, pEnemyList &list, pPosition &mountainList, pPosition &bonusList,
                    pRoom roomList, int &maxRound);
+
+  pPosition generateMountain(pPosition list, int &mountainCount);
+  pPosition generateBonus(pPosition bonusList, int *bonusCount);
+
   void moveEnemy(pEnemyList list, Character character, DrawWindow drawWindow,
                  long points);
   Position randomPosition(int startRange, int endRange);
-  pPosition generateMountain(pPosition list, int &mountainNumber);
+  //pPosition generateMountain(pPosition list, int &mountainNumber);
   void printMountain(pPosition list);
   void printBonus(pPosition bonusList);
 
