@@ -315,20 +315,20 @@ pPosition DrawWindow::generateMountain(pPosition list, int &mountainCount) {
   return list;
 }
 
-pPosition DrawWindow::generateBonus(pPosition bonusList, int *bonusCount) {
+pPosition DrawWindow::generateBonus(pPosition bonusList, int &bonusCount) {
   /**
    * Genera la lista dei bonus (coordinate e skin), l'effetto di tali bonus è
    * decretato altrove.
    */
   srand(time(0));
-  while (*bonusCount > 0) {
+  while (bonusCount > 0) {
     pPosition tmpHead = new Position;
     tmpHead->x = randomPosition(40, 70).x;
     tmpHead->y = randomPosition(8, 19).y;
     tmpHead->skin = '?';
     tmpHead->next = bonusList;
     bonusList = tmpHead;
-    *bonusCount -= 1;
+    bonusCount -= 1;
   }
   return bonusList;
 }
@@ -343,6 +343,18 @@ void DrawWindow::printMountain(pPosition list) {  // FIX
     mountainList = mountainList->next;
   }
 }
+
+void DrawWindow::printBonus(pPosition bonusList) {
+  bool first = true;
+  while (bonusList != NULL) {
+    if (first)
+      first = false;
+    else
+      printCharacter(bonusList->x, bonusList->y, bonusList->skin);
+    bonusList = bonusList->next;
+  }
+}
+
 int DrawWindow::lenghtList(pEnemyList list) {
   int i = -1;
   while (list != NULL) {
@@ -461,20 +473,10 @@ void DrawWindow::moveEnemy(pEnemyList list, Character character,
   }
 }
 
-void DrawWindow::printBonus(pPosition bonusList) {
-  bool first = true;
-  while (bonusList != NULL) {
-    if (first)
-      first = false;
-    else
-      printCharacter(bonusList->x, bonusList->y, bonusList->skin);
-    bonusList = bonusList->next;
-  }
-}
-
-pRoom DrawWindow::saveRoom(pPosition mountainList, pRoom roomList) {
+pRoom DrawWindow::saveRoom(pPosition mountainList, pPosition bonusList, pRoom roomList) {
   pRoom head = new Room;
   head->mountainList = mountainList;
+  head->bonusList = bonusList;
   head->next = roomList;
   roomList->prec = head;
   roomList = head;
@@ -482,7 +484,7 @@ pRoom DrawWindow::saveRoom(pPosition mountainList, pRoom roomList) {
 }
 
 pRoom DrawWindow::changeRoom(Character &character, int &monsterCount,
-                             int &bonusCounter, int &round, pEnemyList &list,
+                             int &round, pEnemyList &list,
                              pPosition &mountainList, pPosition &bonusList, pRoom roomList,
                              int &maxRound) {
   if (character.getX() == GAMEWIDTH) {
@@ -492,15 +494,25 @@ pRoom DrawWindow::changeRoom(Character &character, int &monsterCount,
       character.setX(23);
     } else if (maxRound == lenghtRoom(roomList)) {
       character.setX(23);
-      int mountainCount = rand() % 8 + 1;
+      int mountainCount = rand() % 8 + 1, bonusCounter = 0;
+
+      /*
+      if (maxRound < 3) bonusCounter = 0;
+      else if (maxRound > 3 && maxRound < 6) bonusCounter = 1;
+      else bonusCounter = 2;
+      */
+      if (maxRound < 3) bonusCounter = 0;
+      else {
+        srand(time(0));
+        bonusCounter = rand() % 3 + 1;
+      }
+
+
       roomList->mountainList = generateMountain(mountainList, mountainCount);
-      roomList->bonusList = generateBonus(bonusList, &bonusCounter);
-      roomList = saveRoom(mountainList, roomList);
+      roomList->bonusList = generateBonus(bonusList, bonusCounter);
+      roomList = saveRoom(mountainList, bonusList, roomList);
       monsterCount = round;
-      if (round <= 6)
-        bonusCounter = (int)(round / 2);
-      else
-        bonusCounter = 3;
+      
       list = list->next;
       maxRound += 1;
     }

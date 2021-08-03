@@ -41,7 +41,7 @@ class EngineGame {
 
   void choiceGame(DrawWindow drawWindow, int *direction, int *selection);
   void moveCharacter(DrawWindow drawWindow, Character &character, int direction,
-                     pPosition &bonusList, pEnemyList enemyList, int round,
+                     pRoom &roomList, pEnemyList enemyList, int round,
                      float &pointsOnScreen, int &bananas, int &powerUpDMG,
                      bool &bonusPicked, int &bonustype, int &bonusTime,
                      bool &upgradeBuyed, int &upgradeType, int &upgradeTime);

@@ -239,7 +239,7 @@ bool EngineGame::isBonus(int x, int y) { return mvinch(y, x) == '?'; }
 bool EngineGame::isMountain(int x, int y) { return mvinch(y, x) == '^'; }
 
 void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
-                               int direction, pPosition &bonusList,
+                               int direction, pRoom &roomList,
                                pEnemyList enemyList, int round,
                                float &pointsOnScreen, int &bananas,
                                int &powerUpDMG, bool &bonusPicked,
@@ -257,8 +257,8 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
                              // ERA GIA ATTIVO PER IL PRECEDENTE BONUS.
         bonusPicked = true;  // FLAG CHE INDICA SE È STATO RACCOLTO
         bonusType = rand() % N_SWITCH_CASE;  // 0 <= bonusType <= N_SWITCH_CASE
-        bonusList = getBonus(drawWindow, character.getX(), character.getY() - 1,
-                             bonusList, enemyList, round, pointsOnScreen,
+        roomList -> bonusList = getBonus(drawWindow, character.getX(), character.getY() - 1,
+                             roomList -> next -> bonusList, enemyList, round, pointsOnScreen,
                              character, bonusType);
         character.directionUp();
       }
@@ -270,8 +270,8 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
         bonusTime = 0;
         bonusPicked = true;
         bonusType = rand() % N_SWITCH_CASE;
-        bonusList = getBonus(drawWindow, character.getX(), character.getY() + 1,
-                             bonusList, enemyList, round, pointsOnScreen,
+        roomList -> bonusList = getBonus(drawWindow, character.getX(), character.getY() + 1,
+                             roomList -> next -> bonusList, enemyList, round, pointsOnScreen,
                              character, bonusType);
         character.directionDown();
       }
@@ -283,8 +283,8 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
         bonusTime = 0;
         bonusPicked = true;
         bonusType = rand() % N_SWITCH_CASE;  // GENERA IL TIPO DI BONUS.
-        bonusList = getBonus(drawWindow, character.getX() - 1, character.getY(),
-                             bonusList, enemyList, round, pointsOnScreen,
+        roomList -> bonusList = getBonus(drawWindow, character.getX() - 1, character.getY(),
+                             roomList -> next -> bonusList, enemyList, round, pointsOnScreen,
                              character, bonusType);
         character.directionLeft();
       }
@@ -296,8 +296,8 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
         bonusTime = 0;
         bonusPicked = true;
         bonusType = rand() % N_SWITCH_CASE;
-        bonusList = getBonus(drawWindow, character.getX() + 1, character.getY(),
-                             bonusList, enemyList, round, pointsOnScreen,
+        roomList -> bonusList = getBonus(drawWindow, character.getX() + 1, character.getY(),
+                             roomList -> next -> bonusList, enemyList, round, pointsOnScreen,
                              character, bonusType);
         character.directionRight();
       }
@@ -482,14 +482,17 @@ pPosition EngineGame::getBonus(DrawWindow drawWindow, int x, int y,
           break;
         case 6:  // Bonus name: "EAT 1 BANANA [+10 HP]"
           character.increaseLife(10);
+          if(character.getLife() > 100) { character.setLife(100);}
           end = true;
           break;
         case 7:  // Bonus name: "EAT 2 BANANA [+20 HP]"
           character.increaseLife(20);
+          if(character.getLife() > 100) { character.setLife(100);}
           end = true;
           break;
         case 8:  // Bonus name: "BANANA SMOOTHIE [+40 HP]"
           character.increaseLife(40);
+          if(character.getLife() > 100) { character.setLife(100);}
           end = true;
           break;
         case 9:  // Bonus name: "PEEL LOADER [+12 AMMO]"
@@ -654,7 +657,8 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
   int roundPayed = 0;
   int bonusTime = 0, upgradeTime = 0;
   int bonusType = 0, upgradeType = 0;
-  int monsterCount = 1, bonusCount = 1;
+  //int monsterCount = 1, bonusCount = 1;
+  int monsterCount = 1;
   int round = 0, maxRound = 1;
   pEnemyList enemyList = NULL;
   pPosition mountainList = new Position;
@@ -664,15 +668,15 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
   // Gun basicPlayerGun ('~', 25);
   while (!pause) {
     roomList =
-        drawWindow.changeRoom(character, monsterCount, bonusCount, round,
+        drawWindow.changeRoom(character, monsterCount, round,
                               enemyList, mountainList, bonusList, roomList,
                               maxRound);
     enemyList = generateEnemy(&monsterCount, 'X', basicEnemyGun, 100, enemyList,
                               round, drawWindow);
-    bonusList = drawWindow.generateBonus(bonusList, &bonusCount);
+    //bonusList = drawWindow.generateBonus(bonusList, &bonusCount);
 
     getInput(direction);
-    moveCharacter(drawWindow, character, direction, bonusList, enemyList, round,
+    moveCharacter(drawWindow, character, direction, roomList, enemyList, round,
                   pointsOnScreen, bananas, powerUpDMG, bonusPicked, bonusType,
                   bonusTime, upgradeBuyed, upgradeType, upgradeTime);
     pointOnScreen(pointsOnScreen, enemyList);
@@ -688,7 +692,8 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
 
     if (drawWindow.lenghtRoom(roomList) > 1) {
       drawWindow.printMountain(roomList->next->mountainList);
-      drawWindow.printBonus(bonusList);
+      drawWindow.printBonus(roomList->next->bonusList);
+      //drawWindow.printBonus(roomList->bonusList);
       // printList(roomList->next->mountainList);
       checkMountainDamage(this->shoots, true, roomList->next->mountainList, 1);
       checkMountainDamage(this->shootsEnemys, false,
