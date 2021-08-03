@@ -140,7 +140,7 @@ void DrawWindow::printCredits() {
   mvprintw(20, 3,
            "                                                                   "
            "                                   ");
-  attroff(COLOR_PAIR(2)); 
+  attroff(COLOR_PAIR(2));
 }
 void DrawWindow::credits(int direction) {
   while (direction != 27) {
@@ -247,12 +247,18 @@ void DrawWindow::drawRect(
 
 void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
                            float *points, Character character,
-                           pEnemyList enemyList, int powerUp) {
+                           pEnemyList enemyList, int powerUp, int bananas,
+                           int maxRound, pRoom roomList) {
   int powerUp_y = 52;
   int powerUp_x = 23;
   mvprintw(startX - 2, startY + 5, "SCORE:");
   mvprintw(startX - 2, startX + 47, "LIFE:");
   mvprintw(powerUp_x, powerUp_y, "POWER-UP");
+
+  mvprintw(24, 52, "AMMO %d", character.getGun().getAmmo());
+  mvprintw(25, 52, "BANANAS %d", bananas);
+  mvprintw(26, 52, "ROOM %d/%d", lenghtRoom(roomList), maxRound);
+  mvprintw(27, 52, "ROUND MAX %d", maxRound);
 
   init_pair(11, COLOR_WHITE, 232);
   attron(COLOR_PAIR(11));
@@ -342,10 +348,8 @@ void DrawWindow::printCharacterStats(pEnemyList list, Character character) {
   int i = 22;
   int reachBound = 0;       // VEDI RIGA 363
   int X_ElencoNemici = 19;  // gestisce la x da dove inizia la lista dei nemici
-  int volt = 0;
-  int cont = 0;
-  int BarStart = 56;      // gestisce dove partono gli oggetti della barra
-  int AddBar = BarStart;  // cicla per aggiungere un cordinata
+  int BarStart = 56;        // gestisce dove partono gli oggetti della barra
+  int AddBar = BarStart;    // cicla per aggiungere un cordinata
   int healtColorPair;
 
   if (lenghtList(list) > 0) {
@@ -384,7 +388,7 @@ void DrawWindow::printCharacterStats(pEnemyList list, Character character) {
   attroff(COLOR_PAIR(8));
 
   attron(COLOR_PAIR(healtColorPair));
-  for (cont = 0; volt <= (character.getLife() - 1) / 5;
+  for (int volt = 0; volt <= (character.getLife() - 1) / 5;
        volt++) {  // GENERA IL SIMBOLO " " OGNI DIECI UNITÀ DI VITA
     mvprintw(i, AddBar, " ");
     AddBar++;
@@ -490,31 +494,65 @@ pRoom DrawWindow::changeRoom(Character &character, int &monsterCount,
   return roomList;
 }
 
-void DrawWindow::printLoseScreen(){
-  init_pair(16, COLOR_RED, 232);  
+void DrawWindow::printLoseScreen() {
+  init_pair(16, COLOR_RED, 232);
   attron(COLOR_PAIR(16));
-    mvprintw(3, 3,  "                                                                                                 ");
-    mvprintw(4, 3,  "                          __ _  __ _ _ __ ___   ___    _____   _____ _ __                        ");
-    mvprintw(5, 3,  "                         / _` |/ _` | '_ ` _ \\ / _ \\  / _ \\ \\ / / _ \\ '__|                       ");
-    mvprintw(6, 3,  "                        | (_| | (_| | | | | | |  __/ | (_) \\ V /  __/ |                          ");
-    mvprintw(7, 3,  "                         \\__, |\\__,_|_| |_| |_|\\___|  \\___/ \\_/ \\___|_|                          ");
-    mvprintw(8, 3,  "                         |___/                                                                   ");
-    mvprintw(9, 3,  "                                                                                                 ");
-    mvprintw(10, 3, "                                                                                                 ");
+  mvprintw(3, 3,
+           "                                                                   "
+           "                              ");
+  mvprintw(4, 3,
+           "                          __ _  __ _ _ __ ___   ___    _____   "
+           "_____ _ __                        ");
+  mvprintw(5, 3,
+           "                         / _` |/ _` | '_ ` _ \\ / _ \\  / _ \\ \\ "
+           "/ / _ \\ '__|                       ");
+  mvprintw(6, 3,
+           "                        | (_| | (_| | | | | | |  __/ | (_) \\ V /  "
+           "__/ |                          ");
+  mvprintw(7, 3,
+           "                         \\__, |\\__,_|_| |_| |_|\\___|  \\___/ "
+           "\\_/ \\___|_|                          ");
+  mvprintw(8, 3,
+           "                         |___/                                     "
+           "                              ");
+  mvprintw(9, 3,
+           "                                                                   "
+           "                              ");
+  mvprintw(10, 3,
+           "                                                                   "
+           "                              ");
   attroff(COLOR_PAIR(16));
 
-  init_pair(17, COLOR_GREEN, 232);  
+  init_pair(17, COLOR_GREEN, 232);
   attron(COLOR_PAIR(17));
-    mvprintw(11, 3, "               HUNTERS HAVE TRACKED YOU, SURROUNDED AND FINALLY THEY KILLED YOU...               ");
-    mvprintw(12, 3, "                                                                                                 ");
-    mvprintw(13, 3, "                             YOUR LIFE GOES AWAY WITH YOUR REVENGE.                              ");
-    mvprintw(14, 3, "                                                                                                 ");
-    mvprintw(15, 3, "            BUT DON'T GET MAD, THERE ARE THOUSANDS OF MONKEYS READY TO REBELL AGAIN...           ");
-    mvprintw(16, 3, "                                      ...SOONER OR THEN...                                       ");
-    mvprintw(17, 3, "                                                                                                 ");
-    mvprintw(18, 3, "                                          press [ESC]                                            ");
-    mvprintw(19, 3, "                                                                                                 ");
-  attroff(COLOR_PAIR(17)); 
+  mvprintw(11, 3,
+           "               HUNTERS HAVE TRACKED YOU, SURROUNDED AND FINALLY "
+           "THEY KILLED YOU...               ");
+  mvprintw(12, 3,
+           "                                                                   "
+           "                              ");
+  mvprintw(13, 3,
+           "                             YOUR LIFE GOES AWAY WITH YOUR "
+           "REVENGE.                              ");
+  mvprintw(14, 3,
+           "                                                                   "
+           "                              ");
+  mvprintw(15, 3,
+           "            BUT DON'T GET MAD, THERE ARE THOUSANDS OF MONKEYS "
+           "READY TO REBELL AGAIN...           ");
+  mvprintw(16, 3,
+           "                                      ...SOONER OR THEN...         "
+           "                              ");
+  mvprintw(17, 3,
+           "                                                                   "
+           "                              ");
+  mvprintw(18, 3,
+           "                                          press [ESC]              "
+           "                              ");
+  mvprintw(19, 3,
+           "                                                                   "
+           "                              ");
+  attroff(COLOR_PAIR(17));
 }
 
 void DrawWindow::loseScreen(int direction) {

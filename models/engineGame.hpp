@@ -21,9 +21,11 @@ class EngineGame {
   EngineGame(int frameGameX, int frameGameY, int heigth, int width);
   void printList(pPosition list);
   void baseCommand();
-  Pbullet createBullet(int x, int y, Pbullet &shoots);
+  Pbullet createBullet(int x, int y, Pbullet &shoots, Gun gun);
   void enemyShootBullets(pEnemyList listEnemy);
-  void shootBullet();
+
+  void shootBullet(Gun playerGun);
+  // void shootEnemyBullet(Gun enemyGun);
   void shootEnemyBullet();
 
   void destroyBullet(Pbullet &shoots, int isEnemy);
@@ -40,13 +42,13 @@ class EngineGame {
   void choiceGame(DrawWindow drawWindow, int *direction, int *selection);
   void moveCharacter(DrawWindow drawWindow, Character &character, int direction,
                      pPosition &bonusList, pEnemyList enemyList, int round,
-                     float &pointsOnScreen, int &bananas, int &powerUpDMG, 
+                     float &pointsOnScreen, int &bananas, int &powerUpDMG,
                      bool &bonusPicked, int &bonustype, int &bonusTime,
                      bool &upgradeBuyed, int &upgradeType, int &upgradeTime);
 
   pPosition generateBonus(DrawWindow drawWindow, int *bonusCount,
                           pPosition bonusList);
-  pEnemyList generateEnemy(int *monsterCount, char skin, int damage, int life,
+  pEnemyList generateEnemy(int *monsterCount, char skin, Gun gun, int life,
                            pEnemyList list, int &round, DrawWindow drawWindow);
   pPosition getBonus(DrawWindow drawWindow, int x, int y, pPosition bonusList,
                      pEnemyList enemyList, int round, float &pointsOnScreen,
@@ -64,7 +66,9 @@ class EngineGame {
   void isPause(int &direction, bool &pause);
   void runGame(Character character, DrawWindow drawWindow, int direction);
 
-  void money(int &bananas, pEnemyList enemyList, int maxRound, int &roundPayed);
+  void money(int &bananas, pEnemyList enemyList, int maxRound, int &roundPayed,
+             Character &character);
   void pointOnScreen(float &pointOnScreen, pEnemyList EnemyList);
-  void showBonus(bool &upgradeBuyed, int &upgradeType, int &upgradeTime, bool &bonusPicked, int bonusType, int &bonusTime);
+  void showBonus(bool &upgradeBuyed, int &upgradeType, int &upgradeTime,
+                 bool &bonusPicked, int bonusType, int &bonusTime);
 };

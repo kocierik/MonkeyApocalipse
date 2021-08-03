@@ -9,8 +9,8 @@
 
 
 #define N_SWITCH_CASE \
-  5  // Numero di casi dello switch che gestisce i bonus. Equivale a: n bonus -
-     // 1
+  11  // Numero di casi dello switch che gestisce i bonus. Equivale a: n bonus -
+      // 1
 
 EngineGame::EngineGame(int frameGameX, int frameGameY, int height, int width) {
   this->frameGameX = frameGameX;
@@ -37,11 +37,13 @@ void EngineGame::baseCommand() {
   use_default_colors();
   start_color();
 }
-Pbullet EngineGame::createBullet(int x, int y, Pbullet &shoots) {
+
+Pbullet EngineGame::createBullet(int x, int y, Pbullet &shoots, Gun gun) {
   Pbullet bullet = new Bullet;
   bullet->x = x;
   bullet->y = y;
   bullet->speed = 1;
+  bullet->skin = gun.getBulletSkin();
   bullet->next = shoots;
   return bullet;
 }
@@ -49,32 +51,39 @@ Pbullet EngineGame::createBullet(int x, int y, Pbullet &shoots) {
 void EngineGame::enemyShootBullets(pEnemyList listEnemy) {
   while (listEnemy != NULL) {
     if (this->whileCountEnemy % 20 == 0) {
-      this->shootsEnemys = createBullet(
-          listEnemy->enemy.getX(), listEnemy->enemy.getY(), this->shootsEnemys);
+      this->shootsEnemys =
+          createBullet(listEnemy->enemy.getX(), listEnemy->enemy.getY(),
+                       this->shootsEnemys, listEnemy->enemy.getGun());
     }
     listEnemy = listEnemy->next;
   }
 }
 
-void EngineGame::shootBullet() {
+void EngineGame::shootBullet(Gun playerGun) {
   Pbullet bullet = this->shoots;
   while (bullet != NULL) {
     bullet->x += bullet->speed;
     move(bullet->y, bullet->x);
     init_pair(10, COLOR_YELLOW, -1);  // SPARA BANANE GIALLE
     attron(COLOR_PAIR(10));
-    printw("~");
+    // printw("~");
+    char tmp[2];
+    tmp[0] = playerGun.getBulletSkin();
+    // printw((const char *) playerGun.getBulletSkin());
+    printw(tmp);
     attroff(COLOR_PAIR(10));
     bullet = bullet->next;
   }
 }
 
+// void EngineGame::shootEnemyBullet (Gun enemyGun) {
 void EngineGame::shootEnemyBullet() {
   Pbullet bullet = this->shootsEnemys;
   while (bullet != NULL) {
     bullet->x -= bullet->speed;
     move(bullet->y, bullet->x);
     printw("-");
+    // printw((const char *)enemyGun.getBulletSkin());
     bullet = bullet->next;
   }
 }
@@ -131,8 +140,9 @@ pEnemyList EngineGame::destroyEnemy(pEnemyList list, Enemy enemy) {
 
 pPosition EngineGame::deletePosition(pPosition list, pPosition toDelete) {
   /**
-   * Essendo bonus e montagne la stessa tipologia di dato, questa funzione
-   * elimina un elemento toDelete da una lista, che sia di bonus o di montagne.
+   * Essendo bonus e montagne la stessa tipologia di dato (pPosition), questa
+   * funzione elimina un elemento (toDelete) da una lista, che sia un bonus o
+   * una montagna.
    */
   pPosition head = list, prev = list, tmp;
   while (list != NULL) {
@@ -207,12 +217,12 @@ void EngineGame::checkShootEnemyCollision(pEnemyList enemys,
       enemys = enemys->next;
   }
   if (isCollisionEnemy && isEnemy == 1) {
-    enemys->enemy.decreaseLife(character.getDamage());
+    enemys->enemy.decreaseLife(character.getGun().getDamage());
     if (enemys->enemy.getLife() <= 0) {
       enemys = destroyEnemy(tmp, enemys->enemy);
     }
   } else if (isCollisionCharacter && isEnemy == -1) {
-    character.decreaseLife(enemys->enemy.getDamage());
+    character.decreaseLife(enemys->enemy.getGun().getDamage());
     checkDeath(pause, character);
 
     init_pair(13, COLOR_RED, -1);
@@ -223,7 +233,7 @@ void EngineGame::checkShootEnemyCollision(pEnemyList enemys,
   }
 }
 
-// controllo che la posizione x y sia uno spazio vuoto
+// Controllo che la posizione x y sia uno spazio vuoto
 bool EngineGame::isEmpty(int x, int y) { return mvinch(y, x) == ' '; }
 bool EngineGame::isBonus(int x, int y) { return mvinch(y, x) == '?'; }
 bool EngineGame::isMountain(int x, int y) { return mvinch(y, x) == '^'; }
@@ -232,78 +242,84 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
                                int direction, pPosition &bonusList,
                                pEnemyList enemyList, int round,
                                float &pointsOnScreen, int &bananas,
-                               int &powerUpDMG, bool &bonusPicked, int &bonusType, int &bonusTime, 
-                               bool &upgradeBuyed, int &upgradeType, int &upgradeTime) {
+                               int &powerUpDMG, bool &bonusPicked,
+                               int &bonusType, int &bonusTime,
+                               bool &upgradeBuyed, int &upgradeType,
+                               int &upgradeTime) {
   int upgradeCost = 10;
   srand(time(0));
   switch (direction) {  // CONTROLLO IL TASTO SPINTO
-    case KEY_UP: // --------------------------------------------------------
+    case KEY_UP:  // --------------------------------------------------------
       if (isEmpty(character.getX(), character.getY() - 1))
         character.directionUp();
       else if (isBonus(character.getX(), character.getY() - 1)) {
-        bonusTime = 0;          // RESETTA IL TEMPO DI APPARIZIONE SE IL TIMER 
-                                // ERA GIA ATTIVO PER IL PRECEDENTE BONUS.
-        bonusPicked = true;     // FLAG CHE INDICA SE È STATO RACCOLTO
-        bonusType = rand() % N_SWITCH_CASE;
-        bonusList =
-            getBonus(drawWindow, character.getX(), character.getY() - 1,
-                     bonusList, enemyList, round, pointsOnScreen, character, bonusType);
+        bonusTime = 0;       // RESETTA IL TEMPO DI APPARIZIONE SE IL TIMER
+                             // ERA GIA ATTIVO PER IL PRECEDENTE BONUS.
+        bonusPicked = true;  // FLAG CHE INDICA SE È STATO RACCOLTO
+        bonusType = rand() % N_SWITCH_CASE;  // 0 <= bonusType <= N_SWITCH_CASE
+        bonusList = getBonus(drawWindow, character.getX(), character.getY() - 1,
+                             bonusList, enemyList, round, pointsOnScreen,
+                             character, bonusType);
         character.directionUp();
       }
       break;
-    case KEY_DOWN: // ------------------------------------------------------
+    case KEY_DOWN:  // ------------------------------------------------------
       if (isEmpty(character.getX(), character.getY() + 1))
         character.directionDown();
       else if (isBonus(character.getX(), character.getY() + 1)) {
         bonusTime = 0;
         bonusPicked = true;
         bonusType = rand() % N_SWITCH_CASE;
-        bonusList =
-            getBonus(drawWindow, character.getX(), character.getY() + 1,
-                     bonusList, enemyList, round, pointsOnScreen, character, bonusType);
+        bonusList = getBonus(drawWindow, character.getX(), character.getY() + 1,
+                             bonusList, enemyList, round, pointsOnScreen,
+                             character, bonusType);
         character.directionDown();
       }
       break;
-    case KEY_LEFT: // ------------------------------------------------------
+    case KEY_LEFT:  // ------------------------------------------------------
       if (isEmpty(character.getX() - 1, character.getY()))
         character.directionLeft();
       else if (isBonus(character.getX() - 1, character.getY())) {
-        bonusTime = 0;          
-        bonusPicked = true;   
+        bonusTime = 0;
+        bonusPicked = true;
         bonusType = rand() % N_SWITCH_CASE;  // GENERA IL TIPO DI BONUS.
-        bonusList =
-            getBonus(drawWindow, character.getX() - 1, character.getY(),
-                     bonusList, enemyList, round, pointsOnScreen, character, bonusType);
+        bonusList = getBonus(drawWindow, character.getX() - 1, character.getY(),
+                             bonusList, enemyList, round, pointsOnScreen,
+                             character, bonusType);
         character.directionLeft();
       }
       break;
-    case KEY_RIGHT: // -----------------------------------------------------
+    case KEY_RIGHT:  // -----------------------------------------------------
       if (isEmpty(character.getX() + 1, character.getY()))
         character.directionRight();
       else if (isBonus(character.getX() + 1, character.getY())) {
         bonusTime = 0;
         bonusPicked = true;
         bonusType = rand() % N_SWITCH_CASE;
-        bonusList =
-            getBonus(drawWindow, character.getX() + 1, character.getY(),
-                     bonusList, enemyList, round, pointsOnScreen, character, bonusType);
+        bonusList = getBonus(drawWindow, character.getX() + 1, character.getY(),
+                             bonusList, enemyList, round, pointsOnScreen,
+                             character, bonusType);
         character.directionRight();
       }
       break;
-    case 'e': // -----------------------------------------------------------
+    case 'e':  // -----------------------------------------------------------
     case 'E':
       if (whileCount / 2 > 1) {
-        this->shoots =
-            createBullet(character.getX(), character.getY(), this->shoots);
-        whileCount = 0;
+        if (character.getGun().getAmmo() > 0) {
+          character.setAmmo(character.getAmmo() - 1);
+          this->shoots = createBullet(character.getX(), character.getY(),
+                                      this->shoots, character.getGun());
+          whileCount = 0;
+        }
       }
-      break; 
+      break;
     case 'q':  // CONTROLLA L'AQUISTO DI VITE, MASSIMO 3 -------------------
     case 'Q':
       if (bananas >= upgradeCost && character.getNumberLife() < 3) {
         upgradeBuyed = true;  // INDICA CHE È STATO COMPRATO UN UPGRADE
         upgradeType = 0;      // INDICA IL TIPO DI UPGRADE.
-        upgradeTime = 0;      // RESETTA IL TEMPO DI APPARIZIONE SE HAI COMPRATO UN ALTRO UPGRADE
+        upgradeTime = 0;  // RESETTA IL TEMPO DI APPARIZIONE SE HAI COMPRATO UN
+                          // ALTRO UPGRADE
         character.setNumberLife(character.getNumberLife() + 1);
         bananas = bananas - upgradeCost;
       }
@@ -315,7 +331,7 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
         upgradeBuyed = true;
         upgradeType = 1;
         upgradeTime = 0;
-        character.setDamage(character.getDamage() + 10);
+        character.getGun().increaseDamage(10);
         bananas = bananas - upgradeCost;
         powerUpDMG++;
       }
@@ -323,57 +339,69 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
   }
 }
 
-void EngineGame::showBonus(bool &upgradeBuyed, int &upgradeType, int &upgradeTime, bool &bonusPicked, int bonustype, int &bonusTime){
+void EngineGame::showBonus(bool &upgradeBuyed, int &upgradeType,
+                           int &upgradeTime, bool &bonusPicked, int bonustype,
+                           int &bonusTime) {
   int x = 25;
   int y = 6;
   int timeLimit = 30;
-  
-  if(bonusPicked == true && bonustype == 0){
+
+  if (bonusPicked == true && bonustype == 0) {
     mvprintw(y, x, "BUNCH OF BANANAS [+50]");
     bonusTime++;
-  }
-  else if(bonusPicked == true && bonustype == 1){
+  } else if (bonusPicked == true && bonustype == 1) {
     mvprintw(y, x, "CRATE OF BANANAS [+300]");
     bonusTime++;
-  }
-  else if(bonusPicked == true && bonustype == 2){
+  } else if (bonusPicked == true && bonustype == 2) {
     mvprintw(y, x, "SUPPLY OF BANANAS [+1000]");
     bonusTime++;
-  }
-  else if(bonusPicked == true && bonustype == 3){
+  } else if (bonusPicked == true && bonustype == 3) {
     mvprintw(y, x, "ROTTEN BANANAS [-100]");
     bonusTime++;
-  }
-  else if(bonusPicked == true && bonustype == 4){
+  } else if (bonusPicked == true && bonustype == 4) {
     mvprintw(y, x, "BANANAS SPIDER [-10 HP]");
     bonusTime++;
-  }
-  else if(bonusPicked == true && bonustype == 5){
+  } else if (bonusPicked == true && bonustype == 5) {
     mvprintw(y, x, "MONKEY TRAP [-30 HP]");
+    bonusTime++;
+  } else if (bonusPicked == true && bonustype == 6) {
+    mvprintw(y, x, "EAT 1 BANANA [+10 HP]");
+    bonusTime++;
+  } else if (bonusPicked == true && bonustype == 7) {
+    mvprintw(y, x, "EAT 2 BANANA [+20 HP]");
+    bonusTime++;
+  } else if (bonusPicked == true && bonustype == 8) {
+    mvprintw(y, x, "BANANA SMOOTHIE [+40 HP]");
+    bonusTime++;
+  } else if (bonusPicked == true && bonustype == 9) {
+    mvprintw(y, x, "PEEL LOADER [+12 AMMO]");
+    bonusTime++;
+  } else if (bonusPicked == true && bonustype == 10) {
+    mvprintw(y, x, "PEEL LOADER [+20 AMMO]");
+    bonusTime++;
+  } else if (bonusPicked == true && bonustype == 11) {
+    mvprintw(y, x, "PEACE MISSION [+100 AMMO]");
     bonusTime++;
   }
 
-  if(bonusTime>timeLimit){           // LASCIA IL BONUS VISIBILE PER "X" CICLI
+  if (bonusTime > timeLimit) {  // LASCIA IL BONUS VISIBILE PER "X" CICLI
     bonusPicked = false;
-    bonusTime = 0;            // RESETTA IL TIMER PER IL PROSSIMO BONUS UNA VOLTA SCADUTO
+    bonusTime = 0;  // RESETTA IL TIMER PER IL PROSSIMO BONUS UNA VOLTA SCADUTO
   }
 
-
-  if(upgradeBuyed == true && upgradeType == 0){
+  if (upgradeBuyed == true && upgradeType == 0) {
     mvprintw(y, x + 29, "MORE LIFE!");
     upgradeTime++;
-    }
-  else if(upgradeBuyed == true && upgradeType == 1){
+  } else if (upgradeBuyed == true && upgradeType == 1) {
     mvprintw(y, x + 29, "DAMAGE UPGRADE!");
     upgradeTime++;
   }
 
-  if(upgradeTime>timeLimit + 10){      // STESSO DI SOPRA MA CON GLI UPGRADE
+  if (upgradeTime > timeLimit + 10) {  // STESSO DI SOPRA MA CON GLI UPGRADE
     upgradeBuyed = false;
     upgradeTime = 0;
   }
 }
-
 
 void EngineGame::choiceGame(DrawWindow drawWindow, int *direction,
                             int *selection) {
@@ -391,7 +419,7 @@ void EngineGame::choiceGame(DrawWindow drawWindow, int *direction,
   clear();
 }
 
-pEnemyList EngineGame::generateEnemy(int *monsterCount, char skin, int damage,
+pEnemyList EngineGame::generateEnemy(int *monsterCount, char skin, Gun gun,
                                      int life, pEnemyList list, int &round,
                                      DrawWindow drawWindow) {
   bool isEmpty = false;
@@ -399,7 +427,7 @@ pEnemyList EngineGame::generateEnemy(int *monsterCount, char skin, int damage,
     int x = drawWindow.randomPosition(40, 70).x;
     int y = drawWindow.randomPosition(8, 19).y;
     pEnemyList head = new EnemyList;
-    Enemy enemy(x, y, skin, damage, life, 1);
+    Enemy enemy(x, y, skin, life, 1, gun);
     head->enemy = enemy;
     head->next = list;
     *monsterCount -= 1;
@@ -409,7 +437,7 @@ pEnemyList EngineGame::generateEnemy(int *monsterCount, char skin, int damage,
   if (isEmpty) {
     round += 1;
     pEnemyList head = new EnemyList;
-    Enemy enemy(0, 0, ' ', damage, life, 1);
+    Enemy enemy(0, 0, ' ', life, 1, gun);
     head->enemy = enemy;
     head->next = list;
     list = head;
@@ -443,29 +471,9 @@ pPosition EngineGame::getBonus(DrawWindow drawWindow, int x, int y,
                                int round, float &pointsOnScreen,
                                Character &character, int &bonusType) {
   pPosition tmpHead = bonusList;
-
   while (bonusList->next != NULL) {
-    // Appena si trova il bonus raccolto nella lista, si attiva un effetto e lo
-    // si elimina da quest'ultima
     if (bonusList->x == x && bonusList->y == y && bonusList->skin == '?') {
       bool end = false;
-      //bonusType = 0; <---- USATO SOLAMENTE PER I TEST PER BONUS SPECIFICI
-
-      /* Bonus/Malus da implementare
-          - B: Moltiplicatore di punteggio che dura per n secondi
-          - M: Personaggio immobile per n secondi
-
-        PROBLEMA:
-          - (Solo) Il primo dei bonus viene spawnato sempre nella stessa
-        posizione, non viene raccolto ed oscura il giocatore
-          - I bonus si accumulano sulla schermata di gioco e non rimangono nelle
-        rispettive stanze
-
-        Per ogni bonus/malus scrivere a schermo relativo messaggio
-      */
-      // Per ogni malus ci sono 2 bonus, oppure per ogni malus ci sono 3 bonus
-      // (il tutto al fine di incentivarne la raccolta ed equilibrare gli
-      // effetti)
       switch (bonusType) {
         case 0:  // Bonus name: "BUNCH OF BANANAS"
           pointsOnScreen += 50;
@@ -491,8 +499,32 @@ pPosition EngineGame::getBonus(DrawWindow drawWindow, int x, int y,
           character.decreaseLife(30);
           end = true;
           break;
+        case 6:  // Bonus name: "EAT 1 BANANA [+10 HP]"
+          character.increaseLife(10);
+          end = true;
+          break;
+        case 7:  // Bonus name: "EAT 2 BANANA [+20 HP]"
+          character.increaseLife(20);
+          end = true;
+          break;
+        case 8:  // Bonus name: "BANANA SMOOTHIE [+40 HP]"
+          character.increaseLife(40);
+          end = true;
+          break;
+        case 9:  // Bonus name: "PEEL LOADER [+12 AMMO]"
+          character.getGun().increaseAmmo(12);
+          end = true;
+          break;
+        case 10:  // Bonus name: "PEEL BOX [+20 AMMO]"
+          character.getGun().increaseAmmo(20);
+          end = true;
+          break;
+        case 11:  // Bonus name: "PEACE MISSION [+100 AMMO]"
+          character.getGun().increaseAmmo(100);
+          end = true;
+          break;
           /*
-          case 6:     // Malus name: "BANANA FRAGRANCE"
+          case n:     // Malus name: "BANANA FRAGRANCE"
             int tmpQuantity = 3, tmpRound = round;
             enemyList = generateEnemy (&tmpQuantity, 'X', 10, 100, enemyList,
           tmpRound, drawWindow); drawWindow.printEnemy (enemyList, drawWindow);
@@ -585,15 +617,25 @@ void EngineGame::increaseCount(int &whileCount, long &points,
   this->whileCountEnemy += 1;
 }
 
-void EngineGame::money(
-    int &bananas, pEnemyList enemyList, int maxRound,
-    int &roundPayed) {  // SISTEMA DI VALUTA CHE GENERA DA 1 A 3 BANANE AD OGNI
-                        // CLEAR DEL LIVELLO
+void EngineGame::money(int &bananas, pEnemyList enemyList, int maxRound,
+                       // int &roundPayed, Gun &playerGun) {  // SISTEMA DI
+                       // VALUTA CHE GENERA DA 1 A 3 BANANE AD OGNI
+                       int &roundPayed,
+                       Character &character) {  // SISTEMA DI VALUTA CHE GENERA
+                                                // DA 1 A 3 BANANE AD OGNI
+                                                // CLEAR DEL LIVELLO
   srand(time(NULL));
   if (enemyList->next == NULL &&
       maxRound != roundPayed) {  // CONTROLLA CHE LA STANZA SIA PULITA E CHE
                                  // L'ULTIMO ROUND SIA STATO PAGATO
     bananas = bananas + rand() % 3 + 1;
+    if (maxRound >= 0 && maxRound <= 5) {
+      character.increaseAmmo(25);
+    } else if (maxRound > 5 && maxRound <= 10) {
+      character.increaseAmmo(45);
+    } else if (maxRound > 10) {
+      character.increaseAmmo(80);
+    }
     roundPayed++;
   }
 }
@@ -622,35 +664,35 @@ void EngineGame::pointOnScreen(
 
 void EngineGame::runGame(Character character, DrawWindow drawWindow,
                          int direction) {
+  bool upgradeBuyed = false;
+  bool bonusPicked = false;
+  float pointsOnScreen = 0;
+  long points = 0;
   int powerUpDMG = 0;  // NUMERO DI POWERUP AL DANNO AQUISTATI
   int bananas = 0;
   int roundPayed = 0;
-  bool upgradeBuyed = false;
-  int upgradeType = 0;
-  int upgradeTime = 0;
-  bool bonusPicked = false;
-  int bonusType = 0;
-  int bonusTime = 0;
-  long points = 0;
+  int bonusTime = 0, upgradeTime = 0;
+  int bonusType = 0, upgradeType = 0;
   int monsterCount = 1, bonusCount = 1;
-  float pointsOnScreen = 0;
-  int round = 0;
-  int maxRound = 1;
+  int round = 0, maxRound = 1;
   pEnemyList enemyList = NULL;
   pPosition mountainList = new Position;
   pPosition bonusList = new Position;
   pRoom roomList = new Room;
+  Gun basicEnemyGun('-', 10, -1);
+  // Gun basicPlayerGun ('~', 25);
   while (!pause) {
     roomList =
         drawWindow.changeRoom(character, monsterCount, bonusCount, round,
                               enemyList, mountainList, roomList, maxRound);
-    enemyList = generateEnemy(&monsterCount, 'X', 10, 100, enemyList, round,
-                              drawWindow);
+    enemyList = generateEnemy(&monsterCount, 'X', basicEnemyGun, 100, enemyList,
+                              round, drawWindow);
     bonusList = generateBonus(drawWindow, &bonusCount, bonusList);
 
     getInput(direction);
     moveCharacter(drawWindow, character, direction, bonusList, enemyList, round,
-                  pointsOnScreen, bananas, powerUpDMG, bonusPicked, bonusType, bonusTime, upgradeBuyed, upgradeType, upgradeTime);
+                  pointsOnScreen, bananas, powerUpDMG, bonusPicked, bonusType,
+                  bonusTime, upgradeBuyed, upgradeType, upgradeTime);
     pointOnScreen(pointsOnScreen, enemyList);
     clear();
     drawWindow.printCharacter(character.getX(), character.getY(),
@@ -659,25 +701,29 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
                         this->height, enemyList, round, false);
     drawWindow.drawStats(this->frameGameX, this->frameGameY, this->widht,
                          this->height, &pointsOnScreen, character, enemyList,
-                         powerUpDMG);
+                         powerUpDMG, bananas, maxRound, roomList);
     drawWindow.printCharacterStats(enemyList, character);
+
     if (drawWindow.lenghtRoom(roomList) > 1) {
       drawWindow.printMountain(roomList->next->mountainList);
       drawWindow.printBonus(bonusList);
       // printList(roomList->next->mountainList);
-      checkMountainDamage(this->shoots, true, roomList->next->mountainList,
-                          1);  // FIX
+      checkMountainDamage(this->shoots, true, roomList->next->mountainList, 1);
       checkMountainDamage(this->shootsEnemys, false,
-                          roomList->next->mountainList, 1);  // FIX
+                          roomList->next->mountainList, 1);
     }
+
     increaseCount(this->whileCount, points, enemyList);
     drawWindow.printEnemy(enemyList, drawWindow);
     drawWindow.moveEnemy(enemyList, character, drawWindow, points);
-    shootBullet();
-    shootEnemyBullet();
+
+    shootBullet(character.getGun());  // Sparo del player
+    shootEnemyBullet();               // Sparo dei nemici
+
     enemyShootBullets(enemyList);
     checkEnemyCollision(character, enemyList);
-    money(bananas, enemyList, maxRound, roundPayed);
+
+    money(bananas, enemyList, maxRound, roundPayed, character);
     checkShootEnemyCollision(enemyList, character, this->shoots, 1);
     checkShootEnemyCollision(enemyList, character, this->shootsEnemys, -1);
     refresh();
@@ -685,11 +731,9 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     destroyBullet(this->shoots, 1);
     destroyBullet(this->shootsEnemys, -1);
     checkDeath(pause, character);
-    mvprintw(25, 52, "BANANAS                 %d", bananas);
-    mvprintw(26, 52, "ROOM                  %d/%d",
-             drawWindow.lenghtRoom(roomList), maxRound);
-    mvprintw(27, 52, "ROUND MAX               %d", maxRound);
-    showBonus(upgradeBuyed, upgradeType, upgradeTime, bonusPicked, bonusType, bonusTime);
+
+    showBonus(upgradeBuyed, upgradeType, upgradeTime, bonusPicked, bonusType,
+              bonusTime);
     timeout(50);
     isPause(direction, pause);
   }
