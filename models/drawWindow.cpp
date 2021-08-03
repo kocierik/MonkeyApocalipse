@@ -247,12 +247,17 @@ void DrawWindow::drawRect(
 
 void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
                            float *points, Character character,
-                           pEnemyList enemyList, int powerUp) {
+                           pEnemyList enemyList, int powerUp, int bananas, int maxRound, pRoom roomList) {
   int powerUp_y = 52;
   int powerUp_x = 23;
   mvprintw(startX - 2, startY + 5, "SCORE:");
   mvprintw(startX - 2, startX + 47, "LIFE:");
   mvprintw(powerUp_x, powerUp_y, "POWER-UP");
+
+  mvprintw(24, 52, "AMMO %d", character.getGun().getAmmo());
+  mvprintw(25, 52, "BANANAS %d", bananas);
+  mvprintw(26, 52, "ROOM %d/%d",lenghtRoom(roomList), maxRound);
+  mvprintw(27, 52, "ROUND MAX %d", maxRound);
 
   init_pair(11, COLOR_WHITE, 232);
   attron(COLOR_PAIR(11));

@@ -293,9 +293,12 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
     case 'e': // -----------------------------------------------------------
     case 'E':
       if (whileCount / 2 > 1) {
-        this->shoots = createBullet (character.getX(), character.getY(),
-                                     this->shoots, character.getGun());
-        whileCount = 0;
+        if(character.getGun().getAmmo() > 0){
+          this->shoots = createBullet (character.getX(), character.getY(),
+                                       this->shoots, character.getGun());
+          character.getGun().setAmmo(character.getGun().getAmmo()-1);
+          whileCount = 0;
+        }
       }
       break; 
     case 'q':  // CONTROLLA L'AQUISTO DI VITE, MASSIMO 3 -------------------
@@ -649,7 +652,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow, int directi
                         this->height, enemyList, round, false);
     drawWindow.drawStats(this->frameGameX, this->frameGameY, this->widht,
                          this->height, &pointsOnScreen, character, enemyList,
-                         powerUpDMG);
+                         powerUpDMG, bananas, maxRound, roomList);
     drawWindow.printCharacterStats(enemyList, character);
 
     if (drawWindow.lenghtRoom (roomList) > 1) {
@@ -681,11 +684,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow, int directi
     destroyBullet(this->shoots, 1);
     destroyBullet(this->shootsEnemys, -1);
     checkDeath(pause, character);
-    mvprintw(24, 52, "AMMO                    %d", character.getGun().getAmmo());
-    mvprintw(25, 52, "BANANAS                 %d", bananas);
-    mvprintw(26, 52, "ROOM                  %d/%d",
-             drawWindow.lenghtRoom(roomList), maxRound);
-    mvprintw(27, 52, "ROUND MAX               %d", maxRound);
+
     showBonus(upgradeBuyed, upgradeType, upgradeTime, bonusPicked, bonusType, bonusTime);
     timeout(50);
     isPause(direction, pause);
