@@ -255,14 +255,18 @@ void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
   mvprintw(startX - 2, startX + 47, "LIFE:");
   mvprintw(powerUp_x, powerUp_y, "POWER-UP");
 
-  mvprintw(24, 52, "AMMO %d", character.getGun().getAmmo());
-  mvprintw(25, 52, "BANANAS %d", bananas);
-  mvprintw(26, 52, "ROOM %d/%d", lenghtRoom(roomList), maxRound);
-  mvprintw(27, 52, "ROUND MAX %d", maxRound);
+  mvprintw(25, 52, "AMMO"); 
+  mvprintw(25, 76, "%d", character.getGun().getAmmo());
+  mvprintw(26, 52, "BANANAS"); 
+  mvprintw(26, 76, "%d", bananas); 
+  mvprintw(27, 52, "ROOM"); 
+  mvprintw(27, 75, "%d/%d", lenghtRoom(roomList), maxRound);
+  mvprintw(28, 52, "ROUND MAX");
+  mvprintw(28, 76, "%d", maxRound);
 
   init_pair(11, COLOR_WHITE, 232);
   attron(COLOR_PAIR(11));
-  drawRect(startX - 4, startY - 11, width + 13, heigth + 9, enemyList, 0, true);
+  drawRect(startX - 4, startY - 11, width + 13, heigth + 10, enemyList, 0, true);
   attroff(COLOR_PAIR(11));
 
   init_pair(3, COLOR_YELLOW, -1);  // FUNZIONI PER USARE I COLORI
