@@ -255,7 +255,7 @@ void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
   mvprintw(startX - 2, startX + 47, "LIFE:");
   mvprintw(powerUp_x, powerUp_y, "POWER-UP");
 
-  mvprintw(25, 52, "AMMO"); 
+  mvprintw(25, 52, "BANANA PEELS"); 
   mvprintw(25, 76, "%d", character.getGun().getAmmo());
   mvprintw(26, 52, "BANANAS"); 
   mvprintw(26, 76, "%d", bananas); 

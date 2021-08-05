@@ -374,13 +374,13 @@ void EngineGame::showBonusOnScreen(bool &upgradeBuyed, int &upgradeType,
     mvprintw(y, x, "BANANA SMOOTHIE [+40 HP]");
     bonusTime++;
   } else if (bonusPicked == true && bonustype == 9) {
-    mvprintw(y, x, "PEEL LOADER [+12 AMMO]");
+    mvprintw(y, x, "PEEL LOADER [+12 PEELS]");
     bonusTime++;
   } else if (bonusPicked == true && bonustype == 10) {
-    mvprintw(y, x, "PEEL LOADER [+20 AMMO]");
+    mvprintw(y, x, "PEEL LOADER [+20 PEELS]");
     bonusTime++;
   } else if (bonusPicked == true && bonustype == 11) {
-    mvprintw(y, x, "PEACE MISSION [+100 AMMO]");
+    mvprintw(y, x, "PEACE MISSION [+100 PEELS]");
     bonusTime++;
   }
 
@@ -495,15 +495,15 @@ pPosition EngineGame::getBonus(DrawWindow drawWindow, int x, int y,
           if(character.getLife() > 100) { character.setLife(100);}
           end = true;
           break;
-        case 9:  // Bonus name: "PEEL LOADER [+12 AMMO]"
-          character.getGun().increaseAmmo(12);
-          end = true;
-          break;
-        case 10:  // Bonus name: "PEEL BOX [+20 AMMO]"
+        case 9:  // Bonus name: "PEEL LOADER [+12 PEELS]"
           character.getGun().increaseAmmo(20);
           end = true;
           break;
-        case 11:  // Bonus name: "PEACE MISSION [+100 AMMO]"
+        case 10:  // Bonus name: "PEEL BOX [+20 PEELS]"
+          character.getGun().increaseAmmo(40);
+          end = true;
+          break;
+        case 11:  // Bonus name: "PEACE MISSION [+100 PEELS]"
           character.getGun().increaseAmmo(100);
           end = true;
           break;
@@ -613,11 +613,13 @@ void EngineGame::money(int &bananas, pEnemyList enemyList, int maxRound,
       maxRound != roundPayed) {  // CONTROLLA CHE LA STANZA SIA PULITA E CHE
                                  // L'ULTIMO ROUND SIA STATO PAGATO
     bananas = bananas + rand() % 3 + 1;
-    if (maxRound >= 0 && maxRound <= 5) {
-      character.increaseAmmo(25);
-    } else if (maxRound > 5 && maxRound <= 10) {
-      character.increaseAmmo(45);
-    } else if (maxRound > 10) {
+    if (maxRound >= 3 && maxRound <= 5) {
+      character.increaseAmmo(30);
+    } else if (maxRound > 5 && maxRound <= 8) {
+      character.increaseAmmo(50);
+    } else if (maxRound > 8 && maxRound <= 12) {
+      character.increaseAmmo(60);
+    } else if (maxRound > 15) {
       character.increaseAmmo(80);
     }
     roundPayed++;
