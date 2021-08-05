@@ -65,7 +65,7 @@ LEGENDA:
 
 ✖ Teletrasporto
 
----------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------
 
 TRAMA:
   In un mondo di sole scimmie, un virus si è diffuso contagiando la quasi totalità del pianeta.
@@ -75,4 +75,4 @@ TRAMA:
   Corri veloce come flash e fallo come un veloce coglione per sfuggire alla furioso appetito di queste pazze scimmie bastarde. 
   Trova ed usa armi di vario tipo per fargli il culo e salvare il tuo, dato che te lo vogliono letteralmente mangiare.
 
----------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------

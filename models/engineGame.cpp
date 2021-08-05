@@ -182,7 +182,7 @@ void EngineGame::checkEnemyCollision(Character &character,
       init_pair(13, COLOR_RED, -1);
       attron(COLOR_PAIR(13));
       mvprintw(character.getY(), character.getX(),
-               "C");  // GENERA UN CARATTERE ROSSO QUANDO SI VIENE ATTACATI
+               "M");  // GENERA UN CARATTERE ROSSO QUANDO SI VIENE ATTACATI
       attroff(COLOR_PAIR(13));
     }
     enemyList = enemyList->next;
@@ -673,9 +673,8 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
         drawWindow.changeRoom(character, monsterCount, round,
                               enemyList, mountainList, bonusList, roomList,
                               maxRound);
-    enemyList = generateEnemy(&monsterCount, 'X', basicEnemyGun, 100, enemyList,
+    enemyList = generateEnemy(&monsterCount, 'E', basicEnemyGun, 100, enemyList,
                               round, drawWindow);
-    //bonusList = drawWindow.generateBonus(bonusList, &bonusCount);
 
     getInput(direction);
     moveCharacter(drawWindow, character, direction, roomList, enemyList, round,

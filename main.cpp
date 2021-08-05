@@ -8,7 +8,7 @@
 int main() {
   Gun basicPlayerGun ('~', 25, 40);
   EngineGame game(FRAMEGAMEX, FRAMEGAMEY, GAMEHEIGTH, GAMEWIDTH);
-  Player character(FRAMEGAMEY + 5, FRAMEGAMEX + 5,'C', 100, 3, basicPlayerGun);
+  Player character(FRAMEGAMEY + 5, FRAMEGAMEX + 5,'M', 100, 3, basicPlayerGun);
   DrawWindow drawWindow;
   game.engine(character, drawWindow);
   return 0;

@@ -311,7 +311,7 @@ pPosition DrawWindow::generateMountain(pPosition list, int &mountainCount) {
     head->x = x;
     head->y = y;
     head->skin = '^';
-    head->life = 30;
+    head->life = 15;
     head->next = list;
     list = head;
     mountainCount -= 1;
@@ -505,7 +505,7 @@ pRoom DrawWindow::changeRoom(Character &character, int &monsterCount,
       else if (maxRound > 3 && maxRound < 6) bonusCounter = 1;
       else bonusCounter = 2;
       */
-      if (maxRound < 3) bonusCounter = 0;
+      if (maxRound < 2) bonusCounter = 0;
       else {
         srand(time(0));
         bonusCounter = rand() % 3 + 1;
