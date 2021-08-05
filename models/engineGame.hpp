@@ -70,6 +70,6 @@ class EngineGame {
   void money(int &bananas, pEnemyList enemyList, int maxRound, int &roundPayed,
              Character &character);
   void pointOnScreen(float &pointOnScreen, pEnemyList EnemyList);
-  void showBonus(bool &upgradeBuyed, int &upgradeType, int &upgradeTime,
+  void showBonusOnScreen(bool &upgradeBuyed, int &upgradeType, int &upgradeTime,
                  bool &bonusPicked, int bonusType, int &bonusTime);
 };

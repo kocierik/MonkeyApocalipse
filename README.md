@@ -49,6 +49,10 @@ LEGENDA:
 
 ✖ Lo score a schermo non deve aumentare col tempo
 
+✖ Se si va a sbattere contro i nemici vengono danneggiati anche loro
+
+✖ Aggiungere un bonus che dia vita ai nemici
+
 ✖ Migliorare la gestione del guadagno delle munizioni
 
 ✖ Cambiare arma con un tasto (+ relativa possibilità di ottenere, in modi differenti, le armi)

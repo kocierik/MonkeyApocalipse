@@ -339,7 +339,7 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
   }
 }
 
-void EngineGame::showBonus(bool &upgradeBuyed, int &upgradeType,
+void EngineGame::showBonusOnScreen(bool &upgradeBuyed, int &upgradeType,
                            int &upgradeTime, bool &bonusPicked, int bonustype,
                            int &bonusTime) {
   int x = 25;
@@ -719,7 +719,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     destroyBullet(this->shootsEnemys, -1);
     checkDeath(pause, character);
 
-    showBonus(upgradeBuyed, upgradeType, upgradeTime, bonusPicked, bonusType,
+    showBonusOnScreen(upgradeBuyed, upgradeType, upgradeTime, bonusPicked, bonusType,
               bonusTime);
     timeout(50);
     isPause(direction, pause);
