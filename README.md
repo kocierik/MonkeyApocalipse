@@ -15,8 +15,6 @@ LEGENDA:
   ✖ = non iniziato
   △ = lavoro in corso
 
-△ Rendere il gioco il più ganzo possibile.
-
 ✔ Menu
  
 ✔ Apparizione del player + mappa
@@ -33,27 +31,29 @@ LEGENDA:
 
 ✔ Sistema per le vite e il punteggio
 
+✔ Aggiungere schermata di game over quando si muore
+
+✔ Aggiungere le munizioni (dunque rimuovere lo sparo illimitato)
+
+✔ Messaggi a schermo durante la parita (p.e: "Hai raccolto *nome arma*", "Bonus *nome bonus", ecc.)
+
+✔ Difficoltà sempre maggiore
+
+✔ Aggiungere la barra della vita e lo score nella schermata di gioco
+
+△ Migliorare la pagina per how to play e credits
+
 △ Bonus (armi diverse, punti e vite)
 
-✖ Aggiungere schermata di game over quando si muore
+△ Scritte ganzissime + miglioramento estetica esterna al gameplay
 
-✖ Nuove tipologie di nemici
+✖ Lo score a schermo non deve aumentare col tempo
 
-✖ I bonus si accumulano di stanza in stanza
+✖ Migliorare la gestione del guadagno delle munizioni
 
 ✖ Cambiare arma con un tasto (+ relativa possibilità di ottenere, in modi differenti, le armi)
 
-✖ Aggiungere le munizioni (dunque rimuovere lo sparo illimitato)
-
-✖ Drop causale di "cose" alla morte dei nemici (il drop non è assicurato)
-
-✖ Messaggi a schermo durante la parita (p.e: "Hai raccolto *nome arma*", "Bonus *nome bonus", ecc.)
-
-✖ Mine
-
 ✖ Vari tipi di nemici
-
-✖ Difficoltà sempre maggiore
 
 ✖ Redpillate (p.e: frasi randomiche nel menù stile minecraft)
 
@@ -63,16 +63,7 @@ LEGENDA:
 
 ✖ Teletrasporto
 
-△ Scritte ganzissime + miglioramento estetica esterna al gameplay
-
---------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-Consegne migliorie varie:
-  MENU:
-  - Aggiungere/migliorare la pagina per how to play e credits
-  - Aggiungere la barra della vita e lo score nella schermata di gioco
-
---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------
 
 TRAMA:
   In un mondo di sole scimmie, un virus si è diffuso contagiando la quasi totalità del pianeta.
@@ -82,4 +73,4 @@ TRAMA:
   Corri veloce come flash e fallo come un veloce coglione per sfuggire alla furioso appetito di queste pazze scimmie bastarde. 
   Trova ed usa armi di vario tipo per fargli il culo e salvare il tuo, dato che te lo vogliono letteralmente mangiare.
 
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------
