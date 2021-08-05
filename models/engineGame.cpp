@@ -167,6 +167,7 @@ pPosition EngineGame::deletePosition(pPosition list, pPosition toDelete) {
 
 void EngineGame::checkEnemyCollision(Character &character,
                                      pEnemyList enemyList) {
+  pEnemyList tmp = enemyList;
   while (enemyList != NULL) {
     if ((character.getX() + 1 == enemyList->enemy.getX() &&
          character.getY() == enemyList->enemy.getY()) ||
@@ -177,28 +178,32 @@ void EngineGame::checkEnemyCollision(Character &character,
         (character.getX() == enemyList->enemy.getX() &&
          character.getY() - 1 == enemyList->enemy.getY())) {
       character.decreaseLife(1);
+      enemyList->enemy.decreaseLife(1);
+      if (enemyList->enemy.getLife() <= 0) enemyList = destroyEnemy(tmp, enemyList->enemy);
       init_pair(13, COLOR_RED, -1);
       attron(COLOR_PAIR(13));
       mvprintw(character.getY(), character.getX(),
-               "M");  // GENERA UN CARATTERE ROSSO QUANDO SI VIENE ATTACATI
+               "M");  // Il player diventa rosso quando si scontra coi nemici
+      mvprintw(enemyList->enemy.getY(), enemyList->enemy.getX(),
+               "E");  // Il nemico diventa rosso quando si scontra col player
       attroff(COLOR_PAIR(13));
     }
     enemyList = enemyList->next;
   }
 }
 
-void EngineGame::checkShootEnemyCollision(pEnemyList enemys,
+void EngineGame::checkShootEnemyCollision(pEnemyList enemyList,
                                           Character &character, Pbullet &shoots,
                                           int isEnemy) {
   bool isCollisionEnemy = false;
   bool isCollisionCharacter = false;
   bool pause = false;
   Pbullet head = shoots;
-  pEnemyList tmp = enemys;
-  while (enemys != NULL && !isCollisionEnemy && !isCollisionCharacter) {
+  pEnemyList tmp = enemyList;
+  while (enemyList != NULL && !isCollisionEnemy && !isCollisionCharacter) {
     while (shoots != NULL && !isCollisionEnemy && !isCollisionCharacter) {
-      if ((enemys->enemy.getX() == shoots->x + isEnemy &&
-           enemys->enemy.getY() == shoots->y) &&
+      if ((enemyList->enemy.getX() == shoots->x + isEnemy &&
+           enemyList->enemy.getY() == shoots->y) &&
           isEnemy == 1) {
         isCollisionEnemy = true;
       } else if ((character.getX() == shoots->x + isEnemy &&
@@ -212,26 +217,28 @@ void EngineGame::checkShootEnemyCollision(pEnemyList enemys,
     if (isCollisionEnemy || isCollisionCharacter)
       break;
     else
-      enemys = enemys->next;
+      enemyList = enemyList->next;
   }
+  
+  init_pair(13, COLOR_RED, -1);
+  attron(COLOR_PAIR(13));
+  
   if (isCollisionEnemy && isEnemy == 1) {
-    enemys->enemy.decreaseLife(character.getGun().getDamage());
-    if (enemys->enemy.getLife() <= 0) {
-      enemys = destroyEnemy(tmp, enemys->enemy);
-    }
-  } else if (isCollisionCharacter && isEnemy == -1) {
-    character.decreaseLife(enemys->enemy.getGun().getDamage());
+    mvprintw(enemyList->enemy.getY(), enemyList->enemy.getX(), "E");  // Il nemico diventa rosso quando viene colpito dal proiettile del player
+    enemyList->enemy.decreaseLife(character.getGun().getDamage());
+    if (enemyList->enemy.getLife() <= 0) enemyList = destroyEnemy(tmp, enemyList->enemy);
+  } 
+  else if (isCollisionCharacter && isEnemy == -1) {
+    character.decreaseLife(enemyList->enemy.getGun().getDamage());
     checkDeath(pause, character);
 
-    init_pair(13, COLOR_RED, -1);
-    attron(COLOR_PAIR(13));
     mvprintw(character.getY(), character.getX(),
-             "C");  // GENERA UN CARATTERE ROSSO QUANDO SI VIENE COLPITI
-    attroff(COLOR_PAIR(13));
+             "M");  // GENERA UN CARATTERE ROSSO QUANDO SI VIENE COLPITI
   }
+  
+  attroff(COLOR_PAIR(13));
 }
 
-// Controllo che la posizione x y sia uno spazio vuoto
 bool EngineGame::isEmpty(int x, int y) { return mvinch(y, x) == ' '; }
 bool EngineGame::isBonus(int x, int y) { return mvinch(y, x) == '?'; }
 bool EngineGame::isMountain(int x, int y) { return mvinch(y, x) == '^'; }
@@ -678,7 +685,6 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
   pPosition bonusList = new Position;
   pRoom roomList = new Room;
   Gun basicEnemyGun('-', 10, -1);
-  // Gun basicPlayerGun ('~', 25);
   while (!pause) {
     roomList =
         drawWindow.changeRoom(character, monsterCount, round,
@@ -705,8 +711,6 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     if (drawWindow.lenghtRoom(roomList) > 1) {
       drawWindow.printMountain(roomList->next->mountainList);
       drawWindow.printBonus(roomList->next->bonusList);
-      //drawWindow.printBonus(roomList->bonusList);
-      // printList(roomList->next->mountainList);
       checkMountainDamage(this->shoots, true, roomList->next->mountainList, 1);
       checkMountainDamage(this->shootsEnemys, false,
                           roomList->next->mountainList, 1);

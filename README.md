@@ -41,17 +41,16 @@ LEGENDA:
 
 ✔ Aggiungere la barra della vita e lo score nella schermata di gioco
 
+✔ Se si va a sbattere contro i nemici vengono danneggiati anche loro 
+
 △ Migliorare la pagina per how to play e credits
 
 △ Bonus (armi diverse, punti e vite)
 
 △ Scritte ganzissime + miglioramento estetica esterna al gameplay
 
+
 ✖ Lo score a schermo non deve aumentare col tempo
-
-✖ Se si va a sbattere contro i nemici vengono danneggiati anche loro
-
-✖ Aggiungere un bonus che dia vita ai nemici
 
 ✖ Cambiare arma con un tasto (+ relativa possibilità di ottenere, in modi differenti, le armi)
 

@@ -25,7 +25,6 @@ class EngineGame {
   void enemyShootBullets(pEnemyList listEnemy);
 
   void shootBullet(Gun playerGun);
-  // void shootEnemyBullet(Gun enemyGun);
   void shootEnemyBullet();
 
   void destroyBullet(Pbullet &shoots, int isEnemy);
