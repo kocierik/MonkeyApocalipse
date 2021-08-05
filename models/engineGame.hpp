@@ -52,7 +52,7 @@ class EngineGame {
   
   
   pPosition getBonus(DrawWindow drawWindow, int x, int y, pPosition bonusList,
-                     pEnemyList enemyList, int round, float &pointsOnScreen,
+                     pEnemyList &enemyList, int round, float &pointsOnScreen,
                      Character &character, int &bonusType);
 
   void checkDeath(bool &pause, Character &character);

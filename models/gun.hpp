@@ -5,7 +5,6 @@
 
 class Gun {
  protected:
-  // char name[NAMESIZE];
   char bulletSkin;
   int damage;
   int ammo;
@@ -13,15 +12,14 @@ class Gun {
  public:
   Gun();
   Gun(char in_bulletSkin, int in_damage, int in_ammo);
-  // Gun(char in_name[], int in_bulletSkin, int in_damage);
 
-  // void getname();
-  // void setname();
   char getBulletSkin();
+
   int getDamage();
+  void setDamage(int in_damage);
   void increaseDamage(int plusDMG);
   void decreaseDamage(int lessDMG);
-  void setDamage(int in_damage);
+
   int getAmmo();
   void setAmmo(int in_ammo);
   void increaseAmmo(int plusAmmo);

@@ -7,10 +7,8 @@
 #include <ctime>
 #include <iostream>
 
-
-#define N_SWITCH_CASE \
-  11  // Numero di casi dello switch che gestisce i bonus. Equivale a: n bonus -
-      // 1
+// Numero di casi dello switch che gestisce i bonus. Equivale a: n bonus - 1
+#define N_SWITCH_CASE 12
 
 EngineGame::EngineGame(int frameGameX, int frameGameY, int height, int width) {
   this->frameGameX = frameGameX;
@@ -382,6 +380,9 @@ void EngineGame::showBonusOnScreen(bool &upgradeBuyed, int &upgradeType,
   } else if (bonusPicked == true && bonustype == 11) {
     mvprintw(y, x, "PEACE MISSION [+100 PEELS]");
     bonusTime++;
+  } else if (bonusPicked == true && bonustype == 12) {
+    mvprintw(y, x, "PISSED OF ENEMY MONKEYS");
+    bonusTime++;
   }
 
   if (bonusTime > timeLimit) {  // LASCIA IL BONUS VISIBILE PER "X" CICLI
@@ -448,7 +449,7 @@ pEnemyList EngineGame::generateEnemy(int *monsterCount, char skin, Gun gun,
 }
 
 pPosition EngineGame::getBonus(DrawWindow drawWindow, int x, int y,
-                               pPosition bonusList, pEnemyList enemyList,
+                               pPosition bonusList, pEnemyList &enemyList,
                                int round, float &pointsOnScreen,
                                Character &character, int &bonusType) {
   pPosition tmpHead = bonusList;
@@ -505,6 +506,16 @@ pPosition EngineGame::getBonus(DrawWindow drawWindow, int x, int y,
           break;
         case 11:  // Bonus name: "PEACE MISSION [+100 PEELS]"
           character.getGun().increaseAmmo(100);
+          end = true;
+          break;
+        case 12:  // Bonus name: "PISSED OFF MONKEYS"
+          while (enemyList != NULL) {
+            enemyList->enemy.increaseLife(25);
+            Gun tmpBetterGun = enemyList->enemy.getGun();
+            tmpBetterGun.increaseDamage(10);
+            enemyList->enemy.setGun(tmpBetterGun);
+            enemyList = enemyList->next; 
+          }
           end = true;
           break;
           /*

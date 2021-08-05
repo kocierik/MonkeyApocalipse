@@ -9,31 +9,31 @@ Character::Character(int x, int y, char skin, int life, int numberLife,
   this->skin = skin;
   this->life = life;
   this->Nbullet = 0;
-  // this->damage = damage;
   this->numberLife = numberLife;
   this->gun = gun;
 }
 
 Character::Character() {}
+
 void Character::setX(int x) { this->x = x; }
 int Character::getX() { return this->x; }
 void Character::setY(int y) { this->y = y; }
 int Character::getY() { return this->y; }
-int Character::getLife() { return this->life; }
-void Character::setLife(int life) { this->life = life; }
-int Character::getNumberLife() { return this->numberLife; }
-void Character::setNumberLife(int numberLife) { this->numberLife = numberLife; }
-void Character::increaseLife(int life) { this->life += life; }
-void Character::decreaseLife(int life) { this->life -= life; }
-// int Character::getDamage() { return this->damage; }
-// void Character::setDamage(int damage) { this->damage = damage; }
-char Character::getSkin() { return this->skin; }
-void Character::setSkin(char skin) { this->skin = skin; }
 
 void Character::directionUp() { this->y--; }
 void Character::directionDown() { this->y++; }
 void Character::directionRight() { this->x++; }
 void Character::directionLeft() { this->x--; }
+
+char Character::getSkin() { return this->skin; }
+void Character::setSkin(char skin) { this->skin = skin; }
+
+void Character::increaseLife(int life) { this->life += life; }
+void Character::decreaseLife(int life) { this->life -= life; }
+int Character::getLife() { return this->life; }
+void Character::setLife(int life) { this->life = life; }
+int Character::getNumberLife() { return this->numberLife; }
+void Character::setNumberLife(int numberLife) { this->numberLife = numberLife; }
 
 Gun Character::getGun() { return this->gun; }
 void Character::setGun(Gun in_gun) { this->gun = in_gun; }
