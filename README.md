@@ -49,7 +49,6 @@ LEGENDA:
 
 △ Scritte ganzissime + miglioramento estetica esterna al gameplay
 
-
 ✖ Lo score a schermo non deve aumentare col tempo
 
 ✖ Cambiare arma con un tasto (+ relativa possibilità di ottenere, in modi differenti, le armi)

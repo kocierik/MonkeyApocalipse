@@ -8,7 +8,7 @@
 #include <iostream>
 
 // Numero di casi dello switch che gestisce i bonus. Equivale a: n bonus - 1
-#define N_SWITCH_CASE 12
+#define N_SWITCH_CASE 13
 
 EngineGame::EngineGame(int frameGameX, int frameGameY, int height, int width) {
   this->frameGameX = frameGameX;
@@ -177,8 +177,8 @@ void EngineGame::checkEnemyCollision(Character &character,
          character.getY() + 1 == enemyList->enemy.getY()) ||
         (character.getX() == enemyList->enemy.getX() &&
          character.getY() - 1 == enemyList->enemy.getY())) {
-      character.decreaseLife(1);
-      enemyList->enemy.decreaseLife(1);
+      character.decreaseLife(1);        // In uno scontro il player perde 1 di vita
+      enemyList->enemy.decreaseLife(2); // In uno scontro il nemico perde 2 di vita
       if (enemyList->enemy.getLife() <= 0) enemyList = destroyEnemy(tmp, enemyList->enemy);
       init_pair(13, COLOR_RED, -1);
       attron(COLOR_PAIR(13));
@@ -390,6 +390,9 @@ void EngineGame::showBonusOnScreen(bool &upgradeBuyed, int &upgradeType,
   } else if (bonusPicked == true && bonustype == 12) {
     mvprintw(y, x, "PISSED OF ENEMY MONKEYS");
     bonusTime++;
+  } else if (bonusPicked == true && bonustype == 13) {
+    mvprintw(y, x, "PEELS ON FIRE! [+5 DAMAGE]");
+    bonusTime++;
   }
 
   if (bonusTime > timeLimit) {  // LASCIA IL BONUS VISIBILE PER "X" CICLI
@@ -515,24 +518,32 @@ pPosition EngineGame::getBonus(DrawWindow drawWindow, int x, int y,
           character.getGun().increaseAmmo(100);
           end = true;
           break;
-        case 12:  // Bonus name: "PISSED OFF MONKEYS"
+        case 12:  // Malus name: "PISSED OFF MONKEYS"
           while (enemyList != NULL) {
-            enemyList->enemy.increaseLife(25);
+            enemyList->enemy.increaseLife(25);  // Aumenta la vita dei nemici
             Gun tmpBetterGun = enemyList->enemy.getGun();
-            tmpBetterGun.increaseDamage(10);
+            tmpBetterGun.increaseDamage(10);    // Aumenta il danno dei nemici
             enemyList->enemy.setGun(tmpBetterGun);
             enemyList = enemyList->next; 
           }
           end = true;
           break;
-          /*
-          case n:     // Malus name: "BANANA FRAGRANCE"
+        case 13:  // Bonus name: "PEELS ON FIRE! [+5 DAMAGE]"
+          if (character.getGun().getDamage() < 40) {
+            Gun tmpBetterGun = character.getGun();
+            tmpBetterGun.increaseDamage(5);    // Aumenta il danno dell'arma del player
+            character.setGun(tmpBetterGun);
+          } else character.getGun().increaseAmmo(30);
+          end = true;
+          break;
+         /*
+        case n:     // Malus name: "BANANA FRAGRANCE" // Genera n nemici
             int tmpQuantity = 3, tmpRound = round;
             enemyList = generateEnemy (&tmpQuantity, 'X', 10, 100, enemyList,
           tmpRound, drawWindow); drawWindow.printEnemy (enemyList, drawWindow);
             end = true;
             break;
-            */
+        */
       }
       if (end) {
         bonusList = deletePosition(tmpHead, bonusList);
