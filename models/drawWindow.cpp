@@ -532,7 +532,7 @@ pRoom DrawWindow::changeRoom(Character &character, int &monsterCount,
   return roomList;
 }
 
-void DrawWindow::printLoseScreen() {
+void DrawWindow::printLoseScreen( float finalScore) {
   init_pair(16, COLOR_RED, 232);
   attron(COLOR_PAIR(16));
   mvprintw(3, 3,
@@ -585,17 +585,22 @@ void DrawWindow::printLoseScreen() {
            "                                                                   "
            "                              ");
   mvprintw(18, 3,
-           "                                          press [ESC]              "
+           "                                                                   "
            "                              ");
   mvprintw(19, 3,
+           "     FINAL SCORE:                                                  "
+           "               menu [ESC]     ");
+  mvprintw(19, 21,
+           "%.0f", finalScore);
+  mvprintw(20, 3,
            "                                                                   "
            "                              ");
   attroff(COLOR_PAIR(17));
 }
 
-void DrawWindow::loseScreen(int direction) {
+void DrawWindow::loseScreen(int direction, float finalScore) {
   while (direction != 27) {
-    printLoseScreen();
+    printLoseScreen(finalScore);
     direction = getch();  // ASPETTA UN TASTO IN INPUT
   }
 }

@@ -10,6 +10,8 @@
 // Numero di casi dello switch che gestisce i bonus. Equivale a: n bonus - 1
 #define N_SWITCH_CASE 13
 
+float finalScore = 0;
+
 EngineGame::EngineGame(int frameGameX, int frameGameY, int height, int width) {
   this->frameGameX = frameGameX;
   this->frameGameY = frameGameY;
@@ -601,7 +603,7 @@ void EngineGame::engine(Character character, DrawWindow drawWindow) {
         pause = false;
         runGame(character, drawWindow, direction);
         clear();
-        drawWindow.loseScreen(direction);
+        drawWindow.loseScreen(direction, finalScore);
         selection = 4;
         break;
       case 1:
@@ -749,6 +751,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
               bonusTime);
     timeout(50);
     isPause(direction, pause);
+    finalScore = pointsOnScreen;
   }
 }
 // x = 23 | y = 8 HL | end | x = 70 | y = 19 | RD

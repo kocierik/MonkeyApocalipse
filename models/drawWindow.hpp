@@ -25,8 +25,8 @@ class DrawWindow {
   void credits(int direction);
   void printHowToPlay();
   void HowToPlay(int direction);
-  void printLoseScreen();
-  void loseScreen(int direction);
+  void printLoseScreen(float finalScore);
+  void loseScreen(int direction, float finalScore);
   void drawStats(int startX, int startY, int width, int heigth, float *points,
                  Character character, pEnemyList enemyList, int powerUp,
                  int bananas, int maxRound, pRoom roomList);
