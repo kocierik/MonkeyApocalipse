@@ -194,7 +194,7 @@ void EngineGame::checkEnemyCollision(Character &character,
 
 void EngineGame::checkShootEnemyCollision(pEnemyList enemyList,
                                           Character &character, Pbullet &shoots,
-                                          int isEnemy) {
+                                          int isEnemy, float &pointOnScreen) {
   bool isCollisionEnemy = false;
   bool isCollisionCharacter = false;
   bool pause = false;
@@ -226,7 +226,10 @@ void EngineGame::checkShootEnemyCollision(pEnemyList enemyList,
   if (isCollisionEnemy && isEnemy == 1) {
     mvprintw(enemyList->enemy.getY(), enemyList->enemy.getX(), "E");  // Il nemico diventa rosso quando viene colpito dal proiettile del player
     enemyList->enemy.decreaseLife(character.getGun().getDamage());
-    if (enemyList->enemy.getLife() <= 0) enemyList = destroyEnemy(tmp, enemyList->enemy);
+    if (enemyList->enemy.getLife() <= 0) { 
+      enemyList = destroyEnemy(tmp, enemyList->enemy); 
+      increasePointOnScreen(pointOnScreen, 300);
+    }
   } 
   else if (isCollisionCharacter && isEnemy == -1) {
     character.decreaseLife(enemyList->enemy.getGun().getDamage());
@@ -506,11 +509,11 @@ pPosition EngineGame::getBonus(DrawWindow drawWindow, int x, int y,
           if(character.getLife() > 100) { character.setLife(100);}
           end = true;
           break;
-        case 9:  // Bonus name: "PEEL LOADER [+12 PEELS]"
+        case 9:  // Bonus name: "PEEL LOADER [+20 PEELS]"
           character.getGun().increaseAmmo(20);
           end = true;
           break;
-        case 10:  // Bonus name: "PEEL BOX [+20 PEELS]"
+        case 10:  // Bonus name: "PEEL BOX [+40 PEELS]"
           character.getGun().increaseAmmo(40);
           end = true;
           break;
@@ -670,11 +673,8 @@ void EngineGame::isPause(int &direction, bool &pause) {
   if (direction == 27) pause = true;
 }
 
-void EngineGame::pointOnScreen(
-    float &pointOnScreen,
-    pEnemyList EnemyList) {  // GESTISCE QUANTO VELOCEMENTE AUMENTA IL PUNTEGGIO
-                             // A SCHERMO
-  if (EnemyList->next != NULL) pointOnScreen = pointOnScreen + 0.5;
+void EngineGame::increasePointOnScreen( float &pointOnScreen, int pointsAdded) {  
+  pointOnScreen += pointsAdded;
 }
 
 void EngineGame::runGame(Character character, DrawWindow drawWindow,
@@ -708,7 +708,6 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     moveCharacter(drawWindow, character, direction, roomList, enemyList, round,
                   pointsOnScreen, bananas, powerUpDMG, bonusPicked, bonusType,
                   bonusTime, upgradeBuyed, upgradeType, upgradeTime);
-    pointOnScreen(pointsOnScreen, enemyList);
     clear();
     drawWindow.printCharacter(character.getX(), character.getY(),
                               character.getSkin());
@@ -738,8 +737,8 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     checkEnemyCollision(character, enemyList);
 
     money(bananas, enemyList, maxRound, roundPayed, character);
-    checkShootEnemyCollision(enemyList, character, this->shoots, 1);
-    checkShootEnemyCollision(enemyList, character, this->shootsEnemys, -1);
+    checkShootEnemyCollision(enemyList, character, this->shoots, 1, pointsOnScreen);
+    checkShootEnemyCollision(enemyList, character, this->shootsEnemys, -1, pointsOnScreen);
     refresh();
 
     destroyBullet(this->shoots, 1);

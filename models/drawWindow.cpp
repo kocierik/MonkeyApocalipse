@@ -153,57 +153,61 @@ void DrawWindow::credits(int direction) {
 void DrawWindow::printHowToPlay() {  // GESTISCE LA SCHERMATA DEL HOW TO PLAY
   init_pair(3, COLOR_YELLOW, 232);   // FUNZIONI PER USARE IL COLORE GIALLO
   attron(COLOR_PAIR(3));
-  mvprintw(10, 3,
+  mvprintw(10, 5,
            "                     _____ _____ _ _ _    _____ _____    _____ __  "
            "  _____ __ __                     ");
-  mvprintw(11, 3,
+  mvprintw(11, 5,
            "                    |  |  |     | | | |  |_   _|     |  |  _  |  | "
            " |  _  |  |  |                    ");
-  mvprintw(12, 3,
+  mvprintw(12, 5,
            "                    |     |  |  | | | |    | | |  |  |  |   __|  "
            "|__|     |_   _|                    ");
-  mvprintw(13, 3,
+  mvprintw(13, 5,
            "                    |__|__|_____|_____|    |_| |_____|  |__|  "
            "|_____|__|__| |_|                      ");
-  mvprintw(14, 3,
+  mvprintw(14, 5,
            "                                                                   "
            "                                  ");
   attroff(COLOR_PAIR(3));  // CHIUSURA DEL COLORE GIALLO
 
   init_pair(2, COLOR_GREEN, 232);  // FUNZIONI PER USARE IL VERDE
   attron(COLOR_PAIR(2));
-  mvprintw(15, 3,
-           "        PLAY THIS ADVENTURE FROM THE POINT OF VIEW OF THE MONKEY "
-           "THAT STARTED THE REVOLUTION!        ");
-  mvprintw(16, 3,
-           "                                                                   "
-           "                                  ");
-  mvprintw(17, 3,
-           "                       USE THE ARROWS TO MOVE AND [E] TO USE THE "
-           "BANANACANNON.                       ");
-  mvprintw(18, 3,
-           "          ELIMINATE THE ENEMIES, CLEAN THE ROOM, MOVE TO THE NEXT "
-           "ONE AND COLLECT BANANAS!           ");
-  mvprintw(19, 3,
-           "                                                                   "
-           "                                  ");  //.
-  mvprintw(20, 3,
-           "                         WITH YOUR BANANAS YOU WILL BE ABLE TO BUY "
-           "UPGRADES                          ");
-  mvprintw(21, 3,
-           "                        FOR THE BANANACANNON OR BUY BACK LIVES YOU "
-           "HAVE LOST                         ");
-  mvprintw(22, 3,
-           "                                                                   "
-           "                                  ");
-  mvprintw(23, 3,
-           "                   WHEN YOU HAVE %d BANANAS PRESS [R] TO UPGRADE "
-           "THE BANANA CANNON                   ",
-           20);
-  mvprintw(24, 3,
-           "                                  OR [Q] TO RECOVER A LOST LIFE    "
-           "                                  ");
-
+  mvprintw(15, 5,
+           "       PLAY THIS ADVENTURE FROM THE POINT OF VIEW OF THE MONKEY THAT STARTED THE REVOLUTION!         ");
+  mvprintw(16, 5,
+           "                                                                                                     ");
+  mvprintw(17, 5,
+           "       ELIMINATE THE ENEMIES, CLEAN THE ROOM, MOVE TO THE NEXT ONE AND COLLECT BANANAS!              ");
+  mvprintw(18, 5,
+           "       USE THE [ARROWS] TO MOVE AND [E] TO USE THE BANANACANNON, WATCH OUT FOR AMMO!                 ");
+  mvprintw(19, 5,
+           "                                                                                                     ");
+  mvprintw(20, 5,
+           "       WITH YOUR BANANAS YOU WILL BE ABLE TO BUY UPGRADES FOR THE BANANACANNON                       ");
+  mvprintw(21, 5,
+           "       OR BUY BACK LIVES YOU HAVE LOST                                                               ");
+  mvprintw(22, 5,
+           "                                                                                                     ");
+  mvprintw(23, 5,
+           "       WHEN YOU HAVE %d BANANAS PRESS [R] TO UPGRADE THE BANANA CANNON                               ", 10);
+  mvprintw(24, 5,
+           "       OR [Q] TO RECOVER A LOST LIFE                                                                 ");
+  mvprintw(25, 5,
+           "                                                                                                     ");
+  mvprintw(26, 5,
+           "       COLLECT AS MUCH BONUSES AS POSSIBLE, BUT BEWARE! THEY CAN HIDE TRAPS!                         ");
+  mvprintw(27, 5,
+           "                                                                                                     ");
+  mvprintw(28, 5,
+           "                                                                                                     ");
+  mvprintw(29, 5,
+           "           [E] = SHOOT    [ARROWS] = MOVE    [Q] = BUY EXTRA LIFE    [R] = DAMAGE UPGRADE            ");
+  mvprintw(30, 5,
+           "                                                                                                     ");
+  mvprintw(31, 5,
+           "                                            menu [ESC]                                               ");
+  mvprintw(32, 5,
+           "                                                                                                     ");
   attroff(COLOR_PAIR(2));  // CHIUSURA DEL COLORE VERDE
 }
 void DrawWindow::HowToPlay(int direction) {
@@ -591,7 +595,7 @@ void DrawWindow::printLoseScreen() {
 
 void DrawWindow::loseScreen(int direction) {
   while (direction != 27) {
-    printLoseScreen();    // STAMPA GLI AUTORI DEL GIOCO
+    printLoseScreen();
     direction = getch();  // ASPETTA UN TASTO IN INPUT
   }
 }

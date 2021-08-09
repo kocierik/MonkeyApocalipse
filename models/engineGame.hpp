@@ -33,7 +33,7 @@ class EngineGame {
 
   void checkEnemyCollision(Character &character, pEnemyList enemyList);
   void checkShootEnemyCollision(pEnemyList enemys, Character &character,
-                                Pbullet &shoots, int isEnemy);
+                                Pbullet &shoots, int isEnemy, float &pointOnScreen);
   bool isEmpty(int x, int y);
   bool isBonus(int x, int y);
   bool isMountain(int x, int y);
@@ -68,7 +68,7 @@ class EngineGame {
 
   void money(int &bananas, pEnemyList enemyList, int maxRound, int &roundPayed,
              Character &character);
-  void pointOnScreen(float &pointOnScreen, pEnemyList EnemyList);
+  void increasePointOnScreen(float &pointOnScreen, int pointsAdded);
   void showBonusOnScreen(bool &upgradeBuyed, int &upgradeType, int &upgradeTime,
                  bool &bonusPicked, int bonusType, int &bonusTime);
 };
