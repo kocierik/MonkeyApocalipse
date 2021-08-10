@@ -37,6 +37,7 @@ void Character::setNumberLife(int numberLife) { this->numberLife = numberLife; }
 
 Gun Character::getGun() { return this->gun; }
 void Character::setGun(Gun in_gun) { this->gun = in_gun; }
+void Character::increaseDamageGun(int damage) { this->gun.increaseDamage(damage); }
 void Character::setAmmo(int ammo) { this->gun.setAmmo(ammo); }
 int Character::getAmmo() { return this->gun.getAmmo(); }
 void Character::decreaseAmmo(int lessAmmo) {

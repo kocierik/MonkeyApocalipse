@@ -221,18 +221,18 @@ void EngineGame::checkShootEnemyCollision(pEnemyList enemyList,
     else
       enemyList = enemyList->next;
   }
-  
+
   init_pair(13, COLOR_RED, -1);
   attron(COLOR_PAIR(13));
-  
+
   if (isCollisionEnemy && isEnemy == 1) {
     mvprintw(enemyList->enemy.getY(), enemyList->enemy.getX(), "E");  // Il nemico diventa rosso quando viene colpito dal proiettile del player
     enemyList->enemy.decreaseLife(character.getGun().getDamage());
-    if (enemyList->enemy.getLife() <= 0) { 
-      enemyList = destroyEnemy(tmp, enemyList->enemy); 
+    if (enemyList->enemy.getLife() <= 0) {
+      enemyList = destroyEnemy(tmp, enemyList->enemy);
       increasePointOnScreen(pointOnScreen, 300);
     }
-  } 
+  }
   else if (isCollisionCharacter && isEnemy == -1) {
     character.decreaseLife(enemyList->enemy.getGun().getDamage());
     checkDeath(pause, character);
@@ -240,7 +240,7 @@ void EngineGame::checkShootEnemyCollision(pEnemyList enemyList,
     mvprintw(character.getY(), character.getX(),
              "M");  // GENERA UN CARATTERE ROSSO QUANDO SI VIENE COLPITI
   }
-  
+
   attroff(COLOR_PAIR(13));
 }
 
@@ -341,7 +341,7 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
         upgradeBuyed = true;
         upgradeType = 1;
         upgradeTime = 0;
-        character.getGun().increaseDamage(10);
+        character.increaseDamageGun(10);
         bananas = bananas - upgradeCost;
         powerUpDMG++;
       }
@@ -529,7 +529,7 @@ pPosition EngineGame::getBonus(DrawWindow drawWindow, int x, int y,
             Gun tmpBetterGun = enemyList->enemy.getGun();
             tmpBetterGun.increaseDamage(10);    // Aumenta il danno dei nemici
             enemyList->enemy.setGun(tmpBetterGun);
-            enemyList = enemyList->next; 
+            enemyList = enemyList->next;
           }
           end = true;
           break;
@@ -679,7 +679,7 @@ void EngineGame::isPause(int &direction, bool &pause) {
   if (direction == 27) pause = true;
 }
 
-void EngineGame::increasePointOnScreen( float &pointOnScreen, int pointsAdded) {  
+void EngineGame::increasePointOnScreen( float &pointOnScreen, int pointsAdded) {
   pointOnScreen += pointsAdded;
 }
 

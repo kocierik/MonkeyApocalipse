@@ -40,7 +40,7 @@ class Character {
 
   char getSkin();
   void setSkin(char skin);
-  
+
   void increaseLife(int life);
   void decreaseLife(int life);
   int getLife();
@@ -50,7 +50,7 @@ class Character {
 
   //int getBullet();
   //void bulletUp();
-
+  void increaseDamageGun(int damage);
   Gun getGun();
   void setGun(Gun in_gun);
   int getAmmo();
