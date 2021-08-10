@@ -384,10 +384,10 @@ void EngineGame::showBonusOnScreen(bool &upgradeBuyed, int &upgradeType,
     mvprintw(y, x, "BANANA SMOOTHIE [+40 HP]");
     bonusTime++;
   } else if (bonusPicked == true && bonustype == 9) {
-    mvprintw(y, x, "PEEL LOADER [+12 PEELS]");
+    mvprintw(y, x, "PEEL LOADER [+20 PEELS]");
     bonusTime++;
   } else if (bonusPicked == true && bonustype == 10) {
-    mvprintw(y, x, "PEEL LOADER [+20 PEELS]");
+    mvprintw(y, x, "PEEL LOADER [+40 PEELS]");
     bonusTime++;
   } else if (bonusPicked == true && bonustype == 11) {
     mvprintw(y, x, "PEACE MISSION [+100 PEELS]");
@@ -471,7 +471,7 @@ pPosition EngineGame::getBonus(DrawWindow drawWindow, int x, int y,
   while (bonusList->next != NULL) {
     if (bonusList->x == x && bonusList->y == y && bonusList->skin == '?') {
       bool end = false;
-      switch (bonusType) {
+      switch (9) {
         case 0:  // Bonus name: "BUNCH OF BANANAS"
           pointsOnScreen += 50;
           end = true;
@@ -512,15 +512,15 @@ pPosition EngineGame::getBonus(DrawWindow drawWindow, int x, int y,
           end = true;
           break;
         case 9:  // Bonus name: "PEEL LOADER [+20 PEELS]"
-          character.getGun().increaseAmmo(20);
+          character.increaseAmmo(20);
           end = true;
           break;
         case 10:  // Bonus name: "PEEL BOX [+40 PEELS]"
-          character.getGun().increaseAmmo(40);
+          character.increaseAmmo(40);
           end = true;
           break;
         case 11:  // Bonus name: "PEACE MISSION [+100 PEELS]"
-          character.getGun().increaseAmmo(100);
+          character.increaseAmmo(100);
           end = true;
           break;
         case 12:  // Malus name: "PISSED OFF MONKEYS"
