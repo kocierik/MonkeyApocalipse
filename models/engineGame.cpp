@@ -471,7 +471,7 @@ pPosition EngineGame::getBonus(DrawWindow drawWindow, int x, int y,
   while (bonusList->next != NULL) {
     if (bonusList->x == x && bonusList->y == y && bonusList->skin == '?') {
       bool end = false;
-      switch (9) {
+      switch (bonusType) {
         case 0:  // Bonus name: "BUNCH OF BANANAS"
           pointsOnScreen += 50;
           end = true;
@@ -647,17 +647,21 @@ void EngineGame::money(int &bananas, pEnemyList enemyList, int maxRound,
       maxRound != roundPayed) {  // CONTROLLA CHE LA STANZA SIA PULITA E CHE
                                  // L'ULTIMO ROUND SIA STATO PAGATO
     bananas = bananas + rand() % 3 + 1;
-    if (maxRound >= 3 && maxRound <= 5) {
-      character.increaseAmmo(30);
+    if (maxRound >= 2 && maxRound <= 5) {
+      character.increaseAmmo(25);
     } else if (maxRound > 5 && maxRound <= 8) {
-      character.increaseAmmo(50);
+      character.increaseAmmo(40);
     } else if (maxRound > 8 && maxRound <= 12) {
-      character.increaseAmmo(60);
+      character.increaseAmmo(50);
     } else if (maxRound > 15) {
       character.increaseAmmo(80);
     }
     roundPayed++;
   }
+  init_pair(20, COLOR_GREEN, -1);
+  attron(COLOR_PAIR(20));
+  if (bananas >= 10) { mvprintw(24, 52,"UPGRADE PURCHASABLE!"); }
+  attroff(COLOR_PAIR(20));
 }
 
 void EngineGame::printList(pPosition list) {

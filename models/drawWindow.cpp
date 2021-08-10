@@ -27,6 +27,7 @@ DrawWindow::DrawWindow() {}
   - MONTAGNE = 15
   - LOSE SCREEN rosso = 16
   - LOSE SCREEN verde = 17
+  - UpGrade DISPONIBILE = 20
 
   (questi sono riservati solo per la barra della salute):
   - ROSSO = 5
@@ -259,18 +260,18 @@ void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
   mvprintw(startX - 2, startX + 47, "LIFE:");
   mvprintw(powerUp_x, powerUp_y, "POWER-UP");
 
-  mvprintw(25, 52, "BANANA PEELS"); 
-  mvprintw(25, 76, "%d", character.getGun().getAmmo());
-  mvprintw(26, 52, "BANANAS"); 
-  mvprintw(26, 76, "%d", bananas); 
-  mvprintw(27, 52, "ROOM"); 
-  mvprintw(27, 75, "%d/%d", lenghtRoom(roomList), maxRound);
-  mvprintw(28, 52, "ROUND MAX");
-  mvprintw(28, 76, "%d", maxRound);
+  mvprintw(26, 52, "BANANA PEELS"); 
+  mvprintw(26, 76, "%d", character.getGun().getAmmo());
+  mvprintw(27, 52, "BANANAS"); 
+  mvprintw(27, 76, "%d", bananas); 
+  mvprintw(28, 52, "ROOM"); 
+  mvprintw(28, 75, "%d/%d", lenghtRoom(roomList), maxRound);
+  mvprintw(29, 52, "ROUND MAX");
+  mvprintw(29, 76, "%d", maxRound);
 
   init_pair(11, COLOR_WHITE, 232);
   attron(COLOR_PAIR(11));
-  drawRect(startX - 4, startY - 11, width + 13, heigth + 10, enemyList, 0, true);
+  drawRect(startX - 4, startY - 11, width + 13, heigth + 11, enemyList, 0, true);
   attroff(COLOR_PAIR(11));
 
   init_pair(3, COLOR_YELLOW, -1);  // FUNZIONI PER USARE I COLORI
@@ -439,7 +440,7 @@ void DrawWindow::printCharacterStats(pEnemyList list, Character character) {
   // ------------------------------------------------------------------------------------------
 
   while (list != NULL &&
-         reachBound < 6) {  // REACHBOUND SERVE A DETERMINARE IL LIMITE DI
+         reachBound < 8) {  // REACHBOUND SERVE A DETERMINARE IL LIMITE DI
                             // NEMICI VISUALIZZABILI NELLA LISTA DELL'HUD
     if (list->enemy.getX() != 0) {
       mvprintw(i, X_ElencoNemici, "- Base Hunter: %d HP",
