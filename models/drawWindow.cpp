@@ -262,6 +262,22 @@ void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
   mvprintw(startX - 2, startX + 47, "LIFE:");
   mvprintw(powerUp_x, powerUp_y, "POWER-UP");
 
+
+
+  mvprintw(10, 75, "Leaderboard");
+  std::string line;
+  std::ifstream leaderboard ("leaderboard.txt");
+  if (leaderboard.is_open()){
+    int i = 11;
+    while (getline(leaderboard,line)){
+      mvprintw(i, 75, "%s\n",line.c_str());
+      i++;
+    }
+    leaderboard.close();
+  }
+
+
+
   mvprintw(26, 52, "BANANA PEELS");
   mvprintw(26, 76, "%d", character.getGun().getAmmo());
   mvprintw(27, 52, "BANANAS");
@@ -273,7 +289,7 @@ void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
 
   init_pair(11, COLOR_WHITE, 232);
   attron(COLOR_PAIR(11));
-  drawRect(startX - 4, startY - 11, width + 13, heigth + 11, enemyList, 0, true);
+  drawRect(startX - 4, startY - 11, width + 20, heigth + 11, enemyList, 0, true);
   attroff(COLOR_PAIR(11));
 
   init_pair(3, COLOR_YELLOW, -1);  // FUNZIONI PER USARE I COLORI
@@ -605,7 +621,7 @@ void DrawWindow::saveRecord(float finalScore, char name[]){
   std::fstream board;
 	board.open("leaderBoard.txt", std::ios::app);
 	if (board) {
-		board << name << ": " << finalScore << ";";
+		board << name << ": " << finalScore << "\n";
     board.close();
 	}
 }
