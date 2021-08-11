@@ -358,7 +358,7 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
   }
 }
 
-void EngineGame::gorillaPunch(int direction, Character &character, pEnemyList enemyList) {
+void EngineGame::gorillaPunch(int direction, Character &character, pEnemyList enemyList , float &pointOnScreen) {
   pEnemyList tmp = enemyList;
 
   if(direction == 32){
@@ -368,7 +368,10 @@ void EngineGame::gorillaPunch(int direction, Character &character, pEnemyList en
       if (character.getX() + 1 == enemyList->enemy.getX() && character.getY() == enemyList->enemy.getY()) {
         enemyList->enemy.decreaseLife(40);
 
-        if (enemyList->enemy.getLife() <= 0) { enemyList = destroyEnemy(tmp, enemyList->enemy); }
+        if (enemyList->enemy.getLife() <= 0) { 
+          enemyList = destroyEnemy(tmp, enemyList->enemy);
+          increasePointOnScreen(pointOnScreen, 300);  
+        }
       
         init_pair(13, COLOR_RED, -1);
         attron(COLOR_PAIR(13));
@@ -772,7 +775,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
 
     enemyShootBullets(enemyList);
     checkEnemyCollision(character, enemyList);
-    gorillaPunch(direction, character, enemyList);
+    gorillaPunch(direction, character, enemyList, pointsOnScreen);
 
     money(bananas, enemyList, maxRound, roundPayed, character);
     checkShootEnemyCollision(enemyList, character, this->shoots, 1, pointsOnScreen);
