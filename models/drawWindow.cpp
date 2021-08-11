@@ -104,44 +104,38 @@ void DrawWindow::printCommand(int *cnt) {
 void DrawWindow::printCredits() {
   init_pair(3, COLOR_YELLOW, 232);  // FUNZIONI PER USARE IL COLORE GIALLO
   attron(COLOR_PAIR(3));
-  mvprintw(10, 3,
+  mvprintw(10, 5,
            "                              ___ ___ ___ ___ ___ _____   _____ "
            "___                                   ");
-  mvprintw(11, 3,
+  mvprintw(11, 5,
            "                             / __| _ \\ __|   \\_ _|_   _| |_   _/ "
            "_ \\                                  ");
-  mvprintw(12, 3,
+  mvprintw(12, 5,
            "                            | (__|   / _|| |) | |  | |     | || "
            "(_) |                                 ");
-  mvprintw(13, 3,
+  mvprintw(13, 5,
            "                             \\___|_|_\\___|___/___| |_|     |_| "
            "\\___/                                  ");
   attroff(COLOR_PAIR(3));
 
   init_pair(2, COLOR_GREEN, 232);  // FUNZIONI PER USARE I COLORI VEDI MENU.CPP
   attron(COLOR_PAIR(2));
-  mvprintw(14, 3,
+  mvprintw(14, 5,
            "                                                                   "
            "                                   ");
-  mvprintw(15, 3,
+  mvprintw(15, 5,
            "                                                                   "
            "                                   ");
-  mvprintw(16, 3,
-           "        ____ ____ _ _  _              ____ _  _ ____               "
-           "  ___  ____ ___  ___  ____         ");
-  mvprintw(17, 3,
-           "        |___ |__/ | |_/               |___ |\\/| |__|              "
-           "   |__] |___ |__] |__] |___         ");
-  mvprintw(18, 3,
-           "        |___ |  \\ | | \\_              |___ |  | |  |             "
-           "    |__] |___ |    |    |___         ");
-  mvprintw(19, 3,
+  mvprintw(16, 5, "          ____ ____ _ _  _                ____ _  _ ____              ___  ____ ___  ___  ____        ");
+  mvprintw(17, 5, "          |___ |__/ | |_/                 |___ |\\/| |__|              |__] |___ |__] |__] |___        ");
+  mvprintw(18, 5, "          |___ |  \\ | | \\_                |___ |  | |  |              |__] |___ |    |    |___        ");
+  mvprintw(19, 5,
            "                                                                                                      ");
-  mvprintw(20, 3,
+  mvprintw(20, 5,
            "                                                                                                      ");
-  mvprintw(21, 3,
+  mvprintw(21, 5,
            "                                            menu [ESC]                                                ");
-  mvprintw(22, 3,
+  mvprintw(22, 5,
            "                                                                                                      ");
   attroff(COLOR_PAIR(2));
 }
