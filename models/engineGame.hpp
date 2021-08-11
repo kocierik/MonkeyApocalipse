@@ -71,4 +71,5 @@ class EngineGame {
   void increasePointOnScreen(float &pointOnScreen, int pointsAdded);
   void showBonusOnScreen(bool &upgradeBuyed, int &upgradeType, int &upgradeTime,
                  bool &bonusPicked, int bonusType, int &bonusTime);
+  void gorillaPunch(int direction, Character &character, pEnemyList enemyList);
 };

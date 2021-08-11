@@ -171,23 +171,32 @@ void EngineGame::checkEnemyCollision(Character &character,
                                      pEnemyList enemyList) {
   pEnemyList tmp = enemyList;
   while (enemyList != NULL) {
-    if ((character.getX() + 1 == enemyList->enemy.getX() &&
-         character.getY() == enemyList->enemy.getY()) ||
-        (character.getX() - 1 == enemyList->enemy.getX() &&
+    if ((character.getX() - 1 == enemyList->enemy.getX() &&
          character.getY() == enemyList->enemy.getY()) ||
         (character.getX() == enemyList->enemy.getX() &&
          character.getY() + 1 == enemyList->enemy.getY()) ||
         (character.getX() == enemyList->enemy.getX() &&
          character.getY() - 1 == enemyList->enemy.getY())) {
       character.decreaseLife(1);        // In uno scontro il player perde 1 di vita
-      enemyList->enemy.decreaseLife(2); // In uno scontro il nemico perde 2 di vita
+      enemyList->enemy.decreaseLife(2); // In uno scontro il nemico perde 1 di vita
+
       if (enemyList->enemy.getLife() <= 0) enemyList = destroyEnemy(tmp, enemyList->enemy);
+      
       init_pair(13, COLOR_RED, -1);
       attron(COLOR_PAIR(13));
       mvprintw(character.getY(), character.getX(),
                "M");  // Il player diventa rosso quando si scontra coi nemici
       mvprintw(enemyList->enemy.getY(), enemyList->enemy.getX(),
                "E");  // Il nemico diventa rosso quando si scontra col player
+      attroff(COLOR_PAIR(13));
+    }
+
+    if(character.getX() + 1 == enemyList->enemy.getX() && character.getY() == enemyList->enemy.getY()){  //collissione frontale
+      character.decreaseLife(1);  
+
+      init_pair(13, COLOR_RED, -1);
+      attron(COLOR_PAIR(13));
+      mvprintw(character.getY(), character.getX(),"M");  // Il player diventa rosso quando si scontra coi nemici
       attroff(COLOR_PAIR(13));
     }
     enemyList = enemyList->next;
@@ -346,6 +355,28 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
         powerUpDMG++;
       }
       break;
+  }
+}
+
+void EngineGame::gorillaPunch(int direction, Character &character, pEnemyList enemyList) {
+  pEnemyList tmp = enemyList;
+
+  if(direction == 32){
+    mvprintw(character.getY(), character.getX() + 1, "o");
+
+    while (enemyList != NULL) {
+      if (character.getX() + 1 == enemyList->enemy.getX() && character.getY() == enemyList->enemy.getY()) {
+        enemyList->enemy.decreaseLife(40);
+
+        if (enemyList->enemy.getLife() <= 0) { enemyList = destroyEnemy(tmp, enemyList->enemy); }
+      
+        init_pair(13, COLOR_RED, -1);
+        attron(COLOR_PAIR(13));
+        mvprintw(enemyList->enemy.getY(), enemyList->enemy.getX(), "E");  // Il nemico diventa rosso quando si scontra col player
+        attroff(COLOR_PAIR(13));
+      }
+      enemyList = enemyList->next;
+    }
   }
 }
 
@@ -741,6 +772,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
 
     enemyShootBullets(enemyList);
     checkEnemyCollision(character, enemyList);
+    gorillaPunch(direction, character, enemyList);
 
     money(bananas, enemyList, maxRound, roundPayed, character);
     checkShootEnemyCollision(enemyList, character, this->shoots, 1, pointsOnScreen);
