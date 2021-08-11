@@ -10,6 +10,7 @@
 // Numero di casi dello switch che gestisce i bonus. Equivale a: n bonus - 1
 #define N_SWITCH_CASE 13
 
+const int scoreForKill = 300;
 float finalScore = 0;
 
 EngineGame::EngineGame(int frameGameX, int frameGameY, int height, int width) {
@@ -239,7 +240,7 @@ void EngineGame::checkShootEnemyCollision(pEnemyList enemyList,
     enemyList->enemy.decreaseLife(character.getGun().getDamage());
     if (enemyList->enemy.getLife() <= 0) {
       enemyList = destroyEnemy(tmp, enemyList->enemy);
-      increasePointOnScreen(pointOnScreen, 300);
+      increasePointOnScreen(pointOnScreen, scoreForKill);
     }
   }
   else if (isCollisionCharacter && isEnemy == -1) {
@@ -370,7 +371,7 @@ void EngineGame::gorillaPunch(int direction, Character &character, pEnemyList en
 
         if (enemyList->enemy.getLife() <= 0) { 
           enemyList = destroyEnemy(tmp, enemyList->enemy);
-          increasePointOnScreen(pointOnScreen, 300);  
+          increasePointOnScreen(pointOnScreen, scoreForKill);  
         }
       
         init_pair(13, COLOR_RED, -1);
