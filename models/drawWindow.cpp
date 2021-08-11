@@ -184,30 +184,34 @@ void DrawWindow::printHowToPlay() {  // GESTISCE LA SCHERMATA DEL HOW TO PLAY
   mvprintw(19, 5,
            "                                                                                                     ");
   mvprintw(20, 5,
-           "       WITH YOUR BANANAS YOU WILL BE ABLE TO BUY UPGRADES FOR THE BANANACANNON                       ");
+           "       IF YOU RUN OUT FOR AMMO, DONT FORGET YOU CAN USE [SPACE] FOR YOUR TREMENDOUS PUNCHES!         ");
   mvprintw(21, 5,
-           "       OR BUY BACK LIVES YOU HAVE LOST                                                               ");
+           "                                                                                                     ");
   mvprintw(22, 5,
-           "                                                                                                     ");
+           "       WITH YOUR BANANAS YOU WILL BE ABLE TO BUY UPGRADES FOR THE BANANACANNON                       ");
   mvprintw(23, 5,
-           "       WHEN YOU HAVE %d BANANAS PRESS [R] TO UPGRADE THE BANANA CANNON                               ", 10);
+           "       OR BUY BACK LIVES YOU HAVE LOST                                                               ");
   mvprintw(24, 5,
-           "       OR [Q] TO RECOVER A LOST LIFE                                                                 ");
-  mvprintw(25, 5,
            "                                                                                                     ");
+  mvprintw(25, 5,
+           "       WHEN YOU HAVE %d BANANAS PRESS [R] TO UPGRADE THE BANANA CANNON                               ", 10);
   mvprintw(26, 5,
-           "       COLLECT AS MUCH BONUSES AS POSSIBLE, BUT BEWARE! THEY CAN HIDE TRAPS!                         ");
+           "       OR [Q] TO RECOVER A LOST LIFE                                                                 ");
   mvprintw(27, 5,
            "                                                                                                     ");
   mvprintw(28, 5,
-           "                                                                                                     ");
+           "       COLLECT AS MUCH BONUSES AS POSSIBLE, BUT BEWARE! THEY CAN HIDE TRAPS!                         ");
   mvprintw(29, 5,
-           "           [E] = SHOOT    [ARROWS] = MOVE    [Q] = BUY EXTRA LIFE    [R] = DAMAGE UPGRADE            ");
+           "                                                                                                     ");
   mvprintw(30, 5,
            "                                                                                                     ");
   mvprintw(31, 5,
-           "                                            menu [ESC]                                               ");
+           "    [E] = SHOOT   [ARROWS] = MOVE   [SPACE] = PUNCH   [Q] = BUY EXTRA LIFE   [R] = DAMAGE UPGRADE    ");
   mvprintw(32, 5,
+           "                                                                                                     ");
+  mvprintw(33, 5,
+           "                                            menu [ESC]                                               ");
+  mvprintw(34, 5,
            "                                                                                                     ");
   attroff(COLOR_PAIR(2));  // CHIUSURA DEL COLORE VERDE
 }
