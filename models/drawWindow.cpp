@@ -5,7 +5,9 @@
 #include <cmath>
 #include <ctime>
 #include <iostream>
-
+#include <fstream>
+#include <string>
+#include <unistd.h>
 #define FRAMEGAMEX 7
 #define FRAMEGAMEY 22
 #define GAMEWIDTH 71   // 49
@@ -260,11 +262,11 @@ void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
   mvprintw(startX - 2, startX + 47, "LIFE:");
   mvprintw(powerUp_x, powerUp_y, "POWER-UP");
 
-  mvprintw(26, 52, "BANANA PEELS"); 
+  mvprintw(26, 52, "BANANA PEELS");
   mvprintw(26, 76, "%d", character.getGun().getAmmo());
-  mvprintw(27, 52, "BANANAS"); 
-  mvprintw(27, 76, "%d", bananas); 
-  mvprintw(28, 52, "ROOM"); 
+  mvprintw(27, 52, "BANANAS");
+  mvprintw(27, 76, "%d", bananas);
+  mvprintw(28, 52, "ROOM");
   mvprintw(28, 75, "%d/%d", lenghtRoom(roomList), maxRound);
   mvprintw(29, 52, "ROUND MAX");
   mvprintw(29, 76, "%d", maxRound);
@@ -521,7 +523,7 @@ pRoom DrawWindow::changeRoom(Character &character, int &monsterCount,
       roomList->bonusList = generateBonus(bonusList, bonusCounter);
       roomList = saveRoom(mountainList, bonusList, roomList);
       monsterCount = round;
-      
+
       list = list->next;
       maxRound += 1;
     }
@@ -590,7 +592,7 @@ void DrawWindow::printLoseScreen( float finalScore) {
            "                              ");
   mvprintw(19, 3,
            "     FINAL SCORE:                                                  "
-           "               menu [ESC]     ");
+           "               menu [ENTER]     ");
   mvprintw(19, 21,
            "%.0f", finalScore);
   mvprintw(20, 3,
@@ -599,9 +601,25 @@ void DrawWindow::printLoseScreen( float finalScore) {
   attroff(COLOR_PAIR(17));
 }
 
+void DrawWindow::saveRecord(float finalScore, char name[]){
+  std::fstream board;
+	board.open("leaderBoard.txt", std::ios::app);
+	if (board) {
+		board << name << ": " << finalScore << ";";
+    board.close();
+	}
+}
+
+  
 void DrawWindow::loseScreen(int direction, float finalScore) {
-  while (direction != 27) {
+  char name[50];
+  char name2[10];
+  while (direction != 0) {
     printLoseScreen(finalScore);
-    direction = getch();  // ASPETTA UN TASTO IN INPUT
+    strcat(name,name2);
+    mvprintw(20, 45,"Name: %s",name);
+    refresh();
+    direction = getstr(name2);
   }
+  saveRecord(finalScore, name);
 }

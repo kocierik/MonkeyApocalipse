@@ -49,4 +49,8 @@ class DrawWindow {
   void printBonus(pPosition bonusList);
 
   pRoom saveRoom(pPosition mountainList, pPosition bonusList, pRoom roomList);
+  void saveRecord(float finalScore, char name[]);
 };
+
+
+

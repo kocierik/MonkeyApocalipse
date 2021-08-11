@@ -736,7 +736,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
   pPosition mountainList = new Position;
   pPosition bonusList = new Position;
   pRoom roomList = new Room;
-  Gun basicEnemyGun('-', 10, -1);
+  Gun basicEnemyGun('-', 100, -1); // CHANGE
   while (!pause) {
     roomList =
         drawWindow.changeRoom(character, monsterCount, round,
