@@ -136,11 +136,13 @@ void DrawWindow::printCredits() {
            "        |___ |  \\ | | \\_              |___ |  | |  |             "
            "    |__] |___ |    |    |___         ");
   mvprintw(19, 3,
-           "                                                                   "
-           "                                   ");
+           "                                                                                                      ");
   mvprintw(20, 3,
-           "                                                                   "
-           "                                   ");
+           "                                                                                                      ");
+  mvprintw(21, 3,
+           "                                            menu [ESC]                                                ");
+  mvprintw(22, 3,
+           "                                                                                                      ");
   attroff(COLOR_PAIR(2));
 }
 void DrawWindow::credits(int direction) {
