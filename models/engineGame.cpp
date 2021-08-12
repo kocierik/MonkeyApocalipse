@@ -830,10 +830,10 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
 
     destroyBullet(this->shoots, 1);           // Check per i colpi sparati dai nemici (???)
     destroyBullet(this->shootsEnemys, -1);    // Check per i colpi sparati dal player (???)
+    showBonusOnScreen(upgradeBuyed, upgradeType, upgradeTime, bonusPicked, bonusType,
+              bonusTime,immortalityCheck, immortalityTime, character);
     checkDeath(pause, character);
 
-    showBonusOnScreen(upgradeBuyed, upgradeType, upgradeTime, bonusPicked, bonusType,
-                      bonusTime,immortalityCheck, immortalityTime, character);
     timeout(50);
     isPause(direction, pause);
     finalScore = pointsOnScreen;
