@@ -27,7 +27,7 @@ class EngineGame {
   void shootPlayerBullet(Gun playerGun);
   void shootEnemyBullet();
 
-  void destroyBullet(Pbullet &shoots, int isEnemy);
+  void destroyBullet(Pbullet &shoots, bool isPlayerBullet);
   pEnemyList destroyEnemy(pEnemyList list, Enemy enemy);
   pPosition deletePosition(pPosition list, pPosition bonus);
 

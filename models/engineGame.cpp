@@ -95,11 +95,27 @@ void EngineGame::shootEnemyBullet() {
   }
 }
 
-void EngineGame::destroyBullet(Pbullet &shoots, int isEnemy) {
-  Pbullet head = shoots, prev = shoots, tmp;
+void EngineGame::destroyBullet(Pbullet &shoots, bool isPlayerBullet) {
+  Pbullet head = shoots, prev = shoots, tmp;  
   while (head != NULL) {
-    bool tmpCondition = !isEmpty(head->x + isEnemy, head->y) &&
-                        !isBonus(head->x + isEnemy, head->y);
+    
+    /*
+    
+    int range = 0; if (isPlayerBullet) range = 1; else range = -1;
+    */
+    
+    int range = 0;
+    if (isPlayerBullet) {                 // Se spara il player
+      if (head->moveFoward) range = 1;    // e spara in avanti (verso dx)
+      else range = -1; // 0;
+    } else {                              // Se spara il nemico
+      if (head->moveFoward) range = 1;    // e spara in avanti (verso sx)
+      else range = -1; // 0;
+    }
+
+    bool tmpCondition = !isEmpty(head->x + range, head->y) &&
+                        !isBonus(head->x + range, head->y);
+                        
     if (tmpCondition || head->x > 70 || head->x < 23) {
       if (head == shoots) {
         tmp = shoots;
@@ -828,8 +844,12 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     checkShootEnemyCollision(enemyList, character, this->shootsEnemys, -1, pointsOnScreen);
     refresh();
 
-    destroyBullet(this->shoots, 1);           // Check per i colpi sparati dai nemici (???)
-    destroyBullet(this->shootsEnemys, -1);    // Check per i colpi sparati dal player (???)
+    //destroyBullet(this->shoots, 1);           // Check per i colpi sparati dai nemici (???)
+    //destroyBullet(this->shootsEnemys, -1);    // Check per i colpi sparati dal player (???)
+    
+    destroyBullet(this->shoots, true);           // Check per i colpi sparati dai nemici (???)
+    destroyBullet(this->shootsEnemys, false);    // Check per i colpi sparati dal player (???)
+    
     showBonusOnScreen(upgradeBuyed, upgradeType, upgradeTime, bonusPicked, bonusType,
               bonusTime,immortalityCheck, immortalityTime, character);
     checkDeath(pause, character);
