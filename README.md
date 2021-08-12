@@ -43,13 +43,13 @@ LEGENDA:
 
 ✔ Se si va a sbattere contro i nemici vengono danneggiati anche loro 
 
-△ Migliorare la pagina per how to play e credits
+✔ Migliorare la pagina per how to play e credits
 
 △ Bonus (armi diverse, punti e vite)
 
-△ Scritte ganzissime + miglioramento estetica esterna al gameplay
+✔ Scritte ganzissime + miglioramento estetica esterna al gameplay
 
-✖ Lo score a schermo non deve aumentare col tempo
+✔ Lo score a schermo non deve aumentare col tempo
 
 ✖ Cambiare arma con un tasto (+ relativa possibilità di ottenere, in modi differenti, le armi)
 
@@ -59,7 +59,7 @@ LEGENDA:
 
 ✖ Multiplayer
 
-✖ Classifica
+✔ Classifica
 
 ✖ Teletrasporto
 
