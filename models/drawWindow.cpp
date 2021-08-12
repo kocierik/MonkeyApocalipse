@@ -286,7 +286,6 @@ void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
     }
     leaderboard.close();
   }
-  mvprintw(26, 76, "%d", character.getGun().getAmmo()); 
 
 
   mvprintw(26, 52, "BANANA PEELS");
