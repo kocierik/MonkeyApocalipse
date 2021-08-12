@@ -44,7 +44,7 @@ class EngineGame {
                      float &pointsOnScreen, int &bananas, int &powerUpDMG,
                      bool &bonusPicked, int &bonustype, int &bonusTime,
                      bool &upgradeBuyed, int &upgradeType, int &upgradeTime,
-                     bool &fowardPlayerShoot);
+                     bool &immortalityCheck, bool &fowardPlayerShoot);
 
   pEnemyList generateEnemy(int *monsterCount, char skin, Gun gun, int life,
                            pEnemyList list, int &round, DrawWindow drawWindow);
@@ -71,6 +71,6 @@ class EngineGame {
              Character &character);
   void increasePointOnScreen(float &pointOnScreen, int pointsAdded);
   void showBonusOnScreen(bool &upgradeBuyed, int &upgradeType, int &upgradeTime,
-                 bool &bonusPicked, int bonusType, int &bonusTime);
+                 bool &bonusPicked, int bonusType, int &bonusTime, bool &immortalitycheck, int &immortalityTime, Character &character);
   void gorillaPunch(int direction, Character &character, pEnemyList enemyList, float &pointOnScreen);
 };

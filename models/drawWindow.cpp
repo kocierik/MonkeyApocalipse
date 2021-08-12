@@ -42,6 +42,7 @@ DrawWindow::DrawWindow() {}
   - GIALLO = 6
   - VERDE = 7
   - BLACK = 8;
+  - VIOLA IMMORTALE = 24
 */
 
 void DrawWindow::drawMenu() {
