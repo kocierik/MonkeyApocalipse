@@ -263,14 +263,17 @@ void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
   mvprintw(powerUp_x, powerUp_y, "POWER-UP");
 
 
-
-  mvprintw(10, 75, "Leaderboard");
+  init_pair(3, COLOR_YELLOW, -1);
+  attron(COLOR_PAIR(3));
+  mvprintw(5, 94, "LEADERBOARD");
+  attroff(COLOR_PAIR(3));
+  mvprintw(7, 88, "-----------------------");
   std::string line;
-  std::ifstream leaderboard ("leaderboard.txt");
+  std::ifstream leaderboard ("leaderBoard.txt");
   if (leaderboard.is_open()){
-    int i = 11;
+    int i = 8;
     while (getline(leaderboard,line)){
-      mvprintw(i, 75, "%s\n",line.c_str());
+      mvprintw(i=i+1, 90, "%s\n", line.c_str());
       i++;
     }
     leaderboard.close();
@@ -289,7 +292,8 @@ void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
 
   init_pair(11, COLOR_WHITE, 232);
   attron(COLOR_PAIR(11));
-  drawRect(startX - 4, startY - 11, width + 20, heigth + 11, enemyList, 0, true);
+  drawRect(startX - 4, startY - 11, width + 12, heigth + 11, enemyList, 0, true);
+  drawRect(startX - 4, startY + 65, width + 40, heigth + 11, enemyList, 0, true);
   attroff(COLOR_PAIR(11));
 
   init_pair(3, COLOR_YELLOW, -1);  // FUNZIONI PER USARE I COLORI
@@ -608,10 +612,16 @@ void DrawWindow::printLoseScreen( float finalScore) {
            "                              ");
   mvprintw(19, 3,
            "     FINAL SCORE:                                                  "
-           "               menu [ENTER]     ");
+           "                              ");
   mvprintw(19, 21,
            "%.0f", finalScore);
   mvprintw(20, 3,
+           "                                                                   "
+           "                              ");
+  mvprintw(21, 3,
+           "     FINAL SCORE:                                                  "
+           " set score & exit [ENTER]     ");
+  mvprintw(22, 3,
            "                                                                   "
            "                              ");
   attroff(COLOR_PAIR(17));
@@ -620,7 +630,7 @@ void DrawWindow::printLoseScreen( float finalScore) {
 void DrawWindow::saveRecord(float finalScore, char name[]){
   std::fstream board;
 	board.open("leaderBoard.txt", std::ios::app);
-	if (board) {
+	if (board && finalScore > 0) {
 		board << name << ": " << finalScore << "\n";
     board.close();
 	}
@@ -633,7 +643,11 @@ void DrawWindow::loseScreen(int direction, float finalScore) {
   while (direction != 0) {
     printLoseScreen(finalScore);
     strcat(name,name2);
-    mvprintw(20, 45,"Name: %s",name);
+
+    init_pair(17, COLOR_GREEN, 232);
+    attron(COLOR_PAIR(17));
+    mvprintw(21, 8,"INSERT NAME: %s",name);
+    attroff(COLOR_PAIR(17));
     refresh();
     direction = getstr(name2);
   }
