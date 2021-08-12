@@ -22,7 +22,7 @@ DrawWindow::DrawWindow() {}
   - VERDE = 2
   - GIALLO = 3
   - BIANCO = 4
-  - PROIETTILI GIALLI = 10
+  - PROIETTILI GIALLI DEL PLAYER = 10
   - GIALLO BORDO = 11
   - MENU = 12
   - DANNO ROSSO = 13
@@ -30,6 +30,12 @@ DrawWindow::DrawWindow() {}
   - LOSE SCREEN rosso = 16
   - LOSE SCREEN verde = 17
   - UpGrade DISPONIBILE = 20
+
+  (colori riservati alle munizioni)
+  - BIANCO = 21
+  - GIALLO = 22
+  - ROSSO = 23
+
 
   (questi sono riservati solo per la barra della salute):
   - ROSSO = 5
@@ -258,6 +264,8 @@ void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
                            int maxRound, pRoom roomList) {
   int powerUp_y = 52;
   int powerUp_x = 23;
+  int statusAmmoColor;
+
   mvprintw(startX - 2, startY + 5, "SCORE:");
   mvprintw(startX - 2, startX + 47, "LIFE:");
   mvprintw(powerUp_x, powerUp_y, "POWER-UP");
@@ -278,11 +286,28 @@ void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
     }
     leaderboard.close();
   }
-
+  mvprintw(26, 76, "%d", character.getGun().getAmmo()); 
 
 
   mvprintw(26, 52, "BANANA PEELS");
+
+  if(character.getGun().getAmmo() >30){ 
+    statusAmmoColor = 21;
+    init_pair(statusAmmoColor, COLOR_WHITE, -1);
+    attron(COLOR_PAIR(statusAmmoColor)); }
+  else if(character.getGun().getAmmo() > 20 && character.getGun().getAmmo() <= 30) { 
+    statusAmmoColor = 22;
+    init_pair(statusAmmoColor, COLOR_YELLOW, -1);
+    attron(COLOR_PAIR(statusAmmoColor));}
+  else if(character.getGun().getAmmo() <= 20 ) { 
+    statusAmmoColor = 23;
+    init_pair(statusAmmoColor, COLOR_RED, -1);
+    attron(COLOR_PAIR(statusAmmoColor));
+  }
+
   mvprintw(26, 76, "%d", character.getGun().getAmmo());
+  attroff(COLOR_PAIR(statusAmmoColor));
+
   mvprintw(27, 52, "BANANAS");
   mvprintw(27, 76, "%d", bananas);
   mvprintw(28, 52, "ROOM");
