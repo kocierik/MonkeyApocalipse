@@ -8,7 +8,7 @@
 #include <iostream>
 
 // Numero di casi dello switch che gestisce i bonus. Equivale a: n bonus - 1
-#define N_SWITCH_CASE 13
+#define N_SWITCH_CASE 14
 
 const int scoreForKill = 300;
 float finalScore = 0;
@@ -265,7 +265,7 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
                                int &powerUpDMG, bool &bonusPicked,
                                int &bonusType, int &bonusTime,
                                bool &upgradeBuyed, int &upgradeType,
-                               int &upgradeTime) {
+                               int &upgradeTime, bool &immortalityCheck) {
   int upgradeCost = 10;
   srand(time(0));
   switch (direction) {  // CONTROLLO IL TASTO SPINTO
@@ -276,6 +276,7 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
         bonusTime = 0;       // RESETTA IL TEMPO DI APPARIZIONE SE IL TIMER
                              // ERA GIA ATTIVO PER IL PRECEDENTE BONUS.
         bonusPicked = true;  // FLAG CHE INDICA SE È STATO RACCOLTO
+        immortalityCheck = true;
         bonusType = rand() % N_SWITCH_CASE;  // 0 <= bonusType <= N_SWITCH_CASE
         roomList -> bonusList = getBonus(drawWindow, character.getX(), character.getY() - 1,
                              roomList -> next -> bonusList, enemyList, round, pointsOnScreen,
@@ -289,6 +290,7 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
       else if (isBonus(character.getX(), character.getY() + 1)) {
         bonusTime = 0;
         bonusPicked = true;
+        immortalityCheck = true;
         bonusType = rand() % N_SWITCH_CASE;
         roomList -> bonusList = getBonus(drawWindow, character.getX(), character.getY() + 1,
                              roomList -> next -> bonusList, enemyList, round, pointsOnScreen,
@@ -302,6 +304,7 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
       else if (isBonus(character.getX() - 1, character.getY())) {
         bonusTime = 0;
         bonusPicked = true;
+        immortalityCheck = true;
         bonusType = rand() % N_SWITCH_CASE;  // GENERA IL TIPO DI BONUS.
         roomList -> bonusList = getBonus(drawWindow, character.getX() - 1, character.getY(),
                              roomList -> next -> bonusList, enemyList, round, pointsOnScreen,
@@ -315,6 +318,7 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
       else if (isBonus(character.getX() + 1, character.getY())) {
         bonusTime = 0;
         bonusPicked = true;
+        immortalityCheck = true;
         bonusType = rand() % N_SWITCH_CASE;
         roomList -> bonusList = getBonus(drawWindow, character.getX() + 1, character.getY(),
                              roomList -> next -> bonusList, enemyList, round, pointsOnScreen,
@@ -386,10 +390,11 @@ void EngineGame::gorillaPunch(int direction, Character &character, pEnemyList en
 
 void EngineGame::showBonusOnScreen(bool &upgradeBuyed, int &upgradeType,
                            int &upgradeTime, bool &bonusPicked, int bonustype,
-                           int &bonusTime) {
+                           int &bonusTime, bool &immortalitycheck, int &immortalityTime, Character &character) {
   int x = 25;
   int y = 6;
-  int timeLimit = 30;
+  int disclaimerTimeLimit = 40;
+  int immortalityTimeLimit = 120;
 
   if (bonusPicked == true && bonustype == 0) {
     mvprintw(y, x, "BUNCH OF BANANAS [+50]");
@@ -433,9 +438,21 @@ void EngineGame::showBonusOnScreen(bool &upgradeBuyed, int &upgradeType,
   } else if (bonusPicked == true && bonustype == 13) {
     mvprintw(y, x, "PEELS ON FIRE! [+5 DAMAGE]");
     bonusTime++;
+  } else if (bonusPicked == true && bonustype == 14) {
+    mvprintw(y, x, "MONKEY GOD! [IMMORTALITY]");
+    bonusTime++;
+  } 
+  if (immortalitycheck == true && bonustype == 14) {
+    init_pair(24, -1, COLOR_MAGENTA);
+    attron(COLOR_PAIR(24));
+    mvprintw(22, 56, "                    ");
+    attroff(COLOR_PAIR(24));
+    character.setLife(100);
+    immortalityTime++;
   }
 
-  if (bonusTime > timeLimit) {  // LASCIA IL BONUS VISIBILE PER "X" CICLI
+
+  if (bonusTime > disclaimerTimeLimit) {  // LASCIA IL BONUS VISIBILE PER "X" CICLI
     bonusPicked = false;
     bonusTime = 0;  // RESETTA IL TIMER PER IL PROSSIMO BONUS UNA VOLTA SCADUTO
   }
@@ -448,7 +465,12 @@ void EngineGame::showBonusOnScreen(bool &upgradeBuyed, int &upgradeType,
     upgradeTime++;
   }
 
-  if (upgradeTime > timeLimit + 10) {  // STESSO DI SOPRA MA CON GLI UPGRADE
+  if (immortalityTime > immortalityTimeLimit) {  //   GESTISCE LA DURATA DELL'IMMORTALITÀ
+    immortalitycheck = false;
+    immortalityTime = 0;
+  }
+
+  if (upgradeTime > disclaimerTimeLimit) {  // STESSO DI SOPRA MA CON GLI UPGRADE
     upgradeBuyed = false;
     upgradeTime = 0;
   }
@@ -576,6 +598,10 @@ pPosition EngineGame::getBonus(DrawWindow drawWindow, int x, int y,
           } else character.getGun().increaseAmmo(30);
           end = true;
           break;
+        case 14:  // Bonus name: "MONKEY GOD! [IMMORTALITY]"
+          character.setLife(100);
+          end = true;
+         break;
          /*
         case n:     // Malus name: "BANANA FRAGRANCE" // Genera n nemici
             int tmpQuantity = 3, tmpRound = round;
@@ -722,11 +748,13 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
                          int direction) {
   bool upgradeBuyed = false;
   bool bonusPicked = false;
+  bool immortalityCheck = false;
   float pointsOnScreen = 0;
   long points = 0;
   int powerUpDMG = 0;  // NUMERO DI POWERUP AL DANNO AQUISTATI
   int bananas = 0;
   int roundPayed = 0;
+  int immortalityTime = 0;
   int bonusTime = 0, upgradeTime = 0;
   int bonusType = 0, upgradeType = 0;
   //int monsterCount = 1, bonusCount = 1;
@@ -748,7 +776,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     getInput(direction);
     moveCharacter(drawWindow, character, direction, roomList, enemyList, round,
                   pointsOnScreen, bananas, powerUpDMG, bonusPicked, bonusType,
-                  bonusTime, upgradeBuyed, upgradeType, upgradeTime);
+                  bonusTime, upgradeBuyed, upgradeType, upgradeTime, immortalityCheck);
     clear();
     drawWindow.printCharacter(character.getX(), character.getY(),
                               character.getSkin());
@@ -788,7 +816,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     checkDeath(pause, character);
 
     showBonusOnScreen(upgradeBuyed, upgradeType, upgradeTime, bonusPicked, bonusType,
-              bonusTime);
+              bonusTime,immortalityCheck, immortalityTime, character);
     timeout(50);
     isPause(direction, pause);
     finalScore = pointsOnScreen;
