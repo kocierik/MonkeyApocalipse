@@ -39,24 +39,26 @@ void EngineGame::baseCommand() {
   start_color();
 }
 
-Pbullet EngineGame::createBullet(int x, int y, bool moveFoward, Pbullet &shoots, Gun gun) {
+Pbullet EngineGame::createBullet(Character character, bool moveFoward, Pbullet &shoots) {
   Pbullet bullet = new Bullet;
-  bullet->x = x;
-  bullet->y = y;
+  bullet->x = character.getX();
+  bullet->y = character.getY();
   bullet->speed = 1;
-  bullet->skin = gun.getBulletSkin();
+  bullet->skin = character.getGun().getBulletSkin();
   if (moveFoward) bullet->moveFoward = true;
   else bullet->moveFoward = false;
   bullet->next = shoots;
   return bullet;
 }
 
-void EngineGame::enemyShootBullets(pEnemyList listEnemy, bool fowardEnemyShoot) {
+void EngineGame::enemyShootBullets(pEnemyList listEnemy, Character character) {
   while (listEnemy != NULL) {
     if (this->whileCountEnemy % 20 == 0) {
+      bool moveFoward = false;
+      if (character.getX() > listEnemy->enemy.getX())    // Se il player è alla sx del nemico
+        moveFoward = true;                               // Lo sparo sarà verso sx
       this->shootsEnemys =
-          createBullet(listEnemy->enemy.getX(), listEnemy->enemy.getY(), fowardEnemyShoot,
-                       this->shootsEnemys, listEnemy->enemy.getGun());
+          createBullet(listEnemy->enemy, moveFoward, this->shootsEnemys);
     }
     listEnemy = listEnemy->next;
   }
@@ -84,7 +86,8 @@ void EngineGame::shootPlayerBullet(Gun playerGun) {
 void EngineGame::shootEnemyBullet() {
   Pbullet bullet = this->shootsEnemys;
   while (bullet != NULL) {
-    bullet->x -= bullet->speed;
+    if (bullet->moveFoward) bullet->x += bullet->speed;
+    else bullet->x -= bullet->speed;;
     move(bullet->y, bullet->x);
     printw("-");
     // printw((const char *)enemyGun.getBulletSkin());
@@ -335,8 +338,7 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
       if (whileCount / 2 > 1) {
         if (character.getGun().getAmmo() > 0) {
           character.setAmmo(character.getAmmo() - 1);
-          this->shoots = createBullet(character.getX(), character.getY(),
-                                      fowardPlayerShoot, this->shoots, character.getGun());
+          this->shoots = createBullet(character, fowardPlayerShoot, this->shoots);
           whileCount = 0;
         }
       }
@@ -347,8 +349,7 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
       if (whileCount / 2 > 1) {
         if (character.getGun().getAmmo() > 0) {
           character.setAmmo(character.getAmmo() - 1);
-          this->shoots = createBullet(character.getX(), character.getY(),
-                                      fowardPlayerShoot, this->shoots, character.getGun());
+          this->shoots = createBullet(character, fowardPlayerShoot, this->shoots);
           whileCount = 0;
         }
       }
@@ -764,7 +765,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
                          int direction) {
   bool upgradeBuyed = false, bonusPicked = false;
   bool immortalityCheck = false;
-  bool fowardPlayerShoot = true, fowardEnemyShoot = true;
+  bool fowardPlayerShoot = true;
   float pointsOnScreen = 0;
   long points = 0;
   int powerUpDMG = 0;  // NUMERO DI POWERUP AL DANNO AQUISTATI
@@ -816,9 +817,9 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     drawWindow.moveEnemy(enemyList, character, drawWindow, points);
 
     shootPlayerBullet(character.getGun());  // Sparo del player
-    shootEnemyBullet();                  // Sparo dei nemici
+    shootEnemyBullet();                     // Sparo dei nemici
 
-    enemyShootBullets(enemyList, fowardEnemyShoot);
+    enemyShootBullets(enemyList, character);
     checkEnemyCollision(character, enemyList);
     gorillaPunch(direction, character, enemyList, pointsOnScreen);
 
@@ -827,12 +828,12 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     checkShootEnemyCollision(enemyList, character, this->shootsEnemys, -1, pointsOnScreen);
     refresh();
 
-    destroyBullet(this->shoots, 1);
-    destroyBullet(this->shootsEnemys, -1);
+    destroyBullet(this->shoots, 1);           // Check per i colpi sparati dai nemici (???)
+    destroyBullet(this->shootsEnemys, -1);    // Check per i colpi sparati dal player (???)
     checkDeath(pause, character);
 
     showBonusOnScreen(upgradeBuyed, upgradeType, upgradeTime, bonusPicked, bonusType,
-              bonusTime,immortalityCheck, immortalityTime, character);
+                      bonusTime,immortalityCheck, immortalityTime, character);
     timeout(50);
     isPause(direction, pause);
     finalScore = pointsOnScreen;

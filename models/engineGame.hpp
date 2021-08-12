@@ -21,8 +21,8 @@ class EngineGame {
   EngineGame(int frameGameX, int frameGameY, int heigth, int width);
   void printList(pPosition list);
   void baseCommand();
-  Pbullet createBullet(int x, int y, bool moveFoward, Pbullet &shoots, Gun gun);
-  void enemyShootBullets(pEnemyList listEnemy, bool fowardEnemyShoot);
+  Pbullet createBullet(Character character, bool moveFoward, Pbullet &shoots);
+  void enemyShootBullets(pEnemyList listEnemy, Character character);
 
   void shootPlayerBullet(Gun playerGun);
   void shootEnemyBullet();
