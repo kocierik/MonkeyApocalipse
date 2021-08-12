@@ -39,31 +39,34 @@ void EngineGame::baseCommand() {
   start_color();
 }
 
-Pbullet EngineGame::createBullet(int x, int y, Pbullet &shoots, Gun gun) {
+Pbullet EngineGame::createBullet(int x, int y, bool moveFoward, Pbullet &shoots, Gun gun) {
   Pbullet bullet = new Bullet;
   bullet->x = x;
   bullet->y = y;
   bullet->speed = 1;
   bullet->skin = gun.getBulletSkin();
+  if (moveFoward) bullet->moveFoward = true;
+  else bullet->moveFoward = false;
   bullet->next = shoots;
   return bullet;
 }
 
-void EngineGame::enemyShootBullets(pEnemyList listEnemy) {
+void EngineGame::enemyShootBullets(pEnemyList listEnemy, bool fowardEnemyShoot) {
   while (listEnemy != NULL) {
     if (this->whileCountEnemy % 20 == 0) {
       this->shootsEnemys =
-          createBullet(listEnemy->enemy.getX(), listEnemy->enemy.getY(),
+          createBullet(listEnemy->enemy.getX(), listEnemy->enemy.getY(), fowardEnemyShoot,
                        this->shootsEnemys, listEnemy->enemy.getGun());
     }
     listEnemy = listEnemy->next;
   }
 }
 
-void EngineGame::shootBullet(Gun playerGun) {
+void EngineGame::shootPlayerBullet(Gun playerGun) {
   Pbullet bullet = this->shoots;
   while (bullet != NULL) {
-    bullet->x += bullet->speed;
+    if (bullet->moveFoward) bullet->x += bullet->speed;
+    else bullet->x -= bullet->speed;
     move(bullet->y, bullet->x);
     init_pair(10, COLOR_YELLOW, -1);  // SPARA BANANE GIALLE
     attron(COLOR_PAIR(10));
@@ -265,7 +268,7 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
                                int &powerUpDMG, bool &bonusPicked,
                                int &bonusType, int &bonusTime,
                                bool &upgradeBuyed, int &upgradeType,
-                               int &upgradeTime) {
+                               int &upgradeTime, bool &fowardPlayerShoot) {
   int upgradeCost = 10;
   srand(time(0));
   switch (direction) {  // CONTROLLO IL TASTO SPINTO
@@ -322,13 +325,26 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
         character.directionRight();
       }
       break;
+    //case 'E':
     case 'e':  // -----------------------------------------------------------
-    case 'E':
+      fowardPlayerShoot = true;
       if (whileCount / 2 > 1) {
         if (character.getGun().getAmmo() > 0) {
           character.setAmmo(character.getAmmo() - 1);
           this->shoots = createBullet(character.getX(), character.getY(),
-                                      this->shoots, character.getGun());
+                                      fowardPlayerShoot, this->shoots, character.getGun());
+          whileCount = 0;
+        }
+      }
+      break;
+    //case 'W':   // Tasto W per lo sparo all'indietro
+    case 'w':
+      fowardPlayerShoot = false;
+      if (whileCount / 2 > 1) {
+        if (character.getGun().getAmmo() > 0) {
+          character.setAmmo(character.getAmmo() - 1);
+          this->shoots = createBullet(character.getX(), character.getY(),
+                                      fowardPlayerShoot, this->shoots, character.getGun());
           whileCount = 0;
         }
       }
@@ -720,8 +736,8 @@ void EngineGame::increasePointOnScreen( float &pointOnScreen, int pointsAdded) {
 
 void EngineGame::runGame(Character character, DrawWindow drawWindow,
                          int direction) {
-  bool upgradeBuyed = false;
-  bool bonusPicked = false;
+  bool upgradeBuyed = false, bonusPicked = false;
+  bool fowardPlayerShoot = true, fowardEnemyShoot = true;
   float pointsOnScreen = 0;
   long points = 0;
   int powerUpDMG = 0;  // NUMERO DI POWERUP AL DANNO AQUISTATI
@@ -748,7 +764,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     getInput(direction);
     moveCharacter(drawWindow, character, direction, roomList, enemyList, round,
                   pointsOnScreen, bananas, powerUpDMG, bonusPicked, bonusType,
-                  bonusTime, upgradeBuyed, upgradeType, upgradeTime);
+                  bonusTime, upgradeBuyed, upgradeType, upgradeTime, fowardPlayerShoot);
     clear();
     drawWindow.printCharacter(character.getX(), character.getY(),
                               character.getSkin());
@@ -771,10 +787,10 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     drawWindow.printEnemy(enemyList, drawWindow);
     drawWindow.moveEnemy(enemyList, character, drawWindow, points);
 
-    shootBullet(character.getGun());  // Sparo del player
-    shootEnemyBullet();               // Sparo dei nemici
+    shootPlayerBullet(character.getGun());  // Sparo del player
+    shootEnemyBullet();                  // Sparo dei nemici
 
-    enemyShootBullets(enemyList);
+    enemyShootBullets(enemyList, fowardEnemyShoot);
     checkEnemyCollision(character, enemyList);
     gorillaPunch(direction, character, enemyList, pointsOnScreen);
 

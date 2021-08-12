@@ -45,6 +45,8 @@ LEGENDA:
 
 ✔ Migliorare la pagina per how to play e credits
 
+✔ Classifica
+
 △ Bonus (armi diverse, punti e vite)
 
 ✔ Scritte ganzissime + miglioramento estetica esterna al gameplay
@@ -55,11 +57,7 @@ LEGENDA:
 
 ✖ Vari tipi di nemici
 
-✖ Redpillate (p.e: frasi randomiche nel menù stile minecraft)
-
 ✖ Multiplayer
-
-✔ Classifica
 
 ✖ Teletrasporto
 

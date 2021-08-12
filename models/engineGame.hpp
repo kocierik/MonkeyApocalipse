@@ -21,10 +21,10 @@ class EngineGame {
   EngineGame(int frameGameX, int frameGameY, int heigth, int width);
   void printList(pPosition list);
   void baseCommand();
-  Pbullet createBullet(int x, int y, Pbullet &shoots, Gun gun);
-  void enemyShootBullets(pEnemyList listEnemy);
+  Pbullet createBullet(int x, int y, bool moveFoward, Pbullet &shoots, Gun gun);
+  void enemyShootBullets(pEnemyList listEnemy, bool fowardEnemyShoot);
 
-  void shootBullet(Gun playerGun);
+  void shootPlayerBullet(Gun playerGun);
   void shootEnemyBullet();
 
   void destroyBullet(Pbullet &shoots, int isEnemy);
@@ -43,7 +43,8 @@ class EngineGame {
                      pRoom &roomList, pEnemyList enemyList, int round,
                      float &pointsOnScreen, int &bananas, int &powerUpDMG,
                      bool &bonusPicked, int &bonustype, int &bonusTime,
-                     bool &upgradeBuyed, int &upgradeType, int &upgradeTime);
+                     bool &upgradeBuyed, int &upgradeType, int &upgradeTime,
+                     bool &fowardPlayerShoot);
 
   pEnemyList generateEnemy(int *monsterCount, char skin, Gun gun, int life,
                            pEnemyList list, int &round, DrawWindow drawWindow);

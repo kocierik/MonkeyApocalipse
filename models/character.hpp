@@ -7,6 +7,7 @@ struct Bullet {
   int y;
   char skin;
   float speed;
+  bool moveFoward;  // UNa volta assegnata, non va più modificata
   Bullet* next;
 };
 typedef Bullet* Pbullet;
