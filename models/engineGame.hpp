@@ -69,6 +69,6 @@ class EngineGame {
              Character &character);
   void increasePointOnScreen(float &pointOnScreen, int pointsAdded);
   void showBonusOnScreen(bool &upgradeBuyed, int &upgradeType, int &upgradeTime,
-                 bool &bonusPicked, int bonusType, int &bonusTime, bool &immortalitycheck, int &immortalityTime, Character &character);
+                 bool &bonusPicked, int bonusType, int &bonusTime, bool &immortalitycheck, int &immortalityTime);
   void gorillaPunch(int direction, Character &character, pEnemyList enemyList, float &pointOnScreen);
 };

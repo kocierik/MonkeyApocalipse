@@ -419,7 +419,7 @@ void EngineGame::gorillaPunch(int direction, Character &character, pEnemyList en
 
 void EngineGame::showBonusOnScreen(bool &upgradeBuyed, int &upgradeType,
                            int &upgradeTime, bool &bonusPicked, int bonustype,
-                           int &bonusTime, bool &immortalitycheck, int &immortalityTime, Character &character) {
+                           int &bonusTime, bool &immortalitycheck, int &immortalityTime) {
   int x = 25;
   int y = 6;
   int disclaimerTimeLimit = 40;
@@ -845,7 +845,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     destroyBullet(this->shootsEnemys, false);    // Check per i colpi sparati dal player (???)
     
     showBonusOnScreen(upgradeBuyed, upgradeType, upgradeTime, bonusPicked, bonusType,
-              bonusTime,immortalityCheck, immortalityTime, character);
+              bonusTime,immortalityCheck, immortalityTime);
     checkDeath(pause, character);
 
     timeout(50);
