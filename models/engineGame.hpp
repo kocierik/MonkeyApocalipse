@@ -33,7 +33,7 @@ class EngineGame {
 
   void checkEnemyCollision(Character &character, pEnemyList enemyList);
   void checkShootEnemyCollision(pEnemyList enemys, Character &character,
-                                Pbullet &shoots, int isEnemy, float &pointOnScreen);
+                                Pbullet &shoots, int isEnemy, float &pointOnScreen, bool immortalityCheck);
   bool isEmpty(int x, int y);
   bool isBonus(int x, int y);
   bool isMountain(int x, int y);

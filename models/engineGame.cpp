@@ -224,7 +224,7 @@ void EngineGame::checkEnemyCollision(Character &character,
 
 void EngineGame::checkShootEnemyCollision(pEnemyList enemyList,
                                           Character &character, Pbullet &shoots,
-                                          int isEnemy, float &pointOnScreen) {
+                                          int isEnemy, float &pointOnScreen, bool immortalityCheck) {
   bool isCollisionEnemy = false;
   bool isCollisionCharacter = false;
   bool pause = false;
@@ -261,7 +261,7 @@ void EngineGame::checkShootEnemyCollision(pEnemyList enemyList,
       increasePointOnScreen(pointOnScreen, scoreForKill);
     }
   }
-  else if (isCollisionCharacter && isEnemy == -1) {
+  else if ((isCollisionCharacter && isEnemy == -1) && immortalityCheck == false) {
     character.decreaseLife(enemyList->enemy.getGun().getDamage());
     checkDeath(pause, character);
 
@@ -476,7 +476,6 @@ void EngineGame::showBonusOnScreen(bool &upgradeBuyed, int &upgradeType,
     attron(COLOR_PAIR(24));
     mvprintw(22, 56, "                    ");
     attroff(COLOR_PAIR(24));
-    character.setLife(100);
     immortalityTime++;
   }
 
@@ -628,7 +627,6 @@ pPosition EngineGame::getBonus(DrawWindow drawWindow, int x, int y,
           end = true;
           break;
         case 14:  // Bonus name: "MONKEY GOD! [IMMORTALITY]"
-          character.setLife(100);
           end = true;
          break;
          /*
@@ -799,7 +797,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
         drawWindow.changeRoom(character, monsterCount, round,
                               enemyList, mountainList, bonusList, roomList,
                               maxRound);
-    enemyList = generateNormalEnemy(&monsterCount, 'e', basicEnemyGun, 100, enemyList,
+    enemyList = generateNormalEnemy(&monsterCount, 'E', basicEnemyGun, 100, enemyList,
                               round, drawWindow);
 
     getInput(direction);
@@ -836,8 +834,8 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     gorillaPunch(direction, character, enemyList, pointsOnScreen);
 
     money(bananas, enemyList, maxRound, roundPayed, character);
-    checkShootEnemyCollision(enemyList, character, this->shoots, 1, pointsOnScreen);
-    checkShootEnemyCollision(enemyList, character, this->shootsEnemys, -1, pointsOnScreen);
+    checkShootEnemyCollision(enemyList, character, this->shoots, 1, pointsOnScreen, immortalityCheck);
+    checkShootEnemyCollision(enemyList, character, this->shootsEnemys, -1, pointsOnScreen, immortalityCheck);
     refresh();
 
     //destroyBullet(this->shoots, 1);           // Check per i colpi sparati dai nemici (???)
