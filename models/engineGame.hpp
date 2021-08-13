@@ -21,19 +21,19 @@ class EngineGame {
   EngineGame(int frameGameX, int frameGameY, int heigth, int width);
   void printList(pPosition list);
   void baseCommand();
-  Pbullet createBullet(Character character, bool moveFoward, Pbullet &shoots);
+  Pbullet createBullet(Character character, bool isPlayerBullet, bool moveFoward, Pbullet &shoots);
   void enemyShootBullets(pEnemyList listEnemy, Character character);
 
   void shootPlayerBullet(Gun playerGun);
   void shootEnemyBullet();
 
-  void destroyBullet(Pbullet &shoots, bool isPlayerBullet);
+  void destroyBullet(Pbullet &shoots);
   pEnemyList destroyEnemy(pEnemyList list, Enemy enemy);
   pPosition deletePosition(pPosition list, pPosition bonus);  // Funzione per eliminare bonus e montagne
 
   void checkEnemyCollision(Character &character, pEnemyList enemyList);
   void checkShootEnemyCollision(pEnemyList enemys, Character &character,
-                                Pbullet &shoots, int isEnemy, float &pointOnScreen, bool immortalityCheck);
+                                Pbullet &shoots, float &pointOnScreen, bool immortalityCheck);
   bool isEmpty(int x, int y);
   bool isBonus(int x, int y);
   bool isMountain(int x, int y);
@@ -44,7 +44,7 @@ class EngineGame {
                      float &pointsOnScreen, int &bananas, int &powerUpDMG,
                      bool &bonusPicked, int &bonustype, int &bonusTime,
                      bool &upgradeBuyed, int &upgradeType, int &upgradeTime,
-                     bool &immortalityCheck, bool &fowardPlayerShoot);
+                     bool &immortalityCheck);
 
   pEnemyList generateNormalEnemy(int *monsterCount, char skin, Gun gun, int life,
                            pEnemyList list, int &round, DrawWindow drawWindow);

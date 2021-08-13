@@ -39,14 +39,14 @@ void EngineGame::baseCommand() {
   start_color();
 }
 
-Pbullet EngineGame::createBullet(Character character, bool moveFoward, Pbullet &shoots) {
+Pbullet EngineGame::createBullet(Character character, bool isPlayerBullet, bool moveFoward, Pbullet &shoots) {
   Pbullet bullet = new Bullet;
   bullet->x = character.getX();
   bullet->y = character.getY();
   bullet->speed = 1;
   bullet->skin = character.getGun().getBulletSkin();
-  if (moveFoward) bullet->moveFoward = true;
-  else bullet->moveFoward = false;
+  bullet->isPlayerBullet = isPlayerBullet;
+  bullet->moveFoward = moveFoward;
   bullet->next = shoots;
   return bullet;
 }
@@ -58,7 +58,8 @@ void EngineGame::enemyShootBullets(pEnemyList listEnemy, Character character) {
       if (character.getX() > listEnemy->enemy.getX())    // Se il player è alla sx del nemico
         moveFoward = true;                               // Lo sparo sarà verso sx
       this->shootsEnemys =
-          createBullet(listEnemy->enemy, moveFoward, this->shootsEnemys);
+          // Colpo del nemico -> false; Sparo avanti/indieto -> moveFoward
+          createBullet(listEnemy->enemy, false, moveFoward, this->shootsEnemys);
     }
     listEnemy = listEnemy->next;
   }
@@ -95,11 +96,11 @@ void EngineGame::shootEnemyBullet() {
   }
 }
 
-void EngineGame::destroyBullet(Pbullet &shoots, bool isPlayerBullet) {
+void EngineGame::destroyBullet(Pbullet &shoots) {
   Pbullet head = shoots, prev = shoots, tmp;
   while (head != NULL) {
     int range = -1; if (head->moveFoward) range = 1;
-    /*
+    /* isPlayerBullet è da passare alla funzione
     int range = 0;
     if (isPlayerBullet) {                 // Se spara il player
       if (head->moveFoward) range = 1;    // e spara in avanti (verso dx)
@@ -224,14 +225,14 @@ void EngineGame::checkEnemyCollision(Character &character,
 
 void EngineGame::checkShootEnemyCollision(pEnemyList enemyList,
                                           Character &character, Pbullet &shoots,
-                                          int isEnemy, float &pointOnScreen, bool immortalityCheck) {
-  bool isCollisionEnemy = false;
-  bool isCollisionCharacter = false;
-  bool pause = false;
+                                          float &pointOnScreen, bool immortalityCheck) {
+  bool isCollisionEnemy = false, isCollisionCharacter = false, pause = false;
   Pbullet head = shoots;
   pEnemyList tmp = enemyList;
-  while (enemyList != NULL && !isCollisionEnemy && !isCollisionCharacter) {
-    while (shoots != NULL && !isCollisionEnemy && !isCollisionCharacter) {
+  int isEnemy = -1;
+  while (enemyList != NULL && !isCollisionEnemy && !isCollisionCharacter) {   // Per ogni nemico
+    while (shoots != NULL && !isCollisionEnemy && !isCollisionCharacter) {    // Per ogni priettile di ogni nemico
+    if (shoots->moveFoward) isEnemy = 1;
       if ((enemyList->enemy.getX() == shoots->x + isEnemy &&
            enemyList->enemy.getY() == shoots->y) &&
           isEnemy == 1) {
@@ -265,8 +266,8 @@ void EngineGame::checkShootEnemyCollision(pEnemyList enemyList,
     character.decreaseLife(enemyList->enemy.getGun().getDamage());
     checkDeath(pause, character);
 
-    mvprintw(character.getY(), character.getX(),
-             "M");  // GENERA UN CARATTERE ROSSO QUANDO SI VIENE COLPITI
+    // Skin del player rossa qunado viene colpito
+    mvprintw(character.getY(), character.getX(), "M");
   }
 
   attroff(COLOR_PAIR(13));
@@ -283,7 +284,7 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
                                int &powerUpDMG, bool &bonusPicked,
                                int &bonusType, int &bonusTime,
                                bool &upgradeBuyed, int &upgradeType,
-                               int &upgradeTime, bool &immortalityCheck, bool &fowardPlayerShoot) {
+                               int &upgradeTime, bool &immortalityCheck) {
   int upgradeCost = 10;
   srand(time(0));
   switch (direction) {  // CONTROLLO IL TASTO SPINTO
@@ -346,22 +347,22 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
       break;
     //case 'E':
     case 'e':  // -----------------------------------------------------------
-      fowardPlayerShoot = true;
       if (whileCount / 2 > 1) {
         if (character.getGun().getTotalAmmo() > 0) {
           character.setTotalAmmo(character.getTotalAmmo() - 1);
-          this->shoots = createBullet(character, fowardPlayerShoot, this->shoots);
+          // Colpo del player -> true; Sparo in avanti -> true
+          this->shoots = createBullet(character, true, true, this->shoots);
           whileCount = 0;
         }
       }
       break;
     //case 'W':   // Tasto W per lo sparo all'indietro
     case 'w':
-      fowardPlayerShoot = false;
       if (whileCount / 2 > 1) {
         if (character.getGun().getTotalAmmo() > 0) {
           character.setTotalAmmo(character.getTotalAmmo() - 1);
-          this->shoots = createBullet(character, fowardPlayerShoot, this->shoots);
+          // Colpo del player -> true; Sparo indieto -> false
+          this->shoots = createBullet(character, true, false, this->shoots);
           whileCount = 0;
         }
       }
@@ -775,7 +776,6 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
                          int direction) {
   bool upgradeBuyed = false, bonusPicked = false;
   bool immortalityCheck = false;
-  bool fowardPlayerShoot = true;
   float pointsOnScreen = 0;
   long points = 0;
   int powerUpDMG = 0;  // NUMERO DI POWERUP AL DANNO AQUISTATI
@@ -804,7 +804,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     getInput(direction);
     moveCharacter(drawWindow, character, direction, roomList, enemyList, round,
                   pointsOnScreen, bananas, powerUpDMG, bonusPicked, bonusType,
-                  bonusTime, upgradeBuyed, upgradeType, upgradeTime, immortalityCheck, fowardPlayerShoot);
+                  bonusTime, upgradeBuyed, upgradeType, upgradeTime, immortalityCheck);
     clear();
     drawWindow.printCharacter(character.getX(), character.getY(),
                               character.getSkin());
@@ -835,15 +835,12 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     gorillaPunch(direction, character, enemyList, pointsOnScreen);
 
     money(bananas, enemyList, maxRound, roundPayed, character);
-    checkShootEnemyCollision(enemyList, character, this->shoots, 1, pointsOnScreen, immortalityCheck);
-    checkShootEnemyCollision(enemyList, character, this->shootsEnemys, -1, pointsOnScreen, immortalityCheck);
+    checkShootEnemyCollision(enemyList, character, this->shoots, pointsOnScreen, immortalityCheck);
+    checkShootEnemyCollision(enemyList, character, this->shootsEnemys, pointsOnScreen, immortalityCheck);
     refresh();
 
-    //destroyBullet(this->shoots, 1);           // Check per i colpi sparati dai nemici (???)
-    //destroyBullet(this->shootsEnemys, -1);    // Check per i colpi sparati dal player (???)
-
-    destroyBullet(this->shoots, true);           // Check per i colpi sparati dai nemici (???)
-    destroyBullet(this->shootsEnemys, false);    // Check per i colpi sparati dal player (???)
+    destroyBullet(this->shoots);           // Check per i colpi sparati dai nemici (???)
+    destroyBullet(this->shootsEnemys);    // Check per i colpi sparati dal player (???)
 
     showBonusOnScreen(upgradeBuyed, upgradeType, upgradeTime, bonusPicked, bonusType,
               bonusTime,immortalityCheck, immortalityTime);

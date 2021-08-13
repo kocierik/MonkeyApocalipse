@@ -7,7 +7,9 @@ struct Bullet {
   int y;
   char skin;
   float speed;
-  bool moveFoward;  // UNa volta assegnata, non va più modificata
+  bool isPlayerBullet;  // true: colpo del player - false: colpo nemico
+  bool moveFoward;  // Attenzione che i colpisparati "in avanti" sono relativi a chi li spara
+                    // true sse colpo sparato in avanti, false altrimenti (una volta assegnata non va più modificata)
   Bullet* next;
 };
 typedef Bullet* Pbullet;
