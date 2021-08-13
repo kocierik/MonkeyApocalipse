@@ -29,7 +29,7 @@ class EngineGame {
 
   void destroyBullet(Pbullet &shoots, bool isPlayerBullet);
   pEnemyList destroyEnemy(pEnemyList list, Enemy enemy);
-  pPosition deletePosition(pPosition list, pPosition bonus);
+  pPosition deletePosition(pPosition list, pPosition bonus);  // Funzione per eliminare bonus e montagne
 
   void checkEnemyCollision(Character &character, pEnemyList enemyList);
   void checkShootEnemyCollision(pEnemyList enemys, Character &character,
@@ -46,10 +46,8 @@ class EngineGame {
                      bool &upgradeBuyed, int &upgradeType, int &upgradeTime,
                      bool &immortalityCheck, bool &fowardPlayerShoot);
 
-  pEnemyList generateEnemy(int *monsterCount, char skin, Gun gun, int life,
+  pEnemyList generateNormalEnemy(int *monsterCount, char skin, Gun gun, int life,
                            pEnemyList list, int &round, DrawWindow drawWindow);
-  
-  
   
   pPosition getBonus(DrawWindow drawWindow, int x, int y, pPosition bonusList,
                      pEnemyList &enemyList, int round, float &pointsOnScreen,

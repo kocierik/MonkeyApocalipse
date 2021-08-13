@@ -7,11 +7,13 @@ class Gun {
  protected:
   char bulletSkin;
   int damage;
-  int ammo;
+  int totalAmmo;        // Munizioni totali
+  int magazineAmmo;     // Colpi nel caricatore
+  int magazineCapacity; // Capacità del caricatore
 
  public:
   Gun();
-  Gun(char in_bulletSkin, int in_damage, int in_ammo);
+  Gun(char in_bulletSkin, int in_damage, int in_totalAmmo, int in_magazineCapacity);
 
   char getBulletSkin();
 
@@ -20,10 +22,16 @@ class Gun {
   void increaseDamage(int plusDMG);
   void decreaseDamage(int lessDMG);
 
-  int getAmmo();
-  void setAmmo(int in_ammo);
-  void increaseAmmo(int plusAmmo);
-  void decreaseAmmo(int lessAmmo);
+  int getMagazineAmmo();
+  void setMagazineAmmo(int ammo);
+  void reloadMagazine();
+  int getMagazineCapacity();
+  void setMagazineCapacity(int ammo);
+
+  int getTotalAmmo();
+  void setTotalAmmo(int in_ammo);
+  void increaseTotalAmmo(int plusAmmo);
+  void decreaseTotalAmmo(int lessAmmo);
 };
 
 struct GunList {

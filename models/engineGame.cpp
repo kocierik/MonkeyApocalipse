@@ -196,8 +196,8 @@ void EngineGame::checkEnemyCollision(Character &character,
          character.getY() + 1 == enemyList->enemy.getY()) ||
         (character.getX() == enemyList->enemy.getX() &&
          character.getY() - 1 == enemyList->enemy.getY())) {
-      character.decreaseLife(1);        // In uno scontro il player perde 1 di vita
-      enemyList->enemy.decreaseLife(2); // In uno scontro il nemico perde 1 di vita
+      character.decreaseLife(1);        // In uno scontro fisico il player perde 1 di vita
+      enemyList->enemy.decreaseLife(2); // In uno scontro fisico il nemico perde 2 di vita
 
       if (enemyList->enemy.getLife() <= 0) enemyList = destroyEnemy(tmp, enemyList->enemy);
       
@@ -348,8 +348,8 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
     case 'e':  // -----------------------------------------------------------
       fowardPlayerShoot = true;
       if (whileCount / 2 > 1) {
-        if (character.getGun().getAmmo() > 0) {
-          character.setAmmo(character.getAmmo() - 1);
+        if (character.getGun().getTotalAmmo() > 0) {
+          character.setTotalAmmo(character.getTotalAmmo() - 1);
           this->shoots = createBullet(character, fowardPlayerShoot, this->shoots);
           whileCount = 0;
         }
@@ -359,8 +359,8 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
     case 'w':
       fowardPlayerShoot = false;
       if (whileCount / 2 > 1) {
-        if (character.getGun().getAmmo() > 0) {
-          character.setAmmo(character.getAmmo() - 1);
+        if (character.getGun().getTotalAmmo() > 0) {
+          character.setTotalAmmo(character.getTotalAmmo() - 1);
           this->shoots = createBullet(character, fowardPlayerShoot, this->shoots);
           whileCount = 0;
         }
@@ -521,7 +521,7 @@ void EngineGame::choiceGame(DrawWindow drawWindow, int *direction,
   clear();
 }
 
-pEnemyList EngineGame::generateEnemy(int *monsterCount, char skin, Gun gun,
+pEnemyList EngineGame::generateNormalEnemy(int *monsterCount, char skin, Gun gun,
                                      int life, pEnemyList list, int &round,
                                      DrawWindow drawWindow) {
   bool isEmpty = false;
@@ -624,7 +624,7 @@ pPosition EngineGame::getBonus(DrawWindow drawWindow, int x, int y,
             Gun tmpBetterGun = character.getGun();
             tmpBetterGun.increaseDamage(5);    // Aumenta il danno dell'arma del player
             character.setGun(tmpBetterGun);
-          } else character.getGun().increaseAmmo(30);
+          } else character.getGun().increaseTotalAmmo(30);
           end = true;
           break;
         case 14:  // Bonus name: "MONKEY GOD! [IMMORTALITY]"
@@ -634,7 +634,7 @@ pPosition EngineGame::getBonus(DrawWindow drawWindow, int x, int y,
          /*
         case n:     // Malus name: "BANANA FRAGRANCE" // Genera n nemici
             int tmpQuantity = 3, tmpRound = round;
-            enemyList = generateEnemy (&tmpQuantity, 'X', 10, 100, enemyList,
+            enemyList = generateNormalEnemy (&tmpQuantity, 'X', 10, 100, enemyList,
           tmpRound, drawWindow); drawWindow.printEnemy (enemyList, drawWindow);
             end = true;
             break;
@@ -793,13 +793,13 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
   pPosition mountainList = new Position;
   pPosition bonusList = new Position;
   pRoom roomList = new Room;
-  Gun basicEnemyGun('-', 10, -1); // CHANGE
+  Gun basicEnemyGun('-', 10, -1, -1); // CHANGE
   while (!pause) {
     roomList =
         drawWindow.changeRoom(character, monsterCount, round,
                               enemyList, mountainList, bonusList, roomList,
                               maxRound);
-    enemyList = generateEnemy(&monsterCount, 'E', basicEnemyGun, 100, enemyList,
+    enemyList = generateNormalEnemy(&monsterCount, 'e', basicEnemyGun, 100, enemyList,
                               round, drawWindow);
 
     getInput(direction);

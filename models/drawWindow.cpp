@@ -291,21 +291,21 @@ void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
 
   mvprintw(26, 52, "BANANA PEELS");
 
-  if(character.getGun().getAmmo() >30){ 
+  if(character.getGun().getTotalAmmo() >30){ 
     statusAmmoColor = 21;
     init_pair(statusAmmoColor, COLOR_WHITE, -1);
     attron(COLOR_PAIR(statusAmmoColor)); }
-  else if(character.getGun().getAmmo() > 20 && character.getGun().getAmmo() <= 30) { 
+  else if(character.getGun().getTotalAmmo() > 20 && character.getGun().getTotalAmmo() <= 30) { 
     statusAmmoColor = 22;
     init_pair(statusAmmoColor, COLOR_YELLOW, -1);
     attron(COLOR_PAIR(statusAmmoColor));}
-  else if(character.getGun().getAmmo() <= 20 ) { 
+  else if(character.getGun().getTotalAmmo() <= 20 ) { 
     statusAmmoColor = 23;
     init_pair(statusAmmoColor, COLOR_RED, -1);
     attron(COLOR_PAIR(statusAmmoColor));
   }
 
-  mvprintw(26, 76, "%d", character.getGun().getAmmo());
+  mvprintw(26, 76, "%d", character.getGun().getTotalAmmo());
   attroff(COLOR_PAIR(statusAmmoColor));
 
   mvprintw(27, 52, "BANANAS");
