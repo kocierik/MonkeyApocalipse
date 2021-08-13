@@ -96,7 +96,7 @@ void EngineGame::shootEnemyBullet() {
 }
 
 void EngineGame::destroyBullet(Pbullet &shoots, bool isPlayerBullet) {
-  Pbullet head = shoots, prev = shoots, tmp;  
+  Pbullet head = shoots, prev = shoots, tmp;
   while (head != NULL) {
     int range = -1; if (head->moveFoward) range = 1;
     /*
@@ -111,7 +111,7 @@ void EngineGame::destroyBullet(Pbullet &shoots, bool isPlayerBullet) {
     */
     bool tmpCondition = !isEmpty(head->x + range, head->y) &&
                         !isBonus(head->x + range, head->y);
-                        
+
     if (tmpCondition || head->x > 70 || head->x < 23) {
       if (head == shoots) {
         tmp = shoots;
@@ -200,7 +200,7 @@ void EngineGame::checkEnemyCollision(Character &character,
       enemyList->enemy.decreaseLife(2); // In uno scontro fisico il nemico perde 2 di vita
 
       if (enemyList->enemy.getLife() <= 0) enemyList = destroyEnemy(tmp, enemyList->enemy);
-      
+
       init_pair(13, COLOR_RED, -1);
       attron(COLOR_PAIR(13));
       mvprintw(character.getY(), character.getX(),
@@ -211,7 +211,7 @@ void EngineGame::checkEnemyCollision(Character &character,
     }
 
     if(character.getX() + 1 == enemyList->enemy.getX() && character.getY() == enemyList->enemy.getY()){  //collissione frontale
-      character.decreaseLife(1);  
+      character.decreaseLife(1);
 
       init_pair(13, COLOR_RED, -1);
       attron(COLOR_PAIR(13));
@@ -402,11 +402,11 @@ void EngineGame::gorillaPunch(int direction, Character &character, pEnemyList en
       if (character.getX() + 1 == enemyList->enemy.getX() && character.getY() == enemyList->enemy.getY()) {
         enemyList->enemy.decreaseLife(40);
 
-        if (enemyList->enemy.getLife() <= 0) { 
+        if (enemyList->enemy.getLife() <= 0) {
           enemyList = destroyEnemy(tmp, enemyList->enemy);
-          increasePointOnScreen(pointOnScreen, scoreForKill);  
+          increasePointOnScreen(pointOnScreen, scoreForKill);
         }
-      
+
         init_pair(13, COLOR_RED, -1);
         attron(COLOR_PAIR(13));
         mvprintw(enemyList->enemy.getY(), enemyList->enemy.getX(), "E");  // Il nemico diventa rosso quando si scontra col player
@@ -470,7 +470,7 @@ void EngineGame::showBonusOnScreen(bool &upgradeBuyed, int &upgradeType,
   } else if (bonusPicked == true && bonustype == 14) {
     mvprintw(y, x, "MONKEY GOD! [IMMORTALITY]");
     bonusTime++;
-  } 
+  }
   if (immortalitycheck == true && bonustype == 14) {
     init_pair(24, -1, COLOR_MAGENTA);
     attron(COLOR_PAIR(24));
@@ -792,6 +792,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
   pPosition bonusList = new Position;
   pRoom roomList = new Room;
   Gun basicEnemyGun('-', 10, -1, -1); // CHANGE
+  clear();
   while (!pause) {
     roomList =
         drawWindow.changeRoom(character, monsterCount, round,
@@ -840,10 +841,10 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
 
     //destroyBullet(this->shoots, 1);           // Check per i colpi sparati dai nemici (???)
     //destroyBullet(this->shootsEnemys, -1);    // Check per i colpi sparati dal player (???)
-    
+
     destroyBullet(this->shoots, true);           // Check per i colpi sparati dai nemici (???)
     destroyBullet(this->shootsEnemys, false);    // Check per i colpi sparati dal player (???)
-    
+
     showBonusOnScreen(upgradeBuyed, upgradeType, upgradeTime, bonusPicked, bonusType,
               bonusTime,immortalityCheck, immortalityTime);
     checkDeath(pause, character);
