@@ -54,12 +54,12 @@ Pbullet EngineGame::createBullet(Character character, bool isPlayerBullet, bool 
 void EngineGame::enemyShootBullets(pEnemyList listEnemy, Character character) {
   while (listEnemy != NULL) {
     if (this->whileCountEnemy % 20 == 0) {
-      bool moveFoward = false;
-      if (character.getX() > listEnemy->enemy.getX())    // Se il player è alla sx del nemico
-        moveFoward = true;                               // Lo sparo sarà verso sx
+      bool shootFoward = false;
+      if (character.getX() > listEnemy->enemy.getX())     // Se il player è alla sx del nemico
+        shootFoward = true;                               // Lo sparo sarà verso sx
       this->shootsEnemys =
           // Colpo del nemico -> false; Sparo avanti/indieto -> moveFoward
-          createBullet(listEnemy->enemy, false, moveFoward, this->shootsEnemys);
+          createBullet(listEnemy->enemy, false, shootFoward, this->shootsEnemys);
     }
     listEnemy = listEnemy->next;
   }
@@ -229,18 +229,28 @@ void EngineGame::checkShootEnemyCollision(pEnemyList enemyList,
   bool isCollisionEnemy = false, isCollisionCharacter = false, pause = false;
   Pbullet head = shoots;
   pEnemyList tmp = enemyList;
-  int isEnemy = -1;
+  int range = -1;
   while (enemyList != NULL && !isCollisionEnemy && !isCollisionCharacter) {   // Per ogni nemico
     while (shoots != NULL && !isCollisionEnemy && !isCollisionCharacter) {    // Per ogni priettile di ogni nemico
-    if (shoots->moveFoward) isEnemy = 1;
-      if ((enemyList->enemy.getX() == shoots->x + isEnemy &&
-           enemyList->enemy.getY() == shoots->y) &&
-          isEnemy == 1) {
-        isCollisionEnemy = true;
-      } else if ((character.getX() == shoots->x + isEnemy &&
-                  character.getY() == shoots->y) &&
-                 isEnemy == -1) {
-        isCollisionCharacter = true;
+
+      if (shoots->isPlayerBullet) {     // Colpo del player
+        int x = enemyList->enemy.getX(), y = enemyList->enemy.getY();
+        if (shoots->moveFoward) {         // Sparato verso dx
+          if (x == shoots->x + 1 && y == shoots->y) // Ergo si ha +1
+            isCollisionEnemy = true;
+        } else {                          // Sparato verso sx
+          if (x == shoots->x - 1 && y == shoots->y) // Ergo si ha -1
+            isCollisionEnemy = true;
+        }
+      } else {                          // Colpo del nemico
+        int x = character.getX(), y = character.getY();
+        if (shoots->moveFoward) {         // Sparato verso sx
+          if (x == shoots->x + 1 && y == shoots->y) // Ergo si ha -1
+            isCollisionCharacter = true;
+        } else {                          // Sparato verso dx
+          if (x == shoots->x - 1 && y == shoots->y) // Ergo si ha +1
+            isCollisionCharacter = true;
+        }
       }
       shoots = shoots->next;
     }
@@ -254,7 +264,7 @@ void EngineGame::checkShootEnemyCollision(pEnemyList enemyList,
   init_pair(13, COLOR_RED, -1);
   attron(COLOR_PAIR(13));
 
-  if (isCollisionEnemy && isEnemy == 1) {
+  if (isCollisionEnemy) {
     mvprintw(enemyList->enemy.getY(), enemyList->enemy.getX(), "E");  // Il nemico diventa rosso quando viene colpito dal proiettile del player
     enemyList->enemy.decreaseLife(character.getGun().getDamage());
     if (enemyList->enemy.getLife() <= 0) {
@@ -262,7 +272,7 @@ void EngineGame::checkShootEnemyCollision(pEnemyList enemyList,
       increasePointOnScreen(pointOnScreen, scoreForKill);
     }
   }
-  else if ((isCollisionCharacter && isEnemy == -1) && immortalityCheck == false) {
+  else if (isCollisionCharacter && immortalityCheck == false) {
     character.decreaseLife(enemyList->enemy.getGun().getDamage());
     checkDeath(pause, character);
 
