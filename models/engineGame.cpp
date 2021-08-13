@@ -232,7 +232,7 @@ void EngineGame::checkShootEnemyCollision(pEnemyList enemyList,
   int range = -1;
   while (enemyList != NULL && !isCollisionEnemy && !isCollisionCharacter) {   // Per ogni nemico
     while (shoots != NULL && !isCollisionEnemy && !isCollisionCharacter) {    // Per ogni priettile di ogni nemico
-
+      /* NON CANCELLARE - Utile per capire meglio il sottostante codice ridotto
       if (shoots->isPlayerBullet) {     // Colpo del player
         int x = enemyList->enemy.getX(), y = enemyList->enemy.getY();
         if (shoots->moveFoward) {         // Sparato verso dx
@@ -251,6 +251,16 @@ void EngineGame::checkShootEnemyCollision(pEnemyList enemyList,
           if (x == shoots->x - 1 && y == shoots->y) // Ergo si ha +1
             isCollisionCharacter = true;
         }
+      }
+      */
+      if (shoots->isPlayerBullet) {     // Colpo del player
+        int x = enemyList->enemy.getX(), y = enemyList->enemy.getY();
+        if (x == shoots->x + 1 && y == shoots->y || x == shoots->x - 1 && y == shoots->y)   // Controllo valido per i foward and backward bullets del player
+          isCollisionEnemy = true;
+      } else {                          // Colpo del nemico
+        int x = character.getX(), y = character.getY();
+        if (x == shoots->x + 1 && y == shoots->y || x == shoots->x - 1 && y == shoots->y) // Controllo valido per i foward and backward bullets del nemico
+          isCollisionCharacter = true;
       }
       shoots = shoots->next;
     }
