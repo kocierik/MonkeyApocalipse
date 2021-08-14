@@ -308,10 +308,12 @@ void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
   mvprintw(26, 76, "%d", character.getGun().getTotalAmmo());
   attroff(COLOR_PAIR(statusAmmoColor));
 
+  mvprintw(25, 52, "MAGAZINE");
+  mvprintw(25, 76, "%d", character.getGun().getMagazineAmmo());
   mvprintw(27, 52, "BANANAS");
   mvprintw(27, 76, "%d", bananas);
   mvprintw(28, 52, "ROOM");
-  mvprintw(28, 75, "%d/%d", lenghtRoom(roomList), maxRound);
+  mvprintw(28, 76, "%d/%d", lenghtRoom(roomList), maxRound);
   mvprintw(29, 52, "ROUND MAX");
   mvprintw(29, 76, "%d", maxRound);
 
@@ -442,6 +444,9 @@ void DrawWindow::printCharacterStats(pEnemyList list, Character character) {
   } else {
     mvprintw(i, X_ElencoNemici, "[ALL ENEMY DEFEATED!]");
   }
+
+  if (character.getGun().getMagazineAmmo() == 0)
+    mvprintw(10, 10, "PRESS R TO RELOAD!");
 
   // CODICE CHE GESTISCE LA BARRA DELLA VITA
   // ------------------------------------------------------------------------------

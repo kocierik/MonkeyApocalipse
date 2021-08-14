@@ -58,6 +58,9 @@ class Character {
   void setGun(Gun in_gun);
   int getTotalAmmo();
   void setTotalAmmo(int lessAmmo);
-  void decreaseAmmo(int lessAmmo);
-  void increaseAmmo(int plusAmmo);
+  void increaseTotalAmmo(int plusAmmo);
+  void decreaseTotalAmmo(int lessAmmo);
+  void increaseMagazineAmmo(int plusAmmo);
+  void decreaseMagazineAmmo(int lessAmmo);
+  void reload();
 };

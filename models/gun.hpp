@@ -24,7 +24,11 @@ class Gun {
 
   int getMagazineAmmo();
   void setMagazineAmmo(int ammo);
+  void increaseMagazineAmmo(int plusAmmo);
+  void decreaseMagazineAmmo(int lessAmmo);
+
   void reloadMagazine();
+
   int getMagazineCapacity();
   void setMagazineCapacity(int ammo);
 

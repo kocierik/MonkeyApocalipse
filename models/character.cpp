@@ -40,9 +40,19 @@ void Character::setGun(Gun in_gun) { this->gun = in_gun; }
 void Character::increaseDamageGun(int damage) { this->gun.increaseDamage(damage); }
 void Character::setTotalAmmo(int ammo) { this->gun.setTotalAmmo(ammo); }
 int Character::getTotalAmmo() { return this->gun.getTotalAmmo(); }
-void Character::decreaseAmmo(int lessAmmo) {
+
+void Character::increaseTotalAmmo(int plusAmmo) {
+  this->gun.setTotalAmmo(gun.getTotalAmmo() + plusAmmo);
+}
+void Character::decreaseTotalAmmo(int lessAmmo) {
   this->gun.setTotalAmmo(gun.getTotalAmmo() - lessAmmo);
 }
-void Character::increaseAmmo(int plusAmmo) {
-  this->gun.setTotalAmmo(gun.getTotalAmmo() + plusAmmo);
+void Character::increaseMagazineAmmo(int plusAmmo) {
+  this->gun.setMagazineAmmo(gun.getMagazineAmmo() + plusAmmo);
+}
+void Character::decreaseMagazineAmmo(int lessAmmo) {
+  this->gun.setMagazineAmmo(gun.getMagazineAmmo() - lessAmmo);
+}
+void Character::reload() {
+  this->gun.setMagazineAmmo(gun.getMagazineCapacity());
 }

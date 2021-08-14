@@ -18,10 +18,20 @@ void Gun::decreaseDamage(int lessDMG) { this->damage -= lessDMG; }
 
 int Gun::getMagazineAmmo() { return this->magazineAmmo; }
 void Gun::setMagazineAmmo(int in_magazineAmmo) { this->magazineAmmo = in_magazineAmmo; }
+void Gun::increaseMagazineAmmo(int plusAmmo) { this->magazineAmmo += plusAmmo; }
+void Gun::decreaseMagazineAmmo(int lessAmmo) { this->magazineAmmo -= lessAmmo; }
+
 void Gun::reloadMagazine() {
-    this->magazineAmmo = this->magazineCapacity;
-    this->totalAmmo -= this->magazineCapacity;
+  if (this->magazineAmmo >= 0 && this->magazineAmmo < this->magazineCapacity) { // Se ilcaricatore non è pieno
+    if (this->totalAmmo <= this->magazineCapacity) {
+      this->magazineAmmo = this->totalAmmo;
+      this->totalAmmo = 0;
+    } else if (this->totalAmmo > this->magazineCapacity) {
+      this->magazineAmmo = this->magazineCapacity;
+      this->totalAmmo -= this->magazineCapacity;
     }
+  }
+}
 int Gun::getMagazineCapacity() { return this->magazineCapacity; }
 void Gun::setMagazineCapacity(int in_magazineCapacity) { this->magazineCapacity = in_magazineCapacity; }
 

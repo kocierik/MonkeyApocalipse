@@ -255,7 +255,7 @@ void EngineGame::checkShootEnemyCollision(pEnemyList enemyList,
       */
       if (shoots->isPlayerBullet) {     // Colpo del player
         int x = enemyList->enemy.getX(), y = enemyList->enemy.getY();
-        if (x == shoots->x + 1 && y == shoots->y || x == shoots->x - 1 && y == shoots->y)   // Controllo valido per i foward and backward bullets del player
+        if (x == shoots->x + 1 && y == shoots->y || x == shoots->x - 1 && y == shoots->y) // Controllo valido per i foward and backward bullets del player
           isCollisionEnemy = true;
       } else {                          // Colpo del nemico
         int x = character.getX(), y = character.getY();
@@ -365,30 +365,31 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
         character.directionRight();
       }
       break;
-    //case 'E':
-    case 'e':  // -----------------------------------------------------------
-      if (whileCount / 2 > 1) {
-        if (character.getGun().getTotalAmmo() > 0) {
-          character.setTotalAmmo(character.getTotalAmmo() - 1);
-          // Colpo del player -> true; Sparo in avanti -> true
-          this->shoots = createBullet(character, true, true, this->shoots);
-          whileCount = 0;
-        }
+    case 'E':   // Sparo in avanti del player
+    case 'e':
+      if (whileCount / 2 > 1 && character.getGun().getTotalAmmo() > 0 && character.getGun().getMagazineAmmo() > 0) {
+        character.decreaseTotalAmmo(1);
+        character.decreaseMagazineAmmo(1);
+        this->shoots = createBullet(character, true, true, this->shoots);
+        whileCount = 0;
       }
       break;
-    //case 'W':   // Tasto W per lo sparo all'indietro
+    case 'W':   // Sparo all'indietro del player
     case 'w':
-      if (whileCount / 2 > 1) {
-        if (character.getGun().getTotalAmmo() > 0) {
-          character.setTotalAmmo(character.getTotalAmmo() - 1);
-          // Colpo del player -> true; Sparo indieto -> false
-          this->shoots = createBullet(character, true, false, this->shoots);
-          whileCount = 0;
-        }
+      if (whileCount / 2 > 1 && character.getGun().getTotalAmmo() > 0 && character.getGun().getMagazineAmmo() > 0) {
+        character.decreaseTotalAmmo(1);
+        character.decreaseMagazineAmmo(1);
+        this->shoots = createBullet(character, true, false, this->shoots);
+        whileCount = 0;
       }
       break;
-    case 'q':  // CONTROLLA L'AQUISTO DI VITE, MASSIMO 3 -------------------
-    case 'Q':
+    case 'R':
+    case 'r':
+      if (character.getGun().getMagazineAmmo() >= 0 && character.getGun().getMagazineAmmo() < character.getGun().getMagazineCapacity())
+        character.reload();
+      break;
+    case 'm':  // CONTROLLA L'AQUISTO DI VITE, MASSIMO 3 -------------------
+    case 'M':
       if (bananas >= upgradeCost && character.getNumberLife() < 3) {
         upgradeBuyed = true;  // INDICA CHE È STATO COMPRATO UN UPGRADE
         upgradeType = 0;      // INDICA IL TIPO DI UPGRADE.
@@ -398,9 +399,9 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
         bananas = bananas - upgradeCost;
       }
       break;
-    case 'r':  // CONTROLLA L'AQUISTO DI POWERUP AL DANNO, SONO ACQUISTABILI AL
+    case 'n':  // CONTROLLA L'AQUISTO DI POWERUP AL DANNO, SONO ACQUISTABILI AL
                // MASSIMO 4 DURANTE TUTTA LA RUN
-    case 'R':
+    case 'N':
       if (bananas >= upgradeCost && powerUpDMG < 4) {
         upgradeBuyed = true;
         upgradeType = 1;
@@ -618,15 +619,15 @@ pPosition EngineGame::getBonus(DrawWindow drawWindow, int x, int y,
           end = true;
           break;
         case 9:  // Bonus name: "PEEL LOADER [+20 PEELS]"
-          character.increaseAmmo(20);
+          character.increaseTotalAmmo(20);
           end = true;
           break;
         case 10:  // Bonus name: "PEEL BOX [+40 PEELS]"
-          character.increaseAmmo(40);
+          character.increaseTotalAmmo(40);
           end = true;
           break;
         case 11:  // Bonus name: "PEACE MISSION [+100 PEELS]"
-          character.increaseAmmo(100);
+          character.increaseTotalAmmo(100);
           end = true;
           break;
         case 12:  // Malus name: "PISSED OFF MONKEYS"
@@ -757,13 +758,13 @@ void EngineGame::money(int &bananas, pEnemyList enemyList, int maxRound,
                                  // L'ULTIMO ROUND SIA STATO PAGATO
     bananas = bananas + rand() % 3 + 1;
     if (maxRound >= 2 && maxRound <= 5) {
-      character.increaseAmmo(25);
+      character.increaseTotalAmmo(25);
     } else if (maxRound > 5 && maxRound <= 8) {
-      character.increaseAmmo(40);
+      character.increaseTotalAmmo(40);
     } else if (maxRound > 8 && maxRound <= 12) {
-      character.increaseAmmo(50);
+      character.increaseTotalAmmo(50);
     } else if (maxRound > 15) {
-      character.increaseAmmo(80);
+      character.increaseTotalAmmo(80);
     }
     roundPayed++;
   }
