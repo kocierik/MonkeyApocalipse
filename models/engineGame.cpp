@@ -385,11 +385,11 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
       break;
     case 'R':
     case 'r':
-      if (character.getGun().getMagazineAmmo() >= 0 && character.getGun().getMagazineAmmo() < character.getGun().getMagazineCapacity())
+      if (character.getGun().getMagazineAmmo() >= 0 && character.getGun().getMagazineAmmo() < character.getGun().getMagazineCapacity() && character.getTotalAmmo() > 0)
         character.reload();
       break;
-    case 'm':  // CONTROLLA L'AQUISTO DI VITE, MASSIMO 3 -------------------
-    case 'M':
+    case 'a':  // CONTROLLA L'AQUISTO DI VITE, MASSIMO 3 -------------------
+    case 'A':
       if (bananas >= upgradeCost && character.getNumberLife() < 3) {
         upgradeBuyed = true;  // INDICA CHE È STATO COMPRATO UN UPGRADE
         upgradeType = 0;      // INDICA IL TIPO DI UPGRADE.
@@ -399,9 +399,9 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
         bananas = bananas - upgradeCost;
       }
       break;
-    case 'n':  // CONTROLLA L'AQUISTO DI POWERUP AL DANNO, SONO ACQUISTABILI AL
+    case 's':  // CONTROLLA L'AQUISTO DI POWERUP AL DANNO, SONO ACQUISTABILI AL
                // MASSIMO 4 DURANTE TUTTA LA RUN
-    case 'N':
+    case 'S':
       if (bananas >= upgradeCost && powerUpDMG < 4) {
         upgradeBuyed = true;
         upgradeType = 1;

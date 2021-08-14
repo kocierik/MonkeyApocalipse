@@ -54,5 +54,9 @@ void Character::decreaseMagazineAmmo(int lessAmmo) {
   this->gun.setMagazineAmmo(gun.getMagazineAmmo() - lessAmmo);
 }
 void Character::reload() {
-  this->gun.setMagazineAmmo(gun.getMagazineCapacity());
+  if(gun.getTotalAmmo() >= 10){
+    this->gun.setMagazineAmmo(gun.getMagazineCapacity());  
+  } else if (gun.getTotalAmmo() < 10){
+    this->gun.setMagazineAmmo(gun.getTotalAmmo());
+  }
 }

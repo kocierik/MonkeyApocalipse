@@ -30,6 +30,7 @@ DrawWindow::DrawWindow() {}
   - LOSE SCREEN rosso = 16
   - LOSE SCREEN verde = 17
   - UpGrade DISPONIBILE = 20
+  - DISCLAIMER RICARICA = 25
 
   (colori riservati alle munizioni)
   - BIANCO = 21
@@ -185,7 +186,7 @@ void DrawWindow::printHowToPlay() {  // GESTISCE LA SCHERMATA DEL HOW TO PLAY
   mvprintw(17, 5,
            "       ELIMINATE THE ENEMIES, CLEAN THE ROOM, MOVE TO THE NEXT ONE AND COLLECT BANANAS!              ");
   mvprintw(18, 5,
-           "       USE THE [ARROWS] TO MOVE AND [E] TO USE THE BANANACANNON, WATCH OUT FOR AMMO!                 ");
+           "       USE THE [ARROWS] TO MOVE AND [W]/[E] TO USE THE BANANACANNON, WATCH OUT FOR AMMO!             ");
   mvprintw(19, 5,
            "                                                                                                     ");
   mvprintw(20, 5,
@@ -199,9 +200,9 @@ void DrawWindow::printHowToPlay() {  // GESTISCE LA SCHERMATA DEL HOW TO PLAY
   mvprintw(24, 5,
            "                                                                                                     ");
   mvprintw(25, 5,
-           "       WHEN YOU HAVE %d BANANAS PRESS [R] TO UPGRADE THE BANANA CANNON                               ", 10);
+           "       WHEN YOU HAVE %d BANANAS PRESS [S] TO UPGRADE THE BANANA CANNON                               ", 10);
   mvprintw(26, 5,
-           "       OR [Q] TO RECOVER A LOST LIFE                                                                 ");
+           "       OR [A] TO RECOVER A LOST LIFE                                                                 ");
   mvprintw(27, 5,
            "                                                                                                     ");
   mvprintw(28, 5,
@@ -211,12 +212,14 @@ void DrawWindow::printHowToPlay() {  // GESTISCE LA SCHERMATA DEL HOW TO PLAY
   mvprintw(30, 5,
            "                                                                                                     ");
   mvprintw(31, 5,
-           "    [E] = SHOOT   [ARROWS] = MOVE   [SPACE] = PUNCH   [Q] = BUY EXTRA LIFE   [R] = DAMAGE UPGRADE    ");
+           "          [E][W] = SHOOT   [ARROWS] = MOVE    [A] = BUY EXTRA LIFE   [S] = DAMAGE UPGRADE            ");
   mvprintw(32, 5,
-           "                                                                                                     ");
+           "                            [R] = RELOAD AMMO    [SPACE] = PUNCH                                     ");
   mvprintw(33, 5,
-           "                                            menu [ESC]                                               ");
+           "                                                                                                     ");
   mvprintw(34, 5,
+           "                                            menu [ESC]                                               ");
+  mvprintw(35, 5,
            "                                                                                                     ");
   attroff(COLOR_PAIR(2));  // CHIUSURA DEL COLORE VERDE
 }
@@ -289,7 +292,9 @@ void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
   }
 
 
-  mvprintw(26, 52, "BANANA PEELS");
+  mvprintw(26, 52, "MAGAZINE");
+  mvprintw(26, 76, "%d", character.getGun().getMagazineAmmo());
+  mvprintw(27, 52, "BANANA PEELS");
 
   if(character.getGun().getTotalAmmo() >30){ 
     statusAmmoColor = 21;
@@ -304,23 +309,20 @@ void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
     init_pair(statusAmmoColor, COLOR_RED, -1);
     attron(COLOR_PAIR(statusAmmoColor));
   }
-
-  mvprintw(26, 76, "%d", character.getGun().getTotalAmmo());
+  mvprintw(27, 76, "%d", character.getGun().getTotalAmmo());
   attroff(COLOR_PAIR(statusAmmoColor));
 
-  mvprintw(25, 52, "MAGAZINE");
-  mvprintw(25, 76, "%d", character.getGun().getMagazineAmmo());
-  mvprintw(27, 52, "BANANAS");
-  mvprintw(27, 76, "%d", bananas);
-  mvprintw(28, 52, "ROOM");
-  mvprintw(28, 76, "%d/%d", lenghtRoom(roomList), maxRound);
-  mvprintw(29, 52, "ROUND MAX");
-  mvprintw(29, 76, "%d", maxRound);
+  mvprintw(28, 52, "BANANAS");
+  mvprintw(28, 76, "%d", bananas);
+  mvprintw(29, 52, "ROOM");
+  mvprintw(29, 76, "%d/%d", lenghtRoom(roomList), maxRound);
+  mvprintw(30, 52, "ROUND MAX");
+  mvprintw(30, 76, "%d", maxRound);
 
   init_pair(11, COLOR_WHITE, 232);
   attron(COLOR_PAIR(11));
-  drawRect(startX - 4, startY - 11, width + 12, heigth + 11, enemyList, 0, true);
-  drawRect(startX - 4, startY + 65, width + 40, heigth + 11, enemyList, 0, true);
+  drawRect(startX - 4, startY - 11, width + 12, heigth + 12, enemyList, 0, true);
+  drawRect(startX - 4, startY + 65, width + 40, heigth + 12, enemyList, 0, true);
   attroff(COLOR_PAIR(11));
 
   init_pair(3, COLOR_YELLOW, -1);  // FUNZIONI PER USARE I COLORI
@@ -445,8 +447,18 @@ void DrawWindow::printCharacterStats(pEnemyList list, Character character) {
     mvprintw(i, X_ElencoNemici, "[ALL ENEMY DEFEATED!]");
   }
 
-  if (character.getGun().getMagazineAmmo() == 0)
-    mvprintw(10, 10, "PRESS R TO RELOAD!");
+  if (character.getTotalAmmo() == 0){
+    init_pair(25, COLOR_RED, -1);
+    attron(COLOR_PAIR(25));
+    mvprintw(25, 52, "OUT OF AMMO!");
+    attroff(COLOR_PAIR(25));
+  } else if( character.getGun().getMagazineAmmo() == 0){
+    init_pair(25, COLOR_RED, -1);
+    attron(COLOR_PAIR(25));
+    mvprintw(25, 52, "PRESS [R] TO RELOAD!");
+    attroff(COLOR_PAIR(25));
+  }
+
 
   // CODICE CHE GESTISCE LA BARRA DELLA VITA
   // ------------------------------------------------------------------------------
