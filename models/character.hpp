@@ -8,8 +8,9 @@ struct Bullet {
   char skin;
   float speed;
   bool isPlayerBullet;  // true: colpo del player - false: colpo nemico
-  bool moveFoward;  // Attenzione che i colpisparati "in avanti" sono relativi a chi li spara
-                    // true sse colpo sparato in avanti, false altrimenti (una volta assegnata non va più modificata)
+  bool moveFoward;  // Attenzione che i colpisparati "in avanti" sono relativi a
+                    // chi li spara true sse colpo sparato in avanti, false
+                    // altrimenti (una volta assegnata non va più modificata)
   Bullet* next;
 };
 typedef Bullet* Pbullet;
@@ -51,8 +52,8 @@ class Character {
   int getNumberLife();
   void setNumberLife(int numberLife);
 
-  //int getBullet();
-  //void bulletUp();
+  // int getBullet();
+  // void bulletUp();
   void increaseDamageGun(int damage);
   Gun getGun();
   void setGun(Gun in_gun);

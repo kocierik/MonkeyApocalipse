@@ -1,13 +1,13 @@
 #include "drawWindow.hpp"
 
 #include <ncurses.h>
+#include <unistd.h>
 
 #include <cmath>
 #include <ctime>
-#include <iostream>
 #include <fstream>
+#include <iostream>
 #include <string>
-#include <unistd.h>
 #define FRAMEGAMEX 7
 #define FRAMEGAMEY 22
 #define GAMEWIDTH 71   // 49
@@ -136,17 +136,27 @@ void DrawWindow::printCredits() {
   mvprintw(15, 5,
            "                                                                   "
            "                                   ");
-  mvprintw(16, 5, "          ____ ____ _ _  _                ____ _  _ ____              ___  ____ ___  ___  ____        ");
-  mvprintw(17, 5, "          |___ |__/ | |_/                 |___ |\\/| |__|              |__] |___ |__] |__] |___        ");
-  mvprintw(18, 5, "          |___ |  \\ | | \\_                |___ |  | |  |              |__] |___ |    |    |___        ");
+  mvprintw(16, 5,
+           "          ____ ____ _ _  _                ____ _  _ ____           "
+           "   ___  ____ ___  ___  ____        ");
+  mvprintw(17, 5,
+           "          |___ |__/ | |_/                 |___ |\\/| |__|          "
+           "    |__] |___ |__] |__] |___        ");
+  mvprintw(18, 5,
+           "          |___ |  \\ | | \\_                |___ |  | |  |         "
+           "     |__] |___ |    |    |___        ");
   mvprintw(19, 5,
-           "                                                                                                      ");
+           "                                                                   "
+           "                                   ");
   mvprintw(20, 5,
-           "                                                                                                      ");
+           "                                                                   "
+           "                                   ");
   mvprintw(21, 5,
-           "                                            menu [ESC]                                                ");
+           "                                            menu [ESC]             "
+           "                                   ");
   mvprintw(22, 5,
-           "                                                                                                      ");
+           "                                                                   "
+           "                                   ");
   attroff(COLOR_PAIR(2));
 }
 void DrawWindow::credits(int direction) {
@@ -180,47 +190,69 @@ void DrawWindow::printHowToPlay() {  // GESTISCE LA SCHERMATA DEL HOW TO PLAY
   init_pair(2, COLOR_GREEN, 232);  // FUNZIONI PER USARE IL VERDE
   attron(COLOR_PAIR(2));
   mvprintw(15, 5,
-           "       PLAY THIS ADVENTURE FROM THE POINT OF VIEW OF THE MONKEY THAT STARTED THE REVOLUTION!         ");
+           "       PLAY THIS ADVENTURE FROM THE POINT OF VIEW OF THE MONKEY "
+           "THAT STARTED THE REVOLUTION!         ");
   mvprintw(16, 5,
-           "                                                                                                     ");
+           "                                                                   "
+           "                                  ");
   mvprintw(17, 5,
-           "       ELIMINATE THE ENEMIES, CLEAN THE ROOM, MOVE TO THE NEXT ONE AND COLLECT BANANAS!              ");
+           "       ELIMINATE THE ENEMIES, CLEAN THE ROOM, MOVE TO THE NEXT ONE "
+           "AND COLLECT BANANAS!              ");
   mvprintw(18, 5,
-           "       USE THE [ARROWS] TO MOVE AND [W]/[E] TO USE THE BANANACANNON, WATCH OUT FOR AMMO!             ");
+           "       USE THE [ARROWS] TO MOVE AND [W]/[E] TO USE THE "
+           "BANANACANNON, WATCH OUT FOR AMMO!             ");
   mvprintw(19, 5,
-           "                                                                                                     ");
+           "                                                                   "
+           "                                  ");
   mvprintw(20, 5,
-           "       IF YOU RUN OUT FOR AMMO, DONT FORGET YOU CAN USE [SPACE] FOR YOUR TREMENDOUS PUNCHES!         ");
+           "       IF YOU RUN OUT FOR AMMO, DONT FORGET YOU CAN USE [SPACE] "
+           "FOR YOUR TREMENDOUS PUNCHES!         ");
   mvprintw(21, 5,
-           "                                                                                                     ");
+           "                                                                   "
+           "                                  ");
   mvprintw(22, 5,
-           "       WITH YOUR BANANAS YOU WILL BE ABLE TO BUY UPGRADES FOR THE BANANACANNON                       ");
+           "       WITH YOUR BANANAS YOU WILL BE ABLE TO BUY UPGRADES FOR THE "
+           "BANANACANNON                       ");
   mvprintw(23, 5,
-           "       OR BUY BACK LIVES YOU HAVE LOST                                                               ");
+           "       OR BUY BACK LIVES YOU HAVE LOST                             "
+           "                                  ");
   mvprintw(24, 5,
-           "                                                                                                     ");
+           "                                                                   "
+           "                                  ");
   mvprintw(25, 5,
-           "       WHEN YOU HAVE %d BANANAS PRESS [S] TO UPGRADE THE BANANA CANNON                               ", 10);
+           "       WHEN YOU HAVE %d BANANAS PRESS [S] TO UPGRADE THE BANANA "
+           "CANNON                               ",
+           10);
   mvprintw(26, 5,
-           "       OR [A] TO RECOVER A LOST LIFE                                                                 ");
+           "       OR [A] TO RECOVER A LOST LIFE                               "
+           "                                  ");
   mvprintw(27, 5,
-           "                                                                                                     ");
+           "                                                                   "
+           "                                  ");
   mvprintw(28, 5,
-           "       COLLECT AS MUCH BONUSES AS POSSIBLE, BUT BEWARE! THEY CAN HIDE TRAPS!                         ");
+           "       COLLECT AS MUCH BONUSES AS POSSIBLE, BUT BEWARE! THEY CAN "
+           "HIDE TRAPS!                         ");
   mvprintw(29, 5,
-           "                                                                                                     ");
+           "                                                                   "
+           "                                  ");
   mvprintw(30, 5,
-           "                                                                                                     ");
+           "                                                                   "
+           "                                  ");
   mvprintw(31, 5,
-           "          [E][W] = SHOOT   [ARROWS] = MOVE    [A] = BUY EXTRA LIFE   [S] = DAMAGE UPGRADE            ");
+           "          [E][W] = SHOOT   [ARROWS] = MOVE    [A] = BUY EXTRA LIFE "
+           "  [S] = DAMAGE UPGRADE            ");
   mvprintw(32, 5,
-           "                            [R] = RELOAD AMMO    [SPACE] = PUNCH                                     ");
+           "                            [R] = RELOAD AMMO    [SPACE] = PUNCH   "
+           "                                  ");
   mvprintw(33, 5,
-           "                                                                                                     ");
+           "                                                                   "
+           "                                  ");
   mvprintw(34, 5,
-           "                                            menu [ESC]                                               ");
+           "                                            menu [ESC]             "
+           "                                  ");
   mvprintw(35, 5,
-           "                                                                                                     ");
+           "                                                                   "
+           "                                  ");
   attroff(COLOR_PAIR(2));  // CHIUSURA DEL COLORE VERDE
 }
 void DrawWindow::HowToPlay(int direction) {
@@ -274,37 +306,36 @@ void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
   mvprintw(startX - 2, startX + 47, "LIFE:");
   mvprintw(powerUp_x, powerUp_y, "POWER-UP");
 
-
   init_pair(3, COLOR_YELLOW, -1);
   attron(COLOR_PAIR(3));
   mvprintw(5, 94, "LEADERBOARD");
   attroff(COLOR_PAIR(3));
   mvprintw(7, 88, "-----------------------");
   std::string line;
-  std::ifstream leaderboard ("leaderBoard.txt");
-  if (leaderboard.is_open()){
+  std::ifstream leaderboard("leaderBoard.txt");
+  if (leaderboard.is_open()) {
     int i = 8;
-    while (getline(leaderboard,line)){
-      mvprintw(i=i+1, 90, "%s\n", line.c_str());
+    while (getline(leaderboard, line)) {
+      mvprintw(i = i + 1, 90, "%s\n", line.c_str());
       i++;
     }
     leaderboard.close();
   }
 
-
   mvprintw(26, 52, "MAGAZINE");
   mvprintw(26, 76, "%d", character.getGun().getMagazineAmmo());
   mvprintw(27, 52, "BANANA PEELS");
 
-  if(character.getGun().getTotalAmmo() >30){ 
+  if (character.getGun().getTotalAmmo() > 30) {
     statusAmmoColor = 21;
     init_pair(statusAmmoColor, COLOR_WHITE, -1);
-    attron(COLOR_PAIR(statusAmmoColor)); }
-  else if(character.getGun().getTotalAmmo() > 20 && character.getGun().getTotalAmmo() <= 30) { 
+    attron(COLOR_PAIR(statusAmmoColor));
+  } else if (character.getGun().getTotalAmmo() > 20 &&
+             character.getGun().getTotalAmmo() <= 30) {
     statusAmmoColor = 22;
     init_pair(statusAmmoColor, COLOR_YELLOW, -1);
-    attron(COLOR_PAIR(statusAmmoColor));}
-  else if(character.getGun().getTotalAmmo() <= 20 ) { 
+    attron(COLOR_PAIR(statusAmmoColor));
+  } else if (character.getGun().getTotalAmmo() <= 20) {
     statusAmmoColor = 23;
     init_pair(statusAmmoColor, COLOR_RED, -1);
     attron(COLOR_PAIR(statusAmmoColor));
@@ -321,8 +352,10 @@ void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
 
   init_pair(11, COLOR_WHITE, 232);
   attron(COLOR_PAIR(11));
-  drawRect(startX - 4, startY - 11, width + 12, heigth + 12, enemyList, 0, true);
-  drawRect(startX - 4, startY + 65, width + 40, heigth + 12, enemyList, 0, true);
+  drawRect(startX - 4, startY - 11, width + 12, heigth + 12, enemyList, 0,
+           true);
+  drawRect(startX - 4, startY + 65, width + 40, heigth + 12, enemyList, 0,
+           true);
   attroff(COLOR_PAIR(11));
 
   init_pair(3, COLOR_YELLOW, -1);  // FUNZIONI PER USARE I COLORI
@@ -447,18 +480,17 @@ void DrawWindow::printCharacterStats(pEnemyList list, Character character) {
     mvprintw(i, X_ElencoNemici, "[ALL ENEMY DEFEATED!]");
   }
 
-  if (character.getTotalAmmo() == 0){
+  if (character.getTotalAmmo() == 0) {
     init_pair(25, COLOR_RED, -1);
     attron(COLOR_PAIR(25));
     mvprintw(25, 52, "OUT OF AMMO!");
     attroff(COLOR_PAIR(25));
-  } else if( character.getGun().getMagazineAmmo() == 0){
+  } else if (character.getGun().getMagazineAmmo() == 0) {
     init_pair(25, COLOR_RED, -1);
     attron(COLOR_PAIR(25));
     mvprintw(25, 52, "PRESS [R] TO RELOAD!");
     attroff(COLOR_PAIR(25));
   }
-
 
   // CODICE CHE GESTISCE LA BARRA DELLA VITA
   // ------------------------------------------------------------------------------
@@ -546,7 +578,8 @@ void DrawWindow::moveEnemy(pEnemyList list, Character character,
   }
 }
 
-pRoom DrawWindow::saveRoom(pPosition mountainList, pPosition bonusList, pRoom roomList) {
+pRoom DrawWindow::saveRoom(pPosition mountainList, pPosition bonusList,
+                           pRoom roomList) {
   pRoom head = new Room;
   head->mountainList = mountainList;
   head->bonusList = bonusList;
@@ -558,8 +591,8 @@ pRoom DrawWindow::saveRoom(pPosition mountainList, pPosition bonusList, pRoom ro
 
 pRoom DrawWindow::changeRoom(Character &character, int &monsterCount,
                              int &round, pEnemyList &list,
-                             pPosition &mountainList, pPosition &bonusList, pRoom roomList,
-                             int &maxRound) {
+                             pPosition &mountainList, pPosition &bonusList,
+                             pRoom roomList, int &maxRound) {
   if (character.getX() == GAMEWIDTH) {
     if (maxRound > lenghtRoom(roomList)) {
       roomList = roomList->prec;
@@ -574,12 +607,12 @@ pRoom DrawWindow::changeRoom(Character &character, int &monsterCount,
       else if (maxRound > 3 && maxRound < 6) bonusCounter = 1;
       else bonusCounter = 2;
       */
-      if (maxRound < 2) bonusCounter = 0;
+      if (maxRound < 2)
+        bonusCounter = 0;
       else {
         srand(time(0));
         bonusCounter = rand() % 3 + 1;
       }
-
 
       roomList->mountainList = generateMountain(mountainList, mountainCount);
       roomList->bonusList = generateBonus(bonusList, bonusCounter);
@@ -597,7 +630,7 @@ pRoom DrawWindow::changeRoom(Character &character, int &monsterCount,
   return roomList;
 }
 
-void DrawWindow::printLoseScreen( float finalScore) {
+void DrawWindow::printLoseScreen(float finalScore) {
   init_pair(16, COLOR_RED, 232);
   attron(COLOR_PAIR(16));
   mvprintw(3, 3,
@@ -655,8 +688,7 @@ void DrawWindow::printLoseScreen( float finalScore) {
   mvprintw(19, 3,
            "     FINAL SCORE:                                                  "
            "                              ");
-  mvprintw(19, 21,
-           "%.0f", finalScore);
+  mvprintw(19, 21, "%.0f", finalScore);
   mvprintw(20, 3,
            "                                                                   "
            "                              ");
@@ -669,26 +701,25 @@ void DrawWindow::printLoseScreen( float finalScore) {
   attroff(COLOR_PAIR(17));
 }
 
-void DrawWindow::saveRecord(float finalScore, char name[]){
+void DrawWindow::saveRecord(float finalScore, char name[]) {
   std::fstream board;
-	board.open("leaderBoard.txt", std::ios::app);
-	if (board && finalScore > 0) {
-		board << name << ": " << finalScore << "\n";
+  board.open("leaderBoard.txt", std::ios::app);
+  if (board && finalScore > 0) {
+    board << name << ": " << finalScore << "\n";
     board.close();
-	}
+  }
 }
 
-  
 void DrawWindow::loseScreen(int direction, float finalScore) {
   char name[50];
   char name2[10];
   while (direction != 0) {
     printLoseScreen(finalScore);
-    strcat(name,name2);
+    strcat(name, name2);
 
     init_pair(17, COLOR_GREEN, 232);
     attron(COLOR_PAIR(17));
-    mvprintw(21, 8,"INSERT NAME: %s",name);
+    mvprintw(21, 8, "INSERT NAME: %s", name);
     attroff(COLOR_PAIR(17));
     refresh();
     direction = getstr(name2);

@@ -34,9 +34,9 @@ class DrawWindow {
   int lenghtRoom(pRoom list);
   void printCharacterStats(pEnemyList list, Character character);
   void printEnemy(pEnemyList list, DrawWindow drawWindow);
-  pRoom changeRoom(Character &character, int &monsterCount,
-                   int &round, pEnemyList &list, pPosition &mountainList, pPosition &bonusList,
-                   pRoom roomList, int &maxRound);
+  pRoom changeRoom(Character &character, int &monsterCount, int &round,
+                   pEnemyList &list, pPosition &mountainList,
+                   pPosition &bonusList, pRoom roomList, int &maxRound);
 
   pPosition generateMountain(pPosition list, int &mountainCount);
   pPosition generateBonus(pPosition bonusList, int &bonusCount);
@@ -44,13 +44,10 @@ class DrawWindow {
   void moveEnemy(pEnemyList list, Character character, DrawWindow drawWindow,
                  long points);
   Position randomPosition(int startRange, int endRange);
-  //pPosition generateMountain(pPosition list, int &mountainNumber);
+  // pPosition generateMountain(pPosition list, int &mountainNumber);
   void printMountain(pPosition list);
   void printBonus(pPosition bonusList);
 
   pRoom saveRoom(pPosition mountainList, pPosition bonusList, pRoom roomList);
   void saveRecord(float finalScore, char name[]);
 };
-
-
-

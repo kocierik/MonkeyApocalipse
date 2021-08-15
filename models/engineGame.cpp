@@ -7,6 +7,7 @@
 #include <ctime>
 #include <iostream>
 
+
 // Numero di casi dello switch che gestisce i bonus. Equivale a: n bonus - 1
 #define N_SWITCH_CASE 14
 
@@ -39,7 +40,8 @@ void EngineGame::baseCommand() {
   start_color();
 }
 
-Pbullet EngineGame::createBullet(Character character, bool isPlayerBullet, bool moveFoward, Pbullet &shoots) {
+Pbullet EngineGame::createBullet(Character character, bool isPlayerBullet,
+                                 bool moveFoward, Pbullet &shoots) {
   Pbullet bullet = new Bullet;
   bullet->x = character.getX();
   bullet->y = character.getY();
@@ -55,11 +57,13 @@ void EngineGame::enemyShootBullets(pEnemyList listEnemy, Character character) {
   while (listEnemy != NULL) {
     if (this->whileCountEnemy % 20 == 0) {
       bool shootFoward = false;
-      if (character.getX() > listEnemy->enemy.getX())     // Se il player è alla sx del nemico
-        shootFoward = true;                               // Lo sparo sarà verso sx
+      if (character.getX() >
+          listEnemy->enemy.getX())  // Se il player è alla sx del nemico
+        shootFoward = true;         // Lo sparo sarà verso sx
       this->shootsEnemys =
           // Colpo del nemico -> false; Sparo avanti/indieto -> moveFoward
-          createBullet(listEnemy->enemy, false, shootFoward, this->shootsEnemys);
+          createBullet(listEnemy->enemy, false, shootFoward,
+                       this->shootsEnemys);
     }
     listEnemy = listEnemy->next;
   }
@@ -68,8 +72,10 @@ void EngineGame::enemyShootBullets(pEnemyList listEnemy, Character character) {
 void EngineGame::shootPlayerBullet(Gun playerGun) {
   Pbullet bullet = this->shoots;
   while (bullet != NULL) {
-    if (bullet->moveFoward) bullet->x += bullet->speed;
-    else bullet->x -= bullet->speed;
+    if (bullet->moveFoward)
+      bullet->x += bullet->speed;
+    else
+      bullet->x -= bullet->speed;
     move(bullet->y, bullet->x);
     init_pair(10, COLOR_YELLOW, -1);  // SPARA BANANE GIALLE
     attron(COLOR_PAIR(10));
@@ -87,8 +93,11 @@ void EngineGame::shootPlayerBullet(Gun playerGun) {
 void EngineGame::shootEnemyBullet() {
   Pbullet bullet = this->shootsEnemys;
   while (bullet != NULL) {
-    if (bullet->moveFoward) bullet->x += bullet->speed;
-    else bullet->x -= bullet->speed;;
+    if (bullet->moveFoward)
+      bullet->x += bullet->speed;
+    else
+      bullet->x -= bullet->speed;
+    ;
     move(bullet->y, bullet->x);
     printw("-");
     // printw((const char *)enemyGun.getBulletSkin());
@@ -99,7 +108,8 @@ void EngineGame::shootEnemyBullet() {
 void EngineGame::destroyBullet(Pbullet &shoots) {
   Pbullet head = shoots, prev = shoots, tmp;
   while (head != NULL) {
-    int range = -1; if (head->moveFoward) range = 1;
+    int range = -1;
+    if (head->moveFoward) range = 1;
     /* isPlayerBullet è da passare alla funzione
     int range = 0;
     if (isPlayerBullet) {                 // Se spara il player
@@ -197,10 +207,13 @@ void EngineGame::checkEnemyCollision(Character &character,
          character.getY() + 1 == enemyList->enemy.getY()) ||
         (character.getX() == enemyList->enemy.getX() &&
          character.getY() - 1 == enemyList->enemy.getY())) {
-      character.decreaseLife(1);        // In uno scontro fisico il player perde 1 di vita
-      enemyList->enemy.decreaseLife(2); // In uno scontro fisico il nemico perde 2 di vita
+      character.decreaseLife(
+          1);  // In uno scontro fisico il player perde 1 di vita
+      enemyList->enemy.decreaseLife(
+          2);  // In uno scontro fisico il nemico perde 2 di vita
 
-      if (enemyList->enemy.getLife() <= 0) enemyList = destroyEnemy(tmp, enemyList->enemy);
+      if (enemyList->enemy.getLife() <= 0)
+        enemyList = destroyEnemy(tmp, enemyList->enemy);
 
       init_pair(13, COLOR_RED, -1);
       attron(COLOR_PAIR(13));
@@ -211,12 +224,14 @@ void EngineGame::checkEnemyCollision(Character &character,
       attroff(COLOR_PAIR(13));
     }
 
-    if(character.getX() + 1 == enemyList->enemy.getX() && character.getY() == enemyList->enemy.getY()){  //collissione frontale
+    if (character.getX() + 1 == enemyList->enemy.getX() &&
+        character.getY() == enemyList->enemy.getY()) {  // collissione frontale
       character.decreaseLife(1);
 
       init_pair(13, COLOR_RED, -1);
       attron(COLOR_PAIR(13));
-      mvprintw(character.getY(), character.getX(),"M");  // Il player diventa rosso quando si scontra coi nemici
+      mvprintw(character.getY(), character.getX(),
+               "M");  // Il player diventa rosso quando si scontra coi nemici
       attroff(COLOR_PAIR(13));
     }
     enemyList = enemyList->next;
@@ -225,13 +240,16 @@ void EngineGame::checkEnemyCollision(Character &character,
 
 void EngineGame::checkShootEnemyCollision(pEnemyList enemyList,
                                           Character &character, Pbullet &shoots,
-                                          float &pointOnScreen, bool immortalityCheck) {
+                                          float &pointOnScreen,
+                                          bool immortalityCheck) {
   bool isCollisionEnemy = false, isCollisionCharacter = false, pause = false;
   Pbullet head = shoots;
   pEnemyList tmp = enemyList;
   // int range = -1;
-  while (enemyList != NULL && !isCollisionEnemy && !isCollisionCharacter) {   // Per ogni nemico
-    while (shoots != NULL && !isCollisionEnemy && !isCollisionCharacter) {    // Per ogni priettile di ogni nemico
+  while (enemyList != NULL && !isCollisionEnemy &&
+         !isCollisionCharacter) {  // Per ogni nemico
+    while (shoots != NULL && !isCollisionEnemy &&
+           !isCollisionCharacter) {  // Per ogni priettile di ogni nemico
       /* NON CANCELLARE - Utile per capire meglio il sottostante codice ridotto
       if (shoots->isPlayerBullet) {     // Colpo del player
         int x = enemyList->enemy.getX(), y = enemyList->enemy.getY();
@@ -253,13 +271,19 @@ void EngineGame::checkShootEnemyCollision(pEnemyList enemyList,
         }
       }
       */
-      if (shoots->isPlayerBullet) {     // Colpo del player
+      if (shoots->isPlayerBullet) {  // Colpo del player
         int x = enemyList->enemy.getX(), y = enemyList->enemy.getY();
-        if ((x == shoots->x + 1 && y == shoots->y) || (x == shoots->x - 1 && y == shoots->y)) // Controllo valido per i foward and backward bullets del player
+        if ((x == shoots->x + 1 && y == shoots->y) ||
+            (x == shoots->x - 1 &&
+             y == shoots->y))  // Controllo valido per i foward and backward
+                               // bullets del player
           isCollisionEnemy = true;
-      } else {                          // Colpo del nemico
+      } else {  // Colpo del nemico
         int x = character.getX(), y = character.getY();
-        if ((x == shoots->x + 1 && y == shoots->y) || (x == shoots->x - 1 && y == shoots->y)) // Controllo valido per i foward and backward bullets del nemico
+        if ((x == shoots->x + 1 && y == shoots->y) ||
+            (x == shoots->x - 1 &&
+             y == shoots->y))  // Controllo valido per i foward and backward
+                               // bullets del nemico
           isCollisionCharacter = true;
       }
       shoots = shoots->next;
@@ -275,14 +299,15 @@ void EngineGame::checkShootEnemyCollision(pEnemyList enemyList,
   attron(COLOR_PAIR(13));
 
   if (isCollisionEnemy) {
-    mvprintw(enemyList->enemy.getY(), enemyList->enemy.getX(), "E");  // Il nemico diventa rosso quando viene colpito dal proiettile del player
+    mvprintw(enemyList->enemy.getY(), enemyList->enemy.getX(),
+             "E");  // Il nemico diventa rosso quando viene colpito dal
+                    // proiettile del player
     enemyList->enemy.decreaseLife(character.getGun().getDamage());
     if (enemyList->enemy.getLife() <= 0) {
       enemyList = destroyEnemy(tmp, enemyList->enemy);
       increasePointOnScreen(pointOnScreen, scoreForKill);
     }
-  }
-  else if (isCollisionCharacter && immortalityCheck == false) {
+  } else if (isCollisionCharacter && immortalityCheck == false) {
     character.decreaseLife(enemyList->enemy.getGun().getDamage());
     checkDeath(pause, character);
 
@@ -317,9 +342,10 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
         bonusPicked = true;  // FLAG CHE INDICA SE È STATO RACCOLTO
         immortalityCheck = true;
         bonusType = rand() % N_SWITCH_CASE;  // 0 <= bonusType <= N_SWITCH_CASE
-        roomList -> bonusList = getBonus(drawWindow, character.getX(), character.getY() - 1,
-                             roomList -> next -> bonusList, enemyList, round, pointsOnScreen,
-                             character, bonusType);
+        roomList->bonusList =
+            getBonus(drawWindow, character.getX(), character.getY() - 1,
+                     roomList->next->bonusList, enemyList, round,
+                     pointsOnScreen, character, bonusType);
         character.directionUp();
       }
       break;
@@ -331,9 +357,10 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
         bonusPicked = true;
         immortalityCheck = true;
         bonusType = rand() % N_SWITCH_CASE;
-        roomList -> bonusList = getBonus(drawWindow, character.getX(), character.getY() + 1,
-                             roomList -> next -> bonusList, enemyList, round, pointsOnScreen,
-                             character, bonusType);
+        roomList->bonusList =
+            getBonus(drawWindow, character.getX(), character.getY() + 1,
+                     roomList->next->bonusList, enemyList, round,
+                     pointsOnScreen, character, bonusType);
         character.directionDown();
       }
       break;
@@ -345,9 +372,10 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
         bonusPicked = true;
         immortalityCheck = true;
         bonusType = rand() % N_SWITCH_CASE;  // GENERA IL TIPO DI BONUS.
-        roomList -> bonusList = getBonus(drawWindow, character.getX() - 1, character.getY(),
-                             roomList -> next -> bonusList, enemyList, round, pointsOnScreen,
-                             character, bonusType);
+        roomList->bonusList =
+            getBonus(drawWindow, character.getX() - 1, character.getY(),
+                     roomList->next->bonusList, enemyList, round,
+                     pointsOnScreen, character, bonusType);
         character.directionLeft();
       }
       break;
@@ -359,24 +387,27 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
         bonusPicked = true;
         immortalityCheck = true;
         bonusType = rand() % N_SWITCH_CASE;
-        roomList -> bonusList = getBonus(drawWindow, character.getX() + 1, character.getY(),
-                             roomList -> next -> bonusList, enemyList, round, pointsOnScreen,
-                             character, bonusType);
+        roomList->bonusList =
+            getBonus(drawWindow, character.getX() + 1, character.getY(),
+                     roomList->next->bonusList, enemyList, round,
+                     pointsOnScreen, character, bonusType);
         character.directionRight();
       }
       break;
-    case 'E':   // Sparo in avanti del player
+    case 'E':  // Sparo in avanti del player
     case 'e':
-      if (whileCount / 2 > 1 && character.getGun().getTotalAmmo() > 0 && character.getGun().getMagazineAmmo() > 0) {
+      if (whileCount / 2 > 1 && character.getGun().getTotalAmmo() > 0 &&
+          character.getGun().getMagazineAmmo() > 0) {
         character.decreaseTotalAmmo(1);
         character.decreaseMagazineAmmo(1);
         this->shoots = createBullet(character, true, true, this->shoots);
         whileCount = 0;
       }
       break;
-    case 'W':   // Sparo all'indietro del player
+    case 'W':  // Sparo all'indietro del player
     case 'w':
-      if (whileCount / 2 > 1 && character.getGun().getTotalAmmo() > 0 && character.getGun().getMagazineAmmo() > 0) {
+      if (whileCount / 2 > 1 && character.getGun().getTotalAmmo() > 0 &&
+          character.getGun().getMagazineAmmo() > 0) {
         character.decreaseTotalAmmo(1);
         character.decreaseMagazineAmmo(1);
         this->shoots = createBullet(character, true, false, this->shoots);
@@ -385,7 +416,10 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
       break;
     case 'R':
     case 'r':
-      if (character.getGun().getMagazineAmmo() >= 0 && character.getGun().getMagazineAmmo() < character.getGun().getMagazineCapacity() && character.getTotalAmmo() > 0)
+      if (character.getGun().getMagazineAmmo() >= 0 &&
+          character.getGun().getMagazineAmmo() <
+              character.getGun().getMagazineCapacity() &&
+          character.getTotalAmmo() > 0)
         character.reload();
       break;
     case 'a':  // CONTROLLA L'AQUISTO DI VITE, MASSIMO 3 -------------------
@@ -414,14 +448,16 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
   }
 }
 
-void EngineGame::gorillaPunch(int direction, Character &character, pEnemyList enemyList , float &pointOnScreen) {
+void EngineGame::gorillaPunch(int direction, Character &character,
+                              pEnemyList enemyList, float &pointOnScreen) {
   pEnemyList tmp = enemyList;
 
-  if(direction == 32){
+  if (direction == 32) {
     mvprintw(character.getY(), character.getX() + 1, "o");
 
     while (enemyList != NULL) {
-      if (character.getX() + 1 == enemyList->enemy.getX() && character.getY() == enemyList->enemy.getY()) {
+      if (character.getX() + 1 == enemyList->enemy.getX() &&
+          character.getY() == enemyList->enemy.getY()) {
         enemyList->enemy.decreaseLife(40);
 
         if (enemyList->enemy.getLife() <= 0) {
@@ -431,7 +467,8 @@ void EngineGame::gorillaPunch(int direction, Character &character, pEnemyList en
 
         init_pair(13, COLOR_RED, -1);
         attron(COLOR_PAIR(13));
-        mvprintw(enemyList->enemy.getY(), enemyList->enemy.getX(), "E");  // Il nemico diventa rosso quando si scontra col player
+        mvprintw(enemyList->enemy.getY(), enemyList->enemy.getX(),
+                 "E");  // Il nemico diventa rosso quando si scontra col player
         attroff(COLOR_PAIR(13));
       }
       enemyList = enemyList->next;
@@ -440,8 +477,10 @@ void EngineGame::gorillaPunch(int direction, Character &character, pEnemyList en
 }
 
 void EngineGame::showBonusOnScreen(bool &upgradeBuyed, int &upgradeType,
-                           int &upgradeTime, bool &bonusPicked, int bonustype,
-                           int &bonusTime, bool &immortalitycheck, int &immortalityTime) {
+                                   int &upgradeTime, bool &bonusPicked,
+                                   int bonustype, int &bonusTime,
+                                   bool &immortalitycheck,
+                                   int &immortalityTime) {
   int x = 25;
   int y = 6;
   int disclaimerTimeLimit = 40;
@@ -501,8 +540,8 @@ void EngineGame::showBonusOnScreen(bool &upgradeBuyed, int &upgradeType,
     immortalityTime++;
   }
 
-
-  if (bonusTime > disclaimerTimeLimit) {  // LASCIA IL BONUS VISIBILE PER "X" CICLI
+  if (bonusTime >
+      disclaimerTimeLimit) {  // LASCIA IL BONUS VISIBILE PER "X" CICLI
     bonusPicked = false;
     bonusTime = 0;  // RESETTA IL TIMER PER IL PROSSIMO BONUS UNA VOLTA SCADUTO
   }
@@ -515,12 +554,14 @@ void EngineGame::showBonusOnScreen(bool &upgradeBuyed, int &upgradeType,
     upgradeTime++;
   }
 
-  if (immortalityTime > immortalityTimeLimit) {  //   GESTISCE LA DURATA DELL'IMMORTALITÀ
+  if (immortalityTime >
+      immortalityTimeLimit) {  //   GESTISCE LA DURATA DELL'IMMORTALITÀ
     immortalitycheck = false;
     immortalityTime = 0;
   }
 
-  if (upgradeTime > disclaimerTimeLimit) {  // STESSO DI SOPRA MA CON GLI UPGRADE
+  if (upgradeTime >
+      disclaimerTimeLimit) {  // STESSO DI SOPRA MA CON GLI UPGRADE
     upgradeBuyed = false;
     upgradeTime = 0;
   }
@@ -542,9 +583,9 @@ void EngineGame::choiceGame(DrawWindow drawWindow, int *direction,
   clear();
 }
 
-pEnemyList EngineGame::generateNormalEnemy(int *monsterCount, char skin, Gun gun,
-                                     int life, pEnemyList list, int &round,
-                                     DrawWindow drawWindow) {
+pEnemyList EngineGame::generateNormalEnemy(int *monsterCount, char skin,
+                                           Gun gun, int life, pEnemyList list,
+                                           int &round, DrawWindow drawWindow) {
   bool isEmpty = false;
   while (*monsterCount > 0) {
     int x = drawWindow.randomPosition(40, 70).x;
@@ -605,17 +646,23 @@ pPosition EngineGame::getBonus(DrawWindow drawWindow, int x, int y,
           break;
         case 6:  // Bonus name: "EAT 1 BANANA [+10 HP]"
           character.increaseLife(10);
-          if(character.getLife() > 100) { character.setLife(100);}
+          if (character.getLife() > 100) {
+            character.setLife(100);
+          }
           end = true;
           break;
         case 7:  // Bonus name: "EAT 2 BANANA [+20 HP]"
           character.increaseLife(20);
-          if(character.getLife() > 100) { character.setLife(100);}
+          if (character.getLife() > 100) {
+            character.setLife(100);
+          }
           end = true;
           break;
         case 8:  // Bonus name: "BANANA SMOOTHIE [+40 HP]"
           character.increaseLife(40);
-          if(character.getLife() > 100) { character.setLife(100);}
+          if (character.getLife() > 100) {
+            character.setLife(100);
+          }
           end = true;
           break;
         case 9:  // Bonus name: "PEEL LOADER [+20 PEELS]"
@@ -634,7 +681,7 @@ pPosition EngineGame::getBonus(DrawWindow drawWindow, int x, int y,
           while (enemyList != NULL) {
             enemyList->enemy.increaseLife(25);  // Aumenta la vita dei nemici
             Gun tmpBetterGun = enemyList->enemy.getGun();
-            tmpBetterGun.increaseDamage(10);    // Aumenta il danno dei nemici
+            tmpBetterGun.increaseDamage(10);  // Aumenta il danno dei nemici
             enemyList->enemy.setGun(tmpBetterGun);
             enemyList = enemyList->next;
           }
@@ -643,22 +690,23 @@ pPosition EngineGame::getBonus(DrawWindow drawWindow, int x, int y,
         case 13:  // Bonus name: "PEELS ON FIRE! [+5 DAMAGE]"
           if (character.getGun().getDamage() < 40) {
             Gun tmpBetterGun = character.getGun();
-            tmpBetterGun.increaseDamage(5);    // Aumenta il danno dell'arma del player
+            tmpBetterGun.increaseDamage(
+                5);  // Aumenta il danno dell'arma del player
             character.setGun(tmpBetterGun);
-          } else character.getGun().increaseTotalAmmo(30);
+          } else
+            character.getGun().increaseTotalAmmo(30);
           end = true;
           break;
         case 14:  // Bonus name: "MONKEY GOD! [IMMORTALITY]"
           end = true;
-         break;
-         /*
-        case n:     // Malus name: "BANANA FRAGRANCE" // Genera n nemici
-            int tmpQuantity = 3, tmpRound = round;
-            enemyList = generateNormalEnemy (&tmpQuantity, 'X', 10, 100, enemyList,
-          tmpRound, drawWindow); drawWindow.printEnemy (enemyList, drawWindow);
-            end = true;
-            break;
-        */
+          break;
+          /*
+         case n:     // Malus name: "BANANA FRAGRANCE" // Genera n nemici
+             int tmpQuantity = 3, tmpRound = round;
+             enemyList = generateNormalEnemy (&tmpQuantity, 'X', 10, 100,
+         enemyList, tmpRound, drawWindow); drawWindow.printEnemy (enemyList,
+         drawWindow); end = true; break;
+         */
       }
       if (end) {
         bonusList = deletePosition(tmpHead, bonusList);
@@ -770,7 +818,9 @@ void EngineGame::money(int &bananas, pEnemyList enemyList, int maxRound,
   }
   init_pair(20, COLOR_GREEN, -1);
   attron(COLOR_PAIR(20));
-  if (bananas >= 10) { mvprintw(24, 52,"UPGRADE PURCHASABLE!"); }
+  if (bananas >= 10) {
+    mvprintw(24, 52, "UPGRADE PURCHASABLE!");
+  }
   attroff(COLOR_PAIR(20));
 }
 
@@ -789,7 +839,7 @@ void EngineGame::isPause(int &direction, bool &pause) {
   if (direction == 27) pause = true;
 }
 
-void EngineGame::increasePointOnScreen( float &pointOnScreen, int pointsAdded) {
+void EngineGame::increasePointOnScreen(float &pointOnScreen, int pointsAdded) {
   pointOnScreen += pointsAdded;
 }
 
@@ -805,27 +855,27 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
   int immortalityTime = 0;
   int bonusTime = 0, upgradeTime = 0;
   int bonusType = 0, upgradeType = 0;
-  //int monsterCount = 1, bonusCount = 1;
+  // int monsterCount = 1, bonusCount = 1;
   int monsterCount = 1;
   int round = 0, maxRound = 1;
   pEnemyList enemyList = NULL;
   pPosition mountainList = new Position;
   pPosition bonusList = new Position;
   pRoom roomList = new Room;
-  Gun basicEnemyGun('-', 10, -1, -1); // CHANGE
+  Gun basicEnemyGun('-', 10, -1, -1);  // CHANGE
   clear();
   while (!pause) {
     roomList =
-        drawWindow.changeRoom(character, monsterCount, round,
-                              enemyList, mountainList, bonusList, roomList,
-                              maxRound);
-    enemyList = generateNormalEnemy(&monsterCount, 'E', basicEnemyGun, 100, enemyList,
-                              round, drawWindow);
+        drawWindow.changeRoom(character, monsterCount, round, enemyList,
+                              mountainList, bonusList, roomList, maxRound);
+    enemyList = generateNormalEnemy(&monsterCount, 'E', basicEnemyGun, 100,
+                                    enemyList, round, drawWindow);
 
     getInput(direction);
     moveCharacter(drawWindow, character, direction, roomList, enemyList, round,
                   pointsOnScreen, bananas, powerUpDMG, bonusPicked, bonusType,
-                  bonusTime, upgradeBuyed, upgradeType, upgradeTime, immortalityCheck);
+                  bonusTime, upgradeBuyed, upgradeType, upgradeTime,
+                  immortalityCheck);
     clear();
     drawWindow.printCharacter(character.getX(), character.getY(),
                               character.getSkin());
@@ -856,15 +906,18 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     gorillaPunch(direction, character, enemyList, pointsOnScreen);
 
     money(bananas, enemyList, maxRound, roundPayed, character);
-    checkShootEnemyCollision(enemyList, character, this->shoots, pointsOnScreen, immortalityCheck);
-    checkShootEnemyCollision(enemyList, character, this->shootsEnemys, pointsOnScreen, immortalityCheck);
+    checkShootEnemyCollision(enemyList, character, this->shoots, pointsOnScreen,
+                             immortalityCheck);
+    checkShootEnemyCollision(enemyList, character, this->shootsEnemys,
+                             pointsOnScreen, immortalityCheck);
     refresh();
 
-    destroyBullet(this->shoots);           // Check per i colpi sparati dai nemici (???)
-    destroyBullet(this->shootsEnemys);    // Check per i colpi sparati dal player (???)
+    destroyBullet(this->shoots);  // Check per i colpi sparati dai nemici (???)
+    destroyBullet(
+        this->shootsEnemys);  // Check per i colpi sparati dal player (???)
 
-    showBonusOnScreen(upgradeBuyed, upgradeType, upgradeTime, bonusPicked, bonusType,
-              bonusTime,immortalityCheck, immortalityTime);
+    showBonusOnScreen(upgradeBuyed, upgradeType, upgradeTime, bonusPicked,
+                      bonusType, bonusTime, immortalityCheck, immortalityTime);
     checkDeath(pause, character);
 
     timeout(50);

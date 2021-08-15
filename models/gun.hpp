@@ -7,13 +7,14 @@ class Gun {
  protected:
   char bulletSkin;
   int damage;
-  int totalAmmo;        // Munizioni totali
-  int magazineAmmo;     // Colpi nel caricatore
-  int magazineCapacity; // Capacità del caricatore
+  int totalAmmo;         // Munizioni totali
+  int magazineAmmo;      // Colpi nel caricatore
+  int magazineCapacity;  // Capacità del caricatore
 
  public:
   Gun();
-  Gun(char in_bulletSkin, int in_damage, int in_totalAmmo, int in_magazineCapacity);
+  Gun(char in_bulletSkin, int in_damage, int in_totalAmmo,
+      int in_magazineCapacity);
 
   char getBulletSkin();
 

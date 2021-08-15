@@ -21,7 +21,8 @@ class EngineGame {
   EngineGame(int frameGameX, int frameGameY, int heigth, int width);
   void printList(pPosition list);
   void baseCommand();
-  Pbullet createBullet(Character character, bool isPlayerBullet, bool moveFoward, Pbullet &shoots);
+  Pbullet createBullet(Character character, bool isPlayerBullet,
+                       bool moveFoward, Pbullet &shoots);
   void enemyShootBullets(pEnemyList listEnemy, Character character);
 
   void shootPlayerBullet(Gun playerGun);
@@ -29,11 +30,14 @@ class EngineGame {
 
   void destroyBullet(Pbullet &shoots);
   pEnemyList destroyEnemy(pEnemyList list, Enemy enemy);
-  pPosition deletePosition(pPosition list, pPosition bonus);  // Funzione per eliminare bonus e montagne
+  pPosition deletePosition(
+      pPosition list,
+      pPosition bonus);  // Funzione per eliminare bonus e montagne
 
   void checkEnemyCollision(Character &character, pEnemyList enemyList);
   void checkShootEnemyCollision(pEnemyList enemys, Character &character,
-                                Pbullet &shoots, float &pointOnScreen, bool immortalityCheck);
+                                Pbullet &shoots, float &pointOnScreen,
+                                bool immortalityCheck);
   bool isEmpty(int x, int y);
   bool isBonus(int x, int y);
   bool isMountain(int x, int y);
@@ -46,9 +50,10 @@ class EngineGame {
                      bool &upgradeBuyed, int &upgradeType, int &upgradeTime,
                      bool &immortalityCheck);
 
-  pEnemyList generateNormalEnemy(int *monsterCount, char skin, Gun gun, int life,
-                           pEnemyList list, int &round, DrawWindow drawWindow);
-  
+  pEnemyList generateNormalEnemy(int *monsterCount, char skin, Gun gun,
+                                 int life, pEnemyList list, int &round,
+                                 DrawWindow drawWindow);
+
   pPosition getBonus(DrawWindow drawWindow, int x, int y, pPosition bonusList,
                      pEnemyList &enemyList, int round, float &pointsOnScreen,
                      Character &character, int &bonusType);
@@ -69,6 +74,8 @@ class EngineGame {
              Character &character);
   void increasePointOnScreen(float &pointOnScreen, int pointsAdded);
   void showBonusOnScreen(bool &upgradeBuyed, int &upgradeType, int &upgradeTime,
-                 bool &bonusPicked, int bonusType, int &bonusTime, bool &immortalitycheck, int &immortalityTime);
-  void gorillaPunch(int direction, Character &character, pEnemyList enemyList, float &pointOnScreen);
+                         bool &bonusPicked, int bonusType, int &bonusTime,
+                         bool &immortalitycheck, int &immortalityTime);
+  void gorillaPunch(int direction, Character &character, pEnemyList enemyList,
+                    float &pointOnScreen);
 };
