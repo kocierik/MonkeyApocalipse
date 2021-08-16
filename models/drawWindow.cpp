@@ -300,7 +300,7 @@ void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
                            int maxRound, pRoom roomList) {
   int powerUp_y = 52;
   int powerUp_x = 23;
-  int statusAmmoColor;
+  int statusAmmoColor = 0;
 
   mvprintw(startX - 2, startY + 5, "SCORE:");
   mvprintw(startX - 2, startX + 47, "LIFE:");
@@ -472,7 +472,7 @@ void DrawWindow::printCharacterStats(pEnemyList list, Character character) {
   int X_ElencoNemici = 19;  // gestisce la x da dove inizia la lista dei nemici
   int BarStart = 56;        // gestisce dove partono gli oggetti della barra
   int AddBar = BarStart;    // cicla per aggiungere un cordinata
-  int healtColorPair;
+  int healtColorPair = 0;
 
   if (lenghtList(list) > 0) {
     mvprintw(i, X_ElencoNemici, "Enemy left: %d", lenghtList(list));
