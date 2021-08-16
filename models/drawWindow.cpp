@@ -300,7 +300,7 @@ void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
                            int maxRound, pRoom roomList) {
   int powerUp_y = 52;
   int powerUp_x = 23;
-  int statusAmmoColor = character.getGun().getTotalAmmo();
+  int statusAmmoColor;
 
   mvprintw(startX - 2, startY + 5, "SCORE:");
   mvprintw(startX - 2, startX + 47, "LIFE:");
