@@ -415,7 +415,7 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
       if (character.getGun().getMagazineAmmo() >= 0 &&
           character.getGun().getMagazineAmmo() <
               character.getGun().getMagazineCapacity() &&
-          character.getTotalAmmo() > 0)
+          character.getGun().getTotalAmmo() > 0)
         character.reload();
       break;
     case 'a':  // CONTROLLA L'AQUISTO DI VITE, MASSIMO 3 -------------------

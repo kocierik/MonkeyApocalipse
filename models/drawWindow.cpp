@@ -480,7 +480,7 @@ void DrawWindow::printCharacterStats(pEnemyList list, Character character) {
     mvprintw(i, X_ElencoNemici, "[ALL ENEMY DEFEATED!]");
   }
 
-  if (character.getTotalAmmo() == 0) {
+  if (character.getGun().getTotalAmmo() == 0) {
     init_pair(25, COLOR_RED, -1);
     attron(COLOR_PAIR(25));
     mvprintw(25, 52, "OUT OF AMMO!");
