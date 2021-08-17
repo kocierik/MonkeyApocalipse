@@ -8,3 +8,11 @@ Player::Player(int x, int y, char skin, int life, int numberLife, Gun gun)
   this->numberLife = numberLife;
   this->gun = gun;
 }
+Player::Player(int x, int y, char skin, int life, int numberLife)
+    : Character::Character(x, y, skin, life, numberLife) {
+  this->x = x;
+  this->y = y;
+  this->skin = skin;
+  this->life = life;
+  this->numberLife = numberLife;
+}

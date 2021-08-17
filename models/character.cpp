@@ -12,6 +12,17 @@ Character::Character(int x, int y, char skin, int life, int numberLife,
   this->numberLife = numberLife;
   this->gun = gun;
 }
+Character::Character(int x, int y, char skin, int life, int numberLife) {
+  this->direction = 0;
+  this->x = x;
+  this->y = y;
+  this->skin = skin;
+  this->life = life;
+  this->Nbullet = 0;
+  this->numberLife = numberLife;
+  Gun tmpGun (' ', 0, 0, 0);
+  this->gun = tmpGun;
+}
 
 Character::Character() {}
 
@@ -56,8 +67,11 @@ void Character::decreaseMagazineAmmo(int lessAmmo) {
 }
 void Character::reload() {
   if (gun.getTotalAmmo() >= 10) {
-    this->gun.setMagazineAmmo(gun.getMagazineCapacity());
+    int magazineBeforReload = this->gun.getMagazineAmmo();
+    this->gun.setMagazineAmmo(this->gun.getMagazineCapacity());
+    this->gun.decreaseTotalAmmo(this->gun.getMagazineCapacity() - magazineBeforReload);
   } else if (gun.getTotalAmmo() < 10) {
-    this->gun.setMagazineAmmo(gun.getTotalAmmo());
+    this->gun.setMagazineAmmo(this->gun.getTotalAmmo());
+    this->gun.setTotalAmmo(0);
   }
 }

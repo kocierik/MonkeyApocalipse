@@ -30,6 +30,7 @@ class Character {
 
  public:
   Character(int x, int y, char skin, int life, int numberLife, Gun gun);
+  Character(int x, int y, char skin, int life, int numberLife);
   Character();
 
   void setX(int x);
