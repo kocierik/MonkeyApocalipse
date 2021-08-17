@@ -578,18 +578,18 @@ void EngineGame::choiceGame(DrawWindow drawWindow, int *direction,
   clear();
 }
 
-pEnemyList EngineGame::generateNormalEnemy(int *monsterCount, char skin,
+pEnemyList EngineGame::generateNormalEnemy(int *normalEnemyCount, char skin,
                                            Gun gun, int life, pEnemyList list,
                                            int &round, DrawWindow drawWindow) {
   bool isEmpty = false;
-  while (*monsterCount > 0) {
+  while (*normalEnemyCount > 0) {
     int x = drawWindow.randomPosition(40, 70).x;
     int y = drawWindow.randomPosition(8, 19).y;
     pEnemyList head = new EnemyList;
     Enemy enemy(x, y, skin, life, 1, gun);
     head->enemy = enemy;
     head->next = list;
-    *monsterCount -= 1;
+    *normalEnemyCount -= 1;
     list = head;
     isEmpty = true;
   }
@@ -852,27 +852,24 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
   int immortalityTime = 0;
   int bonusTime = 0, upgradeTime = 0;
   int bonusType = 0, upgradeType = 0;
-  // int monsterCount = 1, bonusCount = 1;
-  int monsterCount = 1;
+  int normalEnemyCount = 1, specialEnemyCount = 1;
   int round = 0, maxRound = 1;
-  pEnemyList enemyList = NULL;
-  pPosition mountainList = new Position;
-  pPosition bonusList = new Position;
+  pEnemyList normalEnemyList = NULL, specialEnemyList = NULL;
+  pPosition mountainList = new Position, bonusList = new Position;
   pRoom roomList = new Room;
   
-  Gun basicEnemyGun('-', 10, -1, -1);  // CHANGE
-  Gun basicPlayerGun('~', 25, 40, 10);
+  Gun basicEnemyGun('-', 10, -1, -1), basicPlayerGun('~', 25, 40, 10);
   character.setGun(basicPlayerGun);
   clear();
   while (!pause) {
     roomList =
-        drawWindow.changeRoom(character, monsterCount, round, enemyList,
+        drawWindow.changeRoom(character, normalEnemyCount, round, normalEnemyList,
                               mountainList, bonusList, roomList, maxRound);
-    enemyList = generateNormalEnemy(&monsterCount, 'E', basicEnemyGun, 100,
-                                    enemyList, round, drawWindow);
+    normalEnemyList = generateNormalEnemy(&normalEnemyCount, 'E', basicEnemyGun, 100,
+                                    normalEnemyList, round, drawWindow);
 
     getInput(direction);
-    moveCharacter(drawWindow, character, direction, roomList, enemyList, round,
+    moveCharacter(drawWindow, character, direction, roomList, normalEnemyList, round,
                   pointsOnScreen, bananas, powerUpDMG, bonusPicked, bonusType,
                   bonusTime, upgradeBuyed, upgradeType, upgradeTime,
                   immortalityCheck, immortalityTime);
@@ -880,11 +877,11 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     drawWindow.printCharacter(character.getX(), character.getY(),
                               character.getSkin());
     drawWindow.drawRect(this->frameGameX, this->frameGameY, this->widht,
-                        this->height, enemyList, round, false);
+                        this->height, normalEnemyList, round, false);
     drawWindow.drawStats(this->frameGameX, this->frameGameY, this->widht,
-                         this->height, &pointsOnScreen, character, enemyList,
+                         this->height, &pointsOnScreen, character, normalEnemyList,
                          powerUpDMG, bananas, maxRound, roomList);
-    drawWindow.printCharacterStats(enemyList, character);
+    drawWindow.printCharacterStats(normalEnemyList, character);
 
     if (drawWindow.lenghtRoom(roomList) > 1) {
       drawWindow.printMountain(roomList->next->mountainList);
@@ -893,21 +890,21 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
       checkMountainDamage(this->shootsEnemys, roomList->next->mountainList);
     }
 
-    increaseCount(this->whileCount, points, enemyList);
-    drawWindow.printEnemy(enemyList, drawWindow);
-    drawWindow.moveEnemy(enemyList, character, drawWindow, points);
+    increaseCount(this->whileCount, points, normalEnemyList);
+    drawWindow.printEnemy(normalEnemyList, drawWindow);
+    drawWindow.moveEnemy(normalEnemyList, character, drawWindow, points);
 
     shootPlayerBullet(character.getGun());  // Sparo del player
     shootEnemyBullet();                     // Sparo dei nemici
 
-    enemyShootBullets(enemyList, character);
-    checkEnemyCollision(character, enemyList);
-    gorillaPunch(direction, character, enemyList, pointsOnScreen);
+    enemyShootBullets(normalEnemyList, character);
+    checkEnemyCollision(character, normalEnemyList);
+    gorillaPunch(direction, character, normalEnemyList, pointsOnScreen);
 
-    money(bananas, enemyList, maxRound, roundPayed, character);
-    checkShootEnemyCollision(enemyList, character, this->shoots, pointsOnScreen,
+    money(bananas, normalEnemyList, maxRound, roundPayed, character);
+    checkShootEnemyCollision(normalEnemyList, character, this->shoots, pointsOnScreen,
                              immortalityCheck);
-    checkShootEnemyCollision(enemyList, character, this->shootsEnemys,
+    checkShootEnemyCollision(normalEnemyList, character, this->shootsEnemys,
                              pointsOnScreen, immortalityCheck);
     refresh();
 

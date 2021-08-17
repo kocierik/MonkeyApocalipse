@@ -51,7 +51,7 @@ class EngineGame {
                      bool &upgradeBuyed, int &upgradeType, int &upgradeTime,
                      bool &immortalityCheck, int &immortalityTime);
 
-  pEnemyList generateNormalEnemy(int *monsterCount, char skin, Gun gun,
+  pEnemyList generateNormalEnemy(int *normalEnemyCount, char skin, Gun gun,
                                  int life, pEnemyList list, int &round,
                                  DrawWindow drawWindow);
 
