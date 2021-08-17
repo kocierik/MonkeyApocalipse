@@ -248,7 +248,6 @@ void EngineGame::checkShootEnemyCollision(pEnemyList enemyList,
   bool isCollisionEnemy = false, isCollisionCharacter = false, pause = false;
   Pbullet head = shoots;
   pEnemyList tmp = enemyList;
-  // int range = -1;
   while (enemyList != NULL && !isCollisionEnemy &&
          !isCollisionCharacter) {  // Per ogni nemico
     while (shoots != NULL && !isCollisionEnemy &&
@@ -732,16 +731,17 @@ void EngineGame::checkDeath(bool &pause, Character &character) {
   }
 }
 
-void EngineGame::checkMountainDamage(Pbullet bulletList, bool isPlayer,
-                                     pPosition &mountainList, int damage) {
+void EngineGame::checkMountainDamage(Pbullet bulletList, pPosition &mountainList) {
   pPosition tmpMountainList = mountainList;
-  int extraRange = -2;
-  if (isPlayer) extraRange = 2;
   while (bulletList != NULL) {
+    int extraRange = -2;
+    //if (bulletList->isPlayerBullet) extraRange = 2;
+    if ((bulletList->isPlayerBullet && bulletList->moveFoward) || (!bulletList->isPlayerBullet && bulletList->moveFoward)) extraRange = 2;
+
     while (tmpMountainList != NULL) {
       if (bulletList->x + extraRange == tmpMountainList->x &&
           bulletList->y == tmpMountainList->y) {
-        tmpMountainList->life -= damage;
+        tmpMountainList->life -= 1;
         if (tmpMountainList->life <= 0)
           mountainList = deletePosition(mountainList, tmpMountainList);
       }
@@ -891,9 +891,8 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     if (drawWindow.lenghtRoom(roomList) > 1) {
       drawWindow.printMountain(roomList->next->mountainList);
       drawWindow.printBonus(roomList->next->bonusList);
-      checkMountainDamage(this->shoots, true, roomList->next->mountainList, 1);
-      checkMountainDamage(this->shootsEnemys, false,
-                          roomList->next->mountainList, 1);
+      checkMountainDamage(this->shoots, roomList->next->mountainList);
+      checkMountainDamage(this->shootsEnemys, roomList->next->mountainList);
     }
 
     increaseCount(this->whileCount, points, enemyList);

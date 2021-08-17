@@ -61,8 +61,7 @@ class EngineGame {
 
   void checkDeath(bool &pause, Character &character);
 
-  void checkMountainDamage(Pbullet bulletList, bool isPlayer,
-                           pPosition &mountainList, int damage);
+  void checkMountainDamage(Pbullet bulletList, pPosition &mountainList);
 
   void engine(Character character, DrawWindow printer);
   void increaseCount(int &whileCount, long &points, pEnemyList enemyList);
