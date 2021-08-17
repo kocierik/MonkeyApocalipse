@@ -120,10 +120,13 @@ void EngineGame::destroyBullet(Pbullet &shoots) {
       else range = -1; // 0;
     }
     */
-    bool tmpCondition = !isEmpty(head->x + range, head->y) &&
+    bool mustDestroyCondition = !isEmpty(head->x + range, head->y) &&
                         !isBonus(head->x + range, head->y);
+    if (head->isPlayerBullet == false)
+      mustDestroyCondition &= !isEnemy(head->x + range, head->y);
 
-    if (tmpCondition || head->x > 70 || head->x < 23) {
+
+    if (mustDestroyCondition || head->x > 70 || head->x < 23) {
       if (head == shoots) {
         tmp = shoots;
         shoots = head->next;
@@ -321,6 +324,7 @@ void EngineGame::checkShootEnemyCollision(pEnemyList enemyList,
 bool EngineGame::isEmpty(int x, int y) { return mvinch(y, x) == ' '; }
 bool EngineGame::isBonus(int x, int y) { return mvinch(y, x) == '?'; }
 bool EngineGame::isMountain(int x, int y) { return mvinch(y, x) == '^'; }
+bool EngineGame::isEnemy(int x, int y) { return mvinch(y, x) == 'E'; }
 
 void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
                                int direction, pRoom &roomList,
