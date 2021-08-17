@@ -6,9 +6,8 @@
 #define GAMEWIDTH 71   // 49
 #define GAMEHEIGTH 20  // 13
 int main() {
-  Gun basicPlayerGun('~', 25, 40, 10);
   EngineGame game(FRAMEGAMEX, FRAMEGAMEY, GAMEHEIGTH, GAMEWIDTH);
-  Player character(FRAMEGAMEY + 5, FRAMEGAMEX + 5,'M', 100, 3, basicPlayerGun);
+  Player character(FRAMEGAMEY + 5, FRAMEGAMEX + 5,'M', 100, 3);
   DrawWindow drawWindow;
   game.engine(character, drawWindow);
   return 0;
