@@ -395,9 +395,7 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
       break;
     case 'E':  // Sparo in avanti del player
     case 'e':
-      if (whileCount / 2 > 1 && character.getGun().getTotalAmmo() > 0 &&
-          character.getGun().getMagazineAmmo() > 0) {
-        character.decreaseTotalAmmo(1);
+      if (whileCount / 2 > 1 && character.getGun().getMagazineAmmo() > 0) {
         character.decreaseMagazineAmmo(1);
         this->shoots = createBullet(character, true, true, this->shoots);
         whileCount = 0;
@@ -405,9 +403,7 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
       break;
     case 'W':  // Sparo all'indietro del player
     case 'w':
-      if (whileCount / 2 > 1 && character.getGun().getTotalAmmo() > 0 &&
-          character.getGun().getMagazineAmmo() > 0) {
-        character.decreaseTotalAmmo(1);
+      if (whileCount / 2 > 1 && character.getGun().getMagazineAmmo() > 0) {
         character.decreaseMagazineAmmo(1);
         this->shoots = createBullet(character, true, false, this->shoots);
         whileCount = 0;
@@ -864,7 +860,10 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
   pPosition mountainList = new Position;
   pPosition bonusList = new Position;
   pRoom roomList = new Room;
+  
   Gun basicEnemyGun('-', 10, -1, -1);  // CHANGE
+  Gun basicPlayerGun('~', 25, 40, 10);
+  character.setGun(basicPlayerGun);
   clear();
   while (!pause) {
     roomList =
