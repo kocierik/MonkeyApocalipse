@@ -714,7 +714,7 @@ void DrawWindow::saveRecord(float finalScore, char name[]) {
 
 void DrawWindow::loseScreen(int direction, float finalScore) {
   char name[50] = {'\0'};
-  char name2[10]= {'\0'};;
+  char name2[10] = {'\0'};
   while (direction != 0) {
     printLoseScreen(finalScore);
     strcat(name, name2);
