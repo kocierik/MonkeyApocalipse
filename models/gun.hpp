@@ -17,6 +17,7 @@ class Gun {
       int in_magazineCapacity);
 
   char getBulletSkin();
+  void setBulletSkin(char newSkin);
 
   int getDamage();
   void setDamage(int in_damage);

@@ -11,6 +11,7 @@ Gun::Gun(char in_bulletSkin, int in_damage, int in_totalAmmo,
 }
 
 char Gun::getBulletSkin() { return this->bulletSkin; }
+void Gun::setBulletSkin(char newSkin) { this->bulletSkin = newSkin; }
 
 int Gun::getDamage() { return this->damage; }
 void Gun::setDamage(int in_damage) { this->damage = in_damage; }

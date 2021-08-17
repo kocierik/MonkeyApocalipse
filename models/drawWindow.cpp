@@ -295,7 +295,7 @@ void DrawWindow::drawRect(
 }
 
 void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
-                           float *points, Character character,
+                           int *pointsOnScreen, Character character,
                            pEnemyList enemyList, int powerUp, int bananas,
                            int maxRound, pRoom roomList) {
   int powerUp_y = 52;
@@ -360,7 +360,7 @@ void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
 
   init_pair(3, COLOR_YELLOW, -1);  // FUNZIONI PER USARE I COLORI
   attron(COLOR_PAIR(3));
-  mvprintw(startX - 2, startY + 12, "%.0f", *points);
+  mvprintw(startX - 2, startY + 12, "%.0f", *pointsOnScreen);
   if (character.getNumberLife() == 3)
     mvprintw(startX - 2, startY + 38, "[C] [C] [C]");
   if (character.getNumberLife() == 2)
@@ -371,7 +371,7 @@ void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
 
   init_pair(3, COLOR_YELLOW, -1);  // FUNZIONI PER USARE I COLORI
   attron(COLOR_PAIR(3));
-  mvprintw(startX - 2, startY + 12, "%.0f", *points);
+  mvprintw(startX - 2, startY + 12, "%.0f", *pointsOnScreen);
   if (powerUp == 4) mvprintw(powerUp_x, powerUp_y + 10, "[X] [X] [X] [X]");
   if (powerUp == 3) mvprintw(powerUp_x, powerUp_y + 10, "[X] [X] [X] [ ]");
   if (powerUp == 2) mvprintw(powerUp_x, powerUp_y + 10, "[X] [X] [ ] [ ]");
@@ -586,29 +586,24 @@ pRoom DrawWindow::saveRoom(pPosition mountainList, pPosition bonusList,
   head->mountainList = mountainList;
   head->bonusList = bonusList;
   head->next = roomList;
-  roomList->prec = head;
+  roomList->prev = head;
   roomList = head;
   return roomList;
 }
 
 pRoom DrawWindow::changeRoom(Character &character, int &normalEnemyCount,
-                             int &round, pEnemyList &list,
+                             int &round, pEnemyList &normalEnemyList,
                              pPosition &mountainList, pPosition &bonusList,
                              pRoom roomList, int &maxRound) {
   if (character.getX() == GAMEWIDTH) {
     if (maxRound > lenghtRoom(roomList)) {
-      roomList = roomList->prec;
+      roomList = roomList->prev;
       round += 1;
       character.setX(23);
     } else if (maxRound == lenghtRoom(roomList)) {
       character.setX(23);
-      int mountainCount = rand() % 8 + 1, bonusCounter = 0;
+      int mountainCount = rand() % 8 + 1, bonusCounter = 1;
 
-      /*
-      if (maxRound < 3) bonusCounter = 0;
-      else if (maxRound > 3 && maxRound < 6) bonusCounter = 1;
-      else bonusCounter = 2;
-      */
       if (maxRound < 2)
         bonusCounter = 0;
       else {
@@ -621,7 +616,7 @@ pRoom DrawWindow::changeRoom(Character &character, int &normalEnemyCount,
       roomList = saveRoom(mountainList, bonusList, roomList);
       normalEnemyCount = round;
 
-      list = list->next;
+      normalEnemyList = normalEnemyList->next;
       maxRound += 1;
     }
   } else if (character.getX() == 22) {
