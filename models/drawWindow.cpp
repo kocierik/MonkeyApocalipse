@@ -591,7 +591,7 @@ pRoom DrawWindow::saveRoom(pPosition mountainList, pPosition bonusList,
   return roomList;
 }
 
-pRoom DrawWindow::changeRoom(Character &character, int &monsterCount,
+pRoom DrawWindow::changeRoom(Character &character, int &normalEnemyCount,
                              int &round, pEnemyList &list,
                              pPosition &mountainList, pPosition &bonusList,
                              pRoom roomList, int &maxRound) {
@@ -619,7 +619,7 @@ pRoom DrawWindow::changeRoom(Character &character, int &monsterCount,
       roomList->mountainList = generateMountain(mountainList, mountainCount);
       roomList->bonusList = generateBonus(bonusList, bonusCounter);
       roomList = saveRoom(mountainList, bonusList, roomList);
-      monsterCount = round;
+      normalEnemyCount = round;
 
       list = list->next;
       maxRound += 1;
