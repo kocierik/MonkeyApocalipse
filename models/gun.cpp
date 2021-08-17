@@ -28,7 +28,7 @@ void Gun::decreaseMagazineAmmo(int lessAmmo) { this->magazineAmmo -= lessAmmo; }
 void Gun::reloadMagazine() {
   if (this->magazineAmmo >= 0 &&
       this->magazineAmmo <
-          this->magazineCapacity) {  // Se ilcaricatore non è pieno
+          this->magazineCapacity) {  // Se il caricatore non è pieno
     if (this->totalAmmo <= this->magazineCapacity) {
       this->magazineAmmo = this->totalAmmo;
       this->totalAmmo = 0;
