@@ -48,7 +48,7 @@ class EngineGame {
                      float &pointsOnScreen, int &bananas, int &powerUpDMG,
                      bool &bonusPicked, int &bonustype, int &bonusTime,
                      bool &upgradeBuyed, int &upgradeType, int &upgradeTime,
-                     bool &immortalityCheck);
+                     bool &immortalityCheck, int &immortalityTime);
 
   pEnemyList generateNormalEnemy(int *monsterCount, char skin, Gun gun,
                                  int life, pEnemyList list, int &round,
@@ -56,7 +56,7 @@ class EngineGame {
 
   pPosition getBonus(DrawWindow drawWindow, int x, int y, pPosition bonusList,
                      pEnemyList &enemyList, int round, float &pointsOnScreen,
-                     Character &character, int &bonusType);
+                     Character &character, int &bonusType, bool &immortalitycheck, int &immortalityTime);
 
   void checkDeath(bool &pause, Character &character);
 
