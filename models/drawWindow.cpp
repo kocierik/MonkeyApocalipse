@@ -295,7 +295,7 @@ void DrawWindow::drawRect(
 }
 
 void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
-                           int *pointsOnScreen, Character character,
+                           int pointsOnScreen, Character character,
                            pEnemyList enemyList, int powerUp, int bananas,
                            int maxRound, pRoom roomList) {
   int powerUp_y = 52;
@@ -360,7 +360,7 @@ void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
 
   init_pair(3, COLOR_YELLOW, -1);  // FUNZIONI PER USARE I COLORI
   attron(COLOR_PAIR(3));
-  mvprintw(startX - 2, startY + 12, "%.0f", *pointsOnScreen);
+  mvprintw(startX - 2, startY + 12, "%d", pointsOnScreen);
   if (character.getNumberLife() == 3)
     mvprintw(startX - 2, startY + 38, "[C] [C] [C]");
   if (character.getNumberLife() == 2)
@@ -371,7 +371,6 @@ void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
 
   init_pair(3, COLOR_YELLOW, -1);  // FUNZIONI PER USARE I COLORI
   attron(COLOR_PAIR(3));
-  mvprintw(startX - 2, startY + 12, "%.0f", *pointsOnScreen);
   if (powerUp == 4) mvprintw(powerUp_x, powerUp_y + 10, "[X] [X] [X] [X]");
   if (powerUp == 3) mvprintw(powerUp_x, powerUp_y + 10, "[X] [X] [X] [ ]");
   if (powerUp == 2) mvprintw(powerUp_x, powerUp_y + 10, "[X] [X] [ ] [ ]");

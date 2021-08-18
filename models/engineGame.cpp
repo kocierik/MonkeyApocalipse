@@ -907,7 +907,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     drawWindow.drawRect(this->frameGameX, this->frameGameY, this->widht,
                         this->height, normalEnemyList, round, false);
     drawWindow.drawStats(this->frameGameX, this->frameGameY, this->widht,
-                         this->height, &pointsOnScreen, character, normalEnemyList,
+                         this->height, pointsOnScreen, character, normalEnemyList,
                          powerUpDMG, bananas, maxRound, roomList);
     drawWindow.printCharacterStats(normalEnemyList, character);
 
