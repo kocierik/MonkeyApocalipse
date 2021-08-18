@@ -557,7 +557,7 @@ pEnemyList EngineGame::generateEnemy(int *enemyCount, int type, pEnemyList list,
 
   bool isEmpty = false;
   while (*enemyCount > 0) {
-    int x = drawWindow.randomPosition(40, 70).x;
+    int x = drawWindow.randomPosition(40, 69).x;
     int y = drawWindow.randomPosition(8, 19).y;
     pEnemyList head = new EnemyList;
     Enemy enemy(x, y, skin, life, 1, gun);
