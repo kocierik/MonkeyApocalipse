@@ -709,7 +709,7 @@ void DrawWindow::saveRecord(float finalScore, char name[]) {
 }
 
 void DrawWindow::loseScreen(int direction, float finalScore) {
-  char name[50] = {'\0'};
+  char name[10] = {'\0'};
   char name2[10] = {'\0'};
   while (direction != 0) {
     printLoseScreen(finalScore);
@@ -717,6 +717,7 @@ void DrawWindow::loseScreen(int direction, float finalScore) {
 
     init_pair(17, COLOR_GREEN, 232);
     attron(COLOR_PAIR(17));
+    mvprintw(21, 21, "__________");
     mvprintw(21, 8, "INSERT NAME: %s", name);
     attroff(COLOR_PAIR(17));
     refresh();
