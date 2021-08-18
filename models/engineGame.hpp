@@ -25,19 +25,19 @@ class EngineGame {
   void baseCommand();
   Pbullet generateBullets(Character character, bool isPlayerBullet,
                        bool moveFoward, Pbullet &shoots);
-  void enemyShootBullets(pEnemyList enemyList, Character character);
+  void generateEnemyBullets(pEnemyList enemyList, Character character);
 
-  void shootPlayerBullet(Gun playerGun);
+  void shootPlayerBullet();
   void shootEnemyBullet();
 
   void destroyBullet(Pbullet &shoots);
   pEnemyList destroyEnemy(pEnemyList list, Enemy enemy);
-  pPosition deletePosition(
-      pPosition list,
-      pPosition bonus);  // Funzione per eliminare bonus e montagne
+  // Funzione per eliminare bonus e montagne
+  pPosition deletePosition(pPosition list, pPosition bonus);
+
 
   void checkEnemyCollision(Character &character, pEnemyList enemyList);
-  void checkShootEnemyCollision(pEnemyList enemys, Character &character,
+  void checkBulletCollision(pEnemyList enemys, Character &character,
                                 Pbullet &shoots, int &pointOnScreen,
                                 bool immortalityCheck);
   bool isEmpty(int x, int y);

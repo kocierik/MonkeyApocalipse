@@ -52,13 +52,13 @@ Pbullet EngineGame::generateBullets(Character character, bool isPlayerBullet,
   return bullet;
 }
 
-void EngineGame::enemyShootBullets(pEnemyList enemyList, Character character) {
+void EngineGame::generateEnemyBullets(pEnemyList enemyList, Character character) {
   while (enemyList != NULL) {
     if (this->whileCountEnemy % 20 == 0) {
-      bool shootFoward = false;
+      bool shootFoward = true;
       if (character.getX() >
           enemyList->enemy.getX())  // Se il player è alla sx del nemico
-        shootFoward = true;         // Lo sparo sarà verso sx
+        shootFoward = false;         // Lo sparo sarà verso sx
       this->normalEnemyBullets =
           // Colpo del nemico -> false; Sparo avanti/indieto -> moveFoward
           generateBullets(enemyList->enemy, false, shootFoward,
@@ -68,37 +68,34 @@ void EngineGame::enemyShootBullets(pEnemyList enemyList, Character character) {
   }
 }
 
-void EngineGame::shootPlayerBullet(Gun playerGun) {
-  Pbullet bullet = this->playerBullets;
-  while (bullet != NULL) {
-    if (bullet->moveFoward)
-      bullet->x += bullet->speed;
+void EngineGame::shootPlayerBullet() {
+  Pbullet bulletList = this->playerBullets;
+  while (bulletList != NULL) {
+    if (bulletList->moveFoward)
+      bulletList->x += bulletList->speed;
     else
-      bullet->x -= bullet->speed;
-    move(bullet->y, bullet->x);
+      bulletList->x -= bulletList->speed;
+    move(bulletList->y, bulletList->x);
     init_pair(10, COLOR_YELLOW, -1);  // SPARA BANANE GIALLE
     attron(COLOR_PAIR(10));
-    // printw("~");
-    char tmp[2];
-    tmp[0] = playerGun.getBulletSkin();
-    // printw((const char *) playerGun.getBulletSkin());
+    char tmp[0]; tmp[0] = bulletList->skin;
     printw(tmp);
     attroff(COLOR_PAIR(10));
-    bullet = bullet->next;
+    bulletList = bulletList->next;
   }
 }
 
 void EngineGame::shootEnemyBullet() {
-  Pbullet bullet = this->normalEnemyBullets;
-  while (bullet != NULL) {
-    if (bullet->moveFoward)
-      bullet->x += bullet->speed;
+  Pbullet bulletList = this->normalEnemyBullets;
+  while (bulletList != NULL) {
+    if (bulletList->moveFoward)
+      bulletList->x -= bulletList->speed;
     else
-      bullet->x -= bullet->speed;
-    move(bullet->y, bullet->x);
-    printw("-");
-    // printw((const char *)enemyGun.getBulletSkin());
-    bullet = bullet->next;
+      bulletList->x += bulletList->speed;
+    move(bulletList->y, bulletList->x);
+    char tmpSkin[0]; tmpSkin[0] = bulletList->skin;
+    printw(tmpSkin);
+    bulletList = bulletList->next;
   }
 }
 
@@ -238,7 +235,7 @@ void EngineGame::checkEnemyCollision(Character &character,
   }
 }
 
-void EngineGame::checkShootEnemyCollision(pEnemyList enemyList,
+void EngineGame::checkBulletCollision(pEnemyList enemyList,
                                           Character &character, Pbullet &shoots,
                                           int &pointOnScreen,
                                           bool immortalityCheck) {
@@ -298,9 +295,8 @@ void EngineGame::checkShootEnemyCollision(pEnemyList enemyList,
   attron(COLOR_PAIR(13));
 
   if (isCollisionEnemy) {
-    mvprintw(enemyList->enemy.getY(), enemyList->enemy.getX(),
-             "E");  // Il nemico diventa rosso quando viene colpito dal
-                    // proiettile del player
+    char tmpSkin[0]; tmpSkin[0] = enemyList->enemy.getSkin();
+    mvprintw(enemyList->enemy.getY(), enemyList->enemy.getX(), tmpSkin);
     enemyList->enemy.decreaseLife(character.getGun().getDamage());
     if (enemyList->enemy.getLife() <= 0) {
       enemyList = destroyEnemy(tmp, enemyList->enemy);
@@ -311,7 +307,8 @@ void EngineGame::checkShootEnemyCollision(pEnemyList enemyList,
     checkDeath(pause, character);
 
     // Skin del player rossa qunado viene colpito
-    mvprintw(character.getY(), character.getX(), "M");
+    char tmpSkin[0]; tmpSkin[0] = character.getSkin();
+    mvprintw(character.getY(), character.getX(), tmpSkin);
   }
 
   attroff(COLOR_PAIR(13));
@@ -459,8 +456,9 @@ void EngineGame::gorillaPunch(int direction, Character &character,
 
         init_pair(13, COLOR_RED, -1);
         attron(COLOR_PAIR(13));
-        mvprintw(enemyList->enemy.getY(), enemyList->enemy.getX(),
-                 "E");  // Il nemico diventa rosso quando si scontra col player
+        // Il nemico diventa rosso quando si scontra col player
+        char tmpSkin[0]; tmpSkin[0] = enemyList->enemy.getSkin();
+        mvprintw(enemyList->enemy.getY(), enemyList->enemy.getX(), tmpSkin);
         attroff(COLOR_PAIR(13));
       }
       enemyList = enemyList->next;
@@ -926,20 +924,20 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     drawWindow.moveEnemy(specialEnemyList, character, drawWindow, points);
     drawWindow.moveEnemy(bossEnemyList, character, drawWindow, points);
 
-    shootPlayerBullet(character.getGun());  // Sparo del player
-    shootEnemyBullet();                     // Sparo dei nemici
+    shootPlayerBullet();
+    shootEnemyBullet();
 
-    enemyShootBullets(normalEnemyList, character);
-    enemyShootBullets(specialEnemyList, character);
-    enemyShootBullets(bossEnemyList, character);
+    generateEnemyBullets(normalEnemyList, character);
+    generateEnemyBullets(specialEnemyList, character);
+    generateEnemyBullets(bossEnemyList, character);
 
     checkEnemyCollision(character, normalEnemyList);
     gorillaPunch(direction, character, normalEnemyList, pointsOnScreen);
 
     money(bananas, normalEnemyList, maxRound, roundPayed, character);
-    checkShootEnemyCollision(normalEnemyList, character, this->playerBullets, pointsOnScreen,
+    checkBulletCollision(normalEnemyList, character, this->playerBullets, pointsOnScreen,
                              immortalityCheck);
-    checkShootEnemyCollision(normalEnemyList, character, this->normalEnemyBullets,
+    checkBulletCollision(normalEnemyList, character, this->normalEnemyBullets,
                              pointsOnScreen, immortalityCheck);
     refresh();
 
