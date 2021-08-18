@@ -416,7 +416,7 @@ pPosition DrawWindow::generateBonus(pPosition bonusList, int &bonusCount) {
   srand(time(0));
   while (bonusCount > 0) {
     pPosition tmpHead = new Position;
-    tmpHead->x = randomPosition(40, 70).x;
+    tmpHead->x = randomPosition(25, 45).x;
     tmpHead->y = randomPosition(8, 19).y;
     tmpHead->skin = '?';
     tmpHead->next = bonusList;

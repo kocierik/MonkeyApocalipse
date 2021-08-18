@@ -829,7 +829,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
   int powerUpDMG = 0;  // NUMERO DI POWERUP AL DANNO AQUISTATI
   int bananas = 0, roundPayed = 0;
   int bonusTime = 0, upgradeTime = 0, bonusType = 0, upgradeType = 0;
-  int normalEnemyCount = 1, specialEnemyCount = 2, bossEnemyCount = 1, showEnemyType = 0;
+  int normalEnemyCount = 1, specialEnemyCount = 2, bossEnemyCount = 1;
   int round = 0, maxRound = 1;
   pEnemyList normalEnemyList = NULL, specialEnemyList = NULL, bossEnemyList = NULL;
   pPosition mountainList = new Position, bonusList = new Position;
@@ -845,13 +845,11 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     normalEnemyList = generateEnemy(&normalEnemyCount, 0, normalEnemyList, round, drawWindow);
 
     if (round % 5 == 0) {
-      showEnemyType = 1;
       if (round == 10) specialEnemyCount = 5;
       else if (round == 15) specialEnemyCount = 8;
       else if (round > 15) specialEnemyCount = 10;
       specialEnemyList = generateEnemy(&specialEnemyCount, 1, specialEnemyList, round, drawWindow);
     } else if (round % 10 == 0) {
-      showEnemyType = 2;
       if (round == 20) bossEnemyCount = 2;
       else if (round >= 30) bossEnemyCount = 3;
       bossEnemyList = generateEnemy(&bossEnemyCount, 2, bossEnemyList, round, drawWindow);
