@@ -11,12 +11,14 @@ class EngineGame {
   int widht;
   bool quit;
   bool pause;
-  Pbullet shoots;
-  Pbullet shootsEnemys;
+  Pbullet playerBullets;//playerBullets;
+  Pbullet normalEnemyBullets;
+  Pbullet specialEnemyBullets;
+  Pbullet bossEnemyBullets;
   bool isEnemyShoots;
   int whileCount;
   int whileCountEnemy;
-
+    
  public:
   EngineGame(int frameGameX, int frameGameY, int heigth, int width);
   void printList(pPosition list);

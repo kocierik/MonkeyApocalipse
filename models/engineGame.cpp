@@ -7,7 +7,6 @@
 #include <ctime>
 #include <iostream>
 
-
 // Numero di casi dello switch che gestisce i bonus. Equivale a: n bonus
 #define N_SWITCH_CASE 15
 
@@ -19,8 +18,8 @@ EngineGame::EngineGame(int frameGameX, int frameGameY, int height, int width) {
   this->frameGameY = frameGameY;
   this->height = height;
   this->widht = width;
-  this->shoots = NULL;
-  this->shootsEnemys = NULL;
+  this->playerBullets = NULL;
+  this->normalEnemyBullets = NULL;
   this->quit = false;
   this->pause = true;
   this->isEnemyShoots = false;
@@ -60,17 +59,17 @@ void EngineGame::enemyShootBullets(pEnemyList enemyList, Character character) {
       if (character.getX() >
           enemyList->enemy.getX())  // Se il player è alla sx del nemico
         shootFoward = true;         // Lo sparo sarà verso sx
-      this->shootsEnemys =
+      this->normalEnemyBullets =
           // Colpo del nemico -> false; Sparo avanti/indieto -> moveFoward
           generateBullets(enemyList->enemy, false, shootFoward,
-                       this->shootsEnemys);
+                       this->normalEnemyBullets);
     }
     enemyList = enemyList->next;
   }
 }
 
 void EngineGame::shootPlayerBullet(Gun playerGun) {
-  Pbullet bullet = this->shoots;
+  Pbullet bullet = this->playerBullets;
   while (bullet != NULL) {
     if (bullet->moveFoward)
       bullet->x += bullet->speed;
@@ -90,13 +89,12 @@ void EngineGame::shootPlayerBullet(Gun playerGun) {
 }
 
 void EngineGame::shootEnemyBullet() {
-  Pbullet bullet = this->shootsEnemys;
+  Pbullet bullet = this->normalEnemyBullets;
   while (bullet != NULL) {
     if (bullet->moveFoward)
       bullet->x += bullet->speed;
     else
       bullet->x -= bullet->speed;
-    ;
     move(bullet->y, bullet->x);
     printw("-");
     // printw((const char *)enemyGun.getBulletSkin());
@@ -322,7 +320,7 @@ void EngineGame::checkShootEnemyCollision(pEnemyList enemyList,
 bool EngineGame::isEmpty(int x, int y) { return mvinch(y, x) == ' '; }
 bool EngineGame::isBonus(int x, int y) { return mvinch(y, x) == '?'; }
 bool EngineGame::isMountain(int x, int y) { return mvinch(y, x) == '^'; }
-bool EngineGame::isEnemy(int x, int y) { return mvinch(y, x) == 'E'; }
+bool EngineGame::isEnemy(int x, int y) { return mvinch(y, x) == 'e' || mvinch(y, x) == 'E' || mvinch(y, x) == 'B'; }
 
 void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
                                int direction, pRoom &roomList,
@@ -396,7 +394,7 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
     case 'e':
       if (whileCount / 2 > 1 && character.getGun().getMagazineAmmo() > 0) {
         character.decreaseMagazineAmmo(1);
-        this->shoots = generateBullets(character, true, true, this->shoots);
+        this->playerBullets = generateBullets(character, true, true, this->playerBullets);
         whileCount = 0;
       }
       break;
@@ -404,7 +402,7 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
     case 'w':
       if (whileCount / 2 > 1 && character.getGun().getMagazineAmmo() > 0) {
         character.decreaseMagazineAmmo(1);
-        this->shoots = generateBullets(character, true, false, this->shoots);
+        this->playerBullets = generateBullets(character, true, false, this->playerBullets);
         whileCount = 0;
       }
       break;
@@ -914,8 +912,8 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     if (drawWindow.lenghtRoom(roomList) > 1) {
       drawWindow.printMountain(roomList->next->mountainList);
       drawWindow.printBonus(roomList->next->bonusList);
-      checkMountainDamage(this->shoots, roomList->next->mountainList);
-      checkMountainDamage(this->shootsEnemys, roomList->next->mountainList);
+      checkMountainDamage(this->playerBullets, roomList->next->mountainList);
+      checkMountainDamage(this->normalEnemyBullets, roomList->next->mountainList);
     }
 
     increaseCount(this->whileCount, points, normalEnemyList);
@@ -939,16 +937,17 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     gorillaPunch(direction, character, normalEnemyList, pointsOnScreen);
 
     money(bananas, normalEnemyList, maxRound, roundPayed, character);
-    checkShootEnemyCollision(normalEnemyList, character, this->shoots, pointsOnScreen,
+    checkShootEnemyCollision(normalEnemyList, character, this->playerBullets, pointsOnScreen,
                              immortalityCheck);
-    checkShootEnemyCollision(normalEnemyList, character, this->shootsEnemys,
+    checkShootEnemyCollision(normalEnemyList, character, this->normalEnemyBullets,
                              pointsOnScreen, immortalityCheck);
     refresh();
 
-    destroyBullet(this->shoots);  // Check per i colpi sparati dai nemici (???)
-    destroyBullet(
-        this->shootsEnemys);  // Check per i colpi sparati dal player (???)
-
+    
+    destroyBullet(this->playerBullets);
+    destroyBullet(this->normalEnemyBullets);
+    //destroyBullet(this->specialEnemyBullets);
+    //destroyBullet(this->bossEnemyBullets);
     showBonusOnScreen(upgradeBuyed, upgradeType, upgradeTime, bonusPicked,
                       bonusType, bonusTime, immortalityCheck, immortalityTime);
     checkDeath(pause, character);
