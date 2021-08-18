@@ -315,9 +315,11 @@ void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
   std::ifstream leaderboard("leaderBoard.txt");
   if (leaderboard.is_open()) {
     int i = 8;
-    while (getline(leaderboard, line)) {
+    int maxNameShowed = 0;
+    while ((getline(leaderboard, line)) && (maxNameShowed < 11)) {
       mvprintw(i = i + 1, 90, "%s\n", line.c_str());
       i++;
+      maxNameShowed++;
     }
     leaderboard.close();
   }
