@@ -99,34 +99,33 @@ void EngineGame::shootEnemyBullet() {
   }
 }
 
-void EngineGame::destroyBullet(Pbullet &shoots) {
-  Pbullet head = shoots, prev = shoots, tmp;
+void EngineGame::destroyBullet(Pbullet &bulletList) {
+  Pbullet head = bulletList, prev = bulletList, tmp;
   while (head != NULL) {
     int range = -1;
-    if (head->moveFoward) range = 1;
-    /* isPlayerBullet è da passare alla funzione
-    int range = 0;
-    if (isPlayerBullet) {                 // Se spara il player
-      if (head->moveFoward) range = 1;    // e spara in avanti (verso dx)
-      else range = -1; // 0;
-    } else {                              // Se spara il nemico
-      if (head->moveFoward) range = 1;    // e spara in avanti (verso sx)
-      else range = -1; // 0;
+    //if (head->moveFoward) range = 1;
+
+    if (head->isPlayerBullet) {
+      if (head->moveFoward) range = 1;
+      else range = -1;
+    } else {
+      if (head->moveFoward) range = -1;
+      else range = 1;
     }
-    */
+
     bool mustDestroyCondition = !isEmpty(head->x + range, head->y) &&
                         !isBonus(head->x + range, head->y);
-    if (head->isPlayerBullet == false)
+    if (!head->isPlayerBullet)
       mustDestroyCondition &= !isEnemy(head->x + range, head->y);
 
 
     if (mustDestroyCondition || head->x > 70 || head->x < 23) {
-      if (head == shoots) {
-        tmp = shoots;
-        shoots = head->next;
+      if (head == bulletList) {
+        tmp = bulletList;
+        bulletList = head->next;
         delete tmp;
-        prev = shoots;
-        head = shoots;
+        prev = bulletList;
+        head = bulletList;
       } else {
         tmp = prev->next;
         prev->next = head->next;
@@ -194,41 +193,31 @@ pPosition EngineGame::deletePosition(pPosition list, pPosition toDelete) {
   return head;
 }
 
-void EngineGame::checkEnemyCollision(Character &character,
-                                     pEnemyList enemyList) {
+/**
+ * Funzione per la collisione fisica tra player e nemici.
+ * Controlla la presenza di uno scontro in qualsiasi direzione,
+ * danneggia 1 il player, 3 il nemico (soluzione kamikaze efficace),
+ * e colora di rosso i protagonisti dello scontro.
+*/
+void EngineGame::checkEnemyCollision(Character &character, pEnemyList enemyList) {
   pEnemyList tmp = enemyList;
   while (enemyList != NULL) {
-    if ((character.getX() - 1 == enemyList->enemy.getX() &&
-         character.getY() == enemyList->enemy.getY()) ||
-        (character.getX() == enemyList->enemy.getX() &&
-         character.getY() + 1 == enemyList->enemy.getY()) ||
-        (character.getX() == enemyList->enemy.getX() &&
-         character.getY() - 1 == enemyList->enemy.getY())) {
-      character.decreaseLife(
-          1);  // In uno scontro fisico il player perde 1 di vita
-      enemyList->enemy.decreaseLife(
-          2);  // In uno scontro fisico il nemico perde 2 di vita
+    int xP = character.getX(), yP = character.getY();
+    int xE = enemyList->enemy.getX(), yE = enemyList->enemy.getY();
+    if ((xP - 1 == xE && yP == yE) || (xP + 1 == xE && yP == yE) ||
+        (xP == xE && yP + 1 == yE) || (xP == xE && yP - 1 == yE)) {
+      character.decreaseLife(1);
+      enemyList->enemy.decreaseLife(2);
 
       if (enemyList->enemy.getLife() <= 0)
         enemyList = destroyEnemy(tmp, enemyList->enemy);
 
       init_pair(13, COLOR_RED, -1);
       attron(COLOR_PAIR(13));
-      mvprintw(character.getY(), character.getX(),
-               "M");  // Il player diventa rosso quando si scontra coi nemici
-      mvprintw(enemyList->enemy.getY(), enemyList->enemy.getX(),
-               "E");  // Il nemico diventa rosso quando si scontra col player
-      attroff(COLOR_PAIR(13));
-    }
-
-    if (character.getX() + 1 == enemyList->enemy.getX() &&
-        character.getY() == enemyList->enemy.getY()) {  // collissione frontale
-      character.decreaseLife(1);
-
-      init_pair(13, COLOR_RED, -1);
-      attron(COLOR_PAIR(13));
-      mvprintw(character.getY(), character.getX(),
-               "M");  // Il player diventa rosso quando si scontra coi nemici
+      char tmpSkin[0]; tmpSkin[0] = character.getSkin();
+      mvprintw(character.getY(), character.getX(), tmpSkin);
+      tmpSkin[0] = enemyList->enemy.getSkin();
+      mvprintw(enemyList->enemy.getY(), enemyList->enemy.getX(), tmpSkin);
       attroff(COLOR_PAIR(13));
     }
     enemyList = enemyList->next;
@@ -244,37 +233,15 @@ void EngineGame::checkBulletCollision(pEnemyList enemyList,
   pEnemyList tmp = enemyList;
   while (enemyList != NULL && !isCollisionEnemy &&
          !isCollisionCharacter) {  // Per ogni nemico
-    while (shoots != NULL && !isCollisionEnemy &&
-           !isCollisionCharacter) {  // Per ogni priettile di ogni nemico
-      /* NON CANCELLARE - Utile per capire meglio il sottostante codice ridotto
-      if (shoots->isPlayerBullet) {     // Colpo del player
-        int x = enemyList->enemy.getX(), y = enemyList->enemy.getY();
-        if (shoots->moveFoward) {         // Sparato verso dx
-          if (x == shoots->x + 1 && y == shoots->y) // Ergo si ha +1
-            isCollisionEnemy = true;
-        } else {                          // Sparato verso sx
-          if (x == shoots->x - 1 && y == shoots->y) // Ergo si ha -1
-            isCollisionEnemy = true;
-        }
-      } else {                          // Colpo del nemico
-        int x = character.getX(), y = character.getY();
-        if (shoots->moveFoward) {         // Sparato verso sx
-          if (x == shoots->x + 1 && y == shoots->y) // Ergo si ha -1
-            isCollisionCharacter = true;
-        } else {                          // Sparato verso dx
-          if (x == shoots->x - 1 && y == shoots->y) // Ergo si ha +1
-            isCollisionCharacter = true;
-        }
-      }
-      */
-      if (shoots->isPlayerBullet) {  // Colpo del player
+    while (shoots != NULL && !isCollisionEnemy && !isCollisionCharacter) {
+      if (shoots->isPlayerBullet) {
         int x = enemyList->enemy.getX(), y = enemyList->enemy.getY();
         if ((x == shoots->x + 1 && y == shoots->y) ||
             (x == shoots->x - 1 &&
              y == shoots->y))  // Controllo valido per i foward and backward
                                // bullets del player
           isCollisionEnemy = true;
-      } else {  // Colpo del nemico
+      } else {
         int x = character.getX(), y = character.getY();
         if ((x == shoots->x + 1 && y == shoots->y) ||
             (x == shoots->x - 1 &&
@@ -585,7 +552,7 @@ pEnemyList EngineGame::generateEnemy(int *enemyCount, int type, pEnemyList list,
     case 1:   // Elite enemies
       skin = 'E';
       life = 150;
-      gun.setBulletSkin('`');
+      gun.setBulletSkin('=');
       gun.setDamage(20);
       break;
     case 2:   // Boss enemy
@@ -745,11 +712,17 @@ void EngineGame::checkDeath(bool &pause, Character &character) {
 void EngineGame::checkMountainDamage(Pbullet bulletList, pPosition &mountainList) {
   pPosition tmpMountainList = mountainList;
   while (bulletList != NULL) {
-    int extraRange = -2;
-    if ((bulletList->isPlayerBullet && bulletList->moveFoward) || (!bulletList->isPlayerBullet && bulletList->moveFoward)) extraRange = 2;
+    int range = 0;
+    if (bulletList->isPlayerBullet) {
+      if (bulletList->moveFoward) range = 2;
+      else range = -2;
+    } else {
+      if (bulletList->moveFoward) range = -1;
+      else range = 1;
+    }
 
     while (tmpMountainList != NULL) {
-      if (bulletList->x + extraRange == tmpMountainList->x &&
+      if (bulletList->x + range == tmpMountainList->x &&
           bulletList->y == tmpMountainList->y) {
         tmpMountainList->life -= 1;
         if (tmpMountainList->life <= 0)
@@ -932,7 +905,9 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     generateEnemyBullets(bossEnemyList, character);
 
     checkEnemyCollision(character, normalEnemyList);
+    
     gorillaPunch(direction, character, normalEnemyList, pointsOnScreen);
+    gorillaPunch(direction, character, specialEnemyList, pointsOnScreen);
 
     money(bananas, normalEnemyList, maxRound, roundPayed, character);
     checkBulletCollision(normalEnemyList, character, this->playerBullets, pointsOnScreen,

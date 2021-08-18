@@ -394,14 +394,13 @@ Position DrawWindow::randomPosition(int startRange, int endRange) {
 
 pPosition DrawWindow::generateMountain(pPosition list, int &mountainCount) {
   while (mountainCount > 0) {
-    // srand((int) time(0));
     int x = randomPosition(40, 70).x;
     int y = randomPosition(8, 19).y;
     pPosition head = new Position;
     head->x = x;
     head->y = y;
     head->skin = '^';
-    head->life = 15;
+    head->life = 10;
     head->next = list;
     list = head;
     mountainCount -= 1;
