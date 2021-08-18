@@ -15,7 +15,7 @@ class EngineGame {
   Pbullet normalEnemyBullets;
   Pbullet specialEnemyBullets;
   Pbullet bossEnemyBullets;
-  bool isEnemyShoots;
+  //bool isEnemyShoots;
   int whileCount;
   int whileCountEnemy;
     
@@ -24,13 +24,13 @@ class EngineGame {
   void printList(pPosition list);
   void baseCommand();
   Pbullet generateBullets(Character character, bool isPlayerBullet,
-                       bool moveFoward, Pbullet &shoots);
+                       bool moveFoward, Pbullet &bulletList);
   void generateEnemyBullets(pEnemyList enemyList, Character character);
 
   void shootPlayerBullet();
   void shootEnemyBullet();
 
-  void destroyBullet(Pbullet &shoots);
+  void destroyBullet(Pbullet &bulletList);
   pEnemyList destroyEnemy(pEnemyList list, Enemy enemy);
   // Funzione per eliminare bonus e montagne
   pPosition deletePosition(pPosition list, pPosition bonus);
@@ -38,7 +38,7 @@ class EngineGame {
 
   void checkEnemyCollision(Character &character, pEnemyList enemyList);
   void checkBulletCollision(pEnemyList enemys, Character &character,
-                                Pbullet &shoots, int &pointOnScreen,
+                                Pbullet &bulletList, int &pointOnScreen,
                                 bool immortalityCheck);
   bool isEmpty(int x, int y);
   bool isBonus(int x, int y);

@@ -22,7 +22,7 @@ EngineGame::EngineGame(int frameGameX, int frameGameY, int height, int width) {
   this->normalEnemyBullets = NULL;
   this->quit = false;
   this->pause = true;
-  this->isEnemyShoots = false;
+  //this->isEnemyShoots = false;
   this->whileCount = 0;
   this->whileCountEnemy = 0;
 }
@@ -40,7 +40,7 @@ void EngineGame::baseCommand() {
 }
 
 Pbullet EngineGame::generateBullets(Character character, bool isPlayerBullet,
-                                 bool moveFoward, Pbullet &shoots) {
+                                 bool moveFoward, Pbullet &bulletList) {
   Pbullet bullet = new Bullet;
   bullet->x = character.getX();
   bullet->y = character.getY();
@@ -48,7 +48,7 @@ Pbullet EngineGame::generateBullets(Character character, bool isPlayerBullet,
   bullet->skin = character.getGun().getBulletSkin();
   bullet->isPlayerBullet = isPlayerBullet;
   bullet->moveFoward = moveFoward;
-  bullet->next = shoots;
+  bullet->next = bulletList;
   return bullet;
 }
 
@@ -103,15 +103,7 @@ void EngineGame::destroyBullet(Pbullet &bulletList) {
   Pbullet head = bulletList, prev = bulletList, tmp;
   while (head != NULL) {
     int range = -1;
-    //if (head->moveFoward) range = 1;
-
-    if (head->isPlayerBullet) {
-      if (head->moveFoward) range = 1;
-      else range = -1;
-    } else {
-      if (head->moveFoward) range = -1;
-      else range = 1;
-    }
+    if ((head->isPlayerBullet && head->moveFoward) || (!head->isPlayerBullet && head->moveFoward)) range = 1; 
 
     bool mustDestroyCondition = !isEmpty(head->x + range, head->y) &&
                         !isBonus(head->x + range, head->y);
@@ -225,33 +217,33 @@ void EngineGame::checkEnemyCollision(Character &character, pEnemyList enemyList)
 }
 
 void EngineGame::checkBulletCollision(pEnemyList enemyList,
-                                          Character &character, Pbullet &shoots,
+                                          Character &character, Pbullet &bulletList,
                                           int &pointOnScreen,
                                           bool immortalityCheck) {
   bool isCollisionEnemy = false, isCollisionCharacter = false, pause = false;
-  Pbullet head = shoots;
+  Pbullet head = bulletList;
   pEnemyList tmp = enemyList;
   while (enemyList != NULL && !isCollisionEnemy &&
          !isCollisionCharacter) {  // Per ogni nemico
-    while (shoots != NULL && !isCollisionEnemy && !isCollisionCharacter) {
-      if (shoots->isPlayerBullet) {
+    while (bulletList != NULL && !isCollisionEnemy && !isCollisionCharacter) {
+      if (bulletList->isPlayerBullet) {
         int x = enemyList->enemy.getX(), y = enemyList->enemy.getY();
-        if ((x == shoots->x + 1 && y == shoots->y) ||
-            (x == shoots->x - 1 &&
-             y == shoots->y))  // Controllo valido per i foward and backward
+        if ((x == bulletList->x + 1 && y == bulletList->y) ||
+            (x == bulletList->x - 1 &&
+             y == bulletList->y))  // Controllo valido per i foward and backward
                                // bullets del player
           isCollisionEnemy = true;
       } else {
         int x = character.getX(), y = character.getY();
-        if ((x == shoots->x + 1 && y == shoots->y) ||
-            (x == shoots->x - 1 &&
-             y == shoots->y))  // Controllo valido per i foward and backward
+        if ((x == bulletList->x + 1 && y == bulletList->y) ||
+            (x == bulletList->x - 1 &&
+             y == bulletList->y))  // Controllo valido per i foward and backward
                                // bullets del nemico
           isCollisionCharacter = true;
       }
-      shoots = shoots->next;
+      bulletList = bulletList->next;
     }
-    shoots = head;
+    bulletList = head;
     if (isCollisionEnemy || isCollisionCharacter)
       break;
     else
