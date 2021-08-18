@@ -589,7 +589,7 @@ pEnemyList EngineGame::generateEnemy(int *enemyCount, int type, pEnemyList list,
     case 1:   // Elite enemies
       skin = 'E';
       life = 150;
-      gun.setBulletSkin('°');
+      gun.setBulletSkin('`');
       gun.setDamage(20);
       break;
     case 2:   // Boss enemy
@@ -873,7 +873,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
   pEnemyList normalEnemyList = NULL, specialEnemyList = NULL, bossEnemyList = NULL;
   pPosition mountainList = new Position, bonusList = new Position;
   pRoom roomList = new Room;
-  
+
   Gun basicPlayerGun('~', 25, 40, 10);
   character.setGun(basicPlayerGun);
   clear();
@@ -934,7 +934,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     enemyShootBullets(normalEnemyList, character);
     enemyShootBullets(specialEnemyList, character);
     enemyShootBullets(bossEnemyList, character);
-    
+
     checkEnemyCollision(character, normalEnemyList);
     gorillaPunch(direction, character, normalEnemyList, pointsOnScreen);
 
