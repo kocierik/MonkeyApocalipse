@@ -196,8 +196,7 @@ void EngineGame::checkEnemyCollision(Character &character, pEnemyList enemyList)
   while (enemyList != NULL) {
     int xP = character.getX(), yP = character.getY();
     int xE = enemyList->enemy.getX(), yE = enemyList->enemy.getY();
-    if ((xP - 1 == xE && yP == yE) || (xP + 1 == xE && yP == yE) ||
-        (xP == xE && yP + 1 == yE) || (xP == xE && yP - 1 == yE)) {
+    if ((xP == xE && yP + 1 == yE) || (xP == xE && yP - 1 == yE)) {
       character.decreaseLife(1);
       enemyList->enemy.decreaseLife(2);
 
