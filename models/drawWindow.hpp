@@ -47,6 +47,9 @@ class DrawWindow {
   // pPosition generateMountain(pPosition list, int &mountainNumber);
   void printMountain(pPosition list);
   void printBonus(pPosition bonusList);
+  void showBonusOnScreen(bool &upgradeBuyed, int &upgradeType, int &upgradeTime,
+                         bool &bonusPicked, int bonusType, int &bonusTime,
+                         bool &immortalitycheck, int &immortalityTime);
 
   pRoom saveRoom(pPosition mountainList, pPosition bonusList, pRoom roomList);
   void saveRecord(float finalScore, char name[]);

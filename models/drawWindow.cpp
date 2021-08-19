@@ -448,6 +448,97 @@ void DrawWindow::printBonus(pPosition bonusList) {
   }
 }
 
+void DrawWindow::showBonusOnScreen(bool &upgradeBuyed, int &upgradeType,
+                                   int &upgradeTime, bool &bonusPicked,
+                                   int bonustype, int &bonusTime,
+                                   bool &immortalityCheck,
+                                   int &immortalityTime) {
+  int x = 25;
+  int y = 6;
+  int disclaimerTimeLimit = 40;
+  int immortalityTimeLimit = 120;
+
+  if (bonusPicked == true && bonustype == 0) {
+    mvprintw(y, x, "BUNCH OF BANANAS [+50]");
+    bonusTime++;
+  } else if (bonusPicked == true && bonustype == 1) {
+    mvprintw(y, x, "CRATE OF BANANAS [+300]");
+    bonusTime++;
+  } else if (bonusPicked == true && bonustype == 2) {
+    mvprintw(y, x, "SUPPLY OF BANANAS [+1000]");
+    bonusTime++;
+  } else if (bonusPicked == true && bonustype == 3) {
+    mvprintw(y, x, "ROTTEN BANANAS [-100]");
+    bonusTime++;
+  } else if (bonusPicked == true && bonustype == 4) {
+    mvprintw(y, x, "BANANAS SPIDER [-10 HP]");
+    bonusTime++;
+  } else if (bonusPicked == true && bonustype == 5) {
+    mvprintw(y, x, "MONKEY TRAP [-30 HP]");
+    bonusTime++;
+  } else if (bonusPicked == true && bonustype == 6) {
+    mvprintw(y, x, "EAT 1 BANANA [+10 HP]");
+    bonusTime++;
+  } else if (bonusPicked == true && bonustype == 7) {
+    mvprintw(y, x, "EAT 2 BANANA [+20 HP]");
+    bonusTime++;
+  } else if (bonusPicked == true && bonustype == 8) {
+    mvprintw(y, x, "BANANA SMOOTHIE [+40 HP]");
+    bonusTime++;
+  } else if (bonusPicked == true && bonustype == 9) {
+    mvprintw(y, x, "PEEL LOADER [+20 PEELS]");
+    bonusTime++;
+  } else if (bonusPicked == true && bonustype == 10) {
+    mvprintw(y, x, "PEEL LOADER [+40 PEELS]");
+    bonusTime++;
+  } else if (bonusPicked == true && bonustype == 11) {
+    mvprintw(y, x, "PEACE MISSION [+100 PEELS]");
+    bonusTime++;
+  } else if (bonusPicked == true && bonustype == 12) {
+    mvprintw(y, x, "PISSED OF ENEMY MONKEYS");
+    bonusTime++;
+  } else if (bonusPicked == true && bonustype == 13) {
+    mvprintw(y, x, "PEELS ON FIRE! [+5 DAMAGE]");
+    bonusTime++;
+  } else if (bonusPicked == true && bonustype == 14) {
+    mvprintw(y, x, "MONKEY GOD! [IMMORTALITY]");
+    bonusTime++;
+  }
+  if (immortalityCheck == true) {
+    init_pair(24, -1, COLOR_MAGENTA);
+    attron(COLOR_PAIR(24));
+    mvprintw(22, 56, "                    ");
+    attroff(COLOR_PAIR(24));
+    immortalityTime++;
+  }
+
+  if (bonusTime >
+      disclaimerTimeLimit) {  // LASCIA IL BONUS VISIBILE PER "X" CICLI
+    bonusPicked = false;
+    bonusTime = 0;  // RESETTA IL TIMER PER IL PROSSIMO BONUS UNA VOLTA SCADUTO
+  }
+
+  if (upgradeBuyed == true && upgradeType == 0) {
+    mvprintw(y, x + 29, "MORE LIFE!");
+    upgradeTime++;
+  } else if (upgradeBuyed == true && upgradeType == 1) {
+    mvprintw(y, x + 29, "DAMAGE UPGRADE!");
+    upgradeTime++;
+  }
+
+  if (immortalityTime >
+      immortalityTimeLimit) {  //   GESTISCE LA DURATA DELL'IMMORTALITÀ
+    immortalityCheck = false;
+    immortalityTime = 0;
+  }
+
+  if (upgradeTime >
+      disclaimerTimeLimit) {  // STESSO DI SOPRA MA CON GLI UPGRADE
+    upgradeBuyed = false;
+    upgradeTime = 0;
+  }
+}
+
 int DrawWindow::lenghtList(pEnemyList list) {
   int i = -1;
   while (list != NULL) {
