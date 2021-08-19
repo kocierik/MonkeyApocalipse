@@ -285,7 +285,7 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
                                int &powerUpDMG, bool &bonusPicked,
                                int &bonusType, int &bonusTime,
                                bool &upgradeBuyed, int &upgradeType,
-                               int &upgradeTime, bool &immortalityCheck, int &immortalityTime) {
+                               int &upgradeTime, bool &immortalityCheck, int &immortalityTime, bool &toTheRight) {
   int upgradeCost = 10;
   srand(time(0));
   switch (direction) {  // CONTROLLO IL TASTO SPINTO
@@ -331,6 +331,7 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
                      pointsOnScreen, character, bonusType, immortalityCheck, immortalityTime);
         character.directionLeft();
       }
+      toTheRight = false;
       break;
     case KEY_RIGHT:  // -----------------------------------------------------
       if (isEmpty(character.getX() + 1, character.getY()))
@@ -345,6 +346,7 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
                      pointsOnScreen, character, bonusType, immortalityCheck, immortalityTime);
         character.directionRight();
       }
+      toTheRight = true;
       break;
     case 'E':  // Sparo in avanti del player
     case 'e':
@@ -397,31 +399,56 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
 }
 
 void EngineGame::gorillaPunch(int direction, Character &character,
-                              pEnemyList enemyList, int &pointOnScreen) {
+                              pEnemyList enemyList, int &pointOnScreen, bool toTheRight) {
   pEnemyList tmp = enemyList;
-
+  
   if (direction == 32) {
-    mvprintw(character.getY(), character.getX() + 1, "o");
 
-    while (enemyList != NULL) {
-      if (character.getX() + 1 == enemyList->enemy.getX() &&
-          character.getY() == enemyList->enemy.getY()) {
-        enemyList->enemy.decreaseLife(40);
+    if(toTheRight == true){ //---------------------------------------------------------
+      mvprintw(character.getY(), character.getX() + 1, "o");
 
-        if (enemyList->enemy.getLife() <= 0) {
-          enemyList = destroyEnemy(tmp, enemyList->enemy);
-          increasePointOnScreen(pointOnScreen, scoreForKill);
+      while (enemyList != NULL) {
+        if (character.getX() + 1 == enemyList->enemy.getX() &&
+            character.getY() == enemyList->enemy.getY()) {
+          enemyList->enemy.decreaseLife(40);
+
+          if (enemyList->enemy.getLife() <= 0) {
+            enemyList = destroyEnemy(tmp, enemyList->enemy);
+            increasePointOnScreen(pointOnScreen, scoreForKill);
+          }
+
+          init_pair(13, COLOR_RED, -1);
+          attron(COLOR_PAIR(13));
+          // Il nemico diventa rosso quando si scontra col player
+          char tmpSkin[0]; tmpSkin[0] = enemyList->enemy.getSkin();
+          mvprintw(enemyList->enemy.getY(), enemyList->enemy.getX(), tmpSkin);
+          attroff(COLOR_PAIR(13));
         }
-
-        init_pair(13, COLOR_RED, -1);
-        attron(COLOR_PAIR(13));
-        // Il nemico diventa rosso quando si scontra col player
-        char tmpSkin[0]; tmpSkin[0] = enemyList->enemy.getSkin();
-        mvprintw(enemyList->enemy.getY(), enemyList->enemy.getX(), tmpSkin);
-        attroff(COLOR_PAIR(13));
+        enemyList = enemyList->next;
       }
-      enemyList = enemyList->next;
-    }
+    } else if(toTheRight == false){ //--------------------------------------------------
+      mvprintw(character.getY(), character.getX() - 1, "o");
+
+      while (enemyList != NULL) {
+        if (character.getX() - 1 == enemyList->enemy.getX() &&
+            character.getY() == enemyList->enemy.getY()) {
+          enemyList->enemy.decreaseLife(40);
+
+          if (enemyList->enemy.getLife() <= 0) {
+            enemyList = destroyEnemy(tmp, enemyList->enemy);
+            increasePointOnScreen(pointOnScreen, scoreForKill);
+          }
+
+          init_pair(13, COLOR_RED, -1);
+          attron(COLOR_PAIR(13));
+          // Il nemico diventa rosso quando si scontra col player
+          char tmpSkin[0]; tmpSkin[0] = enemyList->enemy.getSkin();
+          mvprintw(enemyList->enemy.getY(), enemyList->enemy.getX(), tmpSkin);
+          attroff(COLOR_PAIR(13));
+        }
+        enemyList = enemyList->next;
+      }
+    }  
   }
 }
 
@@ -822,6 +849,7 @@ void EngineGame::increasePointOnScreen(int &pointOnScreen, int pointsAdded) {
 
 void EngineGame::runGame(Character character, DrawWindow drawWindow,
                          int direction) {
+  bool toTheRight = true;
   bool upgradeBuyed = false, bonusPicked = false, immortalityCheck = false;
   int immortalityTime = 0;
   int pointsOnScreen = 0;
@@ -859,7 +887,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     moveCharacter(drawWindow, character, direction, roomList, normalEnemyList, round,
                   pointsOnScreen, bananas, powerUpDMG, bonusPicked, bonusType,
                   bonusTime, upgradeBuyed, upgradeType, upgradeTime,
-                  immortalityCheck, immortalityTime);
+                  immortalityCheck, immortalityTime, toTheRight);
     clear();
     drawWindow.printCharacter(character.getX(), character.getY(),
                               character.getSkin());
@@ -896,8 +924,8 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
 
     checkEnemyCollision(character, normalEnemyList);
     
-    gorillaPunch(direction, character, normalEnemyList, pointsOnScreen);
-    gorillaPunch(direction, character, specialEnemyList, pointsOnScreen);
+    gorillaPunch(direction, character, normalEnemyList, pointsOnScreen, toTheRight);
+    gorillaPunch(direction, character, specialEnemyList, pointsOnScreen, toTheRight);
 
     money(bananas, normalEnemyList, maxRound, roundPayed, character);
     checkBulletCollision(normalEnemyList, character, this->playerBullets, pointsOnScreen,
