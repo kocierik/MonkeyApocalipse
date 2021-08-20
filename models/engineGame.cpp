@@ -101,22 +101,22 @@ void EngineGame::shootEnemyBullet() {
 
 void EngineGame::destroyBullet(Pbullet &bulletList) {
   Pbullet head = bulletList, prev = bulletList, tmp;
+    bool mustDestroyCondition = false;
   while (head != NULL) {
     int range = -1;
     if ((head->isPlayerBullet && head->moveFoward) || (!head->isPlayerBullet && !head->moveFoward)) range = 1; 
 
-    /*
+    
     bool mustDestroyCondition = !isEmpty(head->x + range, head->y) &&
                         !isBonus(head->x + range, head->y);
-    if (!head->isPlayerBullet)
+    if (!head->isPlayerBullet)                                                    // HO rimesso questo
       mustDestroyCondition &= !isEnemy(head->x + range, head->y);
-    */
-    bool mustDestroyCondition = false;
-    if (head->isPlayerBullet)
-      mustDestroyCondition = isEnemy(head->x + range, head->y) || isMountain(head->x + range, head->y);
-    else
-      // Le montagne non vengono colpite dai priettili perchè sono colorate
-      mustDestroyCondition = isPlayer(head->x + range, head->y) || isMountain(head->x + range, head->y);
+    
+    // if (head->isPlayerBullet)
+    //   mustDestroyCondition = isEnemy(head->x + range, head->y) || isMountain(head->x + range, head->y);
+    // else                                                                                               NON FUNZIONA?? le montagne vengono attraversate dai colpi
+    //   // Le montagne non vengono colpite dai priettili perchè sono colorate
+    //   mustDestroyCondition = isPlayer(head->x + range, head->y) || isMountain(head->x + range, head->y);
 
     if (mustDestroyCondition || head->x > 70 || head->x < 23) {
       if (head == bulletList) {
