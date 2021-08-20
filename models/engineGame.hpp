@@ -44,6 +44,10 @@ class EngineGame {
   bool isBonus(int x, int y);
   bool isMountain(int x, int y);
   bool isEnemy(int x, int y);
+  bool isPlayer(int x, int y);
+  bool isBullet(int x, int y);
+  bool isEnemyBullet(int x, int y);
+  bool isPlayerBullet(int x, int y);
 
   void choiceGame(DrawWindow drawWindow, int *direction, int *selection);
   void moveCharacter(DrawWindow drawWindow, Character &character, int direction,

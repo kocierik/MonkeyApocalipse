@@ -105,11 +105,18 @@ void EngineGame::destroyBullet(Pbullet &bulletList) {
     int range = -1;
     if ((head->isPlayerBullet && head->moveFoward) || (!head->isPlayerBullet && !head->moveFoward)) range = 1; 
 
+    /*
     bool mustDestroyCondition = !isEmpty(head->x + range, head->y) &&
                         !isBonus(head->x + range, head->y);
     if (!head->isPlayerBullet)
       mustDestroyCondition &= !isEnemy(head->x + range, head->y);
-
+    */
+    bool mustDestroyCondition = false;
+    if (head->isPlayerBullet)
+      mustDestroyCondition = isEnemy(head->x + range, head->y) || isMountain(head->x + range, head->y);
+    else
+      // Le montagne non vengono colpite dai priettili perchè sono colorate
+      mustDestroyCondition = isPlayer(head->x + range, head->y) || isMountain(head->x + range, head->y);
 
     if (mustDestroyCondition || head->x > 70 || head->x < 23) {
       if (head == bulletList) {
@@ -250,8 +257,9 @@ void EngineGame::checkBulletCollision(pEnemyList enemyList,
       enemyList = enemyList->next;
   }
 
-  init_pair(13, COLOR_RED, -1);
-  attron(COLOR_PAIR(13));
+  // RIMOZIONE DEI COLORI PER AVERE UNA MIGLIORE GIOCABILITÀ (da cercaree di unificare le due cose)
+  //init_pair(13, COLOR_RED, -1);
+  //attron(COLOR_PAIR(13));
 
   if (isCollisionEnemy) {
     char tmpSkin[0]; tmpSkin[0] = enemyList->enemy.getSkin();
@@ -265,18 +273,21 @@ void EngineGame::checkBulletCollision(pEnemyList enemyList,
     character.decreaseLife(enemyList->enemy.getGun().getDamage());
     checkDeath(pause, character);
 
-    // Skin del player rossa qunado viene colpito
+    // Skin del player rossa quando viene colpito
     char tmpSkin[0]; tmpSkin[0] = character.getSkin();
     mvprintw(character.getY(), character.getX(), tmpSkin);
   }
-
-  attroff(COLOR_PAIR(13));
+  //attroff(COLOR_PAIR(13));
 }
 
 bool EngineGame::isEmpty(int x, int y) { return mvinch(y, x) == ' '; }
 bool EngineGame::isBonus(int x, int y) { return mvinch(y, x) == '?'; }
 bool EngineGame::isMountain(int x, int y) { return mvinch(y, x) == '^'; }
+bool EngineGame::isPlayer(int x, int y) { return mvinch(y, x) == 'M'; }
 bool EngineGame::isEnemy(int x, int y) { return mvinch(y, x) == 'e' || mvinch(y, x) == 'E' || mvinch(y, x) == 'B'; }
+bool EngineGame::isBullet(int x, int y) { return mvinch(y, x) == '~' || mvinch(y, x) == '-' || mvinch(y, x) == '=' || mvinch(y, x) == '*'; }
+bool EngineGame::isPlayerBullet(int x, int y) { return mvinch(y, x) == '~'; }
+bool EngineGame::isEnemyBullet(int x, int y) { return mvinch(y, x) == '-' || mvinch(y, x) == '=' || mvinch(y, x) == '*'; }
 
 void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
                                int direction, pRoom &roomList,
@@ -541,12 +552,18 @@ pPosition EngineGame::getBonus(DrawWindow drawWindow, int x, int y,
           pointsOnScreen -= 100;
           end = true;
           break;
-        case 4:  // Malus name: "BANANAS SPIDER"
-          character.decreaseLife(10);
+        case 4:  // Malus name: "BANANAS SPIDER [-10 HP]"
+          if (character.getNumberLife() == 1 && character.getLife() <= 10)
+            character.setLife(5);          
+          else
+            character.decreaseLife(10);
           end = true;
           break;
-        case 5:  // Malus name: "MONKEY TRAP"
-          character.decreaseLife(30);
+        case 5:  // Malus name: "MONKEY TRAP [-30 HP]"
+          if (character.getNumberLife() == 1 && character.getLife() <= 30)
+            character.setLife(5);          
+          else
+            character.decreaseLife(30);
           end = true;
           break;
         case 6:  // Bonus name: "EAT 1 BANANA [+10 HP]"
@@ -586,7 +603,7 @@ pPosition EngineGame::getBonus(DrawWindow drawWindow, int x, int y,
           while (enemyList != NULL) {
             enemyList->enemy.increaseLife(25);  // Aumenta la vita dei nemici
             Gun tmpBetterGun = enemyList->enemy.getGun();
-            tmpBetterGun.increaseDamage(10);  // Aumenta il danno dei nemici
+            tmpBetterGun.increaseDamage(10);    // Aumenta il danno dei nemici
             enemyList->enemy.setGun(tmpBetterGun);
             enemyList = enemyList->next;
           }
@@ -595,8 +612,7 @@ pPosition EngineGame::getBonus(DrawWindow drawWindow, int x, int y,
         case 13:  // Bonus name: "PEELS ON FIRE! [+5 DAMAGE]"
           if (character.getGun().getDamage() < 40) {
             Gun tmpBetterGun = character.getGun();
-            tmpBetterGun.increaseDamage(
-                5);  // Aumenta il danno dell'arma del player
+            tmpBetterGun.increaseDamage(5);
             character.setGun(tmpBetterGun);
           } else
             character.getGun().increaseTotalAmmo(30);

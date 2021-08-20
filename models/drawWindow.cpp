@@ -416,7 +416,7 @@ pPosition DrawWindow::generateBonus(pPosition bonusList, int &bonusCount) {
   srand(time(0));
   while (bonusCount > 0) {
     pPosition tmpHead = new Position;
-    tmpHead->x = randomPosition(25, 45).x;
+    tmpHead->x = randomPosition(25, 33).x;
     tmpHead->y = randomPosition(8, 19).y;
     tmpHead->skin = '?';
     tmpHead->next = bonusList;
@@ -426,7 +426,7 @@ pPosition DrawWindow::generateBonus(pPosition bonusList, int &bonusCount) {
   return bonusList;
 }
 
-void DrawWindow::printMountain(pPosition list) {  // FIX
+void DrawWindow::printMountain(pPosition list) {
   pPosition mountainList = list;
   while (mountainList != NULL) {
     init_pair(15, COLOR_YELLOW, -1);
