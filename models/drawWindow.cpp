@@ -49,28 +49,28 @@ DrawWindow::DrawWindow() {}
 void DrawWindow::drawMenu() {
   init_pair(1, COLOR_RED, 232);  // 1 INDICA UN ID, POI METTI IL COLORE CHE VUOI
   attron(COLOR_PAIR(1));         // APRTURA COLORE ROSSO
-  mvprintw(1, 2,
+  mvprintw(LINES/2-10, COLS/2-60,
            "                                                                   "
            "                                         ");
-  mvprintw(2, 2,
+  mvprintw(LINES/2-9, COLS/2-60,
            "    b    d  P*Y  8b 8 8  d 88888 Yb  dP        A   8**Y  P*Y   "
            "P**b8   b    8     Yb  dP 8**Y .P*Y8 88888   ");
-  mvprintw(3, 2,
+  mvprintw(LINES/2-8, COLS/2-60,
            "    8b  d8 P   Y 8Yb8 8od  8__    YbdP        PY   8__P P   Y P   "
            "`*   PY   8      YbdP  8__P `Yo.* 8__     ");
-  mvprintw(4, 2,
+  mvprintw(LINES/2-7, COLS/2-60,
            "    8Yb P8 b   d 8 Y8 8*Y  8**     8P        P__Y  8**  b   P Y    "
            "   P__Y  8  .o   8P   8**  o.`Y8 8**     ");
-  mvprintw(5, 2,
+  mvprintw(LINES/2-6, COLS/2-60,
            "    8 Y  8  Ybo  8  Y 8  Y 88888  dP        P****Y 8     P*Y   "
            "YoodP P****Y 8ood8  dP    8     8oP* 88888   ");
-  mvprintw(6, 2,
+  mvprintw(LINES/2-5, COLS/2-60,
            "                                                                   "
            "                                         ");
-  mvprintw(7, 2,
+  mvprintw(LINES/2-4, COLS/2-60,
            "     THE REVENGE OF THE MONKEYS HAS JUST BEGUN!                    "
            "                                         ");
-  mvprintw(8, 2,
+  mvprintw(LINES/2-3, COLS/2-60,
            "                                                                   "
            "                                         ");
   attroff(COLOR_PAIR(1));  // CHIUSURA DEL COLORE ROSSO E NERO
@@ -81,34 +81,34 @@ void DrawWindow::printCommand(int *cnt) {
 
   if (*cnt == 0) {
     attron(COLOR_PAIR(12));
-    mvprintw(12, 5, ">>>  (+) START THE FIGHT! ");
+    mvprintw(LINES/2+2, COLS/2-50, ">>>  (+) START THE FIGHT! ");
     attroff(COLOR_PAIR(12));
   } else {
-    mvprintw(12, 5, "     START THE FIGHT!     ");
+    mvprintw(LINES/2+2, COLS/2-50, "     START THE FIGHT!     ");
   }
   if (*cnt == 1) {
     attron(COLOR_PAIR(12));
-    mvprintw(14, 5, ">>>  (?) HOW TO PLAY ");
+    mvprintw(LINES/2+4, COLS/2-50, ">>>  (?) HOW TO PLAY ");
     attroff(COLOR_PAIR(12));
   } else {
-    mvprintw(14, 5, "     HOW TO PLAY     ");
+    mvprintw(LINES/2+4, COLS/2-50, "     HOW TO PLAY     ");
   }
   if (*cnt == 2) {
     attron(COLOR_PAIR(12));
-    mvprintw(16, 5, ">>>  (©) CREDITS ");
+    mvprintw(LINES/2+6, COLS/2-50, ">>>  (©) CREDITS ");
     attroff(COLOR_PAIR(12));
   } else {
-    mvprintw(16, 5, "     CREDITS       ");
+    mvprintw(LINES/2+6, COLS/2-50, "     CREDITS       ");
   }
   if (*cnt == 3) {
     attron(COLOR_PAIR(12));
-    mvprintw(18, 5, "<<<  (X) QUIT ");
+    mvprintw(LINES/2+8, COLS/2-50, "<<<  (X) QUIT ");
     attroff(COLOR_PAIR(12));
   } else {
-    mvprintw(18, 5, "     QUIT      ");
+    mvprintw(LINES/2+8, COLS/2-50, "     QUIT      ");
   }
 
-  mvprintw(21, 5, "Press [SPACE] to continue or use the arrow to move.");
+  mvprintw(LINES/2+11, COLS/2-50, "Press [SPACE] to continue or use the arrow to move.");
 }
 
 void DrawWindow::printCredits() {
