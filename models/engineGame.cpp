@@ -53,9 +53,10 @@ Pbullet EngineGame::generateBullets(Character character, bool isPlayerBullet,
 }
 
 void EngineGame::generateEnemyBullets(pEnemyList enemyList, Character character) {
+  bool shootFoward;
   while (enemyList != NULL) {
     if (this->whileCountEnemy % 20 == 0) {
-      bool shootFoward = true;
+      shootFoward = true;
       if (character.getX() >
           enemyList->enemy.getX())  // Se il player è alla sx del nemico
         shootFoward = false;         // Lo sparo sarà verso sx
@@ -70,6 +71,7 @@ void EngineGame::generateEnemyBullets(pEnemyList enemyList, Character character)
 
 void EngineGame::shootPlayerBullet() {
   Pbullet bulletList = this->playerBullets;
+  char tmp[2];
   while (bulletList != NULL) {
     if (bulletList->moveFoward)
       bulletList->x += bulletList->speed;
@@ -78,7 +80,7 @@ void EngineGame::shootPlayerBullet() {
     move(bulletList->y, bulletList->x);
     init_pair(10, COLOR_YELLOW, -1);  // SPARA BANANE GIALLE
     attron(COLOR_PAIR(10));
-    char tmp[2]; tmp[0] = bulletList->skin;
+    tmp[0] = bulletList->skin;
     printw(tmp);
     attroff(COLOR_PAIR(10));
     bulletList = bulletList->next;
@@ -87,13 +89,14 @@ void EngineGame::shootPlayerBullet() {
 
 void EngineGame::shootEnemyBullet() {
   Pbullet bulletList = this->normalEnemyBullets;
+  char tmpSkin[2];
   while (bulletList != NULL) {
     if (bulletList->moveFoward)
       bulletList->x -= bulletList->speed;
     else
       bulletList->x += bulletList->speed;
     move(bulletList->y, bulletList->x);
-    char tmpSkin[2]; tmpSkin[0] = bulletList->skin;
+    tmpSkin[0] = bulletList->skin;
     printw(tmpSkin);
     bulletList = bulletList->next;
   }
@@ -101,13 +104,14 @@ void EngineGame::shootEnemyBullet() {
 
 void EngineGame::destroyBullet(Pbullet &bulletList) {
   Pbullet head = bulletList, prev = bulletList, tmp;
-    bool mustDestroyCondition = false;
+  bool mustDestroyCondition = false;
+  int range;
   while (head != NULL) {
-    int range = -1;
+    range = -1;
     if ((head->isPlayerBullet && head->moveFoward) || (!head->isPlayerBullet && !head->moveFoward)) range = 1; 
 
     
-    bool mustDestroyCondition = !isEmpty(head->x + range, head->y) &&
+    mustDestroyCondition = !isEmpty(head->x + range, head->y) &&
                         !isBonus(head->x + range, head->y);
     if (!head->isPlayerBullet)                                                    // HO rimesso questo
       mustDestroyCondition &= !isEnemy(head->x + range, head->y);
@@ -534,9 +538,10 @@ pPosition EngineGame::getBonus(DrawWindow drawWindow, int x, int y,
                                int round, int &pointsOnScreen,
                                Character &character, int &bonusType, bool &immortalitycheck, int &immortalityTime) {
   pPosition tmpHead = bonusList;
+  bool end;
   while (bonusList->next != NULL) {
     if (bonusList->x == x && bonusList->y == y && bonusList->skin == '?') {
-      bool end = false;
+      end = false;
       switch (bonusType) {
         case 0:  // Bonus name: "BUNCH OF BANANAS"
           pointsOnScreen += 50;
@@ -657,8 +662,9 @@ void EngineGame::checkDeath(bool &pause, Character &character) {
 
 void EngineGame::checkMountainDamage(Pbullet bulletList, pPosition &mountainList) {
   pPosition tmpMountainList = mountainList;
+  int range;
   while (bulletList != NULL) {
-    int range = 0;
+    range = 0;
     if (bulletList->isPlayerBullet) {
       if (bulletList->moveFoward) range = 2;
       else range = -2;
