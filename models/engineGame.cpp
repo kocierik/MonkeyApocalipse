@@ -78,8 +78,8 @@ void EngineGame::shootPlayerBullet() {
     move(bulletList->y, bulletList->x);
     init_pair(10, COLOR_YELLOW, -1);  // SPARA BANANE GIALLE
     attron(COLOR_PAIR(10));
-    char tmp[0]; tmp[0] = bulletList->skin;
-    printw(tmp);
+    char tmp[2]; tmp[0] = bulletList->skin;
+    printw("-");
     attroff(COLOR_PAIR(10));
     bulletList = bulletList->next;
   }
@@ -93,8 +93,8 @@ void EngineGame::shootEnemyBullet() {
     else
       bulletList->x += bulletList->speed;
     move(bulletList->y, bulletList->x);
-    char tmpSkin[0]; tmpSkin[0] = bulletList->skin;
-    printw(tmpSkin);
+    char tmpSkin[2]; tmpSkin[0] = bulletList->skin;
+    printw(".");
     bulletList = bulletList->next;
   }
 }
@@ -200,6 +200,7 @@ pPosition EngineGame::deletePosition(pPosition list, pPosition toDelete) {
 */
 void EngineGame::checkEnemyCollision(Character &character, pEnemyList enemyList) {
   pEnemyList tmp = enemyList;
+  char tmpSkin[2];
   while (enemyList != NULL) {
     int xP = character.getX(), yP = character.getY();
     int xE = enemyList->enemy.getX(), yE = enemyList->enemy.getY();
@@ -213,7 +214,7 @@ void EngineGame::checkEnemyCollision(Character &character, pEnemyList enemyList)
 
       init_pair(13, COLOR_RED, -1);
       attron(COLOR_PAIR(13));
-      char tmpSkin[0]; tmpSkin[0] = character.getSkin();
+       tmpSkin[0] = character.getSkin();
       mvprintw(character.getY(), character.getX(), tmpSkin);
       tmpSkin[0] = enemyList->enemy.getSkin();
       mvprintw(enemyList->enemy.getY(), enemyList->enemy.getX(), tmpSkin);
@@ -260,9 +261,10 @@ void EngineGame::checkBulletCollision(pEnemyList enemyList,
   // RIMOZIONE DEI COLORI PER AVERE UNA MIGLIORE GIOCABILITÀ (da cercaree di unificare le due cose)
   //init_pair(13, COLOR_RED, -1);
   //attron(COLOR_PAIR(13));
-
+  char tmpSkin[2];
+  // char tmpSkin[2];
   if (isCollisionEnemy) {
-    char tmpSkin[0]; tmpSkin[0] = enemyList->enemy.getSkin();
+    tmpSkin[0] = enemyList->enemy.getSkin();
     mvprintw(enemyList->enemy.getY(), enemyList->enemy.getX(), tmpSkin);
     enemyList->enemy.decreaseLife(character.getGun().getDamage());
     if (enemyList->enemy.getLife() <= 0) {
@@ -274,7 +276,7 @@ void EngineGame::checkBulletCollision(pEnemyList enemyList,
     checkDeath(pause, character);
 
     // Skin del player rossa quando viene colpito
-    char tmpSkin[0]; tmpSkin[0] = character.getSkin();
+     tmpSkin[0] = character.getSkin();
     mvprintw(character.getY(), character.getX(), tmpSkin);
   }
   //attroff(COLOR_PAIR(13));
