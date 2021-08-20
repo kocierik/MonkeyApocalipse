@@ -11,20 +11,20 @@ class EngineGame {
   int widht;
   bool quit;
   bool pause;
-  Pbullet playerBullets;//playerBullets;
+  Pbullet playerBullets;  // playerBullets;
   Pbullet normalEnemyBullets;
   Pbullet specialEnemyBullets;
   Pbullet bossEnemyBullets;
-  //bool isEnemyShoots;
+  // bool isEnemyShoots;
   int whileCount;
   int whileCountEnemy;
-    
+
  public:
   EngineGame(int frameGameX, int frameGameY, int heigth, int width);
   void printList(pPosition list);
   void baseCommand();
   Pbullet generateBullets(Character character, bool isPlayerBullet,
-                       bool moveFoward, Pbullet &bulletList);
+                          bool moveFoward, Pbullet &bulletList);
   void generateEnemyBullets(pEnemyList enemyList, Character character);
 
   void shootPlayerBullet();
@@ -35,11 +35,10 @@ class EngineGame {
   // Funzione per eliminare bonus e montagne
   pPosition deletePosition(pPosition list, pPosition bonus);
 
-
   void checkEnemyCollision(Character &character, pEnemyList enemyList);
   void checkBulletCollision(pEnemyList enemys, Character &character,
-                                Pbullet &bulletList, int &pointOnScreen,
-                                bool immortalityCheck);
+                            Pbullet &bulletList, int &pointOnScreen,
+                            bool immortalityCheck);
   bool isEmpty(int x, int y);
   bool isBonus(int x, int y);
   bool isMountain(int x, int y);
@@ -55,14 +54,16 @@ class EngineGame {
                      int &pointsOnScreen, int &bananas, int &powerUpDMG,
                      bool &bonusPicked, int &bonustype, int &bonusTime,
                      bool &upgradeBuyed, int &upgradeType, int &upgradeTime,
-                     bool &immortalityCheck, int &immortalityTime, bool &toTheRight);
+                     bool &immortalityCheck, int &immortalityTime,
+                     bool &toTheRight);
 
-  pEnemyList generateEnemy(int *enemyCount, int type, pEnemyList list, int &round,
-                                 DrawWindow drawWindow);
+  pEnemyList generateEnemy(int *enemyCount, int type, pEnemyList list,
+                           int &round, DrawWindow drawWindow);
 
   pPosition getBonus(DrawWindow drawWindow, int x, int y, pPosition bonusList,
                      pEnemyList &enemyList, int round, int &pointsOnScreen,
-                     Character &character, int &bonusType, bool &immortalitycheck, int &immortalityTime);
+                     Character &character, int &bonusType,
+                     bool &immortalitycheck, int &immortalityTime);
 
   void checkDeath(bool &pause, Character &character);
 

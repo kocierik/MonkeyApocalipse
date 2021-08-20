@@ -571,7 +571,8 @@ void DrawWindow::printCharacterStats(pEnemyList list, Character character) {
     mvprintw(i, X_ElencoNemici, "[ALL ENEMY DEFEATED!]");
   }
 
-  if (character.getGun().getTotalAmmo() == 0 && character.getGun().getMagazineAmmo() == 0) {
+  if (character.getGun().getTotalAmmo() == 0 &&
+      character.getGun().getMagazineAmmo() == 0) {
     init_pair(25, COLOR_RED, -1);
     attron(COLOR_PAIR(25));
     mvprintw(26, 76, "%d", character.getGun().getMagazineAmmo());
