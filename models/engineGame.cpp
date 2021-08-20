@@ -103,7 +103,7 @@ void EngineGame::destroyBullet(Pbullet &bulletList) {
   Pbullet head = bulletList, prev = bulletList, tmp;
   while (head != NULL) {
     int range = -1;
-    if ((head->isPlayerBullet && head->moveFoward) || (!head->isPlayerBullet && head->moveFoward)) range = 1; 
+    if ((head->isPlayerBullet && head->moveFoward) || (!head->isPlayerBullet && !head->moveFoward)) range = 1; 
 
     bool mustDestroyCondition = !isEmpty(head->x + range, head->y) &&
                         !isBonus(head->x + range, head->y);
