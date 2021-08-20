@@ -79,7 +79,7 @@ void EngineGame::shootPlayerBullet() {
     init_pair(10, COLOR_YELLOW, -1);  // SPARA BANANE GIALLE
     attron(COLOR_PAIR(10));
     char tmp[2]; tmp[0] = bulletList->skin;
-    printw("-");
+    printw(tmp);
     attroff(COLOR_PAIR(10));
     bulletList = bulletList->next;
   }
@@ -94,7 +94,7 @@ void EngineGame::shootEnemyBullet() {
       bulletList->x += bulletList->speed;
     move(bulletList->y, bulletList->x);
     char tmpSkin[2]; tmpSkin[0] = bulletList->skin;
-    printw(".");
+    printw(tmpSkin);
     bulletList = bulletList->next;
   }
 }
