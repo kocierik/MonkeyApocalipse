@@ -59,9 +59,9 @@ void EngineGame::generateEnemyBullets(pEnemyList enemyList,
   while (enemyList != NULL) {
     if (this->whileCountEnemy % 20 == 0) {
       shootFoward = true;
-      if (character.getX() >
-          enemyList->enemy.getX())  // Se il player è alla sx del nemico
-        shootFoward = false;        // Lo sparo sarà verso sx
+      // Se il player è alla sx del nemico, spara a sx
+      if (character.getX() > enemyList->enemy.getX())
+        shootFoward = false;
       this->normalEnemyBullets =
           // Colpo del nemico -> false; Sparo avanti/indieto -> moveFoward
           generateBullets(enemyList->enemy, false, shootFoward,
@@ -528,7 +528,6 @@ pEnemyList EngineGame::generateEnemy(int *enemyCount, int type, pEnemyList list,
 
   bool isEmpty = false;
   while (*enemyCount > 0) {
-    srand(time(0));
     int x = drawWindow.randomPosition(40, 69).x;
     int y = drawWindow.randomPosition(8, 19).y;
     pEnemyList head = new EnemyList;
@@ -835,16 +834,16 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
         generateEnemy(&normalEnemyCount, 0, normalEnemyList, round, drawWindow);
 
     if (round % 5 == 0) {
-      if (round == 10)
-        specialEnemyCount = 5;
+      if (round <= 10)
+        specialEnemyCount = 2;
       else if (round == 15)
-        specialEnemyCount = 8;
+        specialEnemyCount = 4;
       else if (round > 15)
-        specialEnemyCount = 10;
+        specialEnemyCount = 6;
       specialEnemyList = generateEnemy(&specialEnemyCount, 1, specialEnemyList,
                                        round, drawWindow);
     } else if (round % 10 == 0) {
-      if (round == 20)
+      if (round <= 20)
         bossEnemyCount = 2;
       else if (round >= 30)
         bossEnemyCount = 3;
@@ -874,6 +873,10 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
       checkMountainDamage(this->playerBullets, roomList->next->mountainList);
       checkMountainDamage(this->normalEnemyBullets,
                           roomList->next->mountainList);
+      //checkMountainDamage(this->specialEnemyBullets,
+          //                roomList->next->mountainList);
+      //checkMountainDamage(this->bossEnemyBullets,
+        //                  roomList->next->mountainList);
     }
 
     increaseCount(this->whileCount, points, normalEnemyList);

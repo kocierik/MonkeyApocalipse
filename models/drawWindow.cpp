@@ -650,20 +650,16 @@ void DrawWindow::printEnemy(pEnemyList list, DrawWindow drawWindow) {
 
 void DrawWindow::moveEnemy(pEnemyList list, Character character,
                            DrawWindow drawWindow, long points) {
+  int xP = character.getX(), yP = character.getY(), xE, yE;
   while (list != NULL) {
     if (points % 40 == 0) {
-      if (character.getY() > list->enemy.getY() &&
-          (mvinch(list->enemy.getY() + 1, list->enemy.getX()) == ' ' ||
-           mvinch(list->enemy.getY() + 1, list->enemy.getX()) == '?')) {
-        list->enemy.setY(list->enemy.getY() + 1);
-        drawWindow.printCharacter(list->enemy.getX(), list->enemy.getY(),
-                                  list->enemy.getSkin());
-      } else if (character.getY() < list->enemy.getY() &&
-                 (mvinch(list->enemy.getY() - 1, list->enemy.getX()) == ' ' ||
-                  mvinch(list->enemy.getY() - 1, list->enemy.getX()) == '?')) {
-        list->enemy.setY(list->enemy.getY() - 1);
-        drawWindow.printCharacter(list->enemy.getX(), list->enemy.getY(),
-                                  list->enemy.getSkin());
+      xE = list->enemy.getX(), yE = list->enemy.getY();
+      if (yP > yE && (mvinch(yE + 1, xE) == ' ' || mvinch(yE + 1, xE) == '?')) {
+        list->enemy.setY(yE + 1);
+        drawWindow.printCharacter(xE, yE, list->enemy.getSkin());
+      } else if (yP < yE && (mvinch(yE - 1, xE) == ' ' || mvinch(yE - 1, xE) == '?')) {
+        list->enemy.setY(yE - 1);
+        drawWindow.printCharacter(xE, yE, list->enemy.getSkin());
       }
     }
     list = list->next;
