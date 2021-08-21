@@ -49,28 +49,27 @@ DrawWindow::DrawWindow() {}
 void DrawWindow::drawMenu() {
   init_pair(1, COLOR_RED, 232);  // 1 INDICA UN ID, POI METTI IL COLORE CHE VUOI
   attron(COLOR_PAIR(1));         // APRTURA COLORE ROSSO
-  mvprintw(LINES/2-10, COLS/2-55,
-           "                                                                   "
-           "                                         ");
-  mvprintw(LINES/2-9, COLS/2-55,
+  mvprintw(LINES/2-10, COLS/2-54,
+           "                                                                                                            ");
+  mvprintw(LINES/2-9, COLS/2-54,
            "    b    d  P*Y  8b 8 8  d 88888 Yb  dP        A   8**Y  P*Y   "
            "P**b8   b    8     Yb  dP 8**Y .P*Y8 88888   ");
-  mvprintw(LINES/2-8, COLS/2-55,
+  mvprintw(LINES/2-8, COLS/2-54,
            "    8b  d8 P   Y 8Yb8 8od  8__    YbdP        PY   8__P P   Y P   "
            "`*   PY   8      YbdP  8__P `Yo.* 8__     ");
-  mvprintw(LINES/2-7, COLS/2-55,
+  mvprintw(LINES/2-7, COLS/2-54,
            "    8Yb P8 b   d 8 Y8 8*Y  8**     8P        P__Y  8**  b   P Y    "
            "   P__Y  8  .o   8P   8**  o.`Y8 8**     ");
-  mvprintw(LINES/2-6, COLS/2-55,
+  mvprintw(LINES/2-6, COLS/2-54,
            "    8 Y  8  Ybo  8  Y 8  Y 88888  dP        P****Y 8     P*Y   "
            "YoodP P****Y 8ood8  dP    8     8oP* 88888   ");
-  mvprintw(LINES/2-5, COLS/2-55,
+  mvprintw(LINES/2-5, COLS/2-54,
            "                                                                   "
            "                                         ");
-  mvprintw(LINES/2-4, COLS/2-55,
+  mvprintw(LINES/2-4, COLS/2-54,
            "     THE REVENGE OF THE MONKEYS HAS JUST BEGUN!                    "
            "                                         ");
-  mvprintw(LINES/2-3, COLS/2-55,
+  mvprintw(LINES/2-3, COLS/2-54,
            "                                                                   "
            "                                         ");
   attroff(COLOR_PAIR(1));  // CHIUSURA DEL COLORE ROSSO E NERO
@@ -81,80 +80,70 @@ void DrawWindow::printCommand(int *cnt) {
 
   if (*cnt == 0) {
     attron(COLOR_PAIR(12));
-    mvprintw(LINES/2+2, COLS/2-50, ">>>  (+) START THE FIGHT! ");
+    mvprintw(LINES/2+2, COLS/2-17, " >>>  (+) START THE FIGHT! (+)  <<< ");
     attroff(COLOR_PAIR(12));
   } else {
-    mvprintw(LINES/2+2, COLS/2-50, "     START THE FIGHT!     ");
+    mvprintw(LINES/2+2, COLS/2-17, "          START THE FIGHT!          ");
   }
   if (*cnt == 1) {
     attron(COLOR_PAIR(12));
-    mvprintw(LINES/2+4, COLS/2-50, ">>>  (?) HOW TO PLAY ");
+    mvprintw(LINES/2+4, COLS/2-15, " >>>  (?) HOW TO PLAY (?)  <<< ");
     attroff(COLOR_PAIR(12));
   } else {
-    mvprintw(LINES/2+4, COLS/2-50, "     HOW TO PLAY     ");
+    mvprintw(LINES/2+4, COLS/2-15, "          HOW TO PLAY          ");
   }
   if (*cnt == 2) {
     attron(COLOR_PAIR(12));
-    mvprintw(LINES/2+6, COLS/2-50, ">>>  (©) CREDITS ");
+    mvprintw(LINES/2+6, COLS/2-13, " >>>  (c) CREDITS (c)  <<< ");
     attroff(COLOR_PAIR(12));
   } else {
-    mvprintw(LINES/2+6, COLS/2-50, "     CREDITS       ");
+    mvprintw(LINES/2+6, COLS/2-13, "          CREDITS            ");
   }
   if (*cnt == 3) {
     attron(COLOR_PAIR(12));
-    mvprintw(LINES/2+8, COLS/2-50, "<<<  (X) QUIT ");
+    mvprintw(LINES/2+8, COLS/2-12, " <<<  (X) QUIT! (X)  >>> ");
     attroff(COLOR_PAIR(12));
   } else {
-    mvprintw(LINES/2+8, COLS/2-50, "     QUIT      ");
+    mvprintw(LINES/2+8, COLS/2-12, "          QUIT!          ");
   }
 
-  mvprintw(LINES/2+11, COLS/2-50, "Press [SPACE] to continue or use the arrow to move.");
+  mvprintw(LINES/2+11, COLS/2-24, "Press [SPACE] to continue or use the arrow to move.");
 }
 
 void DrawWindow::printCredits() {
   init_pair(3, COLOR_YELLOW, 232);  // FUNZIONI PER USARE IL COLORE GIALLO
   attron(COLOR_PAIR(3));
-  mvprintw(LINES/2-10, COLS/2-53,
-           "                              ___ ___ ___ ___ ___ _____   _____ "
-           "___                                   ");
-  mvprintw(LINES/2-9, COLS/2-53,
-           "                             / __| _ \\ __|   \\_ _|_   _| |_   _/ "
-           "_ \\                                  ");
-  mvprintw(LINES/2-8, COLS/2-53,
-           "                            | (__|   / _|| |) | |  | |     | || "
-           "(_) |                                 ");
-  mvprintw(LINES/2-7, COLS/2-53,
-           "                             \\___|_|_\\___|___/___| |_|     |_| "
-           "\\___/                                  ");
+  mvprintw(LINES/2-10, COLS/2-51,
+           "                                ___ ___ ___ ___ ___ _____   _____ ___                                 ");
+  mvprintw(LINES/2-9, COLS/2-51,
+           "                               / __| _ \\ __|   \\_ _|_   _| |_   _/ _ \\                                ");
+  mvprintw(LINES/2-8, COLS/2-51,
+           "                              | (__|   / _|| |) | |  | |     | || (_) |                               ");
+  mvprintw(LINES/2-7, COLS/2-51,
+           "                               \\___|_|_\\___|___/___| |_|     |_| \\___/                                ");
   attroff(COLOR_PAIR(3));
 
   init_pair(2, COLOR_GREEN, 232);  // FUNZIONI PER USARE I COLORI VEDI MENU.CPP
   attron(COLOR_PAIR(2));
-  mvprintw(LINES/2-6, COLS/2-53,
+  mvprintw(LINES/2-6, COLS/2-51,
            "                                                                   "
            "                                   ");
-  mvprintw(LINES/2-5, COLS/2-53,
+  mvprintw(LINES/2-5, COLS/2-51,
            "                                                                   "
            "                                   ");
-  mvprintw(LINES/2-4, COLS/2-53,
-           "          ____ ____ _ _  _                ____ _  _ ____           "
-           "   ___  ____ ___  ___  ____        ");
-  mvprintw(LINES/2-3, COLS/2-53,
-           "          |___ |__/ | |_/                 |___ |\\/| |__|          "
-           "    |__] |___ |__] |__] |___        ");
-  mvprintw(LINES/2-2, COLS/2-53,
-           "          |___ |  \\ | | \\_                |___ |  | |  |         "
-           "     |__] |___ |    |    |___        ");
-  mvprintw(LINES/2-1, COLS/2-53,
+  mvprintw(LINES/2-4, COLS/2-51,"          ____ ____ _ _  _                 ____ _  _ ____             ___  ____ ___  ___  ____        ");
+  mvprintw(LINES/2-3, COLS/2-51,"          |___ |__/ | |_/                  |___ |\\/| |__|             |__] |___ |__] |__] |___        ");
+  mvprintw(LINES/2-2, COLS/2-51,"          |___ |  \\ | | \\_                 |___ |  | |  |             |__] |___ |    |    |___        ");
+  mvprintw(LINES/2-1, COLS/2-51,
            "                                                                   "
            "                                   ");
-  mvprintw(LINES/2, COLS/2-53,
+  mvprintw(LINES/2, COLS/2-51,
            "                                                                   "
            "                                   ");
-  mvprintw(LINES/2+1, COLS/2-53,
-           "                                            menu [ESC]             "
+  mvprintw(LINES/2+1, COLS/2-51,
+           "                                              menu [ESC]           "
            "                                   ");
-  mvprintw(LINES/2+2, COLS/2-53,
+  mvprintw(LINES/2+2, COLS/2-51,
            "                                                                   "
            "                                   ");
   attroff(COLOR_PAIR(2));
@@ -170,87 +159,87 @@ void DrawWindow::printHowToPlay() {  // GESTISCE LA SCHERMATA DEL HOW TO PLAY
   
   init_pair(3, COLOR_YELLOW, 232);   // FUNZIONI PER USARE IL COLORE GIALLO
   attron(COLOR_PAIR(3));
-  mvprintw(LINES/2-12, COLS/2-55,
+  mvprintw(LINES/2-12, COLS/2-50,
            "                     _____ _____ _ _ _    _____ _____    _____ __  "
            "  _____ __ __                     ");
-  mvprintw(LINES/2-11, COLS/2-55,
+  mvprintw(LINES/2-11, COLS/2-50,
            "                    |  |  |     | | | |  |_   _|     |  |  _  |  | "
            " |  _  |  |  |                    ");
-  mvprintw(LINES/2-10, COLS/2-55,
+  mvprintw(LINES/2-10, COLS/2-50,
            "                    |     |  |  | | | |    | | |  |  |  |   __|  "
            "|__|     |_   _|                    ");
-  mvprintw(LINES/2-9, COLS/2-55,
+  mvprintw(LINES/2-9, COLS/2-50,
            "                    |__|__|_____|_____|    |_| |_____|  |__|  "
            "|_____|__|__| |_|                      ");
-  mvprintw(LINES/2-8, COLS/2-55,
+  mvprintw(LINES/2-8, COLS/2-50,
            "                                                                   "
            "                                  ");
   attroff(COLOR_PAIR(3));  // CHIUSURA DEL COLORE GIALLO
 
   init_pair(2, COLOR_GREEN, 232);  // FUNZIONI PER USARE IL VERDE
   attron(COLOR_PAIR(2));
-  mvprintw(LINES/2-7, COLS/2-53,
+  mvprintw(LINES/2-7, COLS/2-50,
            "       PLAY THIS ADVENTURE FROM THE POINT OF VIEW OF THE MONKEY "
            "THAT STARTED THE REVOLUTION!         ");
-  mvprintw(LINES/2-6, COLS/2-53,
+  mvprintw(LINES/2-6, COLS/2-50,
            "                                                                   "
            "                                  ");
-  mvprintw(LINES/2-5, COLS/2-53,
+  mvprintw(LINES/2-5, COLS/2-50,
            "       ELIMINATE THE ENEMIES, CLEAN THE ROOM, MOVE TO THE NEXT ONE "
            "AND COLLECT BANANAS!              ");
-  mvprintw(LINES/2-4, COLS/2-53,
+  mvprintw(LINES/2-4, COLS/2-50,
            "       USE THE [ARROWS] TO MOVE AND [W]/[E] TO USE THE "
            "BANANACANNON, WATCH OUT FOR AMMO!             ");
-  mvprintw(LINES/2-3, COLS/2-53,
+  mvprintw(LINES/2-3, COLS/2-50,
            "                                                                   "
            "                                  ");
-  mvprintw(LINES/2-2, COLS/2-53,
+  mvprintw(LINES/2-2, COLS/2-50,
            "       IF YOU RUN OUT FOR AMMO, DONT FORGET YOU CAN USE [SPACE] "
            "FOR YOUR TREMENDOUS PUNCHES!         ");
-  mvprintw(LINES/2-1, COLS/2-53,
+  mvprintw(LINES/2-1, COLS/2-50,
            "                                                                   "
            "                                  ");
-  mvprintw(LINES/2, COLS/2-53,
+  mvprintw(LINES/2, COLS/2-50,
            "       WITH YOUR BANANAS YOU WILL BE ABLE TO BUY UPGRADES FOR THE "
            "BANANACANNON                       ");
-  mvprintw(LINES/2+1, COLS/2-53,
+  mvprintw(LINES/2+1, COLS/2-50,
            "       OR BUY BACK LIVES YOU HAVE LOST                             "
            "                                  ");
-  mvprintw(LINES/2+2, COLS/2-53,
+  mvprintw(LINES/2+2, COLS/2-50,
            "                                                                   "
            "                                  ");
-  mvprintw(LINES/2+3, COLS/2-53,
+  mvprintw(LINES/2+3, COLS/2-50,
            "       WHEN YOU HAVE %d BANANAS PRESS [S] TO UPGRADE THE BANANA "
            "CANNON                               ",
            10);
-  mvprintw(LINES/2+4, COLS/2-53,
+  mvprintw(LINES/2+4, COLS/2-50,
            "       OR [A] TO RECOVER A LOST LIFE                               "
            "                                  ");
-  mvprintw(LINES/2+5, COLS/2-53,
+  mvprintw(LINES/2+5, COLS/2-50,
            "                                                                   "
            "                                  ");
-  mvprintw(LINES/2+6, COLS/2-53,
+  mvprintw(LINES/2+6, COLS/2-50,
            "       COLLECT AS MUCH BONUSES AS POSSIBLE, BUT BEWARE! THEY CAN "
            "HIDE TRAPS!                         ");
-  mvprintw(LINES/2+7, COLS/2-53,
+  mvprintw(LINES/2+7, COLS/2-50,
            "                                                                   "
            "                                  ");
-  mvprintw(LINES/2+8, COLS/2-53,
+  mvprintw(LINES/2+8, COLS/2-50,
            "                                                                   "
            "                                  ");
-  mvprintw(LINES/2+9, COLS/2-53,
+  mvprintw(LINES/2+9, COLS/2-50,
            "          [E][W] = SHOOT   [ARROWS] = MOVE    [A] = BUY EXTRA LIFE "
            "  [S] = DAMAGE UPGRADE            ");
-  mvprintw(LINES/2+10, COLS/2-53,
+  mvprintw(LINES/2+10, COLS/2-50,
            "                            [R] = RELOAD AMMO    [SPACE] = PUNCH   "
            "                                  ");
-  mvprintw(LINES/2+11, COLS/2-53,
+  mvprintw(LINES/2+11, COLS/2-50,
            "                                                                   "
            "                                  ");
-  mvprintw(LINES/2+12, COLS/2-53,
-           "                                            menu [ESC]             "
+  mvprintw(LINES/2+12, COLS/2-50,
+           "                                              menu [ESC]           "
            "                                  ");
-  mvprintw(LINES/2+13, COLS/2-53,
+  mvprintw(LINES/2+13, COLS/2-50,
            "                                                                   "
            "                                  ");
   attroff(COLOR_PAIR(2));  // CHIUSURA DEL COLORE VERDE
