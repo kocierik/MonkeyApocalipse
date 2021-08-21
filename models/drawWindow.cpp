@@ -76,38 +76,48 @@ void DrawWindow::drawMenu() {
 }
 
 void DrawWindow::printCommand(int *cnt) {
+
   init_pair(12, COLOR_WHITE, COLOR_RED);
 
   if (*cnt == 0) {
     attron(COLOR_PAIR(12));
-    mvprintw(LINES/2+2, COLS/2-17, " >>>  (+) START THE FIGHT! (+)  <<< ");
+    mvprintw(LINES/2+1, COLS/2-17, "                                    ");
+    mvprintw(LINES/2+2, COLS/2-17, "          START THE FIGHT!          ");
+    mvprintw(LINES/2+3, COLS/2-17, "                                    ");
     attroff(COLOR_PAIR(12));
   } else {
     mvprintw(LINES/2+2, COLS/2-17, "          START THE FIGHT!          ");
   }
   if (*cnt == 1) {
     attron(COLOR_PAIR(12));
-    mvprintw(LINES/2+4, COLS/2-15, " >>>  (?) HOW TO PLAY (?)  <<< ");
+    mvprintw(LINES/2+4, COLS/2-17, "                                    ");
+    mvprintw(LINES/2+5, COLS/2-17, "            HOW TO PLAY             ");
+    mvprintw(LINES/2+6, COLS/2-17, "                                    ");
+
     attroff(COLOR_PAIR(12));
   } else {
-    mvprintw(LINES/2+4, COLS/2-15, "          HOW TO PLAY          ");
+    mvprintw(LINES/2+5, COLS/2-15, "          HOW TO PLAY          ");
   }
   if (*cnt == 2) {
     attron(COLOR_PAIR(12));
-    mvprintw(LINES/2+6, COLS/2-13, " >>>  (c) CREDITS (c)  <<< ");
+    mvprintw(LINES/2+7, COLS/2-17, "                                    ");
+    mvprintw(LINES/2+8, COLS/2-17, "              CREDITS               ");
+    mvprintw(LINES/2+9, COLS/2-17, "                                    ");
     attroff(COLOR_PAIR(12));
   } else {
-    mvprintw(LINES/2+6, COLS/2-13, "          CREDITS            ");
+    mvprintw(LINES/2+8, COLS/2-13, "          CREDITS            ");
   }
   if (*cnt == 3) {
     attron(COLOR_PAIR(12));
-    mvprintw(LINES/2+8, COLS/2-12, " <<<  (X) QUIT! (X)  >>> ");
+    mvprintw(LINES/2+10, COLS/2-17, "                                    ");
+    mvprintw(LINES/2+11, COLS/2-17, "               QUIT!                ");
+    mvprintw(LINES/2+12, COLS/2-17, "                                    ");
     attroff(COLOR_PAIR(12));
   } else {
-    mvprintw(LINES/2+8, COLS/2-12, "          QUIT!          ");
+    mvprintw(LINES/2+11, COLS/2-12, "          QUIT!          ");
   }
 
-  mvprintw(LINES/2+11, COLS/2-24, "Press [SPACE] to continue or use the arrow to move.");
+  mvprintw(LINES/2+14, COLS/2-24, "Press [SPACE] to continue or use the arrow to move.");
 }
 
 void DrawWindow::printCredits() {
