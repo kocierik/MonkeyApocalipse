@@ -115,7 +115,7 @@ void EngineGame::destroyBullet(Pbullet &bulletList) {
       range = 1;
 
     mustDestroyCondition = !isEmpty(head->x + range, head->y) &&
-                           !isBonus(head->x + range, head->y);
+                           !isBonus(head->x + range, head->y) && !isBullet(head->x + range, head->y);
     if (!head->isPlayerBullet)  // HO rimesso questo
       mustDestroyCondition &= !isEnemy(head->x + range, head->y);
 
@@ -211,9 +211,10 @@ void EngineGame::checkEnemyCollision(Character &character,
                                      pEnemyList enemyList) {
   pEnemyList tmp = enemyList;
   char tmpSkin[2];
+  int xP = character.getX(), yP = character.getY();
+  int xE, yE;
   while (enemyList != NULL) {
-    int xP = character.getX(), yP = character.getY();
-    int xE = enemyList->enemy.getX(), yE = enemyList->enemy.getY();
+    xE = enemyList->enemy.getX(), yE = enemyList->enemy.getY();
 
     if ((xP == xE && yP + 1 == yE) || (xP == xE && yP - 1 == yE)) {
       character.decreaseLife(1);
@@ -273,7 +274,6 @@ void EngineGame::checkBulletCollision(pEnemyList enemyList,
   // init_pair(13, COLOR_RED, -1);
   // attron(COLOR_PAIR(13));
   char tmpSkin[2];
-  // char tmpSkin[2];
   if (isCollisionEnemy) {
     tmpSkin[0] = enemyList->enemy.getSkin();
     mvprintw(enemyList->enemy.getY(), enemyList->enemy.getX(), tmpSkin);
@@ -894,17 +894,25 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     generateEnemyBullets(bossEnemyList, character);
 
     checkEnemyCollision(character, normalEnemyList);
+    checkEnemyCollision(character, specialEnemyList);
+    //checkEnemyCollision(character, bossEnemyList);
 
     gorillaPunch(direction, character, normalEnemyList, pointsOnScreen,
                  toTheRight);
     gorillaPunch(direction, character, specialEnemyList, pointsOnScreen,
                  toTheRight);
+    //gorillaPunch(direction, character, bossEnemyList, pointsOnScreen,
+      //           toTheRight);
 
     money(bananas, normalEnemyList, maxRound, roundPayed, character);
     checkBulletCollision(normalEnemyList, character, this->playerBullets,
                          pointsOnScreen, immortalityCheck);
     checkBulletCollision(normalEnemyList, character, this->normalEnemyBullets,
                          pointsOnScreen, immortalityCheck);
+    //checkBulletCollision(normalEnemyList, character, this->specialEnemyBullets,
+    //                     pointsOnScreen, immortalityCheck);
+    //checkBulletCollision(normalEnemyList, character, this->bossEnemyBullets,
+     //                    pointsOnScreen, immortalityCheck);
     refresh();
 
     destroyBullet(this->playerBullets);
