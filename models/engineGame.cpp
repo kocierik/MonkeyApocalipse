@@ -726,10 +726,12 @@ void EngineGame::engine(Character character, DrawWindow drawWindow) {
         selection = 4;
         break;
       case 1:
+        clear();
         drawWindow.HowToPlay(direction);
         selection = 4;
         break;
       case 2:
+        clear();
         drawWindow.credits(direction);
         selection = 4;
         break;
