@@ -494,7 +494,7 @@ void EngineGame::choiceGame(DrawWindow drawWindow, int *direction,
     drawWindow.drawMenu();
     drawWindow.printCommand(&cnt);
     *direction = getch();
-    clear();  
+    clear();
     if (*direction == 32) *selection = cnt;
     if (*direction == KEY_UP) cnt--;
     if (*direction == KEY_DOWN) cnt++;
@@ -528,6 +528,7 @@ pEnemyList EngineGame::generateEnemy(int *enemyCount, int type, pEnemyList list,
 
   bool isEmpty = false;
   while (*enemyCount > 0) {
+    srand(time(0));
     int x = drawWindow.randomPosition(40, 69).x;
     int y = drawWindow.randomPosition(8, 19).y;
     pEnemyList head = new EnemyList;
@@ -726,7 +727,7 @@ void EngineGame::engine(Character character, DrawWindow drawWindow) {
         selection = 4;
         break;
       case 1:
-        clear();
+      clear();
         drawWindow.HowToPlay(direction);
         selection = 4;
         break;
