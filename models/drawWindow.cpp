@@ -640,8 +640,8 @@ void DrawWindow::printCharacterStats(pEnemyList list, pEnemyList specialEnemyLis
                             // NEMICI VISUALIZZABILI NELLA LISTA DELL'HUD
     if (list->enemy.getX() != 0) {
           i++;
-      mvprintw(i, X_ElencoNemici, "- %d: %d HP",
-               list->enemy.getName() ,list->enemy.getLife());
+      mvprintw(i, X_ElencoNemici, "- Base Hunter: %d HP",
+               list->enemy.getLife());
     }
     reachBound++;
     list = list->next;
@@ -651,8 +651,8 @@ void DrawWindow::printCharacterStats(pEnemyList list, pEnemyList specialEnemyLis
                             // NEMICI VISUALIZZABILI NELLA LISTA DELL'HUD
     if (specialEnemyList->enemy.getX() != 0) {
           i++;
-      mvprintw(i, X_ElencoNemici, "- %d: %d HP",
-               specialEnemyList->enemy.getName() ,specialEnemyList->enemy.getLife());
+      mvprintw(i, X_ElencoNemici, "- Special Hunter: %d HP",
+                specialEnemyList->enemy.getLife());
     }
     reachBound++;
     specialEnemyList = specialEnemyList->next;
@@ -662,8 +662,8 @@ void DrawWindow::printCharacterStats(pEnemyList list, pEnemyList specialEnemyLis
                             // NEMICI VISUALIZZABILI NELLA LISTA DELL'HUD
     if (bossEnemyList->enemy.getX() != 0) {
       i++;
-      mvprintw(i, X_ElencoNemici, "- %d: %d HP",
-               bossEnemyList->enemy.getName() ,bossEnemyList->enemy.getLife());
+      mvprintw(i, X_ElencoNemici, "- BOSS: %d HP",
+               bossEnemyList->enemy.getLife());
     }
     reachBound++;
     bossEnemyList = bossEnemyList->next;

@@ -39,9 +39,6 @@ void Character::directionLeft() { this->x--; }
 char Character::getSkin() { return this->skin; }
 void Character::setSkin(char skin) { this->skin = skin; }
 
-int Character::getName() { return this->typeName; }
-void Character::setName(int typeName) { this->typeName = typeName; }
-
 void Character::increaseLife(int life) { this->life += life; }
 void Character::decreaseLife(int life) { this->life -= life; }
 int Character::getLife() { return this->life; }

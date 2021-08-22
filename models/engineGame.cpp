@@ -508,7 +508,6 @@ pEnemyList EngineGame::generateEnemy(int *enemyCount, int type, pEnemyList list,
   char skin = 'e';
   int life = 100;
   Gun gun('-', 10, -1, -1);
-  int name = 11111111;   // il fatto che si utilizzi un numero per identificare il nome è momentaneo, è solo piu facile farci i test
   switch (type) {
     case 0:  // Basic enemies, no variables changes
       break;
@@ -517,14 +516,12 @@ pEnemyList EngineGame::generateEnemy(int *enemyCount, int type, pEnemyList list,
       life = 150;
       gun.setBulletSkin('=');
       gun.setDamage(20);
-      name = 22222222;
       break;
     case 2:  // Boss enemy
       skin = 'B';
       life = 400;
       gun.setBulletSkin('*');
       gun.setDamage(35);
-      name = 33333333;
       break;
   }
 
@@ -533,7 +530,7 @@ pEnemyList EngineGame::generateEnemy(int *enemyCount, int type, pEnemyList list,
     int x = drawWindow.randomPosition(40, 69).x;
     int y = drawWindow.randomPosition(8, 19).y;
     pEnemyList head = new EnemyList;
-    Enemy enemy(x, y, skin, life, 1, gun, name);
+    Enemy enemy(x, y, skin, life, 1, gun);
     head->enemy = enemy;
     head->next = list;
     *enemyCount -= 1;
@@ -543,7 +540,7 @@ pEnemyList EngineGame::generateEnemy(int *enemyCount, int type, pEnemyList list,
   if (isEmpty) {
     round += 1;
     pEnemyList head = new EnemyList;
-    Enemy enemy(0, 0, ' ', life, 1, gun, name);
+    Enemy enemy(0, 0, ' ', life, 1, gun);
     head->enemy = enemy;
     head->next = list;
     list = head;

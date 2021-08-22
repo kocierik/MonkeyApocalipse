@@ -25,7 +25,6 @@ class Character {
   int life;
   int numberLife;
   int Nbullet;
-  int typeName;
   Gun gun;
   Pbullet bullet;
 
@@ -46,9 +45,6 @@ class Character {
 
   char getSkin();
   void setSkin(char skin);
-
-  int getName();
-  void setName(int code);
 
   void increaseLife(int life);
   void decreaseLife(int life);
