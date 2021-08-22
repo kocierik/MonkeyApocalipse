@@ -563,7 +563,7 @@ int DrawWindow::lenghtRoom(pRoom list) {
   return i;
 }
 
-void DrawWindow::printCharacterStats(pEnemyList list, Character character) {
+void DrawWindow::printCharacterStats(pEnemyList list, pEnemyList specialEnemyList, pEnemyList bossEnemyList, Character character) {
   int i = 22;
   int reachBound = 0;       // VEDI RIGA 363
   int X_ElencoNemici = 19;  // gestisce la x da dove inizia la lista dei nemici
@@ -572,7 +572,7 @@ void DrawWindow::printCharacterStats(pEnemyList list, Character character) {
   int healtColorPair = 0;
 
   if (lenghtList(list) > 0) {
-    mvprintw(i, X_ElencoNemici, "Enemy left: %d", lenghtList(list));
+    mvprintw(i, X_ElencoNemici, "Enemy left: %d", lenghtList(list) + (lenghtList(specialEnemyList) + lenghtList(bossEnemyList)));
   } else {
     mvprintw(i, X_ElencoNemici, "[ALL ENEMY DEFEATED!]");
   }
@@ -639,12 +639,34 @@ void DrawWindow::printCharacterStats(pEnemyList list, Character character) {
          reachBound < 8) {  // REACHBOUND SERVE A DETERMINARE IL LIMITE DI
                             // NEMICI VISUALIZZABILI NELLA LISTA DELL'HUD
     if (list->enemy.getX() != 0) {
-      mvprintw(i, X_ElencoNemici, "- Base Hunter: %d HP",
-               list->enemy.getLife());
+          i++;
+      mvprintw(i, X_ElencoNemici, "- %d: %d HP",
+               list->enemy.getName() ,list->enemy.getLife());
     }
-    i++;
     reachBound++;
     list = list->next;
+  }
+  while (specialEnemyList != NULL &&
+         reachBound < 8) {  // REACHBOUND SERVE A DETERMINARE IL LIMITE DI
+                            // NEMICI VISUALIZZABILI NELLA LISTA DELL'HUD
+    if (specialEnemyList->enemy.getX() != 0) {
+          i++;
+      mvprintw(i, X_ElencoNemici, "- %d: %d HP",
+               specialEnemyList->enemy.getName() ,specialEnemyList->enemy.getLife());
+    }
+    reachBound++;
+    specialEnemyList = specialEnemyList->next;
+  }
+  while (bossEnemyList != NULL &&
+         reachBound < 8) {  // REACHBOUND SERVE A DETERMINARE IL LIMITE DI
+                            // NEMICI VISUALIZZABILI NELLA LISTA DELL'HUD
+    if (bossEnemyList->enemy.getX() != 0) {
+      i++;
+      mvprintw(i, X_ElencoNemici, "- %d: %d HP",
+               bossEnemyList->enemy.getName() ,bossEnemyList->enemy.getLife());
+    }
+    reachBound++;
+    bossEnemyList = bossEnemyList->next;
   }
 }
 

@@ -5,7 +5,7 @@
 class Enemy : public Character {
  public:
   Enemy();
-  Enemy(int x, int y, char skin, int life, int numberLife, Gun gun);
+  Enemy(int x, int y, char skin, int life, int numberLife, Gun gun, int typeName);
 };
 
 struct EnemyList {
