@@ -77,7 +77,7 @@ void DrawWindow::drawMenu() {
 
 void DrawWindow::printCommand(int *cnt) {
 
-  init_pair(12, COLOR_WHITE, COLOR_RED);
+  init_pair(12, COLOR_BLACK, COLOR_RED);
 
   if (*cnt == 0) {
     attron(COLOR_PAIR(12));
@@ -174,7 +174,7 @@ void DrawWindow::credits(int direction) {
 }
 
 void DrawWindow::printHowToPlay() {  // GESTISCE LA SCHERMATA DEL HOW TO PLAY
-  
+
   init_pair(3, COLOR_YELLOW, 232);   // FUNZIONI PER USARE IL COLORE GIALLO
   attron(COLOR_PAIR(3));
   mvprintw(LINES/2-12, COLS/2-50,
