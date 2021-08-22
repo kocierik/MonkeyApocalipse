@@ -494,7 +494,6 @@ void EngineGame::choiceGame(DrawWindow drawWindow, int *direction,
     drawWindow.drawMenu();
     drawWindow.printCommand(&cnt);
     *direction = getch();
-    clear();
     if (*direction == 32) *selection = cnt;
     if (*direction == KEY_UP) cnt--;
     if (*direction == KEY_DOWN) cnt++;
