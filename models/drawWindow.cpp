@@ -546,7 +546,8 @@ void DrawWindow::showBonusOnScreen(bool &upgradeBuyed, int &upgradeType,
 }
 
 int DrawWindow::lenghtList(pEnemyList list) {
-  int i = -1;
+  int i;
+  if(list == NULL) { i = 0; } else { i = -1; }  // serve a far indicare 0 quando è vuota, invece di -1 che è utile quando si conta.
   while (list != NULL) {
     i++;
     list = list->next;
@@ -564,6 +565,7 @@ int DrawWindow::lenghtRoom(pRoom list) {
 }
 
 void DrawWindow::printCharacterStats(pEnemyList list, pEnemyList specialEnemyList, pEnemyList bossEnemyList, Character character) {
+  int enemyLeftOnScreen = lenghtList(list) + lenghtList(specialEnemyList) + lenghtList(bossEnemyList);
   int i = 22;
   int reachBound = 0;       // VEDI RIGA 363
   int X_ElencoNemici = 19;  // gestisce la x da dove inizia la lista dei nemici
@@ -571,8 +573,8 @@ void DrawWindow::printCharacterStats(pEnemyList list, pEnemyList specialEnemyLis
   int AddBar = BarStart;    // cicla per aggiungere un cordinata
   int healtColorPair = 0;
 
-  if (lenghtList(list) > 0) {
-    mvprintw(i, X_ElencoNemici, "Enemy left: %d", lenghtList(list) + (lenghtList(specialEnemyList) + lenghtList(bossEnemyList)));
+  if (enemyLeftOnScreen > 0) {
+    mvprintw(i, X_ElencoNemici, "Enemy left: %d", enemyLeftOnScreen);
   } else {
     mvprintw(i, X_ElencoNemici, "[ALL ENEMY DEFEATED!]");
   }
@@ -803,11 +805,9 @@ void DrawWindow::printLoseScreen(float finalScore) {
            "                              ");
   mvprintw(19, 21, "%.0f", finalScore);
   mvprintw(20, 3,
-           "                                                                   "
-           "                              ");
+           "                                                                    set score & exit [ENTER]     ");
   mvprintw(21, 3,
-           "     FINAL SCORE:                                                  "
-           " set score & exit [ENTER]     ");
+           "                                                                 (no name will not save score)   ");
   mvprintw(22, 3,
            "                                                                   "
            "                              ");
@@ -817,7 +817,7 @@ void DrawWindow::printLoseScreen(float finalScore) {
 void DrawWindow::saveRecord(float finalScore, char name[]) {
   std::fstream board;
   board.open("leaderBoard.txt", std::ios::app);
-  if (board && finalScore > 0) {
+  if (board && finalScore > 0 && name[0] != '\0') {  // lo score è salvato solo se maggiore di 0 e il nome non è vuoto
     board << name << ": " << finalScore << "\n";
     board.close();
   }
