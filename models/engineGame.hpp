@@ -25,10 +25,10 @@ class EngineGame {
   void baseCommand();
   Pbullet generateBullets(Character character, bool isPlayerBullet,
                           bool moveFoward, Pbullet &bulletList);
-  void generateEnemyBullets(pEnemyList enemyList, Character character);
+  void generateEnemyBullets(pEnemyList enemyList, Pbullet &enemyBulletList, Character character);
 
   void shootPlayerBullet();
-  void shootEnemyBullet();
+  void shootEnemyBullet(Pbullet enemyBulletList);
 
   void destroyBullet(Pbullet &bulletList);
   pEnemyList destroyEnemy(pEnemyList list, Enemy enemy);

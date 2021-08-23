@@ -10,6 +10,8 @@
 
 // Numero di casi dello switch che gestisce i bonus. Equivale a: n bonus
 #define N_SWITCH_CASE 15
+#define SPECIAL_ENEMY_FREQUENCY 5 // Spawn ogni 5 round
+#define BOSS_ENEMY_FREQUENCY 10   // Spawn ogni 10 round
 
 const int scoreForKill = 300;
 float finalScore = 0;
@@ -53,7 +55,7 @@ Pbullet EngineGame::generateBullets(Character character, bool isPlayerBullet,
   return bullet;
 }
 
-void EngineGame::generateEnemyBullets(pEnemyList enemyList,
+void EngineGame::generateEnemyBullets(pEnemyList enemyList, Pbullet &enemyBulletList,
                                       Character character) {
   bool shootFoward;
   while (enemyList != NULL) {
@@ -62,9 +64,8 @@ void EngineGame::generateEnemyBullets(pEnemyList enemyList,
       // Se il player è alla sx del nemico, spara a sx
       if (character.getX() > enemyList->enemy.getX())
         shootFoward = false;
-      this->normalEnemyBullets =
-          // Colpo del nemico -> false; Sparo avanti/indieto -> moveFoward
-          generateBullets(enemyList->enemy, false, shootFoward,
+        // Colpo del nemico -> false; Sparo avanti/indieto -> moveFoward
+        enemyBulletList = generateBullets(enemyList->enemy, false, shootFoward,
                           this->normalEnemyBullets);
     }
     enemyList = enemyList->next;
@@ -89,8 +90,9 @@ void EngineGame::shootPlayerBullet() {
   }
 }
 
-void EngineGame::shootEnemyBullet() {
-  Pbullet bulletList = this->normalEnemyBullets;
+void EngineGame::shootEnemyBullet(Pbullet enemyBulletList) {
+  //Pbullet bulletList = this->normalEnemyBullets;
+  Pbullet bulletList = enemyBulletList;
   char tmpSkin[2];
   while (bulletList != NULL) {
     if (bulletList->moveFoward)
@@ -670,13 +672,13 @@ pPosition EngineGame::getBonus(DrawWindow drawWindow, int x, int y,
  * Funzione per stabilire se e quanti nemici non-normali bisogna generare.
 */
 void EngineGame::checkEnemyGeneration(pRoom &room, int maxRound, int &specialEnemyCount, int &bossEnemyCount) {
-  if (maxRound % 2 == 0 && room->spawnSpecialEnemy) {
+  if (maxRound % SPECIAL_ENEMY_FREQUENCY == 0 && room->spawnSpecialEnemy) {
     if (maxRound <= 10) specialEnemyCount = 2;
     else if (maxRound == 15) specialEnemyCount = 3;
     else if (maxRound > 15) specialEnemyCount = 4;
     room->spawnSpecialEnemy = false;
-  } else if (maxRound % 2 == 0 && room->spawnBossEnemy) {
-    if (maxRound == 10) bossEnemyCount = 1;
+  } else if (maxRound % BOSS_ENEMY_FREQUENCY == 0 && room->spawnBossEnemy) {
+    if (maxRound <= 10) bossEnemyCount = 1;
     else if (maxRound == 20) bossEnemyCount = 2;
     else if (maxRound >= 30) bossEnemyCount = 3;
     room->spawnBossEnemy = false;
@@ -873,9 +875,9 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
       checkMountainDamage(this->playerBullets, roomList->next->mountainList);
       checkMountainDamage(this->normalEnemyBullets,
                           roomList->next->mountainList);
-      //checkMountainDamage(this->specialEnemyBullets,
+      //checkMountainDamage(this->specialEnemyBullets,      // DA FIXARE, GENERA ERRORE DI SEGMENTAZIONE
           //                roomList->next->mountainList);
-      //checkMountainDamage(this->bossEnemyBullets,
+      //checkMountainDamage(this->bossEnemyBullets,         // DA FIXARE, GENERA ERRORE DI SEGMENTAZIONE
         //                  roomList->next->mountainList);
     }
 
@@ -890,38 +892,40 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     drawWindow.moveEnemy(bossEnemyList, character, drawWindow, points);
 
     shootPlayerBullet();
-    shootEnemyBullet();
+    shootEnemyBullet(this->normalEnemyBullets);
+    //shootEnemyBullet(this->specialEnemyBullets);    // DA FIXARE, GENERA ERRORE DI SEGMENTAZIONE
+    //shootEnemyBullet(this->bossEnemyBullets);       // DA FIXARE, GENERA ERRORE DI SEGMENTAZIONE
 
-    generateEnemyBullets(normalEnemyList, character);
-    generateEnemyBullets(specialEnemyList, character);
-    generateEnemyBullets(bossEnemyList, character);
+    generateEnemyBullets(normalEnemyList, this->normalEnemyBullets, character);
+    generateEnemyBullets(specialEnemyList, this->specialEnemyBullets, character);
+    generateEnemyBullets(bossEnemyList, this->bossEnemyBullets, character);
 
     checkEnemyCollision(character, normalEnemyList);
     checkEnemyCollision(character, specialEnemyList);
-    //checkEnemyCollision(character, bossEnemyList);
+    checkEnemyCollision(character, bossEnemyList);
 
     gorillaPunch(direction, character, normalEnemyList, pointsOnScreen,
                  toTheRight);
     gorillaPunch(direction, character, specialEnemyList, pointsOnScreen,
                  toTheRight);
-    //gorillaPunch(direction, character, bossEnemyList, pointsOnScreen,
-      //           toTheRight);
+    gorillaPunch(direction, character, bossEnemyList, pointsOnScreen,
+                 toTheRight);
 
     money(bananas, normalEnemyList, maxRound, roundPayed, character);
     checkBulletCollision(normalEnemyList, character, this->playerBullets,
                          pointsOnScreen, immortalityCheck);
     checkBulletCollision(normalEnemyList, character, this->normalEnemyBullets,
                          pointsOnScreen, immortalityCheck);
-    //checkBulletCollision(normalEnemyList, character, this->specialEnemyBullets,
+    //checkBulletCollision(normalEnemyList, character, this->specialEnemyBullets,   // DA FIXARE, GENERA ERRORE DI SEGMENTAZIONE
     //                     pointsOnScreen, immortalityCheck);
-    //checkBulletCollision(normalEnemyList, character, this->bossEnemyBullets,
+    //checkBulletCollision(normalEnemyList, character, this->bossEnemyBullets,      // DA FIXARE, GENERA ERRORE DI SEGMENTAZIONE
      //                    pointsOnScreen, immortalityCheck);
     refresh();
 
     destroyBullet(this->playerBullets);
     destroyBullet(this->normalEnemyBullets);
-    // destroyBullet(this->specialEnemyBullets);
-    // destroyBullet(this->bossEnemyBullets);
+    // destroyBullet(this->specialEnemyBullets);      // DA FIXARE, GENERA ERRORE DI SEGMENTAZIONE
+    // destroyBullet(this->bossEnemyBullets);         // DA FIXARE, GENERA ERRORE DI SEGMENTAZIONE
     drawWindow.showBonusOnScreen(upgradeBuyed, upgradeType, upgradeTime,
                                  bonusPicked, bonusType, bonusTime,
                                  immortalityCheck, immortalityTime);
