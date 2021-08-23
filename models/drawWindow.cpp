@@ -12,6 +12,7 @@
 #define FRAMEGAMEY 22
 #define GAMEWIDTH 71   // 49
 #define GAMEHEIGTH 20  // 13
+#define MOUNTAIN_LIFE 10
 
 DrawWindow::DrawWindow() {}
 
@@ -406,7 +407,7 @@ pPosition DrawWindow::generateMountain(pPosition list, int &mountainCount) {
     head->x = x;
     head->y = y;
     head->skin = '^';
-    head->life = 10;
+    head->life = MOUNTAIN_LIFE;
     head->next = list;
     list = head;
     mountainCount -= 1;

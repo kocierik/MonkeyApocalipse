@@ -683,18 +683,10 @@ void EngineGame::checkMountainDamage(Pbullet bulletList,
   pPosition tmpMountainList = mountainList;
   int range;
   while (bulletList != NULL) {
-    range = 0;
-    if (bulletList->isPlayerBullet) {
-      if (bulletList->moveFoward)
-        range = 2;
-      else
-        range = -2;
-    } else {
-      if (bulletList->moveFoward)
-        range = -1;
-      else
-        range = 1;
-    }
+    range = -2;
+    if ((bulletList->isPlayerBullet && bulletList->moveFoward) ||
+        (!bulletList->isPlayerBullet && !bulletList->moveFoward))
+      range = 2;
 
     while (tmpMountainList != NULL) {
       if (bulletList->x + range == tmpMountainList->x &&
