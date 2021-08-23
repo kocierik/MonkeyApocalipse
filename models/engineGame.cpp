@@ -148,26 +148,32 @@ void EngineGame::destroyBullet(Pbullet &bulletList) {
   }
 }
 
-pEnemyList EngineGame::destroyEnemy(pEnemyList list, Enemy enemy) {
-  pEnemyList head = list, prev = list, tmp;
-  while (list != NULL) {
-    if (list->enemy.getX() == enemy.getX() &&
-        list->enemy.getY() == enemy.getY()) {
-      if (list == head) {
+pEnemyList EngineGame::destroyEnemy(pEnemyList enemyList, Enemy enemy) {
+  pEnemyList head = enemyList, prev = enemyList, tmp;
+  char tmpSkin[2];
+  while (enemyList != NULL) {
+    if (enemyList->enemy.getX() == enemy.getX() &&
+        enemyList->enemy.getY() == enemy.getY()) {
+      init_pair(13, COLOR_RED, -1);
+      attron(COLOR_PAIR(13));
+      tmpSkin[0] = enemyList->enemy.getSkin();
+      mvprintw(enemyList->enemy.getY(), enemyList->enemy.getX(), tmpSkin);
+      attroff(COLOR_PAIR(13));
+      if (enemyList == head) {
         tmp = head;
-        head = list->next;
+        head = enemyList->next;
         delete tmp;
         prev = head;
-        list = head;
+        enemyList = head;
       } else {
         tmp = prev->next;
-        prev->next = list->next;
+        prev->next = enemyList->next;
         delete tmp;
-        list = prev->next;
+        enemyList = prev->next;
       }
     } else {
-      prev = list;
-      list = list->next;
+      prev = enemyList;
+      enemyList = enemyList->next;
     }
   }
   return head;
@@ -916,7 +922,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     checkBulletCollision(normalEnemyList, character, this->normalEnemyBullets,
                          pointsOnScreen, immortalityCheck);
     //checkBulletCollision(normalEnemyList, character, this->specialEnemyBullets,   // DA FIXARE, GENERA ERRORE DI SEGMENTAZIONE
-    //                     pointsOnScreen, immortalityCheck);
+       //                  pointsOnScreen, immortalityCheck);
     //checkBulletCollision(normalEnemyList, character, this->bossEnemyBullets,      // DA FIXARE, GENERA ERRORE DI SEGMENTAZIONE
      //                    pointsOnScreen, immortalityCheck);
     refresh();
