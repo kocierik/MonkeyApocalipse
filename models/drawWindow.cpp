@@ -823,12 +823,19 @@ void DrawWindow::printLoseScreen(float finalScore) {
 }
 
 void DrawWindow::saveRecord(float finalScore, char name[]) {
+  int nameLen = strlen(name);
+  int nameMax = 12;
   std::fstream board;
   board.open("leaderBoard.txt", std::ios::app);
   if (board && finalScore > 0 && name[0] != '\0') {  // lo score è salvato solo se maggiore di 0 e il nome non è vuoto
-    board << name << ": " << finalScore << "\n";
-    board.close();
+    board << name << ":";
+    while(nameLen < nameMax){
+      board << " ";
+      nameLen++;
+    }
+    board << finalScore << "\n";
   }
+  board.close();
 }
 
 void DrawWindow::loseScreen(int direction, float finalScore) {
