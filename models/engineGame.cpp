@@ -64,9 +64,8 @@ void EngineGame::generateEnemyBullets(pEnemyList enemyList, Pbullet &enemyBullet
       // Se il player è alla sx del nemico, spara a sx
       if (character.getX() > enemyList->enemy.getX())
         shootFoward = false;
-        // Colpo del nemico -> false; Sparo avanti/indieto -> moveFoward
-        enemyBulletList = generateBullets(enemyList->enemy, false, shootFoward,
-                          this->normalEnemyBullets);
+      // Colpo del nemico -> false; Sparo avanti/indieto -> moveFoward
+      enemyBulletList = generateBullets(enemyList->enemy, false, shootFoward, this->normalEnemyBullets);
     }
     enemyList = enemyList->next;
   }
@@ -891,14 +890,14 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     drawWindow.moveEnemy(specialEnemyList, character, drawWindow, points);
     drawWindow.moveEnemy(bossEnemyList, character, drawWindow, points);
 
+    generateEnemyBullets(normalEnemyList, this->normalEnemyBullets, character);
+    generateEnemyBullets(specialEnemyList, this->specialEnemyBullets, character);
+    generateEnemyBullets(bossEnemyList, this->bossEnemyBullets, character);
+
     shootPlayerBullet();
     shootEnemyBullet(this->normalEnemyBullets);
     //shootEnemyBullet(this->specialEnemyBullets);    // DA FIXARE, GENERA ERRORE DI SEGMENTAZIONE
     //shootEnemyBullet(this->bossEnemyBullets);       // DA FIXARE, GENERA ERRORE DI SEGMENTAZIONE
-
-    generateEnemyBullets(normalEnemyList, this->normalEnemyBullets, character);
-    generateEnemyBullets(specialEnemyList, this->specialEnemyBullets, character);
-    generateEnemyBullets(bossEnemyList, this->bossEnemyBullets, character);
 
     checkEnemyCollision(character, normalEnemyList);
     checkEnemyCollision(character, specialEnemyList);
