@@ -668,21 +668,22 @@ pPosition EngineGame::getBonus(DrawWindow drawWindow, int x, int y,
 
 /**
  * Funzione per stabilire se e quanti nemici non-normali bisogna generare.
- * ATTENZIONE: Se un counter ha valore n, verranno generati n-1 nemici.
 */
-void EngineGame::checkEnemyGeneration(int round, int &specialEnemyCount, int &bossEnemyCount) {
-  if (round % 5 == 0) {
-    if (round <= 10) specialEnemyCount = 3;
-    else if (round == 15) specialEnemyCount = 5;
-    else if (round > 15) specialEnemyCount = 7;
-  } else if (round % 9 == 0) {
-    if (round <= 20) bossEnemyCount = 2;
-    else if (round >= 30) bossEnemyCount = 3;
+void EngineGame::checkEnemyGeneration(pRoom &room, int maxRound, int &specialEnemyCount, int &bossEnemyCount) {
+  if (maxRound % 2 == 0 && room->spawnSpecialEnemy) {
+    if (maxRound <= 10) specialEnemyCount = 2;
+    else if (maxRound == 15) specialEnemyCount = 3;
+    else if (maxRound > 15) specialEnemyCount = 4;
+    room->spawnSpecialEnemy = false;
+  } else if (maxRound % 2 == 0 && room->spawnBossEnemy) {
+    if (maxRound == 10) bossEnemyCount = 1;
+    else if (maxRound == 20) bossEnemyCount = 2;
+    else if (maxRound >= 30) bossEnemyCount = 3;
+    room->spawnBossEnemy = false;
   } else {
     specialEnemyCount = 0;
     bossEnemyCount = 0;
   }
-  mvprintw(10, 10, "%d", round);
 }
 
 void EngineGame::checkDeath(bool &pause, Character &character) {
@@ -843,20 +844,13 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     normalEnemyList =
         generateEnemy(&normalEnemyCount, 0, normalEnemyList, round, drawWindow);
 
-    checkEnemyGeneration (round, specialEnemyCount, bossEnemyCount);
-    /*
-    Se si richiama la funzione checkEnemyGeneration passandogli maxRound, genera continuamente
-    nemici maxRound rispetta una condizione degli if.
-    */
-    //checkEnemyGeneration (maxRound, specialEnemyCount, bossEnemyCount);
+    if (roomList->spawnSpecialEnemy || roomList->spawnBossEnemy)
+      checkEnemyGeneration (roomList, maxRound, specialEnemyCount, bossEnemyCount);
 
     if (specialEnemyCount > 0)
-      specialEnemyList = generateEnemy(&specialEnemyCount, 1, specialEnemyList,
-                                       round, drawWindow);
+      specialEnemyList = generateEnemy(&specialEnemyCount, 1, specialEnemyList, round, drawWindow);
     if (bossEnemyCount > 0)
-      bossEnemyList =
-          generateEnemy(&bossEnemyCount, 2, bossEnemyList, round, drawWindow);
-
+      bossEnemyList = generateEnemy(&bossEnemyCount, 2, bossEnemyList, round, drawWindow);
     getInput(direction);
     moveCharacter(drawWindow, character, direction, roomList, normalEnemyList,
                   round, pointsOnScreen, bananas, powerUpDMG, bonusPicked,

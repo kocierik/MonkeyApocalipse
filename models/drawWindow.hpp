@@ -8,6 +8,8 @@
 struct Room {
   pPosition mountainList;
   pPosition bonusList;
+  bool spawnSpecialEnemy;
+  bool spawnBossEnemy;
   Room *next;
   Room *prev;
 };
