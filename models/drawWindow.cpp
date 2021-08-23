@@ -12,6 +12,8 @@
 #define FRAMEGAMEY 22
 #define GAMEWIDTH 71   // 49
 #define GAMEHEIGTH 20  // 13
+
+#define NORMAL_ENEMY_LIMIT 7
 #define MOUNTAIN_LIFE 10
 
 DrawWindow::DrawWindow() {}
@@ -683,7 +685,7 @@ void DrawWindow::printEnemy(pEnemyList list, DrawWindow drawWindow) {
 
 void DrawWindow::moveEnemy(pEnemyList list, Character character,
                            DrawWindow drawWindow, long points) {
-  int xP = character.getX(), yP = character.getY(), xE, yE;
+  int yP = character.getY(), xE, yE;
   while (list != NULL) {
     if (points % 40 == 0) {
       xE = list->enemy.getX(), yE = list->enemy.getY();
@@ -704,6 +706,8 @@ pRoom DrawWindow::saveRoom(pPosition mountainList, pPosition bonusList,
   pRoom head = new Room;
   head->mountainList = mountainList;
   head->bonusList = bonusList;
+  head->spawnSpecialEnemy = true;
+  head->spawnBossEnemy = true;
   head->next = roomList;
   roomList->prev = head;
   roomList = head;
@@ -733,7 +737,10 @@ pRoom DrawWindow::changeRoom(Character &character, int &normalEnemyCount,
       roomList->mountainList = generateMountain(mountainList, mountainCount);
       roomList->bonusList = generateBonus(bonusList, bonusCounter);
       roomList = saveRoom(mountainList, bonusList, roomList);
-      normalEnemyCount = round;
+      if (round <= NORMAL_ENEMY_LIMIT)
+        normalEnemyCount = round;
+      else 
+        normalEnemyCount = NORMAL_ENEMY_LIMIT;
 
       normalEnemyList = normalEnemyList->next;
       maxRound += 1;

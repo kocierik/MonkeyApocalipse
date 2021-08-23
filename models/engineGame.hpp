@@ -65,7 +65,7 @@ class EngineGame {
                      Character &character, int &bonusType,
                      bool &immortalitycheck, int &immortalityTime);
 
-  void checkEnemyGeneration(int round, int &specialEnemycount, int &bossEnemyCount);
+  void checkEnemyGeneration(pRoom &room,int maxRound, int &specialEnemycount, int &bossEnemyCount);
 
   void checkDeath(bool &pause, Character &character);
 
