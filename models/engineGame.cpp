@@ -666,6 +666,25 @@ pPosition EngineGame::getBonus(DrawWindow drawWindow, int x, int y,
   return tmpHead;
 }
 
+/**
+ * Funzione per stabilire se e quanti nemici non-normali bisogna generare.
+ * ATTENZIONE: Se un counter ha valore n, verranno generati n-1 nemici.
+*/
+void EngineGame::checkEnemyGeneration(int round, int &specialEnemyCount, int &bossEnemyCount) {
+  if (round % 5 == 0) {
+    if (round <= 10) specialEnemyCount = 3;
+    else if (round == 15) specialEnemyCount = 5;
+    else if (round > 15) specialEnemyCount = 7;
+  } else if (round % 9 == 0) {
+    if (round <= 20) bossEnemyCount = 2;
+    else if (round >= 30) bossEnemyCount = 3;
+  } else {
+    specialEnemyCount = 0;
+    bossEnemyCount = 0;
+  }
+  mvprintw(10, 10, "%d", round);
+}
+
 void EngineGame::checkDeath(bool &pause, Character &character) {
   if (character.getLife() <= 0) {
     character.setNumberLife(character.getNumberLife() - 1);
@@ -807,7 +826,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
   int powerUpDMG = 0;  // NUMERO DI POWERUP AL DANNO AQUISTATI
   int bananas = 0, roundPayed = 0;
   int bonusTime = 0, upgradeTime = 0, bonusType = 0, upgradeType = 0;
-  int normalEnemyCount = 1, specialEnemyCount = 2, bossEnemyCount = 1;
+  int normalEnemyCount = 1, specialEnemyCount = 0, bossEnemyCount = 0;
   int round = 0, maxRound = 1;
   pEnemyList normalEnemyList = NULL, specialEnemyList = NULL,
              bossEnemyList = NULL;
@@ -824,23 +843,19 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     normalEnemyList =
         generateEnemy(&normalEnemyCount, 0, normalEnemyList, round, drawWindow);
 
-    if (round % 5 == 0) {
-      if (round <= 10)
-        specialEnemyCount = 2;
-      else if (round == 15)
-        specialEnemyCount = 4;
-      else if (round > 15)
-        specialEnemyCount = 6;
+    checkEnemyGeneration (round, specialEnemyCount, bossEnemyCount);
+    /*
+    Se si richiama la funzione checkEnemyGeneration passandogli maxRound, genera continuamente
+    nemici maxRound rispetta una condizione degli if.
+    */
+    //checkEnemyGeneration (maxRound, specialEnemyCount, bossEnemyCount);
+
+    if (specialEnemyCount > 0)
       specialEnemyList = generateEnemy(&specialEnemyCount, 1, specialEnemyList,
                                        round, drawWindow);
-    } else if (round % 10 == 0) {
-      if (round <= 20)
-        bossEnemyCount = 2;
-      else if (round >= 30)
-        bossEnemyCount = 3;
+    if (bossEnemyCount > 0)
       bossEnemyList =
           generateEnemy(&bossEnemyCount, 2, bossEnemyList, round, drawWindow);
-    }
 
     getInput(direction);
     moveCharacter(drawWindow, character, direction, roomList, normalEnemyList,

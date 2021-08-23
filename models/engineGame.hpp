@@ -65,6 +65,8 @@ class EngineGame {
                      Character &character, int &bonusType,
                      bool &immortalitycheck, int &immortalityTime);
 
+  void checkEnemyGeneration(int round, int &specialEnemycount, int &bossEnemyCount);
+
   void checkDeath(bool &pause, Character &character);
 
   void checkMountainDamage(Pbullet bulletList, pPosition &mountainList);
