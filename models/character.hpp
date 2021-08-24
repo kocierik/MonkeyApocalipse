@@ -53,8 +53,7 @@ class Character {
   int getNumberLife();
   void setNumberLife(int numberLife);
 
-  // int getBullet();
-  // void bulletUp();
+  void setGunDamage(int damage);
   void increaseDamageGun(int damage);
   Gun getGun();
   void setGun(Gun in_gun);

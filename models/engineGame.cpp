@@ -417,13 +417,20 @@ void EngineGame::moveCharacter(
     case 's':  // CONTROLLA L'AQUISTO DI POWERUP AL DANNO, SONO ACQUISTABILI AL
                // MASSIMO 4 DURANTE TUTTA LA RUN
     case 'S':
-      if (bananas >= upgradeCost && powerUpDMG < 4) {
-        upgradeBuyed = true;
-        upgradeType = 1;
-        upgradeTime = 0;
-        character.increaseDamageGun(10);
-        bananas = bananas - upgradeCost;
-        powerUpDMG++;
+      if (character.getGun().getDamage() < 50) {
+        if (bananas >= upgradeCost && powerUpDMG < 4) {
+          upgradeBuyed = true;
+          upgradeType = 1;
+          upgradeTime = 0;
+          character.increaseDamageGun(10);
+          if (character.getGun().getDamage() >= 50)
+            character.setGunDamage(50);
+          bananas = bananas - upgradeCost;
+          powerUpDMG++;
+        }
+      } else {
+        // MESSAGGIO CHE SEGNALE IL FATTO CHE QUESTO UPGRADE NON è DISPONIBILE
+        //mvprintw(?, ?, "MAX DAMAGE OBTAINED");
       }
       break;
   }
@@ -635,7 +642,7 @@ pPosition EngineGame::getBonus(DrawWindow drawWindow, int x, int y,
           end = true;
           break;
         case 13:  // Bonus name: "PEELS ON FIRE! [+5 DAMAGE]"
-          if (character.getGun().getDamage() < 40) {
+          if (character.getGun().getDamage() < 50) {
             Gun tmpBetterGun = character.getGun();
             tmpBetterGun.increaseDamage(5);
             character.setGun(tmpBetterGun);
