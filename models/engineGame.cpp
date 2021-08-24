@@ -315,7 +315,7 @@ void EngineGame::moveCharacter(
     int &powerUpDMG, bool &bonusPicked, int &bonusType, int &bonusTime,
     bool &upgradeBuyed, int &upgradeType, int &upgradeTime,
     bool &immortalityCheck, int &immortalityTime, bool &toTheRight) {
-  int upgradeCost = 10;
+  int upgradeCost = 1;
   srand(time(0));
   switch (direction) {  // CONTROLLO IL TASTO SPINTO
     case KEY_UP:  // --------------------------------------------------------
@@ -418,17 +418,23 @@ void EngineGame::moveCharacter(
                // MASSIMO 4 DURANTE TUTTA LA RUN
     case 'S':
       if (character.getGun().getDamage() < 50) {
-        if (bananas >= upgradeCost && powerUpDMG < 4) {
+        if (bananas >= upgradeCost && powerUpDMG < 3) {
           upgradeBuyed = true;
           upgradeType = 1;
           upgradeTime = 0;
-          character.increaseDamageGun(10);
-          if (character.getGun().getDamage() >= 50)
-            character.setGunDamage(50);
+          character.increaseDamageGun(5);
+          if (character.getGun().getDamage() >= 50) character.setGunDamage(50);
           bananas = bananas - upgradeCost;
           powerUpDMG++;
-        }
-      } else {
+        } else if (bananas >= upgradeCost && (powerUpDMG == 3)) {
+            upgradeBuyed = true;
+            upgradeType = 1;
+            upgradeTime = 0;
+            character.increaseDamageGun(10);
+            if (character.getGun().getDamage() >= 50) character.setGunDamage(50);
+            bananas = bananas - upgradeCost;
+            powerUpDMG++;
+          }
         // MESSAGGIO CHE SEGNALE IL FATTO CHE QUESTO UPGRADE NON è DISPONIBILE
         //mvprintw(?, ?, "MAX DAMAGE OBTAINED");
       }
