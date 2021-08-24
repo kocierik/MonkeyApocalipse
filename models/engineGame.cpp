@@ -10,8 +10,8 @@
 
 // Numero di casi dello switch che gestisce i bonus. Equivale a: n bonus
 #define N_SWITCH_CASE 15
-#define SPECIAL_ENEMY_FREQUENCY 5 // Spawn ogni 5 round
-#define BOSS_ENEMY_FREQUENCY 10   // Spawn ogni 10 round
+#define SPECIAL_ENEMY_FREQUENCY 2 // Spawn ogni 5 round
+#define BOSS_ENEMY_FREQUENCY 3   // Spawn ogni 10 round
 
 const int scoreForKill = 300;
 float finalScore = 0;
@@ -23,9 +23,10 @@ EngineGame::EngineGame(int frameGameX, int frameGameY, int height, int width) {
   this->widht = width;
   this->playerBullets = NULL;
   this->normalEnemyBullets = NULL;
+  this->specialEnemyBullets = NULL;
+  this->bossEnemyBullets = NULL;
   this->quit = false;
   this->pause = true;
-  // this->isEnemyShoots = false;
   this->whileCount = 0;
   this->whileCountEnemy = 0;
 }
@@ -71,9 +72,12 @@ void EngineGame::generateEnemyBullets(pEnemyList enemyList, Pbullet &enemyBullet
   }
 }
 
+/* Momentaneamente commentato. Verranno eliminate a breve se si vedrà che
+   tutto funziona senza il loro utilizzo.
+
 void EngineGame::shootPlayerBullet() {
   Pbullet bulletList = this->playerBullets;
-  char tmp[2];
+  char tmpSkin[2];
   while (bulletList != NULL) {
     if (bulletList->moveFoward)
       bulletList->x += bulletList->speed;
@@ -82,15 +86,13 @@ void EngineGame::shootPlayerBullet() {
     move(bulletList->y, bulletList->x);
     init_pair(10, COLOR_YELLOW, -1);  // SPARA BANANE GIALLE
     attron(COLOR_PAIR(10));
-    tmp[0] = bulletList->skin;
-    printw(tmp);
+    tmpSkin[0] = bulletList->skin;
+    printw(tmpSkin);
     attroff(COLOR_PAIR(10));
     bulletList = bulletList->next;
   }
 }
-
 void EngineGame::shootEnemyBullet(Pbullet enemyBulletList) {
-  //Pbullet bulletList = this->normalEnemyBullets;
   Pbullet bulletList = enemyBulletList;
   char tmpSkin[2];
   while (bulletList != NULL) {
@@ -101,6 +103,28 @@ void EngineGame::shootEnemyBullet(Pbullet enemyBulletList) {
     move(bulletList->y, bulletList->x);
     tmpSkin[0] = bulletList->skin;
     printw(tmpSkin);
+    bulletList = bulletList->next;
+  }
+}
+*/
+
+void EngineGame::shootBullet(Pbullet bulletList) {
+  char tmpSkin[2];
+  while (bulletList != NULL) {
+    if ((bulletList->isPlayerBullet && bulletList->moveFoward) || (!bulletList->isPlayerBullet && !bulletList->moveFoward))
+      bulletList->x += bulletList->speed;
+    else
+      bulletList->x -= bulletList->speed;
+
+    move(bulletList->y, bulletList->x);
+    tmpSkin[0] = bulletList->skin;
+    if (bulletList->isPlayerBullet) {
+      init_pair(10, COLOR_YELLOW, -1);  // SPARA BANANE GIALLE
+      attron(COLOR_PAIR(10));
+      printw(tmpSkin);
+      attroff(COLOR_PAIR(10));
+    } else
+      printw(tmpSkin);
     bulletList = bulletList->next;
   }
 }
@@ -906,10 +930,11 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     generateEnemyBullets(specialEnemyList, this->specialEnemyBullets, character);
     generateEnemyBullets(bossEnemyList, this->bossEnemyBullets, character);
 
-    shootPlayerBullet();
-    shootEnemyBullet(this->normalEnemyBullets);
-    //shootEnemyBullet(this->specialEnemyBullets);    // DA FIXARE, GENERA ERRORE DI SEGMENTAZIONE
-    //shootEnemyBullet(this->bossEnemyBullets);       // DA FIXARE, GENERA ERRORE DI SEGMENTAZIONE
+
+    shootBullet(this->playerBullets);
+    shootBullet(this->normalEnemyBullets);
+    //shootBullet(this->specialEnemyBullets);   // DA FIXARE, GENERA ERRORI
+    //shootBullet(this->bossEnemyBullets);      // DA FIXARE, GENERA ERRORI
 
     checkEnemyCollision(character, normalEnemyList);
     checkEnemyCollision(character, specialEnemyList);
