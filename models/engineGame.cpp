@@ -315,7 +315,7 @@ void EngineGame::moveCharacter(
     int &powerUpDMG, bool &bonusPicked, int &bonusType, int &bonusTime,
     bool &upgradeBuyed, int &upgradeType, int &upgradeTime,
     bool &immortalityCheck, int &immortalityTime, bool &toTheRight) {
-  int upgradeCost = 1;
+  int upgradeCost = 10;
   srand(time(0));
   switch (direction) {  // CONTROLLO IL TASTO SPINTO
     case KEY_UP:  // --------------------------------------------------------
