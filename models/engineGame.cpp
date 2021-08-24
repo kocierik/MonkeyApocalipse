@@ -154,11 +154,8 @@ pEnemyList EngineGame::destroyEnemy(pEnemyList enemyList, Enemy enemy) {
   while (enemyList != NULL) {
     if (enemyList->enemy.getX() == enemy.getX() &&
         enemyList->enemy.getY() == enemy.getY()) {
-      init_pair(13, COLOR_RED, -1);
-      attron(COLOR_PAIR(13));
       tmpSkin[0] = enemyList->enemy.getSkin();
       mvprintw(enemyList->enemy.getY(), enemyList->enemy.getX(), tmpSkin);
-      attroff(COLOR_PAIR(13));
       if (enemyList == head) {
         tmp = head;
         head = enemyList->next;
