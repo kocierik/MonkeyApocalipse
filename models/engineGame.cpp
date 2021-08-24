@@ -276,10 +276,8 @@ void EngineGame::checkBulletCollision(pEnemyList enemyList,
       enemyList = enemyList->next;
   }
 
-  // RIMOZIONE DEI COLORI PER AVERE UNA MIGLIORE GIOCABILITÀ (da cercaree di
-  // unificare le due cose)
-  // init_pair(13, COLOR_RED, -1);
-  // attron(COLOR_PAIR(13));
+  init_pair(13, COLOR_RED, -1);
+  attron(COLOR_PAIR(13));
   char tmpSkin[2];
   if (isCollisionEnemy) {
     tmpSkin[0] = enemyList->enemy.getSkin();
@@ -292,12 +290,10 @@ void EngineGame::checkBulletCollision(pEnemyList enemyList,
   } else if (isCollisionCharacter && immortalityCheck == false) {
     character.decreaseLife(enemyList->enemy.getGun().getDamage());
     checkDeath(pause, character);
-
-    // Skin del player rossa quando viene colpito
     tmpSkin[0] = character.getSkin();
     mvprintw(character.getY(), character.getX(), tmpSkin);
   }
-  // attroff(COLOR_PAIR(13));
+   attroff(COLOR_PAIR(13));
 }
 
 bool EngineGame::isEmpty(int x, int y) { return mvinch(y, x) == ' '; }
