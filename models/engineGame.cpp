@@ -470,56 +470,31 @@ void EngineGame::gorillaPunch(int direction, Character &character,
                               pEnemyList enemyList, int &pointOnScreen,
                               bool toTheRight) {
   pEnemyList tmp = enemyList;
-
   if (direction == 32) {
-    if (toTheRight ==
-        true) {  //---------------------------------------------------------
-      mvprintw(character.getY(), character.getX() + 1, "o");
+    int range = -1;
+    if (toTheRight) range = 1;
+    // Con questa condizione, l'animazione del danno è più chiara
+    if (isEmpty(character.getY(), character.getX() + range))
+      mvprintw(character.getY(), character.getX() + range, "o");
 
-      while (enemyList != NULL) {
-        if (character.getX() + 1 == enemyList->enemy.getX() &&
-            character.getY() == enemyList->enemy.getY()) {
-          enemyList->enemy.decreaseLife(40);
+    while (enemyList != NULL) {
+      if (character.getX() + range == enemyList->enemy.getX() &&
+          character.getY() == enemyList->enemy.getY()) {
+        // Nemico rosso quando riceve il punch
+        init_pair(13, COLOR_RED, -1);
+        attron(COLOR_PAIR(13));
+        char tmpSkin[0];
+        tmpSkin[0] = enemyList->enemy.getSkin();
+        mvprintw(enemyList->enemy.getY(), enemyList->enemy.getX(), tmpSkin);
 
-          if (enemyList->enemy.getLife() <= 0) {
-            enemyList = destroyEnemy(tmp, enemyList->enemy);
-            increasePointOnScreen(pointOnScreen, scoreForKill);
-          }
-
-          init_pair(13, COLOR_RED, -1);
-          attron(COLOR_PAIR(13));
-          // Il nemico diventa rosso quando si scontra col player
-          char tmpSkin[0];
-          tmpSkin[0] = enemyList->enemy.getSkin();
-          mvprintw(enemyList->enemy.getY(), enemyList->enemy.getX(), tmpSkin);
-          attroff(COLOR_PAIR(13));
+        enemyList->enemy.decreaseLife(40);
+        if (enemyList->enemy.getLife() <= 0) {
+          enemyList = destroyEnemy(tmp, enemyList->enemy);
+          increasePointOnScreen(pointOnScreen, scoreForKill);
         }
-        enemyList = enemyList->next;
+        attroff(COLOR_PAIR(13));
       }
-    } else if (toTheRight ==
-               false) {  //--------------------------------------------------
-      mvprintw(character.getY(), character.getX() - 1, "o");
-
-      while (enemyList != NULL) {
-        if (character.getX() - 1 == enemyList->enemy.getX() &&
-            character.getY() == enemyList->enemy.getY()) {
-          enemyList->enemy.decreaseLife(40);
-
-          if (enemyList->enemy.getLife() <= 0) {
-            enemyList = destroyEnemy(tmp, enemyList->enemy);
-            increasePointOnScreen(pointOnScreen, scoreForKill);
-          }
-
-          init_pair(13, COLOR_RED, -1);
-          attron(COLOR_PAIR(13));
-          // Il nemico diventa rosso quando si scontra col player
-          char tmpSkin[0];
-          tmpSkin[0] = enemyList->enemy.getSkin();
-          mvprintw(enemyList->enemy.getY(), enemyList->enemy.getX(), tmpSkin);
-          attroff(COLOR_PAIR(13));
-        }
-        enemyList = enemyList->next;
-      }
+      enemyList = enemyList->next;
     }
   }
 }
