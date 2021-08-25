@@ -188,19 +188,28 @@ void DrawWindow::credits(int direction) {
 }
 
 void DrawWindow::printLeaderboardScreen() {
-  int prog = LINES/2 - 12;
-  for(int y = 0; y < 33; y++ ){
+  int prog = LINES/2 - 15;
+  for(int y = 0; y < 36; y++ ){
     init_pair(8, COLOR_BLACK, 232);
     attron(COLOR_PAIR(8));
-    mvprintw(prog, COLS/2 - 53, "+ + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + ");
+    mvprintw(prog, COLS/2 - 53, "                                                                                                          ");
     prog++;
     attroff(COLOR_PAIR(8));
   }
 
   init_pair(3, COLOR_YELLOW, 232);
   attron(COLOR_PAIR(3));
-  mvprintw(LINES/2 - 10, COLS/2 - 5, "LEADERBOARD");
+  mvprintw(LINES/2 - 13, COLS/2 - 33, " __    _____ _____ ____  _____ _____ _____ _____ _____ _____ ____  ");
+  mvprintw(LINES/2 - 12, COLS/2 - 33, "|  |  |   __|  _  |    \\|   __| __  | __  |     |  _  | __  |    \\ ");
+  mvprintw(LINES/2 - 11, COLS/2 - 33, "|  |__|   __|     |  |  |   __|    -| __ -|  |  |     |    -|  |  |");
+  mvprintw(LINES/2 - 10, COLS/2 - 33, "|_____|_____|__|__|____/|_____|__|__|_____|_____|__|__|__|__|____/ ");
+
   mvprintw(LINES/2 - 8, COLS/2 - 46, "--------------------------------------------------------------------------------------------");
+  mvprintw(LINES/2 + 17, COLS/2 - 40, "col. 1");
+  mvprintw(LINES/2 + 17, COLS/2 - 15, "col. 2");
+  mvprintw(LINES/2 + 17, COLS/2 + 10, "col. 3");
+  mvprintw(LINES/2 + 17, COLS/2 + 35, "col. 4");
+  mvprintw(LINES/2 + 19, COLS/2 - 5, "menu [ESC]");
   attroff(COLOR_PAIR(3));
   
   
