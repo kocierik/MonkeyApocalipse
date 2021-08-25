@@ -15,6 +15,7 @@
 
 #define NORMAL_ENEMY_LIMIT 7
 #define MOUNTAIN_LIFE 10
+const int MAXNAMECHARACTER = 10; 
 
 DrawWindow::DrawWindow() {}
 
@@ -926,12 +927,22 @@ void DrawWindow::printLoseScreen(float finalScore) {
   attroff(COLOR_PAIR(17));
 }
 
+bool DrawWindow::ghostNameRecognizer(char name[]){
+  bool GhostName = true;
+  int i = 0;
+  for(i = 0; i < MAXNAMECHARACTER; i++){
+    GhostName = GhostName && ((name[i] == ' ') || (name[i] == '\0')) ;
+  }
+  return GhostName;
+}
+
 void DrawWindow::saveRecord(float finalScore, char name[]) {
+  bool ghostName = ghostNameRecognizer(name);
   int nameLen = strlen(name);
   int nameMax = 12;
   std::fstream board;
   board.open("leaderBoard.txt", std::ios::app);
-  if (board && finalScore > 0 && name[0] != '\0') {  // lo score è salvato solo se maggiore di 0 e il nome non è vuoto
+  if ((board) && (finalScore > 0) && (!ghostName)) {  // lo score è salvato solo se maggiore di 0 e il nome non è vuoto o solo spazi
     board << name << ":";
     while(nameLen < nameMax){
       board << " ";
@@ -943,8 +954,8 @@ void DrawWindow::saveRecord(float finalScore, char name[]) {
 }
 
 void DrawWindow::loseScreen(int direction, float finalScore) {
-  char name[10] = {'\0'};
-  char name2[10] = {'\0'};
+  char name[MAXNAMECHARACTER] = {'\0'};
+  char name2[MAXNAMECHARACTER] = {'\0'};
   while (direction != 0) {
     printLoseScreen(finalScore);
     strcat(name, name2);

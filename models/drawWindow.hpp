@@ -57,4 +57,5 @@ class DrawWindow {
                          bool &immortalitycheck, int &immortalityTime);
   pRoom saveRoom(pPosition mountainList, pPosition bonusList, pRoom roomList);
   void saveRecord(float finalScore, char name[]);
+  bool ghostNameRecognizer(char name[]);
 };
