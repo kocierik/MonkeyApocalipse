@@ -782,13 +782,14 @@ void DrawWindow::printEnemy(pEnemyList list, DrawWindow drawWindow) {
 void DrawWindow::moveEnemy(pEnemyList list, Character character,
                            DrawWindow drawWindow, long points) {
   int yP = character.getY(), xE, yE;
+  srand(time(0));
   int movementSpeedFactor = 1;
   
   while (list != NULL) {
 
-    if(list->enemy.getSkin() == 'e') movementSpeedFactor = 25;
-    if(list->enemy.getSkin() == 'E') movementSpeedFactor = 40;
-    if(list->enemy.getSkin() == 'B') movementSpeedFactor = 60;
+    if(list->enemy.getSkin() == 'e') movementSpeedFactor = rand() % 10 + 25;
+    else if(list->enemy.getSkin() == 'E') movementSpeedFactor = rand() % 10 + 40;
+    else if(list->enemy.getSkin() == 'B') movementSpeedFactor = rand() % 10 + 60;
 
     if (points % movementSpeedFactor == 0) {
       xE = list->enemy.getX(), yE = list->enemy.getY();
