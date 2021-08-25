@@ -485,13 +485,13 @@ pEnemyList EngineGame::generateEnemy(int *enemyCount, int type, pEnemyList list,
       break;
     case 1:  // Elite enemies
       skin = 'E';
-      life = 150;
+      life = 200;
       gun.setBulletSkin('=');
       gun.setDamage(15);
       break;
     case 2:  // Boss enemy
       skin = 'B';
-      life = 400;
+      life = 600;
       gun.setBulletSkin('*');
       gun.setDamage(25);
       break;

@@ -792,9 +792,6 @@ void DrawWindow::moveEnemy(pEnemyList enemyList, Character character,
     else if (enemyList->enemy.getSkin() == 'E') movementSpeedFactor = rand() % 10 + 40;
     else if (enemyList->enemy.getSkin() == 'B') movementSpeedFactor = rand() % 10 + 60;
 
-    mvprintw (5,5,"%d", points);
-    mvprintw (6,6,"%d", movementSpeedFactor);
-
     if (points % movementSpeedFactor == 0) {
       xE = enemyList->enemy.getX(), yE = enemyList->enemy.getY();
       if (yP > yE && (mvinch(yE + 1, xE) == ' ' || mvinch(yE + 1, xE) == '?')) {
