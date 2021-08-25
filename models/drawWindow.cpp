@@ -220,30 +220,30 @@ void DrawWindow::printLeaderboardScreen() {
     int maxNameShowed = 0;
     init_pair(4, COLOR_WHITE, COLOR_BLACK);
     attron(COLOR_PAIR(4));
-    while ((getline(leaderboard, line)) && (maxNameShowed < 11)) {
-      mvprintw(i = i + 1, COLS/2 - 46, " %s ", line.c_str());
-      i++;
+    while ((maxNameShowed < 11) && (getline(leaderboard, line))) {
+      mvprintw(i, COLS/2 - 46, " %s ", line.c_str());
+      i += 2;
       maxNameShowed++;
     }
     i = LINES/2 - 6;
     maxNameShowed = 0;
-    while ((getline(leaderboard, line)) && (maxNameShowed < 11)) {
-      mvprintw(i = i + 1, COLS/2 - 21, " %s ", line.c_str());
-      i++;
+    while ((maxNameShowed < 11) && (getline(leaderboard, line))) {
+      mvprintw(i, COLS/2 - 21, " %s ", line.c_str());
+      i += 2;
       maxNameShowed++;
     }
     i = LINES/2 - 6;
     maxNameShowed = 0;
-    while ((getline(leaderboard, line)) && (maxNameShowed < 11)) {
-      mvprintw(i = i + 1, COLS/2 + 4, " %s ", line.c_str());
-      i++;
+    while ((maxNameShowed < 11) && (getline(leaderboard, line))) {
+      mvprintw(i, COLS/2 + 4, " %s ", line.c_str());
+      i += 2;
       maxNameShowed++;
     }
     i = LINES/2 - 6;
     maxNameShowed = 0;
-    while ((getline(leaderboard, line)) && (maxNameShowed < 11)) {
-      mvprintw(i = i + 1, COLS/2 + 29, " %s ", line.c_str());
-      i++;
+    while ((maxNameShowed < 11) && (getline(leaderboard, line))) {
+      mvprintw(i, COLS/2 + 29, " %s ", line.c_str());
+      i += 2;
       maxNameShowed++;
     }
     attroff(COLOR_PAIR(4));
