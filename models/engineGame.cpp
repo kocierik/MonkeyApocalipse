@@ -263,35 +263,30 @@ void EngineGame::checkEnemyCollision(Character &character,
   }
 }
 
-void EngineGame::checkBulletCollision(pEnemyList enemyList,
-                                      Character &character, Pbullet &bulletList,
-                                      int &pointOnScreen,
+void EngineGame::checkBulletCollision(Pbullet &bulletList, Character &character,
+                                      pEnemyList enemyList, int &pointOnScreen,
                                       bool immortalityCheck) {
-  bool isCollisionEnemy = false, isCollisionCharacter = false, pause = false;
+  bool enemyHit = false, characterHit = false, pause = false;
   Pbullet head = bulletList;
   pEnemyList tmp = enemyList;
-  while (enemyList != NULL && !isCollisionEnemy &&
-         !isCollisionCharacter) {  // Per ogni nemico
-    while (bulletList != NULL && !isCollisionEnemy && !isCollisionCharacter) {
+  int xE, yE, xP, yP;
+  while (enemyList != NULL && !enemyHit && !characterHit) {
+    while (bulletList != NULL && !enemyHit && !characterHit) {
       if (bulletList->isPlayerBullet) {
-        int x = enemyList->enemy.getX(), y = enemyList->enemy.getY();
-        if ((x == bulletList->x + 1 && y == bulletList->y) ||
-            (x == bulletList->x - 1 &&
-             y == bulletList->y))  // Controllo valido per i foward and backward
-                                   // bullets del player
-          isCollisionEnemy = true;
+        xE = enemyList->enemy.getX(), yE = enemyList->enemy.getY();
+        if ((xE == bulletList->x + 1 && yE == bulletList->y) ||
+            (xE == bulletList->x - 1 && yE == bulletList->y))
+          enemyHit = true;
       } else {
-        int x = character.getX(), y = character.getY();
-        if ((x == bulletList->x + 1 && y == bulletList->y) ||
-            (x == bulletList->x - 1 &&
-             y == bulletList->y))  // Controllo valido per i foward and backward
-                                   // bullets del nemico
-          isCollisionCharacter = true;
+        xP = character.getX(), yP = character.getY();
+        if ((xP == bulletList->x + 1 && yP == bulletList->y) ||
+            (xP == bulletList->x - 1 && yP == bulletList->y))
+          characterHit = true;
       }
       bulletList = bulletList->next;
     }
     bulletList = head;
-    if (isCollisionEnemy || isCollisionCharacter)
+    if (enemyHit || characterHit)
       break;
     else
       enemyList = enemyList->next;
@@ -300,7 +295,7 @@ void EngineGame::checkBulletCollision(pEnemyList enemyList,
   init_pair(13, COLOR_RED, -1);
   attron(COLOR_PAIR(13));
   char tmpSkin[2];
-  if (isCollisionEnemy) {
+  if (enemyHit) {
     tmpSkin[0] = enemyList->enemy.getSkin();
     mvprintw(enemyList->enemy.getY(), enemyList->enemy.getX(), tmpSkin);
     enemyList->enemy.decreaseLife(character.getGun().getDamage());
@@ -308,13 +303,13 @@ void EngineGame::checkBulletCollision(pEnemyList enemyList,
       enemyList = destroyEnemy(tmp, enemyList->enemy);
       increasePointOnScreen(pointOnScreen, scoreForKill);
     }
-  } else if (isCollisionCharacter && immortalityCheck == false) {
+  } else if (characterHit && immortalityCheck == false) {
     character.decreaseLife(enemyList->enemy.getGun().getDamage());
     checkDeath(pause, character);
     tmpSkin[0] = character.getSkin();
     mvprintw(character.getY(), character.getX(), tmpSkin);
   }
-   attroff(COLOR_PAIR(13));
+  attroff(COLOR_PAIR(13));
 }
 
 bool EngineGame::isEmpty(int x, int y) { return mvinch(y, x) == ' '; }
@@ -923,14 +918,20 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
                  toTheRight);
 
     money(bananas, normalEnemyList, maxRound, roundPayed, character);
-    checkBulletCollision(normalEnemyList, character, this->playerBullets,
+    checkBulletCollision(this->playerBullets, character, normalEnemyList,
                          pointsOnScreen, immortalityCheck);
-    checkBulletCollision(normalEnemyList, character, this->normalEnemyBullets,
+    checkBulletCollision(this->playerBullets, character, specialEnemyList,
                          pointsOnScreen, immortalityCheck);
-    //checkBulletCollision(normalEnemyList, character, this->specialEnemyBullets,   // DA FIXARE, GENERA ERRORE DI SEGMENTAZIONE
-       //                  pointsOnScreen, immortalityCheck);
-    //checkBulletCollision(normalEnemyList, character, this->bossEnemyBullets,      // DA FIXARE, GENERA ERRORE DI SEGMENTAZIONE
-     //                    pointsOnScreen, immortalityCheck);
+    checkBulletCollision(this->playerBullets, character, bossEnemyList,
+                         pointsOnScreen, immortalityCheck);
+    checkBulletCollision(this->normalEnemyBullets, character, normalEnemyList,
+                         pointsOnScreen, immortalityCheck);
+    //checkBulletCollision(this->specialEnemyBullets, character, specialEnemyList,
+    //                     pointsOnScreen, immortalityCheck);
+    //checkBulletCollision(this->bossEnemyBullets, character, bossEnemyBullets,
+    //                     pointsOnScreen, immortalityCheck);
+
+    
     refresh();
 
     destroyBullet(this->playerBullets);

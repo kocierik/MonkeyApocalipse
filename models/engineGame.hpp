@@ -35,9 +35,10 @@ class EngineGame {
   pPosition deletePosition(pPosition list, pPosition bonus);
 
   void checkEnemyCollision(Character &character, pEnemyList enemyList);
-  void checkBulletCollision(pEnemyList enemys, Character &character,
-                            Pbullet &bulletList, int &pointOnScreen,
+  void checkBulletCollision(Pbullet &bulletList, Character &character,
+                            pEnemyList enemyList, int &pointOnScreen,
                             bool immortalityCheck);
+
   bool isEmpty(int x, int y);
   bool isBonus(int x, int y);
   bool isMountain(int x, int y);
