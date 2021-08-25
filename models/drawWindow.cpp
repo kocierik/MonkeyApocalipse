@@ -361,7 +361,7 @@ void DrawWindow::printCharacter(int x, int y, char c) {
 }
 
 void DrawWindow::drawRect(
-    int startX, int startY, int width, int heigth, pEnemyList enemyList,
+    int startX, int startY, int width, int heigth, bool noEnemy,
     int round, bool isScreenBound) {  // isScreenBound SI UNA PER FLAGGARE CHE È
                                       // IL RETTANGOLO CHE DELIMITA LO SCHERMO,
                                       // QUINDI NON DEVE APRIRSI
@@ -369,7 +369,7 @@ void DrawWindow::drawRect(
     mvprintw(startX, i, "-");
     mvprintw(heigth, i, "-");
   }
-  if (enemyList->next != NULL || isScreenBound) {
+  if (!noEnemy || isScreenBound) {
     for (int i = startX; i < heigth; ++i) {
       mvprintw(i, startY, "|");
       mvprintw(i, width, "|");
@@ -420,7 +420,7 @@ void DrawWindow::drawLeaderboardOnScreen(){
 
 void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
                            int pointsOnScreen, Character character,
-                           pEnemyList enemyList, int powerUp, int bananas,
+                           bool noEnemy, int powerUp, int bananas,
                            int maxRound, pRoom roomList) {
   int powerUp_y = 52;
   int powerUp_x = 23;
@@ -460,9 +460,9 @@ void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
 
   init_pair(11, COLOR_WHITE, 232);
   attron(COLOR_PAIR(11));
-  drawRect(startX - 4, startY - 11, width + 12, heigth + 12, enemyList, 0,
+  drawRect(startX - 4, startY - 11, width + 12, heigth + 12, noEnemy, 0,
            true);
-  drawRect(startX - 4, startY + 65, width + 40, heigth + 12, enemyList, 0,
+  drawRect(startX - 4, startY + 65, width + 40, heigth + 12, noEnemy, 0,
            true);
   attroff(COLOR_PAIR(11));
 

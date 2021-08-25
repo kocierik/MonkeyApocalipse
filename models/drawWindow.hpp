@@ -20,7 +20,7 @@ class DrawWindow {
   DrawWindow();
   void printCharacter(int x, int y, char c);
   void drawRect(int startX, int startY, int width, int heigth,
-                pEnemyList enemyList, int round, bool isScreenBound);
+                bool noEnemy, int round, bool isScreenBound);
   void drawMenu();
   void printCommand(int *cnt);
   void printCredits();
@@ -32,7 +32,7 @@ class DrawWindow {
   void printLeaderboardScreen();
   void leaderboardScreen(int direction);
   void drawStats(int startX, int startY, int width, int heigth,
-                 int pointsOnScreen, Character character, pEnemyList enemyList,
+                 int pointsOnScreen, Character character, bool noEnemy,
                  int powerUp, int bananas, int maxRound, pRoom roomList);
   void drawLeaderboardOnScreen();
   int lengthEnemyList(pEnemyList list);
