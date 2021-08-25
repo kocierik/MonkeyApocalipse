@@ -454,7 +454,7 @@ void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
   mvprintw(28, 52, "BANANAS");
   mvprintw(28, 76, "%d", bananas);
   mvprintw(29, 52, "ROOM");
-  mvprintw(29, 76, "%d/%d", lenghtRoom(roomList), maxRound);
+  mvprintw(29, 76, "%d/%d", lengthListRoom(roomList), maxRound);
   mvprintw(30, 52, "ROUND MAX");
   mvprintw(30, 76, "%d", maxRound);
 
@@ -645,9 +645,9 @@ void DrawWindow::showBonusOnScreen(bool &upgradeBuyed, int &upgradeType,
   }
 }
 
-int DrawWindow::lenghtList(pEnemyList list) {
+int DrawWindow::lengthEnemyList(pEnemyList list) {
   int i;
-  if(list == NULL) { i = 0; } else { i = -1; }  // serve a far indicare 0 quando è vuota, invece di -1 che è utile quando si conta.
+  if (list == NULL) { i = 0; } else { i = -1; }  // serve a far indicare 0 quando è vuota, invece di -1 che è utile quando si conta.
   while (list != NULL) {
     i++;
     list = list->next;
@@ -655,7 +655,7 @@ int DrawWindow::lenghtList(pEnemyList list) {
   return i;
 }
 
-int DrawWindow::lenghtRoom(pRoom list) {
+int DrawWindow::lengthListRoom(pRoom list) {
   int i = 0;
   while (list != NULL) {
     i++;
@@ -665,7 +665,7 @@ int DrawWindow::lenghtRoom(pRoom list) {
 }
 
 void DrawWindow::printCharacterStats(pEnemyList list, pEnemyList specialEnemyList, pEnemyList bossEnemyList, Character character) {
-  int enemyLeftOnScreen = lenghtList(list) + lenghtList(specialEnemyList) + lenghtList(bossEnemyList);
+  int enemyLeftOnScreen = lengthEnemyList(list) + lengthEnemyList(specialEnemyList) + lengthEnemyList(bossEnemyList);
   int i = 22;
   int reachBound = 0;       // VEDI RIGA 363
   int X_ElencoNemici = 19;  // gestisce la x da dove inizia la lista dei nemici
@@ -827,11 +827,11 @@ pRoom DrawWindow::changeRoom(Character &character, int &normalEnemyCount,
                              pPosition &mountainList, pPosition &bonusList,
                              pRoom roomList, int &maxRound) {
   if (character.getX() == GAMEWIDTH) {
-    if (maxRound > lenghtRoom(roomList)) {
+    if (maxRound > lengthListRoom(roomList)) {
       roomList = roomList->prev;
       round += 1;
       character.setX(23);
-    } else if (maxRound == lenghtRoom(roomList)) {
+    } else if (maxRound == lengthListRoom(roomList)) {
       character.setX(23);
       int mountainCount = rand() % 8 + 1, bonusCounter = 1;
 

@@ -186,6 +186,14 @@ pPosition EngineGame::deletePosition(pPosition list, pPosition toDelete) {
   return head;
 }
 
+bool EngineGame::checkNoEnemy(DrawWindow drawWindow, pEnemyList enemyList1, pEnemyList enemyList2, pEnemyList enemyList3) {
+  int length1 = drawWindow.lengthEnemyList(enemyList1);
+  int length2 = drawWindow.lengthEnemyList(enemyList2);
+  int length3 = drawWindow.lengthEnemyList(enemyList3);
+  if (length1 + length2 + length3 == 0) return true;
+  else return false;
+}
+
 /**
  * Funzione per la collisione fisica tra player e nemici.
  * Controlla la presenza di uno scontro in qualsiasi direzione,
@@ -789,6 +797,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
                          int direction) {
   bool toTheRight = true;
   bool upgradeBuyed = false, bonusPicked = false, immortalityCheck = false;
+  bool noEnemy = false;
   int immortalityTime = 0;
   int pointsOnScreen = 0;
   long points = 0;
@@ -825,6 +834,8 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
                   bonusType, bonusTime, upgradeBuyed, upgradeType, upgradeTime,
                   immortalityCheck, immortalityTime, toTheRight);
     clear();
+
+    noEnemy = checkNoEnemy(drawWindow, normalEnemyList, specialEnemyList, bossEnemyList);
     drawWindow.printCharacter(character.getX(), character.getY(),
                               character.getSkin());
     drawWindow.drawRect(this->frameGameX, this->frameGameY, this->widht,
@@ -836,7 +847,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     drawWindow.drawLeaderboardOnScreen();
     drawWindow.printCharacterStats(normalEnemyList, specialEnemyList, bossEnemyList, character);
 
-    if (drawWindow.lenghtRoom(roomList) > 1) {
+    if (drawWindow.lengthListRoom(roomList) > 1) {
       drawWindow.printMountain(roomList->next->mountainList);
       drawWindow.printBonus(roomList->next->bonusList);
       checkMountainDamage(this->playerBullets, roomList->next->mountainList);

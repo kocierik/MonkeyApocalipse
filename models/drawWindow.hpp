@@ -35,8 +35,8 @@ class DrawWindow {
                  int pointsOnScreen, Character character, pEnemyList enemyList,
                  int powerUp, int bananas, int maxRound, pRoom roomList);
   void drawLeaderboardOnScreen();
-  int lenghtList(pEnemyList list);
-  int lenghtRoom(pRoom list);
+  int lengthEnemyList(pEnemyList list);
+  int lengthListRoom(pRoom list);
   void printCharacterStats(pEnemyList list, pEnemyList specialEnemyList, pEnemyList bossEnemyList, Character character);
   void printEnemy(pEnemyList list, DrawWindow drawWindow);
   pRoom changeRoom(Character &character, int &normalEnemyCount, int &round,
