@@ -414,7 +414,6 @@ void DrawWindow::drawLeaderboardOnScreen(){
       linesName--;
       maxNameOnScreen++;
     }
-    leaderboard.close();
   }
 }
 
