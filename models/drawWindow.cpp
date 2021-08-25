@@ -387,6 +387,8 @@ void DrawWindow::drawRect(
 
 void DrawWindow::drawLeaderboardOnScreen(){
   std::string localScore[44] = {"NULL"};
+  std::string line;
+  std::ifstream leaderboard("leaderBoard.txt");
 
   init_pair(3, COLOR_YELLOW, -1);
   attron(COLOR_PAIR(3));
@@ -394,24 +396,25 @@ void DrawWindow::drawLeaderboardOnScreen(){
   attroff(COLOR_PAIR(3));
   mvprintw(7, 88, "-----------------------");
 
-  std::string line;
-  std::ifstream leaderboard("leaderBoard.txt");
+
   if (leaderboard.is_open()) {
-    int i = 8;
+    int i = 9;
     int linesName = 0;
-    while (getline(leaderboard, line) && linesName < 44) {
+    int maxNameOnScreen = 0;
+    while (getline(leaderboard, line) && (linesName < 44)) {
       localScore[linesName] = line.c_str();
       linesName++;
     }
     leaderboard.close();
+    linesName--;
 
-    while (linesName >= 0) {
+    while (linesName >= 0 && maxNameOnScreen < 11) {
       mvprintw(i, 90, "%s", localScore[linesName].c_str());
-      i++;
+      i = i + 2;
       linesName--;
+      maxNameOnScreen++;
     }
     leaderboard.close();
-
   }
 }
 
