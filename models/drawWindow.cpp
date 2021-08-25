@@ -385,6 +385,36 @@ void DrawWindow::drawRect(
   mvprintw(heigth, width, "o");
 }
 
+void DrawWindow::drawLeaderboardOnScreen(){
+  std::string localScore[44] = {"NULL"};
+
+  init_pair(3, COLOR_YELLOW, -1);
+  attron(COLOR_PAIR(3));
+  mvprintw(5, 94, "LEADERBOARD");
+  attroff(COLOR_PAIR(3));
+  mvprintw(7, 88, "-----------------------");
+
+  std::string line;
+  std::ifstream leaderboard("leaderBoard.txt");
+  if (leaderboard.is_open()) {
+    int i = 8;
+    int linesName = 0;
+    while (getline(leaderboard, line) && linesName < 44) {
+      localScore[linesName] = line.c_str();
+      linesName++;
+    }
+    leaderboard.close();
+
+    while (linesName >= 0) {
+      mvprintw(i, 90, "%s", localScore[linesName].c_str());
+      i++;
+      linesName--;
+    }
+    leaderboard.close();
+
+  }
+}
+
 void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
                            int pointsOnScreen, Character character,
                            pEnemyList enemyList, int powerUp, int bananas,
@@ -396,24 +426,6 @@ void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
   mvprintw(startX - 2, startY + 5, "SCORE:");
   mvprintw(startX - 2, startX + 47, "LIFE:");
   mvprintw(powerUp_x, powerUp_y, "POWER-UP");
-
-  init_pair(3, COLOR_YELLOW, -1);
-  attron(COLOR_PAIR(3));
-  mvprintw(5, 94, "LEADERBOARD");
-  attroff(COLOR_PAIR(3));
-  mvprintw(7, 88, "-----------------------");
-  std::string line;
-  std::ifstream leaderboard("leaderBoard.txt");
-  if (leaderboard.is_open()) {
-    int i = 8;
-    int maxNameShowed = 0;
-    while ((getline(leaderboard, line)) && (maxNameShowed < 11)) {
-      mvprintw(i = i + 1, 90, "%s\n", line.c_str());
-      i++;
-      maxNameShowed++;
-    }
-    leaderboard.close();
-  }
 
   mvprintw(26, 52, "MAGAZINE");
   mvprintw(26, 76, "%d", character.getGun().getMagazineAmmo());

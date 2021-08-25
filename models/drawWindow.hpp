@@ -34,6 +34,7 @@ class DrawWindow {
   void drawStats(int startX, int startY, int width, int heigth,
                  int pointsOnScreen, Character character, pEnemyList enemyList,
                  int powerUp, int bananas, int maxRound, pRoom roomList);
+  void drawLeaderboardOnScreen();
   int lenghtList(pEnemyList list);
   int lenghtRoom(pRoom list);
   void printCharacterStats(pEnemyList list, pEnemyList specialEnemyList, pEnemyList bossEnemyList, Character character);
