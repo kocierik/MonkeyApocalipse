@@ -461,8 +461,8 @@ void EngineGame::choiceGame(DrawWindow drawWindow, int *direction,
     if (*direction == 32) *selection = cnt;
     if (*direction == KEY_UP) cnt--;
     if (*direction == KEY_DOWN) cnt++;
-    if (cnt > 3) cnt = 0;
-    if (cnt < 0) cnt = 3;
+    if (cnt > 4) cnt = 0;
+    if (cnt < 0) cnt = 4;
   }
 }
 
@@ -698,24 +698,29 @@ void EngineGame::engine(Character character, DrawWindow drawWindow) {
         runGame(character, drawWindow, direction);
         clear();
         drawWindow.loseScreen(direction, finalScore);
-        selection = 4;
+        selection = 5;
         break;
       case 1:
-      clear();
+        clear();
         drawWindow.HowToPlay(direction);
-        selection = 4;
+        selection = 5;
         break;
       case 2:
         clear();
-        drawWindow.credits(direction);
-        selection = 4;
+        drawWindow.leaderboardScreen(direction);
+        selection = 5;
         break;
       case 3:
+        clear();
+        drawWindow.credits(direction);
+        selection = 5;
+        break;
+      case 4:
         refresh();
         std::cout << "Thanks for playing ;) ";
         exit(1);
         break;
-      case 4:
+      case 5:
         clear();
         engine(character, drawWindow);
         break;

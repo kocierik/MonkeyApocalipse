@@ -108,27 +108,38 @@ void DrawWindow::printCommand(int *cnt) {
   if (*cnt == 2) {
     attron(COLOR_PAIR(12));
     mvprintw(LINES/2+7, COLS/2-17, "                                    ");
-    mvprintw(LINES/2+8, COLS/2-17, "              CREDITS               ");
+    mvprintw(LINES/2+8, COLS/2-17, "            LEADERBOARD             ");
     mvprintw(LINES/2+9, COLS/2-17, "                                    ");
     attroff(COLOR_PAIR(12));
   } else {
     mvprintw(LINES/2+7, COLS/2-17, "                                    ");
-    mvprintw(LINES/2+8, COLS/2-17, "              CREDITS               ");
+    mvprintw(LINES/2+8, COLS/2-17, "            LEADERBOARD             ");
     mvprintw(LINES/2+9, COLS/2-17, "                                    ");
   }
   if (*cnt == 3) {
     attron(COLOR_PAIR(12));
     mvprintw(LINES/2+10, COLS/2-17, "                                    ");
-    mvprintw(LINES/2+11, COLS/2-17, "               QUIT!                ");
+    mvprintw(LINES/2+11, COLS/2-17, "              CREDITS               ");
     mvprintw(LINES/2+12, COLS/2-17, "                                    ");
     attroff(COLOR_PAIR(12));
   } else {
     mvprintw(LINES/2+10, COLS/2-17, "                                    ");
-    mvprintw(LINES/2+11, COLS/2-17, "               QUIT!                ");
+    mvprintw(LINES/2+11, COLS/2-17, "              CREDITS               ");
     mvprintw(LINES/2+12, COLS/2-17, "                                    ");
   }
+  if (*cnt == 4) {
+    attron(COLOR_PAIR(12));
+    mvprintw(LINES/2+13, COLS/2-17, "                                    ");
+    mvprintw(LINES/2+14, COLS/2-17, "               QUIT!                ");
+    mvprintw(LINES/2+15, COLS/2-17, "                                    ");
+    attroff(COLOR_PAIR(12));
+  } else {
+    mvprintw(LINES/2+13, COLS/2-17, "                                    ");
+    mvprintw(LINES/2+14, COLS/2-17, "               QUIT!                ");
+    mvprintw(LINES/2+15, COLS/2-17, "                                    ");
+  }
 
-  mvprintw(LINES/2+14, COLS/2-24, "Press [SPACE] to continue or use the arrow to move.");
+  mvprintw(LINES/2+17, COLS/2-24, "Press [SPACE] to continue or use the arrow to move.");
 }
 
 void DrawWindow::printCredits() {
@@ -172,6 +183,68 @@ void DrawWindow::printCredits() {
 void DrawWindow::credits(int direction) {
   while (direction != 27) {
     printCredits();       // STAMPA GLI AUTORI DEL GIOCO
+    direction = getch();  // ASPETTA UN TASTO IN INPUT
+  }
+}
+
+void DrawWindow::printLeaderboardScreen() {
+  int prog = LINES/2 - 12;
+  for(int y = 0; y < 33; y++ ){
+    init_pair(8, COLOR_BLACK, 232);
+    attron(COLOR_PAIR(8));
+    mvprintw(prog, COLS/2 - 53, "+ + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + ");
+    prog++;
+    attroff(COLOR_PAIR(8));
+  }
+
+  init_pair(3, COLOR_YELLOW, 232);
+  attron(COLOR_PAIR(3));
+  mvprintw(LINES/2 - 10, COLS/2 - 5, "LEADERBOARD");
+  mvprintw(LINES/2 - 8, COLS/2 - 46, "--------------------------------------------------------------------------------------------");
+  attroff(COLOR_PAIR(3));
+  
+  
+  std::string line;
+  std::ifstream leaderboard("leaderBoard.txt");
+  if (leaderboard.is_open()) {
+    int i = LINES/2 - 6;
+    int maxNameShowed = 0;
+    init_pair(4, COLOR_WHITE, COLOR_BLACK);
+    attron(COLOR_PAIR(4));
+    while ((getline(leaderboard, line)) && (maxNameShowed < 11)) {
+      mvprintw(i = i + 1, COLS/2 - 46, " %s ", line.c_str());
+      i++;
+      maxNameShowed++;
+    }
+    i = LINES/2 - 6;
+    maxNameShowed = 0;
+    while ((getline(leaderboard, line)) && (maxNameShowed < 11)) {
+      mvprintw(i = i + 1, COLS/2 - 21, " %s ", line.c_str());
+      i++;
+      maxNameShowed++;
+    }
+    i = LINES/2 - 6;
+    maxNameShowed = 0;
+    while ((getline(leaderboard, line)) && (maxNameShowed < 11)) {
+      mvprintw(i = i + 1, COLS/2 + 4, " %s ", line.c_str());
+      i++;
+      maxNameShowed++;
+    }
+    i = LINES/2 - 6;
+    maxNameShowed = 0;
+    while ((getline(leaderboard, line)) && (maxNameShowed < 11)) {
+      mvprintw(i = i + 1, COLS/2 + 29, " %s ", line.c_str());
+      i++;
+      maxNameShowed++;
+    }
+    attroff(COLOR_PAIR(4));
+    leaderboard.close();
+  }
+  
+}
+void DrawWindow::leaderboardScreen(int direction) {
+  while (direction != 27) {
+    printLeaderboardScreen();
     direction = getch();  // ASPETTA UN TASTO IN INPUT
   }
 }
