@@ -66,52 +66,17 @@ void EngineGame::generateEnemyBullets(pEnemyList enemyList, Pbullet &enemyBullet
       if (character.getX() > enemyList->enemy.getX())
         shootFoward = false;
       // Colpo del nemico -> false; Sparo avanti/indieto -> moveFoward
-      enemyBulletList = generateBullets(enemyList->enemy, false, shootFoward, this->normalEnemyBullets);
+      enemyBulletList = generateBullets(enemyList->enemy, false, shootFoward, enemyBulletList);
     }
     enemyList = enemyList->next;
   }
 }
 
-/* Momentaneamente commentato. Verranno eliminate a breve se si vedrà che
-   tutto funziona senza il loro utilizzo.
-
-void EngineGame::shootPlayerBullet() {
-  Pbullet bulletList = this->playerBullets;
+void EngineGame::moveBullets(Pbullet bulletList) {
   char tmpSkin[2];
   while (bulletList != NULL) {
-    if (bulletList->moveFoward)
-      bulletList->x += bulletList->speed;
-    else
-      bulletList->x -= bulletList->speed;
-    move(bulletList->y, bulletList->x);
-    init_pair(10, COLOR_YELLOW, -1);  // SPARA BANANE GIALLE
-    attron(COLOR_PAIR(10));
-    tmpSkin[0] = bulletList->skin;
-    printw(tmpSkin);
-    attroff(COLOR_PAIR(10));
-    bulletList = bulletList->next;
-  }
-}
-void EngineGame::shootEnemyBullet(Pbullet enemyBulletList) {
-  Pbullet bulletList = enemyBulletList;
-  char tmpSkin[2];
-  while (bulletList != NULL) {
-    if (bulletList->moveFoward)
-      bulletList->x -= bulletList->speed;
-    else
-      bulletList->x += bulletList->speed;
-    move(bulletList->y, bulletList->x);
-    tmpSkin[0] = bulletList->skin;
-    printw(tmpSkin);
-    bulletList = bulletList->next;
-  }
-}
-*/
-
-void EngineGame::shootBullet(Pbullet bulletList) {
-  char tmpSkin[2];
-  while (bulletList != NULL) {
-    if ((bulletList->isPlayerBullet && bulletList->moveFoward) || (!bulletList->isPlayerBullet && !bulletList->moveFoward))
+    if ((bulletList->isPlayerBullet && bulletList->moveFoward) ||
+        (!bulletList->isPlayerBullet && !bulletList->moveFoward))
       bulletList->x += bulletList->speed;
     else
       bulletList->x -= bulletList->speed;
@@ -880,10 +845,10 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
       checkMountainDamage(this->playerBullets, roomList->next->mountainList);
       checkMountainDamage(this->normalEnemyBullets,
                           roomList->next->mountainList);
-      //checkMountainDamage(this->specialEnemyBullets,      // DA FIXARE, GENERA ERRORE DI SEGMENTAZIONE
-          //                roomList->next->mountainList);
-      //checkMountainDamage(this->bossEnemyBullets,         // DA FIXARE, GENERA ERRORE DI SEGMENTAZIONE
-        //                  roomList->next->mountainList);
+      checkMountainDamage(this->specialEnemyBullets,
+                          roomList->next->mountainList);
+      checkMountainDamage(this->bossEnemyBullets,
+                          roomList->next->mountainList);
     }
 
     increaseCount(this->whileCount, points, normalEnemyList);
@@ -900,11 +865,10 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     generateEnemyBullets(specialEnemyList, this->specialEnemyBullets, character);
     generateEnemyBullets(bossEnemyList, this->bossEnemyBullets, character);
 
-
-    shootBullet(this->playerBullets);
-    shootBullet(this->normalEnemyBullets);
-    //shootBullet(this->specialEnemyBullets);   // DA FIXARE, GENERA ERRORI
-    //shootBullet(this->bossEnemyBullets);      // DA FIXARE, GENERA ERRORI
+    moveBullets(this->playerBullets);
+    moveBullets(this->normalEnemyBullets);
+    moveBullets(this->specialEnemyBullets);
+    moveBullets(this->bossEnemyBullets);
 
     checkEnemyCollision(character, normalEnemyList);
     checkEnemyCollision(character, specialEnemyList);
@@ -926,18 +890,17 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
                          pointsOnScreen, immortalityCheck);
     checkBulletCollision(this->normalEnemyBullets, character, normalEnemyList,
                          pointsOnScreen, immortalityCheck);
-    //checkBulletCollision(this->specialEnemyBullets, character, specialEnemyList,
-    //                     pointsOnScreen, immortalityCheck);
-    //checkBulletCollision(this->bossEnemyBullets, character, bossEnemyBullets,
-    //                     pointsOnScreen, immortalityCheck);
-
+    checkBulletCollision(this->specialEnemyBullets, character, specialEnemyList,
+                         pointsOnScreen, immortalityCheck);
+    checkBulletCollision(this->bossEnemyBullets, character, bossEnemyList,
+                         pointsOnScreen, immortalityCheck);
     
     refresh();
 
     destroyBullet(this->playerBullets);
     destroyBullet(this->normalEnemyBullets);
-    // destroyBullet(this->specialEnemyBullets);      // DA FIXARE, GENERA ERRORE DI SEGMENTAZIONE
-    // destroyBullet(this->bossEnemyBullets);         // DA FIXARE, GENERA ERRORE DI SEGMENTAZIONE
+    destroyBullet(this->specialEnemyBullets);
+    destroyBullet(this->bossEnemyBullets);
     drawWindow.showBonusOnScreen(upgradeBuyed, upgradeType, upgradeTime,
                                  bonusPicked, bonusType, bonusTime,
                                  immortalityCheck, immortalityTime);

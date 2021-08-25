@@ -26,9 +26,7 @@ class EngineGame {
                           bool moveFoward, Pbullet &bulletList);
   void generateEnemyBullets(pEnemyList enemyList, Pbullet &enemyBulletList, Character character);
 
-  //void shootPlayerBullet();
-  //void shootEnemyBullet(Pbullet enemyBulletList);
-  void shootBullet(Pbullet bulletList);
+  void moveBullets(Pbullet bulletList);
 
   void destroyBullet(Pbullet &bulletList);
   pEnemyList destroyEnemy(pEnemyList list, Enemy enemy);
