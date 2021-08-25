@@ -779,29 +779,32 @@ void DrawWindow::printEnemy(pEnemyList list, DrawWindow drawWindow) {
   }
 }
 
-void DrawWindow::moveEnemy(pEnemyList list, Character character,
+void DrawWindow::moveEnemy(pEnemyList enemyList, Character character,
                            DrawWindow drawWindow, long points) {
   int yP = character.getY(), xE, yE;
   srand(time(0));
   int movementSpeedFactor = 1;
   
-  while (list != NULL) {
+  while (enemyList != NULL) {
 
-    if(list->enemy.getSkin() == 'e') movementSpeedFactor = rand() % 10 + 25;
-    else if(list->enemy.getSkin() == 'E') movementSpeedFactor = rand() % 10 + 40;
-    else if(list->enemy.getSkin() == 'B') movementSpeedFactor = rand() % 10 + 60;
+    if (enemyList->enemy.getSkin() == 'e') movementSpeedFactor = rand() % 10 + 25;
+    else if (enemyList->enemy.getSkin() == 'E') movementSpeedFactor = rand() % 10 + 40;
+    else if (enemyList->enemy.getSkin() == 'B') movementSpeedFactor = rand() % 10 + 60;
+
+    mvprintw (5,5,"%d", points);
+    mvprintw (6,6,"%d", movementSpeedFactor);
 
     if (points % movementSpeedFactor == 0) {
-      xE = list->enemy.getX(), yE = list->enemy.getY();
+      xE = enemyList->enemy.getX(), yE = enemyList->enemy.getY();
       if (yP > yE && (mvinch(yE + 1, xE) == ' ' || mvinch(yE + 1, xE) == '?')) {
-        list->enemy.setY(yE + 1);
-        drawWindow.printCharacter(xE, yE, list->enemy.getSkin());
+        enemyList->enemy.setY(yE + 1);
+        drawWindow.printCharacter(xE, yE, enemyList->enemy.getSkin());
       } else if (yP < yE && (mvinch(yE - 1, xE) == ' ' || mvinch(yE - 1, xE) == '?')) {
-        list->enemy.setY(yE - 1);
-        drawWindow.printCharacter(xE, yE, list->enemy.getSkin());
+        enemyList->enemy.setY(yE - 1);
+        drawWindow.printCharacter(xE, yE, enemyList->enemy.getSkin());
       }
     }
-    list = list->next;
+    enemyList = enemyList->next;
   }
 }
 

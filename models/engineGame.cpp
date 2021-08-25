@@ -729,10 +729,9 @@ void EngineGame::engine(Character character, DrawWindow drawWindow) {
   endwin();
 }
 
-void EngineGame::increaseCount(int &whileCount, long &points,
-                               pEnemyList enemyList) {
+void EngineGame::increaseCount(int &whileCount, long &points) {
   whileCount += 1;
-  if (enemyList->next != NULL) points += 1;
+  points += 1;
   this->whileCountEnemy += 1;
 }
 
@@ -849,7 +848,13 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
                           roomList->next->mountainList);
     }
 
-    increaseCount(this->whileCount, points, normalEnemyList);
+    increaseCount(this->whileCount, points);
+    /**
+     * Temporanea soluzione affinché point non raggiunga valori esorbitanti.
+     * In futuro verrà resettata quando verranno uccisi tutti i nemici e si potrà
+     * du dunque accedere alle altre stanze.
+    */
+    if (points > 500) points = 0;
 
     drawWindow.printEnemy(normalEnemyList, drawWindow);
     drawWindow.printEnemy(specialEnemyList, drawWindow);

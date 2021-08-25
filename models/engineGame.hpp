@@ -70,7 +70,7 @@ class EngineGame {
   void checkMountainDamage(Pbullet bulletList, pPosition &mountainList);
 
   void engine(Character character, DrawWindow printer);
-  void increaseCount(int &whileCount, long &points, pEnemyList enemyList);
+  void increaseCount(int &whileCount, long &points);
 
   void getInput(int &direction);
   void isPause(int &direction, bool &pause);
