@@ -28,7 +28,7 @@ class EngineGame {
 
   void moveBullets(Pbullet bulletList);
 
-  void destroyBullet(Pbullet &bulletList);
+  void destroyBullet(Pbullet &bulletList, int xP);
   pEnemyList destroyEnemy(pEnemyList list, Enemy enemy);
   pPosition deletePosition(pPosition list, pPosition bonus);
 

@@ -94,37 +94,41 @@ void EngineGame::moveBullets(Pbullet bulletList) {
   }
 }
 
-void EngineGame::destroyBullet(Pbullet &bulletList) {
-  Pbullet head = bulletList, prev = bulletList, tmp;
-  bool mustDestroyCondition = false;
-  int range;
-  while (head != NULL) {
-    range = -1;
-    if ((head->isPlayerBullet && head->moveFoward) ||
-        (!head->isPlayerBullet && !head->moveFoward))
-      range = 1;
+void EngineGame::destroyBullet(Pbullet &bulletList, int xP) {
+  if (xP == this->widht)
+    bulletList = NULL;
+  else {
+    Pbullet head = bulletList, prev = bulletList, tmp;
+    bool mustDestroyCondition = false;
+    int range;
+    while (head != NULL) {
+      range = -1;
+      if ((head->isPlayerBullet && head->moveFoward) ||
+          (!head->isPlayerBullet && !head->moveFoward))
+        range = 1;
 
-    mustDestroyCondition = !isEmpty(head->x + range, head->y) &&
-                           !isBonus(head->x + range, head->y) && !isBullet(head->x + range, head->y);
-    if (!head->isPlayerBullet)
-      mustDestroyCondition &= !isEnemy(head->x + range, head->y);
+      mustDestroyCondition = !isEmpty(head->x + range, head->y) &&
+                            !isBonus(head->x + range, head->y) && !isBullet(head->x + range, head->y);
+      if (!head->isPlayerBullet)
+        mustDestroyCondition &= !isEnemy(head->x + range, head->y);
 
-    if (mustDestroyCondition || head->x > 70 || head->x < 23) {
-      if (head == bulletList) {
-        tmp = bulletList;
-        bulletList = head->next;
-        delete tmp;
-        prev = bulletList;
-        head = bulletList;
+      if (mustDestroyCondition || head->x > 70 || head->x < 23) {
+        if (head == bulletList) {
+          tmp = bulletList;
+          bulletList = head->next;
+          delete tmp;
+          prev = bulletList;
+          head = bulletList;
+        } else {
+          tmp = prev->next;
+          prev->next = head->next;
+          delete tmp;
+          head = prev->next;
+        }
       } else {
-        tmp = prev->next;
-        prev->next = head->next;
-        delete tmp;
-        head = prev->next;
+        prev = head;
+        head = head->next;
       }
-    } else {
-      prev = head;
-      head = head->next;
     }
   }
 }
@@ -818,6 +822,13 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     roomList = drawWindow.changeRoom(character, normalEnemyCount, round,
                                      normalEnemyList, mountainList, bonusList,
                                      roomList, maxRound);
+
+    /* Codice scritto per tenteare di ovviare ai nuovi bugs scritti nelle issue
+    if (character.getX() == this->widht) {
+      normalEnemyList = NULL;
+      specialEnemyList = NULL;
+      bossEnemyList = NULL;
+    }*/
     normalEnemyList =
         generateEnemy(&normalEnemyCount, 0, normalEnemyList, round, drawWindow);
 
@@ -836,6 +847,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     clear();
 
     noEnemy = checkNoEnemy(drawWindow, normalEnemyList, specialEnemyList, bossEnemyList);
+    
     drawWindow.printCharacter(character.getX(), character.getY(),
                               character.getSkin());
     drawWindow.drawRect(this->frameGameX, this->frameGameY, this->widht,
@@ -910,11 +922,11 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
                          pointsOnScreen, immortalityCheck);
     
     refresh();
-
-    destroyBullet(this->playerBullets);
-    destroyBullet(this->normalEnemyBullets);
-    destroyBullet(this->specialEnemyBullets);
-    destroyBullet(this->bossEnemyBullets);
+  
+    destroyBullet(this->playerBullets, character.getX());
+    destroyBullet(this->normalEnemyBullets, character.getX());
+    destroyBullet(this->specialEnemyBullets, character.getX());
+    destroyBullet(this->bossEnemyBullets, character.getX());
     drawWindow.showBonusOnScreen(upgradeBuyed, upgradeType, upgradeTime,
                                  bonusPicked, bonusType, bonusTime,
                                  immortalityCheck, immortalityTime);
