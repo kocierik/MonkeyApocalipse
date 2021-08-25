@@ -479,13 +479,13 @@ pEnemyList EngineGame::generateEnemy(int *enemyCount, int type, pEnemyList list,
       skin = 'E';
       life = 150;
       gun.setBulletSkin('=');
-      gun.setDamage(20);
+      gun.setDamage(15);
       break;
     case 2:  // Boss enemy
       skin = 'B';
       life = 400;
       gun.setBulletSkin('*');
-      gun.setDamage(35);
+      gun.setDamage(25);
       break;
   }
 
@@ -834,7 +834,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
                          this->height, pointsOnScreen, character,
                          normalEnemyList, powerUpDMG, bananas, maxRound,
                          roomList);
-    drawWindow.drawLeaderboardOnScreen();
+  drawWindow.drawLeaderboardOnScreen();
     drawWindow.printCharacterStats(normalEnemyList, specialEnemyList, bossEnemyList, character);
 
     if (drawWindow.lenghtRoom(roomList) > 1) {
