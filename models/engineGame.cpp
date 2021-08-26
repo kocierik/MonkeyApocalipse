@@ -108,7 +108,7 @@ void EngineGame::destroyBullet(Pbullet &bulletList, int xP) {
         range = 1;
 
       mustDestroyCondition = !isEmpty(head->x + range, head->y) &&
-                            !isBonus(head->x + range, head->y) && !isBullet(head->x + range, head->y) && isEnemyBullet(head->x,head->y);
+                            !isBonus(head->x + range, head->y) && !isBullet(head->x + range, head->y);
       if (!head->isPlayerBullet)
         mustDestroyCondition &= !isEnemy(head->x + range, head->y);
 
@@ -635,13 +635,13 @@ pPosition EngineGame::getBonus(DrawWindow drawWindow, int x, int y,
 /**
  * Funzione per stabilire se e quanti nemici non-normali bisogna generare.
 */
-void EngineGame::checkEnemyGeneration(pRoom &room, int maxRound, int &specialEnemyCount, int &bossEnemyCount) {
+void EngineGame::checkEnemyGeneration(pRoom &room, int maxRound, int round, int &specialEnemyCount, int &bossEnemyCount) {
   if (maxRound % SPECIAL_ENEMY_FREQUENCY == 0 && room->spawnSpecialEnemy) {
     if (maxRound <= 10) specialEnemyCount = 2;
     else if (maxRound == 15) specialEnemyCount = 3;
     else if (maxRound > 15) specialEnemyCount = 4;
     room->spawnSpecialEnemy = false;
-  } else if (maxRound % BOSS_ENEMY_FREQUENCY == 0 && room->spawnBossEnemy) {
+  } else if (maxRound == SPECIAL_ENEMY_FREQUENCY && room->spawnBossEnemy) {    // AAAAAAAAAAAAAAAAAAa  ERRORE QUI
     if (maxRound <= 10) bossEnemyCount = 2;
     else if (maxRound == 20) bossEnemyCount = 2;
     else if (maxRound >= 30) bossEnemyCount = 3;
@@ -820,7 +820,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
         generateEnemy(&normalEnemyCount, 0, normalEnemyList, round, drawWindow);
 
     if ((roomList->spawnSpecialEnemy || roomList->spawnBossEnemy) && maxRound == round)
-      checkEnemyGeneration (roomList, maxRound, specialEnemyCount, bossEnemyCount);
+      checkEnemyGeneration (roomList, maxRound, round, specialEnemyCount, bossEnemyCount);
 
     if (specialEnemyCount > 0)
       specialEnemyList = generateEnemy(&specialEnemyCount, 1, specialEnemyList, round, drawWindow);
