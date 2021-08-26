@@ -22,7 +22,7 @@ La mappa deve avere una grafica ASCII, è possibile utilizzare solo le librerie 
 Vengono inviati 3000 caschi blu nella regione del Katanga per indagare sulla vicenda. Dopo sole due settimane fanno ritorno alla base in trenta. I loro racconti sono raccampriccianti.</p>
 <p align="center">LE SCIMMIE MUTATE HANNO PRESO IL CONTROLLO DELLA REGIONE E SONO IN CERCA DI VENDETTA.</p>
 
-Vivi la rivoluzione nei panni del capo branco. Spostati nella selva e abbatti chiunque si ponga tra te e la libertà. Ad una sola condizione.
+<p align="center">Vivi la rivoluzione nei panni del capo branco. Spostati nella selva e abbatti chiunque si ponga tra te e la libertà. Ad una sola condizione.</p>
 <p align="center">NESSUN PRIGIONIERO.</p> 
 
 -----------------------------------------------------------------------------------------------------------------------------------------
