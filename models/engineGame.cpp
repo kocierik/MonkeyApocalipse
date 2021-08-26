@@ -398,7 +398,7 @@ void EngineGame::moveCharacter(
         upgradeTime = 0;  // RESETTA IL TEMPO DI APPARIZIONE SE HAI COMPRATO UN
                           // ALTRO UPGRADE
         character.setNumberLife(character.getNumberLife() + 1);
-        bananas = bananas - upgradeCost;
+        bananas = bananas - (upgradeCost/2);
       }
       break;
     case 's':  // CONTROLLA L'AQUISTO DI POWERUP AL DANNO, SONO ACQUISTABILI AL
