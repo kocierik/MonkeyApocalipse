@@ -108,7 +108,7 @@ void EngineGame::destroyBullet(Pbullet &bulletList, int xP) {
         range = 1;
 
       mustDestroyCondition = !isEmpty(head->x + range, head->y) &&
-                            !isBonus(head->x + range, head->y) && !isBullet(head->x + range, head->y);
+                            !isBonus(head->x + range, head->y) && !isBullet(head->x + range, head->y) && !isEnemyBullet(head->x,head->y);
       if (!head->isPlayerBullet)
         mustDestroyCondition &= !isEnemy(head->x + range, head->y);
 
@@ -652,7 +652,7 @@ void EngineGame::checkEnemyGeneration(pRoom &room, int maxRound, int &specialEne
     else if (maxRound > 15) specialEnemyCount = 4;
     room->spawnSpecialEnemy = false;
   } else if (maxRound % BOSS_ENEMY_FREQUENCY == 0 && room->spawnBossEnemy) {
-    if (maxRound <= 10) bossEnemyCount = 1;
+    if (maxRound <= 10) bossEnemyCount = 2;
     else if (maxRound == 20) bossEnemyCount = 2;
     else if (maxRound >= 30) bossEnemyCount = 3;
     room->spawnBossEnemy = false;
