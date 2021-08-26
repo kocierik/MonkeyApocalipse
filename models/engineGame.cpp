@@ -641,8 +641,8 @@ void EngineGame::checkEnemyGeneration(pRoom &room, int maxRound, int round, int 
     else if (maxRound == 15) specialEnemyCount = 3;
     else if (maxRound > 15) specialEnemyCount = 4;
     room->spawnSpecialEnemy = false;
-  } else if (maxRound == SPECIAL_ENEMY_FREQUENCY && room->spawnBossEnemy) {    // AAAAAAAAAAAAAAAAAAa  ERRORE QUI
-    if (maxRound <= 10) bossEnemyCount = 2;
+  } else if (maxRound % BOSS_ENEMY_FREQUENCY == 0 && room->spawnBossEnemy) {    // AAAAAAAAAAAAAAAAAAa  ERRORE QUI
+    if (maxRound <= 10) bossEnemyCount = 1;
     else if (maxRound == 20) bossEnemyCount = 2;
     else if (maxRound >= 30) bossEnemyCount = 3;
     room->spawnBossEnemy = false;
@@ -819,7 +819,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     normalEnemyList =
         generateEnemy(&normalEnemyCount, 0, normalEnemyList, round, drawWindow);
 
-    if ((roomList->spawnSpecialEnemy || roomList->spawnBossEnemy) && maxRound == round)
+    if ((roomList->spawnSpecialEnemy || roomList->spawnBossEnemy) )
       checkEnemyGeneration (roomList, maxRound, round, specialEnemyCount, bossEnemyCount);
 
     if (specialEnemyCount > 0)
