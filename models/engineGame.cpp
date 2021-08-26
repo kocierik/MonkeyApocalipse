@@ -481,20 +481,20 @@ pEnemyList EngineGame::generateEnemy(int *enemyCount, int type, pEnemyList list,
                                      int &round, DrawWindow drawWindow) {
   // Variables 4 basic enemies
   char skin = 'e';
-  int life = 100;
+  int life = 10;     // AAAAAAAAAAAAAAAAAAAAAAA
   Gun gun('-', 10, -1, -1);
   switch (type) {
     case 0:  // Basic enemies, no variables changes
       break;
     case 1:  // Elite enemies
       skin = 'E';
-      life = 200;
+      life = 10; // AAAAAAAAAAAAAAAAAAAA
       gun.setBulletSkin('=');
       gun.setDamage(15);
       break;
     case 2:  // Boss enemy
       skin = 'B';
-      life = 600;
+      life = 10;  // AAAAAAAAAAAAAAAAAAAAAAa
       gun.setBulletSkin('*');
       gun.setDamage(25);
       break;
@@ -642,7 +642,7 @@ void EngineGame::checkEnemyGeneration(pRoom &room, int maxRound, int &specialEne
     else if (maxRound > 15) specialEnemyCount = 4;
     room->spawnSpecialEnemy = false;
   } else if (maxRound % BOSS_ENEMY_FREQUENCY == 0 && room->spawnBossEnemy) {
-    if (maxRound <= 10) bossEnemyCount = 2;
+    if (maxRound <= 10) bossEnemyCount = 1;
     else if (maxRound == 20) bossEnemyCount = 2;
     else if (maxRound >= 30) bossEnemyCount = 3;
     room->spawnBossEnemy = false;
