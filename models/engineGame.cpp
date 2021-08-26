@@ -302,8 +302,7 @@ void EngineGame::moveCharacter(
     pEnemyList normalEnemyList, int round, int &pointsOnScreen, int &bananas,
     int &powerUpDMG, bool &bonusPicked, int &bonusType, int &bonusTime,
     bool &upgradeBuyed, int &upgradeType, int &upgradeTime,
-    bool &immortalityCheck, int &immortalityTime, bool &toTheRight) {
-  int upgradeCost = 10;
+    bool &immortalityCheck, int &immortalityTime, bool &toTheRight, int upgradeCost) {
   srand(time(0));
   switch (direction) {  // CONTROLLO IL TASTO SPINTO
     case KEY_UP:  // --------------------------------------------------------
@@ -393,7 +392,7 @@ void EngineGame::moveCharacter(
       break;
     case 'a':  // CONTROLLA L'AQUISTO DI VITE, MASSIMO 3 -------------------
     case 'A':
-      if (bananas >= upgradeCost && character.getNumberLife() < 3) {
+      if (bananas >= (upgradeCost/2) && character.getNumberLife() < 3) {
         upgradeBuyed = true;  // INDICA CHE È STATO COMPRATO UN UPGRADE
         upgradeType = 0;      // INDICA IL TIPO DI UPGRADE.
         upgradeTime = 0;  // RESETTA IL TEMPO DI APPARIZIONE SE HAI COMPRATO UN
@@ -569,23 +568,14 @@ pPosition EngineGame::getBonus(DrawWindow drawWindow, int x, int y,
           break;
         case 6:  // Bonus name: "EAT 1 BANANA [+10 HP]"
           character.increaseLife(10);
-          if (character.getLife() > 100) {
-            character.setLife(100);
-          }
           end = true;
           break;
         case 7:  // Bonus name: "EAT 2 BANANA [+20 HP]"
           character.increaseLife(20);
-          if (character.getLife() > 100) {
-            character.setLife(100);
-          }
           end = true;
           break;
         case 8:  // Bonus name: "BANANA SMOOTHIE [+40 HP]"
           character.increaseLife(40);
-          if (character.getLife() > 100) {
-            character.setLife(100);
-          }
           end = true;
           break;
         case 9:  // Bonus name: "PEEL LOADER [+20 PEELS]"
@@ -747,20 +737,14 @@ void EngineGame::increaseCount(int &whileCount, long &points) {
   this->whileCountEnemy += 1;
 }
 
-void EngineGame::money(int &bananas, pEnemyList enemyList, int maxRound,
-                       // int &roundPayed, Gun &playerGun) {  // SISTEMA DI
-                       // VALUTA CHE GENERA DA 1 A 3 BANANE AD OGNI
-                       int &roundPayed,
-                       Character &character) {  // SISTEMA DI VALUTA CHE GENERA
-                                                // DA 1 A 3 BANANE AD OGNI
-                                                // CLEAR DEL LIVELLO
+void EngineGame::money(int &bananas, bool noEnemy, int maxRound, int &roundPayed, Character &character, int upgradeCost) {
+
   srand(time(NULL));
-  if (enemyList->next == NULL &&
-      maxRound != roundPayed) {  // CONTROLLA CHE LA STANZA SIA PULITA E CHE
-                                 // L'ULTIMO ROUND SIA STATO PAGATO
+  if (noEnemy && (maxRound != roundPayed)) {  // CONTROLLA CHE LA STANZA SIA PULITA E CHE L'ULTIMO ROUND SIA STATO PAGATO
     bananas = bananas + rand() % 3 + 1;
+    character.increaseLife((rand() % 20 + 20));
     if (maxRound >= 2 && maxRound <= 5) {
-      character.increaseTotalAmmo(25);
+      character.increaseTotalAmmo(30);
     } else if (maxRound > 5 && maxRound <= 8) {
       character.increaseTotalAmmo(40);
     } else if (maxRound > 8 && maxRound <= 12) {
@@ -772,8 +756,10 @@ void EngineGame::money(int &bananas, pEnemyList enemyList, int maxRound,
   }
   init_pair(20, COLOR_GREEN, -1);
   attron(COLOR_PAIR(20));
-  if (bananas >= 10) {
-    mvprintw(24, 52, "UPGRADE PURCHASABLE!");
+  if (bananas >= (upgradeCost)) {
+    mvprintw(24, 52, "LIFE OR DAMAGE PURCHASABLE!");
+  } else if(bananas >= (upgradeCost/2)){
+    mvprintw(24, 52, "EXTRA LIFE PURCHASABLE!"); 
   }
   attroff(COLOR_PAIR(20));
 }
@@ -801,6 +787,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
                          int direction) {
   bool toTheRight = true;
   bool upgradeBuyed = false, bonusPicked = false, immortalityCheck = false;
+  int upgradeCost = 10;
   bool noEnemy = false;
   int immortalityTime = 0;
   int pointsOnScreen = 0;
@@ -843,7 +830,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     moveCharacter(drawWindow, character, direction, roomList, normalEnemyList,
                   round, pointsOnScreen, bananas, powerUpDMG, bonusPicked,
                   bonusType, bonusTime, upgradeBuyed, upgradeType, upgradeTime,
-                  immortalityCheck, immortalityTime, toTheRight);
+                  immortalityCheck, immortalityTime, toTheRight, upgradeCost);
     clear();
 
     noEnemy = checkNoEnemy(drawWindow, normalEnemyList, specialEnemyList, bossEnemyList);
@@ -907,7 +894,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     gorillaPunch(direction, character, bossEnemyList, pointsOnScreen,
                  toTheRight);
 
-    money(bananas, normalEnemyList, maxRound, roundPayed, character);
+    money(bananas, noEnemy, maxRound, roundPayed, character, upgradeCost);
     checkBulletCollision(this->playerBullets, character, normalEnemyList,
                          pointsOnScreen, immortalityCheck);
     checkBulletCollision(this->playerBullets, character, specialEnemyList,

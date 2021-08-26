@@ -742,7 +742,7 @@ void DrawWindow::printCharacterStats(pEnemyList list, pEnemyList specialEnemyLis
                             // NEMICI VISUALIZZABILI NELLA LISTA DELL'HUD
     if (list->enemy.getX() != 0) {
           i++;
-      mvprintw(i, X_ElencoNemici, "- Base Hunter: %d HP",
+      mvprintw(i, X_ElencoNemici, "- UN soldier: %d HP",
                list->enemy.getLife());
     }
     reachBound++;
@@ -753,7 +753,7 @@ void DrawWindow::printCharacterStats(pEnemyList list, pEnemyList specialEnemyLis
                             // NEMICI VISUALIZZABILI NELLA LISTA DELL'HUD
     if (specialEnemyList->enemy.getX() != 0) {
           i++;
-      mvprintw(i, X_ElencoNemici, "- Special Hunter: %d HP",
+      mvprintw(i, X_ElencoNemici, "- Elite soldier: %d HP",
                 specialEnemyList->enemy.getLife());
     }
     reachBound++;

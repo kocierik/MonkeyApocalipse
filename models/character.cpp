@@ -39,7 +39,7 @@ void Character::directionLeft() { this->x--; }
 char Character::getSkin() { return this->skin; }
 void Character::setSkin(char skin) { this->skin = skin; }
 
-void Character::increaseLife(int life) { this->life += life; }
+void Character::increaseLife(int life) { this->life += life; if(this->life > 100) this->life = 100;}
 void Character::decreaseLife(int life) { this->life -= life; }
 int Character::getLife() { return this->life; }
 void Character::setLife(int life) { this->life = life; }

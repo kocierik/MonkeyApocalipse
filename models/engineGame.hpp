@@ -53,7 +53,7 @@ class EngineGame {
                      bool &bonusPicked, int &bonustype, int &bonusTime,
                      bool &upgradeBuyed, int &upgradeType, int &upgradeTime,
                      bool &immortalityCheck, int &immortalityTime,
-                     bool &toTheRight);
+                     bool &toTheRight, int upgradeCost);
 
   pEnemyList generateEnemy(int *enemyCount, int type, pEnemyList list,
                            int &round, DrawWindow drawWindow);
@@ -75,8 +75,8 @@ class EngineGame {
   void isPause(int &direction, bool &pause);
   void runGame(Character character, DrawWindow drawWindow, int direction);
 
-  void money(int &bananas, pEnemyList enemyList, int maxRound, int &roundPayed,
-             Character &character);
+  void money(int &bananas, bool noEnemy, int maxRound, int &roundPayed,
+             Character &character, int upgradeCost);
   void increasePointOnScreen(int &pointOnScreen, int pointsAdded);
   void gorillaPunch(int direction, Character &character, pEnemyList enemyList,
                     int &pointOnScreen, bool toTheRight);
