@@ -843,7 +843,7 @@ pRoom DrawWindow::changeRoom(Character &character, int &normalEnemyCount, pEnemy
       roomList = saveRoom(mountainList, bonusList, roomList);
       
       if (maxRound <= NORMAL_ENEMY_LIMIT)
-        normalEnemyCount = maxRound;
+        normalEnemyCount = maxRound + 1;  // +1 per via del nemico fittizio
       else 
         normalEnemyCount = NORMAL_ENEMY_LIMIT;
 

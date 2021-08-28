@@ -9,8 +9,8 @@
 
 // Numero di casi dello switch che gestisce i bonus. Equivale a: n bonus
 #define N_SWITCH_CASE 15
-#define SPECIAL_ENEMY_FREQUENCY 2   // Spawn ogni 5 round
-#define BOSS_ENEMY_FREQUENCY 3      // Spawn ogni 10 round
+#define SPECIAL_ENEMY_FREQUENCY 222   // Spawn ogni 5 round
+#define BOSS_ENEMY_FREQUENCY 344      // Spawn ogni 10 round
 
 const int scoreForKill = 300;
 float finalScore = 0;
