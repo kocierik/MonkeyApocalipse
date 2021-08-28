@@ -361,29 +361,29 @@ void DrawWindow::printCharacter(int x, int y, char c) {
 }
 
 void DrawWindow::drawRect(
-    int startX, int startY, int width, int heigth, bool noEnemy,
+    int startX, int startY, int rightWidth, int bottomHeight, bool noEnemy,
     int round, bool isScreenBound) {  // isScreenBound SI UNA PER FLAGGARE CHE È
                                       // IL RETTANGOLO CHE DELIMITA LO SCHERMO,
                                       // QUINDI NON DEVE APRIRSI
-  for (int i = startY; i < width; ++i) {
+  for (int i = startY; i < rightWidth; ++i) {
     mvprintw(startX, i, "-");
-    mvprintw(heigth, i, "-");
+    mvprintw(bottomHeight, i, "-");
   }
   if (!noEnemy || isScreenBound) {
-    for (int i = startX; i < heigth; ++i) {
+    for (int i = startX; i < bottomHeight; ++i) {
       mvprintw(i, startY, "|");
-      mvprintw(i, width, "|");
+      mvprintw(i, rightWidth, "|");
     }
   }
   if (round == 1) {
-    for (int i = startX; i < heigth; ++i) {
+    for (int i = startX; i < bottomHeight; ++i) {
       mvprintw(i, startY, "|");
     }
   }
-  mvprintw(startX, width, "o");
+  mvprintw(startX, rightWidth, "o");
   mvprintw(startX, startY, "o");
-  mvprintw(heigth, startY, "o");
-  mvprintw(heigth, width, "o");
+  mvprintw(bottomHeight, startY, "o");
+  mvprintw(bottomHeight, rightWidth, "o");
 }
 
 void DrawWindow::drawLeaderboardOnScreen(){
@@ -418,7 +418,7 @@ void DrawWindow::drawLeaderboardOnScreen(){
   }
 }
 
-void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
+void DrawWindow::drawStats(int startX, int startY, int rightWidth, int bottomHeight,
                            int pointsOnScreen, Character character,
                            bool noEnemy, int powerUp, int bananas,
                            int maxRound, pRoom roomList) {
@@ -460,9 +460,9 @@ void DrawWindow::drawStats(int startX, int startY, int width, int heigth,
 
   init_pair(11, COLOR_WHITE, 232);
   attron(COLOR_PAIR(11));
-  drawRect(startX - 4, startY - 11, width + 12, heigth + 12, noEnemy, 0,
+  drawRect(startX - 4, startY - 11, rightWidth + 12, bottomHeight + 12, noEnemy, 0,
            true);
-  drawRect(startX - 4, startY + 65, width + 40, heigth + 12, noEnemy, 0,
+  drawRect(startX - 4, startY + 65, rightWidth + 40, bottomHeight + 12, noEnemy, 0,
            true);
   attroff(COLOR_PAIR(11));
 
@@ -788,9 +788,10 @@ void DrawWindow::moveEnemy(pEnemyList enemyList, Character character,
   
   while (enemyList != NULL) {
 
-    if (enemyList->enemy.getSkin() == 'e') movementSpeedFactor = rand() % 10 + 25;
-    else if (enemyList->enemy.getSkin() == 'E') movementSpeedFactor = rand() % 10 + 40;
-    else if (enemyList->enemy.getSkin() == 'B') movementSpeedFactor = rand() % 10 + 60;
+    // Più è alto il valore aggiunto e più lento sarà il nemico
+    if (enemyList->enemy.getSkin() == 'e') movementSpeedFactor = rand() % 10 + 15;
+    else if (enemyList->enemy.getSkin() == 'E') movementSpeedFactor = rand() % 10 + 20;
+    else if (enemyList->enemy.getSkin() == 'B') movementSpeedFactor = rand() % 10 + 30;
 
     if (points % movementSpeedFactor == 0) {
       xE = enemyList->enemy.getX(), yE = enemyList->enemy.getY();

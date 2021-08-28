@@ -19,7 +19,7 @@ class DrawWindow {
  public:
   DrawWindow();
   void printCharacter(int x, int y, char c);
-  void drawRect(int startX, int startY, int width, int heigth,
+  void drawRect(int startX, int startY, int rightWidth, int bottomHeight,
                 bool noEnemy, int round, bool isScreenBound);
   void drawMenu();
   void printCommand(int *cnt);
@@ -31,7 +31,7 @@ class DrawWindow {
   void loseScreen(int direction, float finalScore);
   void printLeaderboardScreen();
   void leaderboardScreen(int direction);
-  void drawStats(int startX, int startY, int width, int heigth,
+  void drawStats(int startX, int startY, int rightWidth, int bottomHeight,
                  int pointsOnScreen, Character character, bool noEnemy,
                  int powerUp, int bananas, int maxRound, pRoom roomList);
   void drawLeaderboardOnScreen();
