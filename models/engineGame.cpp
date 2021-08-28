@@ -300,7 +300,7 @@ bool EngineGame::isEnemyBullet(int x, int y) {
 
 void EngineGame::moveCharacter(
     DrawWindow drawWindow, Character &character, int direction, pRoom &roomList,
-    pEnemyList normalEnemyList, int round, int &pointsOnScreen, int &bananas,
+    pEnemyList normalEnemyList, int &pointsOnScreen, int &bananas,
     int &powerUpDMG, bool &bonusPicked, int &bonusType, int &bonusTime,
     bool &upgradeBuyed, int &upgradeType, int &upgradeTime,
     bool &immortalityCheck, int &immortalityTime, bool &toTheRight, int upgradeCost) {
@@ -316,7 +316,7 @@ void EngineGame::moveCharacter(
         bonusType = rand() % N_SWITCH_CASE;  // 0 <= bonusType < N_SWITCH_CASE
         roomList->bonusList = getBonus(
             drawWindow, character.getX(), character.getY() - 1,
-            roomList->next->bonusList, normalEnemyList, round, pointsOnScreen,
+            roomList->next->bonusList, normalEnemyList, pointsOnScreen,
             character, bonusType, immortalityCheck, immortalityTime);
         character.directionUp();
       }
@@ -330,7 +330,7 @@ void EngineGame::moveCharacter(
         bonusType = rand() % N_SWITCH_CASE;
         roomList->bonusList = getBonus(
             drawWindow, character.getX(), character.getY() + 1,
-            roomList->next->bonusList, normalEnemyList, round, pointsOnScreen,
+            roomList->next->bonusList, normalEnemyList, pointsOnScreen,
             character, bonusType, immortalityCheck, immortalityTime);
         character.directionDown();
       }
@@ -344,7 +344,7 @@ void EngineGame::moveCharacter(
         bonusType = rand() % N_SWITCH_CASE;  // GENERA IL TIPO DI BONUS.
         roomList->bonusList = getBonus(
             drawWindow, character.getX() - 1, character.getY(),
-            roomList->next->bonusList, normalEnemyList, round, pointsOnScreen,
+            roomList->next->bonusList, normalEnemyList, pointsOnScreen,
             character, bonusType, immortalityCheck, immortalityTime);
         character.directionLeft();
       }
@@ -359,7 +359,7 @@ void EngineGame::moveCharacter(
         bonusType = rand() % N_SWITCH_CASE;
         roomList->bonusList = getBonus(
             drawWindow, character.getX() + 1, character.getY(),
-            roomList->next->bonusList, normalEnemyList, round, pointsOnScreen,
+            roomList->next->bonusList, normalEnemyList, pointsOnScreen,
             character, bonusType, immortalityCheck, immortalityTime);
         character.directionRight();
       }
@@ -479,32 +479,33 @@ void EngineGame::choiceGame(DrawWindow drawWindow, int *direction,
 }
 
 pEnemyList EngineGame::generateEnemy(int *enemyCount, int type, pEnemyList list,
-                                     int &round, DrawWindow drawWindow) {
+                                     DrawWindow drawWindow) {
   // Variables 4 basic enemies
   char skin = 'e';
-  int life = 10;     // AAAAAAAAAAAAAAAAAAAAAAA
+  int life = 10;
   Gun gun('-', 10, -1, -1);
   switch (type) {
     case 0:  // Basic enemies, no variables changes
       break;
     case 1:  // Elite enemies
       skin = 'E';
-      life = 10; // AAAAAAAAAAAAAAAAAAAA
+      life = 10;
       gun.setBulletSkin('=');
       gun.setDamage(15);
       break;
     case 2:  // Boss enemy
       skin = 'B';
-      life = 10;  // AAAAAAAAAAAAAAAAAAAAAAa
+      life = 10;
       gun.setBulletSkin('*');
       gun.setDamage(25);
       break;
   }
 
   bool isEmpty = false;
+  int x, y;
   while (*enemyCount > 0) {
-    int x = drawWindow.randomPosition(40, 69).x;
-    int y = drawWindow.randomPosition(8, 19).y;
+    x = drawWindow.randomPosition(40, 69).x;
+    y = drawWindow.randomPosition(8, 19).y; 
     pEnemyList head = new EnemyList;
     Enemy enemy(x, y, skin, life, 1, gun);
     head->enemy = enemy;
@@ -514,7 +515,6 @@ pEnemyList EngineGame::generateEnemy(int *enemyCount, int type, pEnemyList list,
     isEmpty = true;
   }
   if (isEmpty) {
-    round += 1;
     pEnemyList head = new EnemyList;
     Enemy enemy(0, 0, ' ', life, 1, gun);
     head->enemy = enemy;
@@ -527,9 +527,9 @@ pEnemyList EngineGame::generateEnemy(int *enemyCount, int type, pEnemyList list,
 
 pPosition EngineGame::getBonus(DrawWindow drawWindow, int x, int y,
                                pPosition bonusList, pEnemyList &enemyList,
-                               int round, int &pointsOnScreen,
-                               Character &character, int &bonusType,
-                               bool &immortalitycheck, int &immortalityTime) {
+                               int &pointsOnScreen, Character &character,
+                               int &bonusType, bool &immortalitycheck,
+                               int &immortalityTime) {
   pPosition tmpHead = bonusList;
   bool end;
   while (bonusList->next != NULL) {
@@ -635,7 +635,7 @@ pPosition EngineGame::getBonus(DrawWindow drawWindow, int x, int y,
 /**
  * Funzione per stabilire se e quanti nemici non-normali bisogna generare.
 */
-void EngineGame::checkEnemyGeneration(pRoom &room, int maxRound, int round, int &specialEnemyCount, int &bossEnemyCount) {
+void EngineGame::checkEnemyGeneration(pRoom &room, int maxRound, int &specialEnemyCount, int &bossEnemyCount) {
   if (maxRound % SPECIAL_ENEMY_FREQUENCY == 0 && room->spawnSpecialEnemy) {
     if (maxRound <= 10) specialEnemyCount = 2;
     else if (maxRound == 15) specialEnemyCount = 3;
@@ -809,7 +809,6 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     roomList = drawWindow.changeRoom(character, normalEnemyCount,
                                      normalEnemyList, mountainList, bonusList,
                                      roomList, maxRound);
-
     /* Codice scritto per tenteare di ovviare ai nuovi bugs scritti nelle issue
     if (character.getX() == this->widht || character.getX() == this->frameGameX + 15) {
       normalEnemyList = NULL;
@@ -817,20 +816,19 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
       bossEnemyList = NULL;
     }*/
     normalEnemyList =
-        generateEnemy(&normalEnemyCount, 0, normalEnemyList, round, drawWindow);
-
+        generateEnemy(&normalEnemyCount, 0, normalEnemyList, drawWindow);
     if ((roomList->spawnSpecialEnemy || roomList->spawnBossEnemy) )
-      checkEnemyGeneration (roomList, maxRound, round, specialEnemyCount, bossEnemyCount);
+      checkEnemyGeneration (roomList, maxRound, specialEnemyCount, bossEnemyCount);
     if (specialEnemyCount > 0)
-      specialEnemyList = generateEnemy(&specialEnemyCount, 1, specialEnemyList, round, drawWindow);
+      specialEnemyList = generateEnemy(&specialEnemyCount, 1, specialEnemyList, drawWindow);
     if (bossEnemyCount > 0)
-      bossEnemyList = generateEnemy(&bossEnemyCount, 2, bossEnemyList, round, drawWindow);
+      bossEnemyList = generateEnemy(&bossEnemyCount, 2, bossEnemyList, drawWindow);
 
     getInput(direction);
     moveCharacter(drawWindow, character, direction, roomList, normalEnemyList,
-                  round, pointsOnScreen, bananas, powerUpDMG, bonusPicked,
-                  bonusType, bonusTime, upgradeBuyed, upgradeType, upgradeTime,
-                  immortalityCheck, immortalityTime, toTheRight, upgradeCost);
+                  pointsOnScreen, bananas, powerUpDMG, bonusPicked, bonusType,
+                  bonusTime, upgradeBuyed, upgradeType, upgradeTime, immortalityCheck,
+                  immortalityTime, toTheRight, upgradeCost);
     clear();
 
     noEnemy = checkNoEnemy(drawWindow, normalEnemyList, specialEnemyList, bossEnemyList);

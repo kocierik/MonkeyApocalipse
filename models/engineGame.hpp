@@ -50,23 +50,21 @@ class EngineGame {
 
   void choiceGame(DrawWindow drawWindow, int *direction, int *selection);
   void moveCharacter(DrawWindow drawWindow, Character &character, int direction,
-                     pRoom &roomList, pEnemyList normalEnemyList, int round,
-                     int &pointsOnScreen, int &bananas, int &powerUpDMG,
-                     bool &bonusPicked, int &bonustype, int &bonusTime,
-                     bool &upgradeBuyed, int &upgradeType, int &upgradeTime,
-                     bool &immortalityCheck, int &immortalityTime,
+                     pRoom &roomList, pEnemyList normalEnemyList, int &pointsOnScreen,
+                     int &bananas, int &powerUpDMG, bool &bonusPicked, int &bonustype,
+                     int &bonusTime, bool &upgradeBuyed, int &upgradeType,
+                     int &upgradeTime, bool &immortalityCheck, int &immortalityTime,
                      bool &toTheRight, int upgradeCost);
 
   pEnemyList generateEnemy(int *enemyCount, int type, pEnemyList list,
-                           int &round, DrawWindow drawWindow);
+                           DrawWindow drawWindow);
 
   pPosition getBonus(DrawWindow drawWindow, int x, int y, pPosition bonusList,
-                     pEnemyList &enemyList, int round, int &pointsOnScreen,
-                     Character &character, int &bonusType,
-                     bool &immortalitycheck, int &immortalityTime);
+                     pEnemyList &enemyList, int &pointsOnScreen, Character &character,
+                     int &bonusType, bool &immortalitycheck, int &immortalityTime);
 
   bool checkNoEnemy(DrawWindow drawWindow, pEnemyList enemyList1, pEnemyList enemyList2, pEnemyList enemyList3);
-  void checkEnemyGeneration(pRoom &room,int maxRound, int round, int &specialEnemycount, int &bossEnemyCount);
+  void checkEnemyGeneration(pRoom &room,int maxRound, int &specialEnemycount, int &bossEnemyCount);
   void checkDeath(bool &pause, Character &character);
   void checkMountainDamage(Pbullet bulletList, pPosition &mountainList);
 
