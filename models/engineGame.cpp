@@ -839,8 +839,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
                         this->bottomHeigth, noEnemy, round, false);
     drawWindow.drawStats(this->frameGameX, this->frameGameY, this->rightWidth,
                          this->bottomHeigth, pointsOnScreen, character,
-                         noEnemy, powerUpDMG, bananas, maxRound,
-                         roomList);
+                         noEnemy, powerUpDMG, bananas, maxRound, roomList);
     drawWindow.drawLeaderboardOnScreen();
     drawWindow.printCharacterStats(normalEnemyList, specialEnemyList, bossEnemyList, character);
 

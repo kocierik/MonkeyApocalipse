@@ -522,8 +522,8 @@ pPosition DrawWindow::generateBonus(pPosition bonusList, int &bonusCount) {
   srand(time(0));
   while (bonusCount > 0) {
     pPosition tmpHead = new Position;
-    tmpHead->x = randomPosition(25, 33).x;
-    tmpHead->y = randomPosition(8, 19).y;
+    tmpHead->x = randomPosition(26, 30).x;
+    tmpHead->y = randomPosition(11, 18).y;
     tmpHead->skin = '?';
     tmpHead->next = bonusList;
     bonusList = tmpHead;
@@ -824,29 +824,31 @@ pRoom DrawWindow::changeRoom(Character &character, int &normalEnemyCount,
                              pEnemyList &normalEnemyList, pPosition &mountainList,
                              pPosition &bonusList, pRoom roomList, int &maxRound) {
   if (character.getX() == GAMEWIDTH) {
+    // Questo if si "attiva" quando torni nella stanza precedente e poi ritorni nella successiva
     if (maxRound > lengthListRoom(roomList)) {
       roomList = roomList->prev;
       character.setX(23);
     } else if (maxRound == lengthListRoom(roomList)) {
       character.setX(23);
       int mountainCount = rand() % 8 + 1, bonusCounter = 1;
-
       if (maxRound < 2)
         bonusCounter = 0;
       else {
         srand(time(0));
         bonusCounter = rand() % 3 + 1;
       }
-
       roomList->mountainList = generateMountain(mountainList, mountainCount);
       roomList->bonusList = generateBonus(bonusList, bonusCounter);
       roomList = saveRoom(mountainList, bonusList, roomList);
+      
       if (maxRound <= NORMAL_ENEMY_LIMIT)
         normalEnemyCount = maxRound;
       else 
         normalEnemyCount = NORMAL_ENEMY_LIMIT;
 
-      normalEnemyList = normalEnemyList->next;
+      normalEnemyList = normalEnemyList->next;      // ???????
+      //specialEnemyList = specialEnemyList->next;  // ??????? genera segmentation fault
+      //bossEnemyList = bossEnemyList->next;        // ??????? genera segmentation fault
       maxRound += 1;
     }
   } else if (character.getX() == 22) {
