@@ -820,13 +820,11 @@ pRoom DrawWindow::saveRoom(pPosition mountainList, pPosition bonusList,
 }
 
 pRoom DrawWindow::changeRoom(Character &character, int &normalEnemyCount,
-                             int &round, pEnemyList &normalEnemyList,
-                             pPosition &mountainList, pPosition &bonusList,
-                             pRoom roomList, int &maxRound) {
+                             pEnemyList &normalEnemyList, pPosition &mountainList,
+                             pPosition &bonusList, pRoom roomList, int &maxRound) {
   if (character.getX() == GAMEWIDTH) {
     if (maxRound > lengthListRoom(roomList)) {
       roomList = roomList->prev;
-      round += 1;
       character.setX(23);
     } else if (maxRound == lengthListRoom(roomList)) {
       character.setX(23);
@@ -842,8 +840,8 @@ pRoom DrawWindow::changeRoom(Character &character, int &normalEnemyCount,
       roomList->mountainList = generateMountain(mountainList, mountainCount);
       roomList->bonusList = generateBonus(bonusList, bonusCounter);
       roomList = saveRoom(mountainList, bonusList, roomList);
-      if (round <= NORMAL_ENEMY_LIMIT)
-        normalEnemyCount = round;
+      if (maxRound <= NORMAL_ENEMY_LIMIT)
+        normalEnemyCount = maxRound;
       else 
         normalEnemyCount = NORMAL_ENEMY_LIMIT;
 
@@ -853,7 +851,6 @@ pRoom DrawWindow::changeRoom(Character &character, int &normalEnemyCount,
   } else if (character.getX() == 22) {
     character.setX(GAMEWIDTH - 1);
     roomList = roomList->next;
-    round -= 1;
   }
   return roomList;
 }
