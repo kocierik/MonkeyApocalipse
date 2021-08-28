@@ -820,9 +820,10 @@ pRoom DrawWindow::saveRoom(pPosition mountainList, pPosition bonusList,
   return roomList;
 }
 
-pRoom DrawWindow::changeRoom(Character &character, int &normalEnemyCount,
-                             pEnemyList &normalEnemyList, pPosition &mountainList,
-                             pPosition &bonusList, pRoom roomList, int &maxRound) {
+pRoom DrawWindow::changeRoom(Character &character, int &normalEnemyCount, pEnemyList &normalEnemyList,
+                             pEnemyList &specialEnemyList, pEnemyList &bossEnemyList, int specialEnemyFrequency,
+                             int bossEnemyFrequency, pPosition &mountainList, pPosition &bonusList,
+                             pRoom roomList, int &maxRound) {
   if (character.getX() == GAMEWIDTH) {
     // Questo if si "attiva" quando torni nella stanza precedente e poi ritorni nella successiva
     if (maxRound > lengthListRoom(roomList)) {
@@ -846,9 +847,12 @@ pRoom DrawWindow::changeRoom(Character &character, int &normalEnemyCount,
       else 
         normalEnemyCount = NORMAL_ENEMY_LIMIT;
 
-      normalEnemyList = normalEnemyList->next;      // ???????
-      //specialEnemyList = specialEnemyList->next;  // ??????? genera segmentation fault
-      //bossEnemyList = bossEnemyList->next;        // ??????? genera segmentation fault
+      // Serve per scorrere (nella lista dei nemici, se generata) il primo nemico, quello fittizio
+      normalEnemyList = normalEnemyList->next;
+      if (maxRound % specialEnemyFrequency == 0) 
+        specialEnemyList = specialEnemyList->next;
+      if (maxRound % bossEnemyFrequency == 0) 
+        bossEnemyList = bossEnemyList->next;
       maxRound += 1;
     }
   } else if (character.getX() == 22) {

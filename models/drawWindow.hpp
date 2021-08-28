@@ -40,7 +40,8 @@ class DrawWindow {
   void printCharacterStats(pEnemyList list, pEnemyList specialEnemyList, pEnemyList bossEnemyList, Character character);
   void printEnemy(pEnemyList list, DrawWindow drawWindow);
   pRoom changeRoom(Character &character, int &normalEnemyCount,
-                   pEnemyList &list, pPosition &mountainList,
+                   pEnemyList &normalEnemyList, pEnemyList &specialEnemyList, pEnemyList &bossEnemyList,
+                   int specialEnemyFrequency, int bossEnemyFrequency, pPosition &mountainList,
                    pPosition &bonusList, pRoom roomList, int &maxRound);
 
   pPosition generateMountain(pPosition list, int &mountainCount);
@@ -49,7 +50,6 @@ class DrawWindow {
   void moveEnemy(pEnemyList list, Character character, DrawWindow drawWindow,
                  long points);
   Position randomPosition(int startRange, int endRange);
-  // pPosition generateMountain(pPosition list, int &mountainNumber);
   void printMountain(pPosition list);
   void printBonus(pPosition bonusList);
   void showBonusOnScreen(bool &upgradeBuyed, int &upgradeType, int &upgradeTime,

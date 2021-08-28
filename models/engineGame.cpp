@@ -806,9 +806,9 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
   character.setGun(basicPlayerGun);
   clear();
   while (!pause) {
-    roomList = drawWindow.changeRoom(character, normalEnemyCount,
-                                     normalEnemyList, mountainList, bonusList,
-                                     roomList, maxRound);
+    roomList = drawWindow.changeRoom(character, normalEnemyCount, normalEnemyList, specialEnemyList,
+                                     bossEnemyList, SPECIAL_ENEMY_FREQUENCY, BOSS_ENEMY_FREQUENCY,
+                                     mountainList, bonusList, roomList, maxRound);
     /* Codice scritto per tenteare di ovviare ai nuovi bugs scritti nelle issue
     if (character.getX() == this->widht || character.getX() == this->frameGameX + 15) {
       normalEnemyList = NULL;
@@ -817,7 +817,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     }*/
     normalEnemyList =
         generateEnemy(&normalEnemyCount, 0, normalEnemyList, drawWindow);
-    if ((roomList->spawnSpecialEnemy || roomList->spawnBossEnemy) )
+    if ((roomList->spawnSpecialEnemy || roomList->spawnBossEnemy))
       checkEnemyGeneration (roomList, maxRound, specialEnemyCount, bossEnemyCount);
     if (specialEnemyCount > 0)
       specialEnemyList = generateEnemy(&specialEnemyCount, 1, specialEnemyList, drawWindow);
