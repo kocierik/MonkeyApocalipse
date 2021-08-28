@@ -7,20 +7,21 @@
 #include <ctime>
 #include <iostream>
 
-
 // Numero di casi dello switch che gestisce i bonus. Equivale a: n bonus
 #define N_SWITCH_CASE 15
-#define SPECIAL_ENEMY_FREQUENCY 2 // Spawn ogni 5 round
-#define BOSS_ENEMY_FREQUENCY 3   // Spawn ogni 10 round
+#define SPECIAL_ENEMY_FREQUENCY 2   // Spawn ogni 5 round
+#define BOSS_ENEMY_FREQUENCY 3      // Spawn ogni 10 round
 
 const int scoreForKill = 300;
 float finalScore = 0;
 
-EngineGame::EngineGame(int frameGameX, int frameGameY, int height, int width) {
+EngineGame::EngineGame(int frameGameX, int frameGameY, int topHeigth, int bottomHeigth, int leftWidth, int rightWidth) {
   this->frameGameX = frameGameX;
   this->frameGameY = frameGameY;
-  this->height = height;
-  this->widht = width;
+  this->topHeigth = topHeigth;
+  this->bottomHeigth = bottomHeigth;
+  this->leftWidth = leftWidth;
+  this->rightWidth = rightWidth;
   this->playerBullets = NULL;
   this->normalEnemyBullets = NULL;
   this->specialEnemyBullets = NULL;
@@ -95,7 +96,7 @@ void EngineGame::moveBullets(Pbullet bulletList) {
 }
 
 void EngineGame::destroyBullet(Pbullet &bulletList, int xP) {
-  if (xP == this->widht)
+  if (xP == this->leftWidth || xP == this->rightWidth)
     bulletList = NULL;
   else {
     Pbullet head = bulletList, prev = bulletList, tmp;
@@ -521,7 +522,6 @@ pEnemyList EngineGame::generateEnemy(int *enemyCount, int type, pEnemyList list,
     list = head;
     isEmpty = false;
   }
-
   return list;
 }
 
@@ -642,7 +642,7 @@ void EngineGame::checkEnemyGeneration(pRoom &room, int maxRound, int round, int 
     else if (maxRound > 15) specialEnemyCount = 4;
     room->spawnSpecialEnemy = false;
   } else if (maxRound % BOSS_ENEMY_FREQUENCY == 0 && room->spawnBossEnemy) {    // AAAAAAAAAAAAAAAAAAa  ERRORE QUI
-    if (maxRound <= 10) bossEnemyCount = 1;
+    if (maxRound == 3) bossEnemyCount = 1;
     else if (maxRound == 20) bossEnemyCount = 2;
     else if (maxRound >= 30) bossEnemyCount = 3;
     room->spawnBossEnemy = false;
@@ -806,12 +806,12 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
   character.setGun(basicPlayerGun);
   clear();
   while (!pause) {
-    roomList = drawWindow.changeRoom(character, normalEnemyCount, round,
+    roomList = drawWindow.changeRoom(character, normalEnemyCount,
                                      normalEnemyList, mountainList, bonusList,
                                      roomList, maxRound);
 
     /* Codice scritto per tenteare di ovviare ai nuovi bugs scritti nelle issue
-    if (character.getX() == this->widht) {
+    if (character.getX() == this->widht || character.getX() == this->frameGameX + 15) {
       normalEnemyList = NULL;
       specialEnemyList = NULL;
       bossEnemyList = NULL;
@@ -821,11 +821,11 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
 
     if ((roomList->spawnSpecialEnemy || roomList->spawnBossEnemy) )
       checkEnemyGeneration (roomList, maxRound, round, specialEnemyCount, bossEnemyCount);
-
     if (specialEnemyCount > 0)
       specialEnemyList = generateEnemy(&specialEnemyCount, 1, specialEnemyList, round, drawWindow);
     if (bossEnemyCount > 0)
       bossEnemyList = generateEnemy(&bossEnemyCount, 2, bossEnemyList, round, drawWindow);
+
     getInput(direction);
     moveCharacter(drawWindow, character, direction, roomList, normalEnemyList,
                   round, pointsOnScreen, bananas, powerUpDMG, bonusPicked,
@@ -837,10 +837,10 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     
     drawWindow.printCharacter(character.getX(), character.getY(),
                               character.getSkin());
-    drawWindow.drawRect(this->frameGameX, this->frameGameY, this->widht,
-                        this->height, noEnemy, round, false);
-    drawWindow.drawStats(this->frameGameX, this->frameGameY, this->widht,
-                         this->height, pointsOnScreen, character,
+    drawWindow.drawRect(this->frameGameX, this->frameGameY, this->rightWidth,
+                        this->bottomHeigth, noEnemy, round, false);
+    drawWindow.drawStats(this->frameGameX, this->frameGameY, this->rightWidth,
+                         this->bottomHeigth, pointsOnScreen, character,
                          noEnemy, powerUpDMG, bananas, maxRound,
                          roomList);
     drawWindow.drawLeaderboardOnScreen();
@@ -862,7 +862,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     /**
      * Temporanea soluzione affinché point non raggiunga valori esorbitanti.
      * In futuro verrà resettata quando verranno uccisi tutti i nemici e si potrà
-     * du dunque accedere alle altre stanze.
+     * dunque accedere alle altre stanze.
     */
     if (points > 500) points = 0;
 

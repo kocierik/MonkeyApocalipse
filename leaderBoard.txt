@@ -3,3 +3,4 @@ Ema:         88
 Beppe:       300
 nomecasual:  666
 doobadooby:  600
+delmiobaby:  420

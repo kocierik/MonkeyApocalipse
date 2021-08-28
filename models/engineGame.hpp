@@ -7,8 +7,10 @@ class EngineGame {
  protected:
   int frameGameX;
   int frameGameY;
-  int height;
-  int widht;
+  int topHeigth;
+  int bottomHeigth;
+  int leftWidth;
+  int rightWidth;
   bool quit;
   bool pause;
   Pbullet playerBullets;
@@ -19,7 +21,7 @@ class EngineGame {
   int whileCountEnemy;
 
  public:
-  EngineGame(int frameGameX, int frameGameY, int heigth, int width);
+  EngineGame(int frameGameX, int frameGameY, int topHeigth, int bottomHeigt, int leftWidth, int rightWidth);
   void printList(pPosition list);
   void baseCommand();
   Pbullet generateBullets(Character character, bool isPlayerBullet,
