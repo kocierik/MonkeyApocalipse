@@ -160,30 +160,30 @@ pEnemyList EngineGame::destroyEnemy(pEnemyList enemyList, Enemy enemy) {
   return head;
 }
 
-pPosition EngineGame::deletePosition(pPosition list, pPosition toDelete) {
+pPosition EngineGame::deletePosition(pPosition positionList, pPosition toDelete) {
   /**
    * Essendo bonus e montagne la stessa tipologia di dato (pPosition), questa
    * funzione elimina un elemento (toDelete) da una lista, che sia un bonus o
    * una montagna.
    */
-  pPosition head = list, prev = list, tmp;
-  while (list != NULL) {
-    if (list->x == toDelete->x && list->y == toDelete->y) {
-      if (list == head) {
+  pPosition head = positionList, prev = positionList, tmp;
+  while (positionList != NULL) {
+    if (positionList->x == toDelete->x && positionList->y == toDelete->y) {
+      if (positionList == head) {
         tmp = head;
-        head = list->next;
+        head = positionList->next;
         delete tmp;
         prev = head;
-        list = head;
+        positionList = head;
       } else {
         tmp = prev->next;
-        prev->next = list->next;
+        prev->next = positionList->next;
         delete tmp;
-        list = prev->next;
+        positionList = prev->next;
       }
     } else {
-      prev = list;
-      list = list->next;
+      prev = positionList;
+      positionList = positionList->next;
     }
   }
   return head;
@@ -476,7 +476,7 @@ void EngineGame::choiceGame(DrawWindow drawWindow, int *direction,
   }
 }
 
-pEnemyList EngineGame::generateEnemy(int *enemyCount, int type, pEnemyList list,
+pEnemyList EngineGame::generateEnemy(int *enemyCount, int type, pEnemyList enemyList,
                                      DrawWindow drawWindow) {
   // Variables 4 basic enemies
   char skin = 'e';
@@ -507,20 +507,20 @@ pEnemyList EngineGame::generateEnemy(int *enemyCount, int type, pEnemyList list,
     pEnemyList head = new EnemyList;
     Enemy enemy(x, y, skin, life, 1, gun);
     head->enemy = enemy;
-    head->next = list;
+    head->next = enemyList;
     *enemyCount -= 1;
-    list = head;
+    enemyList = head;
     isEmpty = true;
   }
   if (isEmpty) {
     pEnemyList head = new EnemyList;
     Enemy enemy(0, 0, ' ', life, 1, gun);
     head->enemy = enemy;
-    head->next = list;
-    list = head;
+    head->next = enemyList;
+    enemyList = head;
     isEmpty = false;
   }
-  return list;
+  return enemyList;
 }
 
 pPosition EngineGame::getBonus(DrawWindow drawWindow, int x, int y,
@@ -742,11 +742,11 @@ void EngineGame::money(int &bananas, bool noEnemy, int maxRound, int &roundPayed
   attroff(COLOR_PAIR(20));
 }
 
-void EngineGame::printList(pPosition list) {
+void EngineGame::printList(pPosition positionList) {
   int i = 2;
-  while (list != NULL) {
-    mvprintw(i, 0, "Vita montagna  %d", list->life);
-    list = list->next;
+  while (positionList != NULL) {
+    mvprintw(i, 0, "Vita montagna  %d", positionList->life);
+    positionList = positionList->next;
     i++;
   }
 }

@@ -500,7 +500,7 @@ Position DrawWindow::randomPosition(int startRange, int endRange) {
   return pos;
 }
 
-pPosition DrawWindow::generateMountain(pPosition list, int &mountainCount) {
+pPosition DrawWindow::generateMountain(pPosition mountainList, int &mountainCount) {
   while (mountainCount > 0) {
     int x = randomPosition(40, 70).x;
     int y = randomPosition(8, 19).y;
@@ -509,11 +509,11 @@ pPosition DrawWindow::generateMountain(pPosition list, int &mountainCount) {
     head->y = y;
     head->skin = '^';
     head->life = MOUNTAIN_LIFE;
-    head->next = list;
-    list = head;
+    head->next = mountainList;
+    mountainList = head;
     mountainCount -= 1;
   }
-  return list;
+  return mountainList;
 }
 
 pPosition DrawWindow::generateBonus(pPosition bonusList, int &bonusCount) {
@@ -534,8 +534,8 @@ pPosition DrawWindow::generateBonus(pPosition bonusList, int &bonusCount) {
   return bonusList;
 }
 
-void DrawWindow::printMountain(pPosition list) {
-  pPosition mountainList = list;
+void DrawWindow::printMountain(pPosition mountainList) {
+  pPosition mountainList = mountainList;
   while (mountainList != NULL) {
     init_pair(15, COLOR_YELLOW, -1);
     attron(COLOR_PAIR(15));
@@ -647,27 +647,27 @@ void DrawWindow::showBonusOnScreen(bool &upgradeBuyed, int &upgradeType,
   }
 }
 
-int DrawWindow::lengthEnemyList(pEnemyList list) {
+int DrawWindow::lengthEnemyList(pEnemyList enemyList) {
   int i;
-  if (list == NULL) { i = 0; } else { i = -1; }  // serve a far indicare 0 quando è vuota, invece di -1 che è utile quando si conta.
-  while (list != NULL) {
+  if (enemyList == NULL) { i = 0; } else { i = -1; }  // serve a far indicare 0 quando è vuota, invece di -1 che è utile quando si conta.
+  while (enemyList != NULL) {
     i++;
-    list = list->next;
+    enemyList = enemyList->next;
   }
   return i;
 }
 
-int DrawWindow::lengthListRoom(pRoom list) {
+int DrawWindow::lengthListRoom(pRoom roomList) {
   int i = 0;
-  while (list != NULL) {
+  while (roomList != NULL) {
     i++;
-    list = list->next;
+    roomList = roomList->next;
   }
   return i;
 }
 
-void DrawWindow::printCharacterStats(pEnemyList list, pEnemyList specialEnemyList, pEnemyList bossEnemyList, Character character) {
-  int enemyLeftOnScreen = lengthEnemyList(list) + lengthEnemyList(specialEnemyList) + lengthEnemyList(bossEnemyList);
+void DrawWindow::printCharacterStats(pEnemyList enemyList, pEnemyList specialEnemyList, pEnemyList bossEnemyList, Character character) {
+  int enemyLeftOnScreen = lengthEnemyList(enemyList) + lengthEnemyList(specialEnemyList) + lengthEnemyList(bossEnemyList);
   int i = 22;
   int reachBound = 0;       // VEDI RIGA 363
   int X_ElencoNemici = 19;  // gestisce la x da dove inizia la lista dei nemici
@@ -739,16 +739,16 @@ void DrawWindow::printCharacterStats(pEnemyList list, pEnemyList specialEnemyLis
   // FINE CODICE BARRA DELLA VITA
   // ------------------------------------------------------------------------------------------
 
-  while (list != NULL &&
+  while (enemyList != NULL &&
          reachBound < 8) {  // REACHBOUND SERVE A DETERMINARE IL LIMITE DI
                             // NEMICI VISUALIZZABILI NELLA LISTA DELL'HUD
-    if (list->enemy.getX() != 0) {
-          i++;
+    if (enemyList->enemy.getX() != 0) {
+      i++;
       mvprintw(i, X_ElencoNemici, "- UN soldier: %d HP",
-               list->enemy.getLife());
+               enemyList->enemy.getLife());
     }
     reachBound++;
-    list = list->next;
+    enemyList = enemyList->next;
   }
   while (specialEnemyList != NULL &&
          reachBound < 8) {  // REACHBOUND SERVE A DETERMINARE IL LIMITE DI
@@ -774,11 +774,11 @@ void DrawWindow::printCharacterStats(pEnemyList list, pEnemyList specialEnemyLis
   }
 }
 
-void DrawWindow::printEnemy(pEnemyList list, DrawWindow drawWindow) {
-  while (list != NULL) {
-    drawWindow.printCharacter(list->enemy.getX(), list->enemy.getY(),
-                              list->enemy.getSkin());
-    list = list->next;
+void DrawWindow::printEnemy(pEnemyList enemyList, DrawWindow drawWindow) {
+  while (enemyList != NULL) {
+    drawWindow.printCharacter(enemyList->enemy.getX(), enemyList->enemy.getY(),
+                              enemyList->enemy.getSkin());
+    enemyList = enemyList->next;
   }
 }
 

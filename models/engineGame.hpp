@@ -22,7 +22,7 @@ class EngineGame {
 
  public:
   EngineGame(int frameGameX, int frameGameY, int topHeigth, int bottomHeigt, int leftWidth, int rightWidth);
-  void printList(pPosition list);
+  void printList(pPosition positionList);
   void baseCommand();
   Pbullet generateBullets(Character character, bool isPlayerBullet,
                           bool moveFoward, Pbullet &bulletList);
@@ -31,8 +31,8 @@ class EngineGame {
   void moveBullets(Pbullet bulletList);
 
   void destroyBullet(Pbullet &bulletList, int xP);
-  pEnemyList destroyEnemy(pEnemyList list, Enemy enemy);
-  pPosition deletePosition(pPosition list, pPosition bonus);
+  pEnemyList destroyEnemy(pEnemyList enemyList, Enemy enemy);
+  pPosition deletePosition(pPosition positionList, pPosition bonus);
 
   void checkEnemyCollision(Character &character, pEnemyList enemyList);
   void checkBulletCollision(Pbullet &bulletList, Character &character,
@@ -56,7 +56,7 @@ class EngineGame {
                      int &upgradeTime, bool &immortalityCheck, int &immortalityTime,
                      bool &toTheRight, int upgradeCost);
 
-  pEnemyList generateEnemy(int *enemyCount, int type, pEnemyList list,
+  pEnemyList generateEnemy(int *enemyCount, int type, pEnemyList enemyList,
                            DrawWindow drawWindow);
 
   pPosition getBonus(DrawWindow drawWindow, int x, int y, pPosition bonusList,
