@@ -9,8 +9,6 @@
 
 // Numero di casi dello switch che gestisce i bonus. Equivale a: n bonus
 #define N_SWITCH_CASE 15
-#define SPECIAL_ENEMY_FREQUENCY 222   // Spawn ogni 5 round
-#define BOSS_ENEMY_FREQUENCY 344      // Spawn ogni 10 round
 
 const int scoreForKill = 300;
 float finalScore = 0;
@@ -632,26 +630,6 @@ pPosition EngineGame::getBonus(DrawWindow drawWindow, int x, int y,
   return tmpHead;
 }
 
-/**
- * Funzione per stabilire se e quanti nemici non-normali bisogna generare.
-*/
-void EngineGame::checkEnemyGeneration(pRoom &room, int maxRound, int &specialEnemyCount, int &bossEnemyCount) {
-  if (maxRound % SPECIAL_ENEMY_FREQUENCY == 0 && room->spawnSpecialEnemy) {
-    if (maxRound <= 10) specialEnemyCount = 2;
-    else if (maxRound == 15) specialEnemyCount = 3;
-    else if (maxRound > 15) specialEnemyCount = 4;
-    room->spawnSpecialEnemy = false;
-  } else if (maxRound % BOSS_ENEMY_FREQUENCY == 0 && room->spawnBossEnemy) {    // AAAAAAAAAAAAAAAAAAa  ERRORE QUI
-    if (maxRound == 3) bossEnemyCount = 1;
-    else if (maxRound == 20) bossEnemyCount = 2;
-    else if (maxRound >= 30) bossEnemyCount = 3;
-    room->spawnBossEnemy = false;
-  } else {
-    specialEnemyCount = 0;
-    bossEnemyCount = 0;
-  }
-}
-
 void EngineGame::checkDeath(bool &pause, Character &character) {
   if (character.getLife() <= 0) {
     character.setNumberLife(character.getNumberLife() - 1);
@@ -796,7 +774,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
   int bananas = 0, roundPayed = 0;
   int bonusTime = 0, upgradeTime = 0, bonusType = 0, upgradeType = 0;
   int normalEnemyCount = 1, specialEnemyCount = 0, bossEnemyCount = 0;
-  int round = 0, maxRound = 1;
+  int maxRound = 1;
   pEnemyList normalEnemyList = NULL, specialEnemyList = NULL,
              bossEnemyList = NULL;
   pPosition mountainList = new Position, bonusList = new Position;
@@ -806,17 +784,11 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
   character.setGun(basicPlayerGun);
   clear();
   while (!pause) {
-    roomList = drawWindow.changeRoom(character, normalEnemyCount, normalEnemyList, specialEnemyList,
-                                     bossEnemyList, SPECIAL_ENEMY_FREQUENCY, BOSS_ENEMY_FREQUENCY,
-                                     mountainList, bonusList, roomList, maxRound);
-    normalEnemyList =
-        generateEnemy(&normalEnemyCount, 0, normalEnemyList, drawWindow);
-    if ((roomList->spawnSpecialEnemy || roomList->spawnBossEnemy))
-      checkEnemyGeneration (roomList, maxRound, specialEnemyCount, bossEnemyCount);
-    if (specialEnemyCount > 0)
-      specialEnemyList = generateEnemy(&specialEnemyCount, 1, specialEnemyList, drawWindow);
-    if (bossEnemyCount > 0)
-      bossEnemyList = generateEnemy(&bossEnemyCount, 2, bossEnemyList, drawWindow);
+    roomList = drawWindow.changeRoom(character, normalEnemyCount, specialEnemyCount, bossEnemyCount, normalEnemyList, specialEnemyList,
+                                     bossEnemyList, mountainList, bonusList, roomList, maxRound);
+    normalEnemyList = generateEnemy(&normalEnemyCount, 0, normalEnemyList, drawWindow);
+    specialEnemyList = generateEnemy(&specialEnemyCount, 1, specialEnemyList, drawWindow);
+    bossEnemyList = generateEnemy(&bossEnemyCount, 2, bossEnemyList, drawWindow);
 
     getInput(direction);
     moveCharacter(drawWindow, character, direction, roomList, normalEnemyList,

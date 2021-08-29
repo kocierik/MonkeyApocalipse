@@ -14,6 +14,8 @@
 #define GAMEHEIGTH 20  // 13
 
 #define NORMAL_ENEMY_LIMIT 7
+#define SPECIAL_ENEMY_FREQUENCY 2222   // Spawn ogni 5 round
+#define BOSS_ENEMY_FREQUENCY 3333      // Spawn ogni 10 round
 #define MOUNTAIN_LIFE 10
 const int MAXNAMECHARACTER = 10; 
 
@@ -812,18 +814,15 @@ pRoom DrawWindow::saveRoom(pPosition mountainList, pPosition bonusList,
   pRoom head = new Room;
   head->mountainList = mountainList;
   head->bonusList = bonusList;
-  head->spawnSpecialEnemy = true;
-  head->spawnBossEnemy = true;
   head->next = roomList;
   roomList->prev = head;
   roomList = head;
   return roomList;
 }
 
-pRoom DrawWindow::changeRoom(Character &character, int &normalEnemyCount, pEnemyList &normalEnemyList,
-                             pEnemyList &specialEnemyList, pEnemyList &bossEnemyList, int specialEnemyFrequency,
-                             int bossEnemyFrequency, pPosition &mountainList, pPosition &bonusList,
-                             pRoom roomList, int &maxRound) {
+pRoom DrawWindow::changeRoom(Character &character, int &normalEnemyCount, int &specialEnemyCount, int &bossEnemyCount,
+                             pEnemyList &normalEnemyList, pEnemyList &specialEnemyList, pEnemyList &bossEnemyList,
+                             pPosition &mountainList, pPosition &bonusList, pRoom roomList, int &maxRound) {
   if (character.getX() == GAMEWIDTH) {
     // Questo if si "attiva" quando torni nella stanza precedente e poi ritorni nella successiva
     if (maxRound > lengthListRoom(roomList)) {
@@ -831,7 +830,7 @@ pRoom DrawWindow::changeRoom(Character &character, int &normalEnemyCount, pEnemy
       character.setX(23);
     } else if (maxRound == lengthListRoom(roomList)) {
       character.setX(23);
-      int mountainCount = rand() % 8 + 1, bonusCounter = 1;
+      int mountainCount = rand() % 8 + 1, bonusCounter = 1, tmp = maxRound + 1;
       if (maxRound < 2)
         bonusCounter = 0;
       else {
@@ -846,12 +845,24 @@ pRoom DrawWindow::changeRoom(Character &character, int &normalEnemyCount, pEnemy
         normalEnemyCount = maxRound + 1;  // +1 per via del nemico fittizio
       else 
         normalEnemyCount = NORMAL_ENEMY_LIMIT;
+      if (tmp % SPECIAL_ENEMY_FREQUENCY == 0) {
+        if (tmp <= 10) specialEnemyCount = 2;
+        else if (tmp == 15) specialEnemyCount = 3;
+        else if (tmp > 15) specialEnemyCount = 4;
+      } else if (tmp % BOSS_ENEMY_FREQUENCY == 0) {
+        if (tmp == 3) bossEnemyCount = 1;
+        else if (tmp == 20) bossEnemyCount = 2;
+        else if (tmp >= 30) bossEnemyCount = 3;
+      } else {
+        specialEnemyCount = 0;
+        bossEnemyCount = 0;
+      }
 
       // Serve per scorrere (nella lista dei nemici, se generata) il primo nemico, quello fittizio
       normalEnemyList = normalEnemyList->next;
-      if (maxRound % specialEnemyFrequency == 0) 
+      if (maxRound % SPECIAL_ENEMY_FREQUENCY == 0) 
         specialEnemyList = specialEnemyList->next;
-      if (maxRound % bossEnemyFrequency == 0) 
+      if (maxRound % BOSS_ENEMY_FREQUENCY == 0) 
         bossEnemyList = bossEnemyList->next;
       maxRound += 1;
     }

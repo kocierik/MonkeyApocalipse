@@ -8,8 +8,6 @@
 struct Room {
   pPosition mountainList;
   pPosition bonusList;
-  bool spawnSpecialEnemy;
-  bool spawnBossEnemy;
   Room *next;
   Room *prev;
 };
@@ -39,10 +37,9 @@ class DrawWindow {
   int lengthListRoom(pRoom list);
   void printCharacterStats(pEnemyList list, pEnemyList specialEnemyList, pEnemyList bossEnemyList, Character character);
   void printEnemy(pEnemyList list, DrawWindow drawWindow);
-  pRoom changeRoom(Character &character, int &normalEnemyCount,
+  pRoom changeRoom(Character &character, int &normalEnemyCount, int &specialEnemyCount, int &bossEnemyCount,
                    pEnemyList &normalEnemyList, pEnemyList &specialEnemyList, pEnemyList &bossEnemyList,
-                   int specialEnemyFrequency, int bossEnemyFrequency, pPosition &mountainList,
-                   pPosition &bonusList, pRoom roomList, int &maxRound);
+                   pPosition &mountainList, pPosition &bonusList, pRoom roomList, int &maxRound);
 
   pPosition generateMountain(pPosition list, int &mountainCount);
   pPosition generateBonus(pPosition bonusList, int &bonusCount);
