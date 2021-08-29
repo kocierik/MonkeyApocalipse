@@ -393,8 +393,7 @@ void EngineGame::moveCharacter(
           character.getGun().getTotalAmmo() > 0)
         character.reload();
       break;
-    case 'Z':  // CONTROLLA L'AQUISTO DI VITE, MASSIMO 3 -------------------
-    case 'z':
+    case '1':  // CONTROLLA L'AQUISTO DI VITE, MASSIMO 3 -------------------
       if (bananas >= (upgradeCost/2) && character.getNumberLife() < 3) {
         upgradeBuyed = true;  // INDICA CHE È STATO COMPRATO UN UPGRADE
         upgradeType = 0;      // INDICA IL TIPO DI UPGRADE.
@@ -404,27 +403,24 @@ void EngineGame::moveCharacter(
         bananas = bananas - (upgradeCost/2);
       }
       break;
-    case 'X':  // CONTROLLA L'AQUISTO DI POWERUP AL DANNO, SONO ACQUISTABILI AL
+    case '2':  // CONTROLLA L'AQUISTO DI POWERUP AL DANNO, SONO ACQUISTABILI AL
                // MASSIMO 4 DURANTE TUTTA LA RUN
-    case 'x':
       if (character.getGun().getDamage() < 50) {
         if (bananas >= upgradeCost && powerUpDMG < 3) {
           upgradeBuyed = true;
-          upgradeType = 1;
-          upgradeTime = 0;
+          upgradeType = 1, upgradeTime = 0;
           character.increaseDamageGun(5);
+          if (character.getGun().getDamage() >= 50) character.setGunDamage(50);
+          bananas -= upgradeCost;
+          powerUpDMG++;
+        } else if (bananas >= upgradeCost && (powerUpDMG == 3)) {
+          upgradeBuyed = true;
+          upgradeType = 1, upgradeTime = 0;
+          character.increaseDamageGun(10);
           if (character.getGun().getDamage() >= 50) character.setGunDamage(50);
           bananas = bananas - upgradeCost;
           powerUpDMG++;
-        } else if (bananas >= upgradeCost && (powerUpDMG == 3)) {
-            upgradeBuyed = true;
-            upgradeType = 1;
-            upgradeTime = 0;
-            character.increaseDamageGun(10);
-            if (character.getGun().getDamage() >= 50) character.setGunDamage(50);
-            bananas = bananas - upgradeCost;
-            powerUpDMG++;
-          }
+        }
         // MESSAGGIO CHE SEGNALE IL FATTO CHE QUESTO UPGRADE NON è DISPONIBILE
         //mvprintw(?, ?, "MAX DAMAGE OBTAINED");
       }
@@ -728,27 +724,31 @@ void EngineGame::increaseCount(int &whileCount, long &points) {
   this->whileCountEnemy += 1;
 }
 
-void EngineGame::money(int &bananas, bool noEnemy, int maxRound, int &roundPayed, Character &character, int upgradeCost) {
+void EngineGame::money(int &bananas, bool noEnemy, int maxRoom, int &roundPayed, Character &character, int upgradeCost) {
   srand(time(NULL));
-  if (noEnemy && (maxRound != roundPayed)) {  // CONTROLLA CHE LA STANZA SIA PULITA E CHE L'ULTIMO ROUND SIA STATO PAGATO
+  if (noEnemy && (maxRoom != roundPayed)) {  // CONTROLLA CHE LA STANZA SIA PULITA E CHE L'ULTIMO ROUND SIA STATO PAGATO
     bananas = bananas + rand() % 3 + 1;
     character.increaseLife((rand() % 20 + 20));
-    if (maxRound >= 2 && maxRound <= 5)
+    if (maxRoom >= 2 && maxRoom <= 5)
       character.increaseTotalAmmo(30);
-    else if (maxRound > 5 && maxRound <= 8)
+    else if (maxRoom > 5 && maxRoom <= 8)
       character.increaseTotalAmmo(40);
-    else if (maxRound > 8 && maxRound <= 12)
+    else if (maxRoom > 8 && maxRoom <= 12)
       character.increaseTotalAmmo(50);
-    else if (maxRound > 15)
+    else if (maxRoom > 15)
       character.increaseTotalAmmo(80);
     roundPayed++;
   }
   init_pair(20, COLOR_GREEN, -1);
   attron(COLOR_PAIR(20));
-  if (bananas >= (upgradeCost))
-    mvprintw(24, 52, "LIFE OR DAMAGE PURCHASABLE!");
-  else if(bananas >= (upgradeCost/2))
-    mvprintw(24, 52, "EXTRA LIFE PURCHASABLE!"); 
+  if (bananas >= upgradeCost) {
+    if (character.getNumberLife() < 3)
+      mvprintw(24, 52, "BUYABLE LIFE OR DAMAGE UPGRADE");
+    else
+      mvprintw(24, 52, "BUYABLE DAMAGE UPGRADE!");
+  }
+  else if(bananas >= (upgradeCost/2) && character.getNumberLife() < 3)
+    mvprintw(24, 52, "BUYABLE EXTRA LIFE!"); 
   attroff(COLOR_PAIR(20));
 }
 
@@ -784,7 +784,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
   int bananas = 0, roundPayed = 0;
   int bonusTime = 0, upgradeTime = 0, bonusType = 0, upgradeType = 0;
   int normalEnemyCount = 1, specialEnemyCount = 0, bossEnemyCount = 0;
-  int maxRound = 1;
+  int maxRoom = 1;
   pEnemyList normalEnemyList = NULL, specialEnemyList = NULL,
              bossEnemyList = NULL;
   pPosition mountainList = new Position, bonusList = new Position;
@@ -795,7 +795,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
   clear();
   while (!pause) {
     roomList = drawWindow.changeRoom(character, normalEnemyCount, specialEnemyCount, bossEnemyCount, normalEnemyList, specialEnemyList,
-                                     bossEnemyList, mountainList, bonusList, roomList, maxRound);
+                                     bossEnemyList, mountainList, bonusList, roomList, maxRoom);
     normalEnemyList = generateEnemy(&normalEnemyCount, 0, normalEnemyList, drawWindow);
     specialEnemyList = generateEnemy(&specialEnemyCount, 1, specialEnemyList, drawWindow);
     bossEnemyList = generateEnemy(&bossEnemyCount, 2, bossEnemyList, drawWindow);
@@ -812,10 +812,10 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     drawWindow.printCharacter(character.getX(), character.getY(),
                               character.getSkin());
     drawWindow.drawRect(this->frameGameX, this->frameGameY, this->rightWidth,
-                        this->bottomHeigth, noEnemy, maxRound, false);
+                        this->bottomHeigth, noEnemy, maxRoom, false);
     drawWindow.drawStats(this->frameGameX, this->frameGameY, this->rightWidth,
                          this->bottomHeigth, pointsOnScreen, character,
-                         noEnemy, powerUpDMG, bananas, maxRound, roomList);
+                         noEnemy, powerUpDMG, bananas, maxRoom, roomList);
     drawWindow.drawLeaderboardOnScreen();
     drawWindow.printCharacterStats(normalEnemyList, specialEnemyList, bossEnemyList, character);
 
@@ -867,7 +867,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     gorillaPunch(direction, character, bossEnemyList, pointsOnScreen,
                  toTheRight);
 
-    money(bananas, noEnemy, maxRound, roundPayed, character, upgradeCost);
+    money(bananas, noEnemy, maxRoom, roundPayed, character, upgradeCost);
     checkBulletCollision(this->playerBullets, character, normalEnemyList,
                          pointsOnScreen, immortalityCheck);
     checkBulletCollision(this->playerBullets, character, specialEnemyList,

@@ -64,7 +64,7 @@ class EngineGame {
                      int &bonusType, bool &immortalitycheck, int &immortalityTime);
 
   bool checkNoEnemy(DrawWindow drawWindow, pEnemyList enemyList1, pEnemyList enemyList2, pEnemyList enemyList3);
-  void checkEnemyGeneration(pRoom &room,int maxRound, int &specialEnemycount, int &bossEnemyCount);
+  void checkEnemyGeneration(pRoom &room,int maxRoom, int &specialEnemycount, int &bossEnemyCount);
   void checkDeath(bool &pause, Character &character);
   void checkMountainDamage(Pbullet bulletList, pPosition &mountainList);
 
@@ -75,7 +75,7 @@ class EngineGame {
   void isPause(int &direction, bool &pause);
   void runGame(Character character, DrawWindow drawWindow, int direction);
 
-  void money(int &bananas, bool noEnemy, int maxRound, int &roundPayed,
+  void money(int &bananas, bool noEnemy, int maxRoom, int &roundPayed,
              Character &character, int upgradeCost);
   void increasePointOnScreen(int &pointOnScreen, int pointsAdded);
   void gorillaPunch(int direction, Character &character, pEnemyList enemyList,

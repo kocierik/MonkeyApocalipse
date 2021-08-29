@@ -369,7 +369,7 @@ void DrawWindow::printCharacter(int x, int y, char c) {
 
 void DrawWindow::drawRect(
     int startX, int startY, int rightWidth, int bottomHeight, bool noEnemy,
-    int maxRound, bool isScreenBound) {  // isScreenBound SI UNA PER FLAGGARE CHE È
+    int maxRoom, bool isScreenBound) {  // isScreenBound SI UNA PER FLAGGARE CHE È
                                       // IL RETTANGOLO CHE DELIMITA LO SCHERMO,
                                       // QUINDI NON DEVE APRIRSI
   for (int i = startY; i < rightWidth; ++i) {
@@ -382,7 +382,7 @@ void DrawWindow::drawRect(
       mvprintw(i, rightWidth, "|");
     }
   }
-  if (maxRound == 1) {
+  if (maxRoom == 1) {
     for (int i = startX; i < bottomHeight; ++i) {
       mvprintw(i, startY, "|");
     }
@@ -428,7 +428,7 @@ void DrawWindow::drawLeaderboardOnScreen(){
 void DrawWindow::drawStats(int startX, int startY, int rightWidth, int bottomHeight,
                            int pointsOnScreen, Character character,
                            bool noEnemy, int powerUp, int bananas,
-                           int maxRound, pRoom roomList) {
+                           int maxRoom, pRoom roomList) {
   int powerUp_y = 52;
   int powerUp_x = 23;
   int statusAmmoColor = 0;
@@ -461,16 +461,14 @@ void DrawWindow::drawStats(int startX, int startY, int rightWidth, int bottomHei
   mvprintw(28, 52, "BANANAS");
   mvprintw(28, 76, "%d", bananas);
   mvprintw(29, 52, "ROOM");
-  mvprintw(29, 76, "%d/%d", lengthListRoom(roomList), maxRound);
-  mvprintw(30, 52, "ROUND MAX");
-  mvprintw(30, 76, "%d", maxRound);
+  mvprintw(29, 76, "%d/%d", lengthListRoom(roomList), maxRoom);
+  mvprintw(30, 52, "MAX ROOM");
+  mvprintw(30, 76, "%d", maxRoom);
 
   init_pair(11, COLOR_WHITE, 232);
   attron(COLOR_PAIR(11));
-  drawRect(startX - 4, startY - 11, rightWidth + 12, bottomHeight + 12, noEnemy, 0,
-           true);
-  drawRect(startX - 4, startY + 65, rightWidth + 40, bottomHeight + 12, noEnemy, 0,
-           true);
+  drawRect(startX - 4, startY - 11, rightWidth + 12, bottomHeight + 12, noEnemy, 0, true);
+  drawRect(startX - 4, startY + 65, rightWidth + 40, bottomHeight + 12, noEnemy, 0, true);
   attroff(COLOR_PAIR(11));
 
   init_pair(3, COLOR_YELLOW, -1);  // FUNZIONI PER USARE I COLORI
@@ -478,19 +476,19 @@ void DrawWindow::drawStats(int startX, int startY, int rightWidth, int bottomHei
   mvprintw(startX - 2, startY + 12, "%d", pointsOnScreen);
   if (character.getNumberLife() == 3)
     mvprintw(startX - 2, startY + 38, "[C] [C] [C]");
-  if (character.getNumberLife() == 2)
+  else if (character.getNumberLife() == 2)
     mvprintw(startX - 2, startY + 38, "[C] [C] [ ]");
-  if (character.getNumberLife() == 1)
+  else if (character.getNumberLife() == 1)
     mvprintw(startX - 2, startY + 38, "[C] [ ] [ ]");
   attroff(COLOR_PAIR(3));  // CHIUSURA DEL COLORE
 
   init_pair(3, COLOR_YELLOW, -1);  // FUNZIONI PER USARE I COLORI
   attron(COLOR_PAIR(3));
   if (powerUp == 4) mvprintw(powerUp_x, powerUp_y + 10, "[X] [X] [X] [X]");
-  if (powerUp == 3) mvprintw(powerUp_x, powerUp_y + 10, "[X] [X] [X] [ ]");
-  if (powerUp == 2) mvprintw(powerUp_x, powerUp_y + 10, "[X] [X] [ ] [ ]");
-  if (powerUp == 1) mvprintw(powerUp_x, powerUp_y + 10, "[X] [ ] [ ] [ ]");
-  if (powerUp == 0) mvprintw(powerUp_x, powerUp_y + 10, "[ ] [ ] [ ] [ ]");
+  else if (powerUp == 3) mvprintw(powerUp_x, powerUp_y + 10, "[X] [X] [X] [ ]");
+  else if (powerUp == 2) mvprintw(powerUp_x, powerUp_y + 10, "[X] [X] [ ] [ ]");
+  else if (powerUp == 1) mvprintw(powerUp_x, powerUp_y + 10, "[X] [ ] [ ] [ ]");
+  else if (powerUp == 0) mvprintw(powerUp_x, powerUp_y + 10, "[ ] [ ] [ ] [ ]");
   attroff(COLOR_PAIR(3));  // CHIUSURA DEL COLORE
 }
 
@@ -826,16 +824,16 @@ pRoom DrawWindow::saveRoom(pPosition mountainList, pPosition bonusList,
 
 pRoom DrawWindow::changeRoom(Character &character, int &normalEnemyCount, int &specialEnemyCount, int &bossEnemyCount,
                              pEnemyList &normalEnemyList, pEnemyList &specialEnemyList, pEnemyList &bossEnemyList,
-                             pPosition &mountainList, pPosition &bonusList, pRoom roomList, int &maxRound) {
+                             pPosition &mountainList, pPosition &bonusList, pRoom roomList, int &maxRoom) {
   if (character.getX() == GAMEWIDTH) {
     // Questo if si "attiva" quando torni nella stanza precedente e poi ritorni nella successiva
-    if (maxRound > lengthListRoom(roomList)) {
+    if (maxRoom > lengthListRoom(roomList)) {
       roomList = roomList->prev;
       character.setX(23);
-    } else if (maxRound == lengthListRoom(roomList)) {
+    } else if (maxRoom == lengthListRoom(roomList)) {
       character.setX(23);
-      int mountainCount = rand() % 8 + 1, bonusCounter = 1, tmp = maxRound + 1;
-      if (maxRound < 2)
+      int mountainCount = rand() % 8 + 1, bonusCounter = 1, tmp = maxRoom + 1;
+      if (maxRoom < 2)
         bonusCounter = 0;
       else {
         srand(time(0));
@@ -845,8 +843,8 @@ pRoom DrawWindow::changeRoom(Character &character, int &normalEnemyCount, int &s
       roomList->bonusList = generateBonus(bonusList, bonusCounter);
       roomList = saveRoom(mountainList, bonusList, roomList);
       
-      if (maxRound <= NORMAL_ENEMY_LIMIT)
-        normalEnemyCount = maxRound + 1;  // +1 per via del nemico fittizio
+      if (maxRoom <= NORMAL_ENEMY_LIMIT)
+        normalEnemyCount = maxRoom + 1;  // +1 per via del nemico fittizio
       else 
         normalEnemyCount = NORMAL_ENEMY_LIMIT;
       if (tmp % SPECIAL_ENEMY_FREQUENCY == 0) {
@@ -864,11 +862,11 @@ pRoom DrawWindow::changeRoom(Character &character, int &normalEnemyCount, int &s
 
       // Serve per scorrere (nella lista dei nemici, se generata) il primo nemico, quello fittizio
       normalEnemyList = normalEnemyList->next;
-      if (maxRound % SPECIAL_ENEMY_FREQUENCY == 0) 
+      if (maxRoom % SPECIAL_ENEMY_FREQUENCY == 0) 
         specialEnemyList = specialEnemyList->next;
-      if (maxRound % BOSS_ENEMY_FREQUENCY == 0) 
+      if (maxRoom % BOSS_ENEMY_FREQUENCY == 0) 
         bossEnemyList = bossEnemyList->next;
-      maxRound += 1;
+      maxRoom += 1;
     }
   } else if (character.getX() == 22) {
     character.setX(GAMEWIDTH - 1);

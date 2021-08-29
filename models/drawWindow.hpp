@@ -18,7 +18,7 @@ class DrawWindow {
   DrawWindow();
   void printCharacter(int x, int y, char c);
   void drawRect(int startX, int startY, int rightWidth, int bottomHeight,
-                bool noEnemy, int maxRound, bool isScreenBound);
+                bool noEnemy, int maxRoom, bool isScreenBound);
   void drawMenu();
   void printCommand(int *cnt);
   void printCredits();
@@ -31,7 +31,7 @@ class DrawWindow {
   void leaderboardScreen(int direction);
   void drawStats(int startX, int startY, int rightWidth, int bottomHeight,
                  int pointsOnScreen, Character character, bool noEnemy,
-                 int powerUp, int bananas, int maxRound, pRoom roomList);
+                 int powerUp, int bananas, int maxRoom, pRoom roomList);
   void drawLeaderboardOnScreen();
   int lengthEnemyList(pEnemyList enemyList);
   int lengthListRoom(pRoom roomList);
@@ -39,7 +39,7 @@ class DrawWindow {
   void printEnemy(pEnemyList enemyList, DrawWindow drawWindow);
   pRoom changeRoom(Character &character, int &normalEnemyCount, int &specialEnemyCount, int &bossEnemyCount,
                    pEnemyList &normalEnemyList, pEnemyList &specialEnemyList, pEnemyList &bossEnemyList,
-                   pPosition &mountainList, pPosition &bonusList, pRoom roomList, int &maxRound);
+                   pPosition &mountainList, pPosition &bonusList, pRoom roomList, int &maxRoom);
 
   pPosition generateMountain(pPosition mountainList, int &mountainCount);
   pPosition generateBonus(pPosition bonusList, int &bonusCount);
