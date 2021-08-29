@@ -339,8 +339,8 @@ void DrawWindow::printHowToPlay() {  // GESTISCE LA SCHERMATA DEL HOW TO PLAY
            "                                                                   "
            "                                  ");
   mvprintw(LINES/2+9, COLS/2-50,
-           "          [E][W] = SHOOT   [ARROWS] = MOVE    [A] = BUY EXTRA LIFE "
-           "  [S] = DAMAGE UPGRADE            ");
+           "          [F][G] = SHOOT   [WASD] = MOVE    [Z] = BUY EXTRA LIFE   "
+           "  [X] = DAMAGE UPGRADE            ");
   mvprintw(LINES/2+10, COLS/2-50,
            "                            [R] = RELOAD AMMO    [SPACE] = PUNCH   "
            "                                  ");
