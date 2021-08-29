@@ -535,7 +535,6 @@ pPosition DrawWindow::generateBonus(pPosition bonusList, int &bonusCount) {
 }
 
 void DrawWindow::printMountain(pPosition mountainList) {
-  pPosition mountainList = mountainList;
   while (mountainList != NULL) {
     init_pair(15, COLOR_YELLOW, -1);
     attron(COLOR_PAIR(15));
