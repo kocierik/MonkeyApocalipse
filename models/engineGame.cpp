@@ -8,7 +8,7 @@
 #include <iostream>
 
 // Numero di casi dello switch che gestisce i bonus. Equivale a: n bonus
-#define N_SWITCH_CASE 15
+#define BONUS 15
 
 const int scoreForKill = 300;
 float finalScore = 0;
@@ -311,7 +311,7 @@ void EngineGame::moveCharacter(
         bonusTime = 0;       // RESETTA IL TEMPO DI APPARIZIONE SE IL TIMER
                              // ERA GIA ATTIVO PER IL PRECEDENTE BONUS.
         bonusPicked = true;  // FLAG CHE INDICA SE È STATO RACCOLTO
-        bonusType = rand() % N_SWITCH_CASE;  // 0 <= bonusType < N_SWITCH_CASE
+        bonusType = rand() % BONUS;  // 0 <= bonusType < BONUS
         roomList->bonusList = getBonus(
             drawWindow, character.getX(), character.getY() - 1,
             roomList->next->bonusList, normalEnemyList, pointsOnScreen,
@@ -325,7 +325,7 @@ void EngineGame::moveCharacter(
       else if (isBonus(character.getX(), character.getY() + 1)) {
         bonusTime = 0;
         bonusPicked = true;
-        bonusType = rand() % N_SWITCH_CASE;
+        bonusType = rand() % BONUS;
         roomList->bonusList = getBonus(
             drawWindow, character.getX(), character.getY() + 1,
             roomList->next->bonusList, normalEnemyList, pointsOnScreen,
@@ -339,7 +339,7 @@ void EngineGame::moveCharacter(
       else if (isBonus(character.getX() - 1, character.getY())) {
         bonusTime = 0;
         bonusPicked = true;
-        bonusType = rand() % N_SWITCH_CASE;  // GENERA IL TIPO DI BONUS.
+        bonusType = rand() % BONUS;  // GENERA IL TIPO DI BONUS.
         roomList->bonusList = getBonus(
             drawWindow, character.getX() - 1, character.getY(),
             roomList->next->bonusList, normalEnemyList, pointsOnScreen,
@@ -354,7 +354,7 @@ void EngineGame::moveCharacter(
       else if (isBonus(character.getX() + 1, character.getY())) {
         bonusTime = 0;
         bonusPicked = true;
-        bonusType = rand() % N_SWITCH_CASE;
+        bonusType = rand() % BONUS;
         roomList->bonusList = getBonus(
             drawWindow, character.getX() + 1, character.getY(),
             roomList->next->bonusList, normalEnemyList, pointsOnScreen,
@@ -716,29 +716,26 @@ void EngineGame::increaseCount(int &whileCount, long &points) {
 }
 
 void EngineGame::money(int &bananas, bool noEnemy, int maxRound, int &roundPayed, Character &character, int upgradeCost) {
-
   srand(time(NULL));
   if (noEnemy && (maxRound != roundPayed)) {  // CONTROLLA CHE LA STANZA SIA PULITA E CHE L'ULTIMO ROUND SIA STATO PAGATO
     bananas = bananas + rand() % 3 + 1;
     character.increaseLife((rand() % 20 + 20));
-    if (maxRound >= 2 && maxRound <= 5) {
+    if (maxRound >= 2 && maxRound <= 5)
       character.increaseTotalAmmo(30);
-    } else if (maxRound > 5 && maxRound <= 8) {
+    else if (maxRound > 5 && maxRound <= 8)
       character.increaseTotalAmmo(40);
-    } else if (maxRound > 8 && maxRound <= 12) {
+    else if (maxRound > 8 && maxRound <= 12)
       character.increaseTotalAmmo(50);
-    } else if (maxRound > 15) {
+    else if (maxRound > 15)
       character.increaseTotalAmmo(80);
-    }
     roundPayed++;
   }
   init_pair(20, COLOR_GREEN, -1);
   attron(COLOR_PAIR(20));
-  if (bananas >= (upgradeCost)) {
+  if (bananas >= (upgradeCost))
     mvprintw(24, 52, "LIFE OR DAMAGE PURCHASABLE!");
-  } else if(bananas >= (upgradeCost/2)){
+  else if(bananas >= (upgradeCost/2))
     mvprintw(24, 52, "EXTRA LIFE PURCHASABLE!"); 
-  }
   attroff(COLOR_PAIR(20));
 }
 
