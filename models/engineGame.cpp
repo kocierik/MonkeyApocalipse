@@ -809,12 +809,6 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     roomList = drawWindow.changeRoom(character, normalEnemyCount, normalEnemyList, specialEnemyList,
                                      bossEnemyList, SPECIAL_ENEMY_FREQUENCY, BOSS_ENEMY_FREQUENCY,
                                      mountainList, bonusList, roomList, maxRound);
-    /* Codice scritto per tenteare di ovviare ai nuovi bugs scritti nelle issue
-    if (character.getX() == this->widht || character.getX() == this->frameGameX + 15) {
-      normalEnemyList = NULL;
-      specialEnemyList = NULL;
-      bossEnemyList = NULL;
-    }*/
     normalEnemyList =
         generateEnemy(&normalEnemyCount, 0, normalEnemyList, drawWindow);
     if ((roomList->spawnSpecialEnemy || roomList->spawnBossEnemy))
@@ -836,7 +830,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     drawWindow.printCharacter(character.getX(), character.getY(),
                               character.getSkin());
     drawWindow.drawRect(this->frameGameX, this->frameGameY, this->rightWidth,
-                        this->bottomHeigth, noEnemy, round, false);
+                        this->bottomHeigth, noEnemy, maxRound, false);
     drawWindow.drawStats(this->frameGameX, this->frameGameY, this->rightWidth,
                          this->bottomHeigth, pointsOnScreen, character,
                          noEnemy, powerUpDMG, bananas, maxRound, roomList);

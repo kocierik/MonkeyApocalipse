@@ -20,7 +20,7 @@ class DrawWindow {
   DrawWindow();
   void printCharacter(int x, int y, char c);
   void drawRect(int startX, int startY, int rightWidth, int bottomHeight,
-                bool noEnemy, int round, bool isScreenBound);
+                bool noEnemy, int maxRound, bool isScreenBound);
   void drawMenu();
   void printCommand(int *cnt);
   void printCredits();

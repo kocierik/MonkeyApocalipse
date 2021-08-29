@@ -362,7 +362,7 @@ void DrawWindow::printCharacter(int x, int y, char c) {
 
 void DrawWindow::drawRect(
     int startX, int startY, int rightWidth, int bottomHeight, bool noEnemy,
-    int round, bool isScreenBound) {  // isScreenBound SI UNA PER FLAGGARE CHE È
+    int maxRound, bool isScreenBound) {  // isScreenBound SI UNA PER FLAGGARE CHE È
                                       // IL RETTANGOLO CHE DELIMITA LO SCHERMO,
                                       // QUINDI NON DEVE APRIRSI
   for (int i = startY; i < rightWidth; ++i) {
@@ -375,7 +375,7 @@ void DrawWindow::drawRect(
       mvprintw(i, rightWidth, "|");
     }
   }
-  if (round == 1) {
+  if (maxRound == 1) {
     for (int i = startX; i < bottomHeight; ++i) {
       mvprintw(i, startY, "|");
     }
