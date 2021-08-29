@@ -303,8 +303,9 @@ void EngineGame::moveCharacter(
     bool &upgradeBuyed, int &upgradeType, int &upgradeTime,
     bool &immortalityCheck, int &immortalityTime, bool &toTheRight, int upgradeCost) {
   srand(time(0));
-  switch (direction) {  // CONTROLLO IL TASTO SPINTO
-    case KEY_UP:  // --------------------------------------------------------
+  switch (direction) {  // Movimento con wasd per il player 1 e frecce per il player 2
+    case 'W':
+    case 'w':
       if (isEmpty(character.getX(), character.getY() - 1))
         character.directionUp();
       else if (isBonus(character.getX(), character.getY() - 1)) {
@@ -319,7 +320,8 @@ void EngineGame::moveCharacter(
         character.directionUp();
       }
       break;
-    case KEY_DOWN:  // ------------------------------------------------------
+    case 'S':
+    case 's':
       if (isEmpty(character.getX(), character.getY() + 1))
         character.directionDown();
       else if (isBonus(character.getX(), character.getY() + 1)) {
@@ -333,7 +335,8 @@ void EngineGame::moveCharacter(
         character.directionDown();
       }
       break;
-    case KEY_LEFT:  // ------------------------------------------------------
+    case 'A':
+    case 'a':
       if (isEmpty(character.getX() - 1, character.getY()))
         character.directionLeft();
       else if (isBonus(character.getX() - 1, character.getY())) {
@@ -348,7 +351,8 @@ void EngineGame::moveCharacter(
       }
       toTheRight = false;
       break;
-    case KEY_RIGHT:  // -----------------------------------------------------
+    case 'D':
+    case 'd':
       if (isEmpty(character.getX() + 1, character.getY()))
         character.directionRight();
       else if (isBonus(character.getX() + 1, character.getY())) {
@@ -363,8 +367,8 @@ void EngineGame::moveCharacter(
       }
       toTheRight = true;
       break;
-    case 'E':  // Sparo in avanti del player
-    case 'e':
+    case 'G':  // Sparo in avanti del player
+    case 'g':
       if (whileCount / 2 > 1 && character.getGun().getMagazineAmmo() > 0) {
         character.decreaseMagazineAmmo(1);
         this->playerBullets =
@@ -372,8 +376,8 @@ void EngineGame::moveCharacter(
         whileCount = 0;
       }
       break;
-    case 'W':  // Sparo all'indietro del player
-    case 'w':
+    case 'F':  // Sparo all'indietro del player
+    case 'f':
       if (whileCount / 2 > 1 && character.getGun().getMagazineAmmo() > 0) {
         character.decreaseMagazineAmmo(1);
         this->playerBullets =
@@ -389,8 +393,8 @@ void EngineGame::moveCharacter(
           character.getGun().getTotalAmmo() > 0)
         character.reload();
       break;
-    case 'a':  // CONTROLLA L'AQUISTO DI VITE, MASSIMO 3 -------------------
-    case 'A':
+    case 'Z':  // CONTROLLA L'AQUISTO DI VITE, MASSIMO 3 -------------------
+    case 'z':
       if (bananas >= (upgradeCost/2) && character.getNumberLife() < 3) {
         upgradeBuyed = true;  // INDICA CHE È STATO COMPRATO UN UPGRADE
         upgradeType = 0;      // INDICA IL TIPO DI UPGRADE.
@@ -400,9 +404,9 @@ void EngineGame::moveCharacter(
         bananas = bananas - (upgradeCost/2);
       }
       break;
-    case 's':  // CONTROLLA L'AQUISTO DI POWERUP AL DANNO, SONO ACQUISTABILI AL
+    case 'X':  // CONTROLLA L'AQUISTO DI POWERUP AL DANNO, SONO ACQUISTABILI AL
                // MASSIMO 4 DURANTE TUTTA LA RUN
-    case 'S':
+    case 'x':
       if (character.getGun().getDamage() < 50) {
         if (bananas >= upgradeCost && powerUpDMG < 3) {
           upgradeBuyed = true;
@@ -471,8 +475,8 @@ void EngineGame::choiceGame(DrawWindow drawWindow, int *direction,
     if (*direction == 32) *selection = cnt;
     if (*direction == KEY_UP) cnt--;
     if (*direction == KEY_DOWN) cnt++;
-    if (cnt > 4) cnt = 0;
-    if (cnt < 0) cnt = 4;
+    if (cnt > 5) cnt = 0;
+    if (cnt < 0) cnt = 5;
   }
 }
 
@@ -673,34 +677,43 @@ void EngineGame::engine(Character character, DrawWindow drawWindow) {
   choiceGame(drawWindow, &direction, &selection);
   while (pause) {
     switch (selection) {
-      case 0:
+      case 0:     // FUN (single player)
         pause = false;
         runGame(character, drawWindow, direction);
         clear();
         drawWindow.loseScreen(direction, finalScore);
         selection = 5;
         break;
-      case 1:
+      case 1:     // MORE FUN (multiplayer)
+        /*
+        pause = false;
+        runGame(character, drawWindow, direction);
+        clear();
+        drawWindow.loseScreen(direction, finalScore);
+        selection = 5;
+        break;
+        */
+      case 2:     // HOW TO PLAY
         clear();
         drawWindow.HowToPlay(direction);
         selection = 5;
         break;
-      case 2:
+      case 3:     // LEADERBOARD
         clear();
         drawWindow.leaderboardScreen(direction);
         selection = 5;
         break;
-      case 3:
+      case 4:     // CREDITS
         clear();
         drawWindow.credits(direction);
         selection = 5;
         break;
-      case 4:
+      case 5:     // QUIT!
         refresh();
         std::cout << "Thanks for playing ;) ";
         exit(1);
         break;
-      case 5:
+      case 6:     // ???
         clear();
         engine(character, drawWindow);
         break;
