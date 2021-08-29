@@ -38,8 +38,7 @@ class DrawWindow {
   void printCharacterStats(pEnemyList enemyList, pEnemyList specialEnemyList, pEnemyList bossEnemyList, Character character);
   void printEnemy(pEnemyList enemyList, DrawWindow drawWindow);
   pRoom changeRoom(Character &character, int &normalEnemyCount, int &specialEnemyCount, int &bossEnemyCount,
-                   pEnemyList &normalEnemyList, pEnemyList &specialEnemyList, pEnemyList &bossEnemyList,
-                   pPosition &mountainList, pPosition &bonusList, pRoom roomList, int &maxRound);
+                   pEnemyList enemyList[], pPosition &mountainList, pPosition &bonusList, pRoom roomList, int &maxRound);
 
   pPosition generateMountain(pPosition mountainList, int &mountainCount);
   pPosition generateBonus(pPosition bonusList, int &bonusCount);

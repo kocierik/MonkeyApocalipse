@@ -189,12 +189,11 @@ pPosition EngineGame::deletePosition(pPosition positionList, pPosition toDelete)
   return head;
 }
 
-bool EngineGame::checkNoEnemy(DrawWindow drawWindow, pEnemyList enemyList1, pEnemyList enemyList2, pEnemyList enemyList3) {
-  int length1 = drawWindow.lengthEnemyList(enemyList1);
-  int length2 = drawWindow.lengthEnemyList(enemyList2);
-  int length3 = drawWindow.lengthEnemyList(enemyList3);
-  if (length1 + length2 + length3 == 0) return true;
-  else return false;
+bool EngineGame::checkNoEnemy(DrawWindow drawWindow, pEnemyList enemyList[]) {
+  int length = 0;
+  for (int i = 0; i < 3; i++)
+    length += drawWindow.lengthEnemyList(enemyList[i]);
+  return length == 0;
 }
 
 /**
@@ -783,31 +782,38 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
   int powerUpDMG = 0;  // NUMERO DI POWERUP AL DANNO AQUISTATI
   int bananas = 0, roundPayed = 0;
   int bonusTime = 0, upgradeTime = 0, bonusType = 0, upgradeType = 0;
-  int normalEnemyCount = 1, specialEnemyCount = 0, bossEnemyCount = 0;
   int maxRound = 1;
-  pEnemyList normalEnemyList = NULL, specialEnemyList = NULL,
-             bossEnemyList = NULL;
+  int normalEnemyCount = 1, specialEnemyCount = 0, bossEnemyCount = 0;
+  int enemyCounters[2];
+  enemyCounters[0] = 1;
+  enemyCounters[1] = 0;
+  enemyCounters[2] = 0;
+
   pPosition mountainList = new Position, bonusList = new Position;
   pRoom roomList = new Room;
+
+  pEnemyList enemyLists[2];
+  enemyLists[0] = NULL;
+  enemyLists[1] = NULL;
+  enemyLists[2] = NULL;
 
   Gun basicPlayerGun('~', 25, 40, 10);
   character.setGun(basicPlayerGun);
   clear();
   while (!pause) {
-    roomList = drawWindow.changeRoom(character, normalEnemyCount, specialEnemyCount, bossEnemyCount, normalEnemyList, specialEnemyList,
-                                     bossEnemyList, mountainList, bonusList, roomList, maxRound);
-    normalEnemyList = generateEnemy(&normalEnemyCount, 0, normalEnemyList, drawWindow);
-    specialEnemyList = generateEnemy(&specialEnemyCount, 1, specialEnemyList, drawWindow);
-    bossEnemyList = generateEnemy(&bossEnemyCount, 2, bossEnemyList, drawWindow);
+    roomList = drawWindow.changeRoom(character, normalEnemyCount, specialEnemyCount, bossEnemyCount, enemyLists, mountainList, bonusList, roomList, maxRound);
+    enemyLists[0] = generateEnemy(&normalEnemyCount, 0, enemyLists[0], drawWindow);
+    enemyLists[1] = generateEnemy(&specialEnemyCount, 1, enemyLists[1], drawWindow);
+    enemyLists[2] = generateEnemy(&bossEnemyCount, 2, enemyLists[2], drawWindow);
 
     getInput(direction);
-    moveCharacter(drawWindow, character, direction, roomList, normalEnemyList,
+    moveCharacter(drawWindow, character, direction, roomList, enemyLists[0],
                   pointsOnScreen, bananas, powerUpDMG, bonusPicked, bonusType,
                   bonusTime, upgradeBuyed, upgradeType, upgradeTime, immortalityCheck,
                   immortalityTime, toTheRight, upgradeCost);
     clear();
 
-    noEnemy = checkNoEnemy(drawWindow, normalEnemyList, specialEnemyList, bossEnemyList);
+    noEnemy = checkNoEnemy(drawWindow, enemyLists);
     
     drawWindow.printCharacter(character.getX(), character.getY(),
                               character.getSkin());
@@ -817,7 +823,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
                          this->bottomHeigth, pointsOnScreen, character,
                          noEnemy, powerUpDMG, bananas, maxRound, roomList);
     drawWindow.drawLeaderboardOnScreen();
-    drawWindow.printCharacterStats(normalEnemyList, specialEnemyList, bossEnemyList, character);
+    drawWindow.printCharacterStats(enemyLists[0], enemyLists[1], enemyLists[2], character);
 
     if (drawWindow.lengthListRoom(roomList) > 1) {
       drawWindow.printMountain(roomList->next->mountainList);
@@ -839,46 +845,47 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     */
     if (points > 500) points = 0;
 
-    drawWindow.printEnemy(normalEnemyList, drawWindow);
-    drawWindow.printEnemy(specialEnemyList, drawWindow);
-    drawWindow.printEnemy(bossEnemyList, drawWindow);
+    //drawWindow.printEnemy(enemyLists, drawWindow);
+    drawWindow.printEnemy(enemyLists[0], drawWindow);
+    drawWindow.printEnemy(enemyLists[1], drawWindow);
+    drawWindow.printEnemy(enemyLists[2], drawWindow);
 
-    drawWindow.moveEnemy(normalEnemyList, character, drawWindow, points);
-    drawWindow.moveEnemy(specialEnemyList, character, drawWindow, points);
-    drawWindow.moveEnemy(bossEnemyList, character, drawWindow, points);
+    drawWindow.moveEnemy(enemyLists[0], character, drawWindow, points);
+    drawWindow.moveEnemy(enemyLists[1], character, drawWindow, points);
+    drawWindow.moveEnemy(enemyLists[2], character, drawWindow, points);
 
-    generateEnemyBullets(normalEnemyList, this->normalEnemyBullets, character);
-    generateEnemyBullets(specialEnemyList, this->specialEnemyBullets, character);
-    generateEnemyBullets(bossEnemyList, this->bossEnemyBullets, character);
+    generateEnemyBullets(enemyLists[0], this->normalEnemyBullets, character);
+    generateEnemyBullets(enemyLists[1], this->specialEnemyBullets, character);
+    generateEnemyBullets(enemyLists[2], this->bossEnemyBullets, character);
 
     moveBullets(this->playerBullets);
     moveBullets(this->normalEnemyBullets);
     moveBullets(this->specialEnemyBullets);
     moveBullets(this->bossEnemyBullets);
 
-    checkEnemyCollision(character, normalEnemyList);
-    checkEnemyCollision(character, specialEnemyList);
-    checkEnemyCollision(character, bossEnemyList);
+    checkEnemyCollision(character, enemyLists[0]);
+    checkEnemyCollision(character, enemyLists[1]);
+    checkEnemyCollision(character, enemyLists[2]);
 
-    gorillaPunch(direction, character, normalEnemyList, pointsOnScreen,
+    gorillaPunch(direction, character, enemyLists[0], pointsOnScreen,
                  toTheRight);
-    gorillaPunch(direction, character, specialEnemyList, pointsOnScreen,
+    gorillaPunch(direction, character, enemyLists[1], pointsOnScreen,
                  toTheRight);
-    gorillaPunch(direction, character, bossEnemyList, pointsOnScreen,
+    gorillaPunch(direction, character, enemyLists[2], pointsOnScreen,
                  toTheRight);
 
     money(bananas, noEnemy, maxRound, roundPayed, character, upgradeCost);
-    checkBulletCollision(this->playerBullets, character, normalEnemyList,
+    checkBulletCollision(this->playerBullets, character, enemyLists[0],
                          pointsOnScreen, immortalityCheck);
-    checkBulletCollision(this->playerBullets, character, specialEnemyList,
+    checkBulletCollision(this->playerBullets, character, enemyLists[1],
                          pointsOnScreen, immortalityCheck);
-    checkBulletCollision(this->playerBullets, character, bossEnemyList,
+    checkBulletCollision(this->playerBullets, character, enemyLists[2],
                          pointsOnScreen, immortalityCheck);
-    checkBulletCollision(this->normalEnemyBullets, character, normalEnemyList,
+    checkBulletCollision(this->normalEnemyBullets, character, enemyLists[0],
                          pointsOnScreen, immortalityCheck);
-    checkBulletCollision(this->specialEnemyBullets, character, specialEnemyList,
+    checkBulletCollision(this->specialEnemyBullets, character, enemyLists[1],
                          pointsOnScreen, immortalityCheck);
-    checkBulletCollision(this->bossEnemyBullets, character, bossEnemyList,
+    checkBulletCollision(this->bossEnemyBullets, character, enemyLists[2],
                          pointsOnScreen, immortalityCheck);
     
     refresh();

@@ -776,6 +776,23 @@ void DrawWindow::printCharacterStats(pEnemyList enemyList, pEnemyList specialEne
     reachBound++;
     bossEnemyList = bossEnemyList->next;
   }
+  /*
+    for (int j = 0; j < 3; j++) {
+    while (enemyLists[j] != NULL && reachBound < 8) {  
+      if (enemyLists[j]->enemy.getX() != 0) {
+        i++;
+        if (j == 0)
+          mvprintw(i, X_ElencoNemici, "- UN soldier: %d HP", enemyLists[j]->enemy.getLife());
+        else if (j == 1)
+          mvprintw(i, X_ElencoNemici, "- Elite soldier: %d HP", enemyLists[j]->enemy.getLife());
+        else if (j == 2)
+          mvprintw(i, X_ElencoNemici, "- BOSS: %d HP", enemyLists[j]->enemy.getLife());
+      }
+      reachBound++;
+      enemyLists[j] = enemyLists[j]->next;
+    }
+  }
+  */
 }
 
 void DrawWindow::printEnemy(pEnemyList enemyList, DrawWindow drawWindow) {
@@ -785,6 +802,17 @@ void DrawWindow::printEnemy(pEnemyList enemyList, DrawWindow drawWindow) {
     enemyList = enemyList->next;
   }
 }
+/*
+void DrawWindow::printEnemy(pEnemyList enemyLists[], DrawWindow drawWindow) {
+  for (int i = 0; i < 1; i++) {
+    while (enemyLists[i] != NULL) {
+      drawWindow.printCharacter(enemyLists[i]->enemy.getX(), enemyLists[i]->enemy.getY(),
+                                enemyLists[i]->enemy.getSkin());
+      enemyLists[i] = enemyLists[i]->next;
+    }
+  }
+}
+*/
 
 void DrawWindow::moveEnemy(pEnemyList enemyList, Character character,
                            DrawWindow drawWindow, long points) {
@@ -825,8 +853,7 @@ pRoom DrawWindow::saveRoom(pPosition mountainList, pPosition bonusList,
 }
 
 pRoom DrawWindow::changeRoom(Character &character, int &normalEnemyCount, int &specialEnemyCount, int &bossEnemyCount,
-                             pEnemyList &normalEnemyList, pEnemyList &specialEnemyList, pEnemyList &bossEnemyList,
-                             pPosition &mountainList, pPosition &bonusList, pRoom roomList, int &maxRound) {
+                             pEnemyList enemyList[], pPosition &mountainList, pPosition &bonusList, pRoom roomList, int &maxRound) {
   if (character.getX() == GAMEWIDTH) {
     // Questo if si "attiva" quando torni nella stanza precedente e poi ritorni nella successiva
     if (maxRound > lengthListRoom(roomList)) {
@@ -863,11 +890,11 @@ pRoom DrawWindow::changeRoom(Character &character, int &normalEnemyCount, int &s
       }
 
       // Serve per scorrere (nella lista dei nemici, se generata) il primo nemico, quello fittizio
-      normalEnemyList = normalEnemyList->next;
+      enemyList[0] = enemyList[0]->next;
       if (maxRound % SPECIAL_ENEMY_FREQUENCY == 0) 
-        specialEnemyList = specialEnemyList->next;
+        enemyList[1] = enemyList[1]->next;
       if (maxRound % BOSS_ENEMY_FREQUENCY == 0) 
-        bossEnemyList = bossEnemyList->next;
+        enemyList[2] = enemyList[2]->next;
       maxRound += 1;
     }
   } else if (character.getX() == 22) {

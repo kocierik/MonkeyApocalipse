@@ -63,7 +63,7 @@ class EngineGame {
                      pEnemyList &enemyList, int &pointsOnScreen, Character &character,
                      int &bonusType, bool &immortalitycheck, int &immortalityTime);
 
-  bool checkNoEnemy(DrawWindow drawWindow, pEnemyList enemyList1, pEnemyList enemyList2, pEnemyList enemyList3);
+  bool checkNoEnemy(DrawWindow drawWindow, pEnemyList enemyList[]);
   void checkEnemyGeneration(pRoom &room,int maxRound, int &specialEnemycount, int &bossEnemyCount);
   void checkDeath(bool &pause, Character &character);
   void checkMountainDamage(Pbullet bulletList, pPosition &mountainList);
