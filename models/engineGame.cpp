@@ -367,8 +367,8 @@ void EngineGame::moveCharacter(
       }
       toTheRight = true;
       break;
-    case 'G':  // Sparo in avanti del player
-    case 'g':
+    case 'C':  // Sparo in avanti del player
+    case 'c':
       if (whileCount / 2 > 1 && character.getGun().getMagazineAmmo() > 0) {
         character.decreaseMagazineAmmo(1);
         this->playerBullets =
@@ -376,8 +376,8 @@ void EngineGame::moveCharacter(
         whileCount = 0;
       }
       break;
-    case 'F':  // Sparo all'indietro del player
-    case 'f':
+    case 'X':  // Sparo all'indietro del player
+    case 'x':
       if (whileCount / 2 > 1 && character.getGun().getMagazineAmmo() > 0) {
         character.decreaseMagazineAmmo(1);
         this->playerBullets =
