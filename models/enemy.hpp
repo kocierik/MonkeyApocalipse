@@ -3,9 +3,13 @@
 #include "character.hpp"
 #endif
 class Enemy : public Character {
+ protected:
+  int deathScore;
  public:
   Enemy();
   Enemy(int x, int y, char skin, int life, int numberLife, Gun gun);
+  int getDeathScore();
+  void setDeathScore(int deathScore);
 };
 
 struct EnemyList {

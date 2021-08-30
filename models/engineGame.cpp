@@ -372,8 +372,8 @@ void EngineGame::moveCharacter(
         whileCount = 0;
       }
       break;
-    case 'X':  // Sparo all'indietro del player
-    case 'x':
+    case 'W':  // Sparo all'indietro del player
+    case 'w':
       if (whileCount / 2 > 1 && character.getGun().getMagazineAmmo() > 0) {
         character.decreaseMagazineAmmo(1);
         this->playerBullets =
@@ -476,20 +476,20 @@ pEnemyList EngineGame::generateEnemy(int *enemyCount, int type, pEnemyList enemy
                                      DrawWindow drawWindow) {
   // Variables 4 basic enemies
   char skin = 'e';
-  int life = 10;
+  int life = 10, deathScore = 50;
   Gun gun('-', 10, -1, -1);
   switch (type) {
     case 0:  // Basic enemies, no variables changes
       break;
     case 1:  // Elite enemies
       skin = 'E';
-      life = 10;
+      life = 10, deathScore = 250;
       gun.setBulletSkin('=');
       gun.setDamage(15);
       break;
     case 2:  // Boss enemy
       skin = 'B';
-      life = 10;
+      life = 10, deathScore = 800;
       gun.setBulletSkin('*');
       gun.setDamage(25);
       break;
