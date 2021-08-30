@@ -304,8 +304,7 @@ void EngineGame::moveCharacter(
     bool &immortalityCheck, int &immortalityTime, bool &toTheRight, int upgradeCost) {
   srand(time(0));
   switch (direction) {  // Movimento con wasd per il player 1 e frecce per il player 2
-    case 'W':
-    case 'w':
+    case KEY_UP:
       if (isEmpty(character.getX(), character.getY() - 1))
         character.directionUp();
       else if (isBonus(character.getX(), character.getY() - 1)) {
@@ -320,8 +319,7 @@ void EngineGame::moveCharacter(
         character.directionUp();
       }
       break;
-    case 'S':
-    case 's':
+    case KEY_DOWN:
       if (isEmpty(character.getX(), character.getY() + 1))
         character.directionDown();
       else if (isBonus(character.getX(), character.getY() + 1)) {
@@ -335,8 +333,7 @@ void EngineGame::moveCharacter(
         character.directionDown();
       }
       break;
-    case 'A':
-    case 'a':
+    case KEY_LEFT:
       if (isEmpty(character.getX() - 1, character.getY()))
         character.directionLeft();
       else if (isBonus(character.getX() - 1, character.getY())) {
@@ -351,8 +348,7 @@ void EngineGame::moveCharacter(
       }
       toTheRight = false;
       break;
-    case 'D':
-    case 'd':
+    case KEY_RIGHT:
       if (isEmpty(character.getX() + 1, character.getY()))
         character.directionRight();
       else if (isBonus(character.getX() + 1, character.getY())) {
@@ -367,8 +363,8 @@ void EngineGame::moveCharacter(
       }
       toTheRight = true;
       break;
-    case 'C':  // Sparo in avanti del player
-    case 'c':
+    case 'E':  // Sparo in avanti del player
+    case 'e':
       if (whileCount / 2 > 1 && character.getGun().getMagazineAmmo() > 0) {
         character.decreaseMagazineAmmo(1);
         this->playerBullets =
@@ -514,7 +510,7 @@ pEnemyList EngineGame::generateEnemy(int *enemyCount, int type, pEnemyList enemy
   }
   if (isEmpty) {
     pEnemyList head = new EnemyList;
-    Enemy enemy(0, 0, ' ', life, 1, gun);
+    Enemy enemy(0, 0, 'X', life, 1, gun);
     head->enemy = enemy;
     head->next = enemyList;
     enemyList = head;
@@ -783,7 +779,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
   int powerUpDMG = 0;  // NUMERO DI POWERUP AL DANNO AQUISTATI
   int bananas = 0, roundPayed = 0;
   int bonusTime = 0, upgradeTime = 0, bonusType = 0, upgradeType = 0;
-  int normalEnemyCount = 1, specialEnemyCount = 0, bossEnemyCount = 0;
+  int normalEnemyCount = 1, specialEnemyCount = 1, bossEnemyCount = 1;
   int maxRoom = 1;
   pEnemyList normalEnemyList = NULL, specialEnemyList = NULL,
              bossEnemyList = NULL;
@@ -793,6 +789,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
   Gun basicPlayerGun('~', 25, 40, 10);
   character.setGun(basicPlayerGun);
   clear();
+
   while (!pause) {
     roomList = drawWindow.changeRoom(character, normalEnemyCount, specialEnemyCount, bossEnemyCount, normalEnemyList, specialEnemyList,
                                      bossEnemyList, mountainList, bonusList, roomList, maxRoom);

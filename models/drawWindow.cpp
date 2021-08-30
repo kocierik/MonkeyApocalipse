@@ -14,8 +14,8 @@
 #define GAMEHEIGTH 20  // 13
 
 #define NORMAL_ENEMY_LIMIT 7
-#define SPECIAL_ENEMY_FREQUENCY 2222   // Spawn ogni 5 round
-#define BOSS_ENEMY_FREQUENCY 3333      // Spawn ogni 10 round
+#define SPECIAL_ENEMY_FREQUENCY 1111   // Spawn ogni 5 round
+#define BOSS_ENEMY_FREQUENCY 1111      // Spawn ogni 10 round
 #define MOUNTAIN_LIFE 10
 const int MAXNAMECHARACTER = 10; 
 
@@ -463,7 +463,7 @@ void DrawWindow::drawStats(int startX, int startY, int rightWidth, int bottomHei
   mvprintw(29, 52, "ROOM");
   mvprintw(29, 76, "%d/%d", lengthListRoom(roomList), maxRoom);
   mvprintw(30, 52, "MAX ROOM");
-  mvprintw(30, 76, "%d", maxRoom);
+  mvprintw(30, 76, "%d", maxRoom - 1);
 
   init_pair(11, COLOR_WHITE, 232);
   attron(COLOR_PAIR(11));
@@ -843,28 +843,44 @@ pRoom DrawWindow::changeRoom(Character &character, int &normalEnemyCount, int &s
       roomList->bonusList = generateBonus(bonusList, bonusCounter);
       roomList = saveRoom(mountainList, bonusList, roomList);
       
+      normalEnemyCount = 2;  // +1 perhé maxRoom si inccrementa alla fine
+      specialEnemyCount = 2;  // +1 perhé maxRoom si inccrementa alla fine
+      bossEnemyCount = 2;  // +1 perhé maxRoom si inccrementa alla fine
+
       if (maxRoom <= NORMAL_ENEMY_LIMIT)
-        normalEnemyCount = maxRoom + 1;  // +1 per via del nemico fittizio
+        normalEnemyCount = maxRoom + 1;  // +1 perhé maxRoom si inccrementa alla fine
       else 
-        normalEnemyCount = NORMAL_ENEMY_LIMIT;
-      if (tmp % SPECIAL_ENEMY_FREQUENCY == 0) {
-        if (tmp <= 10) specialEnemyCount = 2;
-        else if (tmp == 15) specialEnemyCount = 3;
-        else if (tmp > 15) specialEnemyCount = 4;
-      } else if (tmp % BOSS_ENEMY_FREQUENCY == 0) {
-        if (tmp == 3) bossEnemyCount = 1;
-        else if (tmp == 20) bossEnemyCount = 2;
-        else if (tmp >= 30) bossEnemyCount = 3;
-      } else {
+        normalEnemyCount = NORMAL_ENEMY_LIMIT;        // NEMICI NORMALI OKKKKK
+      
+      if (maxRoom % 2 == 0)
+        specialEnemyCount = 2;
+      else
         specialEnemyCount = 0;
+
+      if (maxRoom % 3 == 0)
+        bossEnemyCount = 2;
+      else
         bossEnemyCount = 0;
-      }
+
+      // if (tmp % SPECIAL_ENEMY_FREQUENCY == 0) {
+      //   if (tmp <= 10) specialEnemyCount = 2;
+      //   else if (tmp == 15) specialEnemyCount = 3;
+      //   else if (tmp > 15) specialEnemyCount = 4;
+      // } else if (tmp % BOSS_ENEMY_FREQUENCY == 0) {
+      //   if (tmp == 3) bossEnemyCount = 1;
+      //   else if (tmp == 20) bossEnemyCount = 2;
+      //   else if (tmp >= 30) bossEnemyCount = 3;
+      // } else {
+      //   specialEnemyCount = 0;
+      //   bossEnemyCount = 0;
+      // }
 
       // Serve per scorrere (nella lista dei nemici, se generata) il primo nemico, quello fittizio
       normalEnemyList = normalEnemyList->next;
-      if (maxRoom % SPECIAL_ENEMY_FREQUENCY == 0) 
+      
+      if (maxRoom % 2 == 0) 
         specialEnemyList = specialEnemyList->next;
-      if (maxRoom % BOSS_ENEMY_FREQUENCY == 0) 
+      if (maxRoom % 3 == 0) 
         bossEnemyList = bossEnemyList->next;
       maxRoom += 1;
     }
