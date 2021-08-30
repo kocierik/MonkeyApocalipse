@@ -678,7 +678,7 @@ void EngineGame::engine(Character character, DrawWindow drawWindow) {
         runGame(character, drawWindow, direction);
         clear();
         drawWindow.loseScreen(direction, finalScore);
-        selection = 5;
+        selection = 6;
         break;
       case 1:     // MORE FUN (multiplayer)
         /*
@@ -692,24 +692,24 @@ void EngineGame::engine(Character character, DrawWindow drawWindow) {
       case 2:     // HOW TO PLAY
         clear();
         drawWindow.HowToPlay(direction);
-        selection = 5;
+        selection = 6;
         break;
       case 3:     // LEADERBOARD
         clear();
         drawWindow.leaderboardScreen(direction);
-        selection = 5;
+        selection = 6;
         break;
       case 4:     // CREDITS
         clear();
         drawWindow.credits(direction);
-        selection = 5;
+        selection = 6;
         break;
       case 5:     // QUIT!
         refresh();
         std::cout << "Thanks for playing ;) ";
         exit(1);
         break;
-      case 6:     // ???
+      case 6:     // MENU INIZIALE
         clear();
         engine(character, drawWindow);
         break;
@@ -718,7 +718,7 @@ void EngineGame::engine(Character character, DrawWindow drawWindow) {
   endwin();
 }
 
-void EngineGame::increaseCount(int &whileCount, long &points) {
+void EngineGame::increaseCount(long &points) {
   whileCount += 1;
   points += 1;
   this->whileCountEnemy += 1;
@@ -831,7 +831,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
                           roomList->next->mountainList);
     }
 
-    increaseCount(this->whileCount, points);
+    increaseCount(points);
     /**
      * Temporanea soluzione affinché point non raggiunga valori esorbitanti.
      * In futuro verrà resettata quando verranno uccisi tutti i nemici e si potrà
