@@ -56,6 +56,7 @@ class EngineGame {
                      int &upgradeTime, bool &immortalityCheck, int &immortalityTime,
                      bool &toTheRight, int upgradeCost);
 
+  void generateFictionalEnemy(pEnemyList &specialEnemyList, pEnemyList &bossEnemyList);
   pEnemyList generateEnemy(int *enemyCount, int type, pEnemyList enemyList,
                            DrawWindow drawWindow);
 

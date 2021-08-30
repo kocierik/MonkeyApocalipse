@@ -288,8 +288,7 @@ bool EngineGame::isEnemy(int x, int y) {
   return mvinch(y, x) == 'e' || mvinch(y, x) == 'E' || mvinch(y, x) == 'B';
 }
 bool EngineGame::isBullet(int x, int y) {
-  return mvinch(y, x) == '~' || mvinch(y, x) == '-' || mvinch(y, x) == '=' ||
-         mvinch(y, x) == '*';
+  return mvinch(y, x) == '~' || mvinch(y, x) == '-' || mvinch(y, x) == '=' || mvinch(y, x) == '*';
 }
 bool EngineGame::isPlayerBullet(int x, int y) { return mvinch(y, x) == '~'; }
 bool EngineGame::isEnemyBullet(int x, int y) {
@@ -472,6 +471,16 @@ void EngineGame::choiceGame(DrawWindow drawWindow, int *direction,
     if (cnt > 5) cnt = 0;
     if (cnt < 0) cnt = 5;
   }
+}
+
+void EngineGame::generateFictionalEnemy(pEnemyList &specialEnemyList, pEnemyList &bossEnemyList) {
+  Gun tmpGun(' ', 10, -1, -1);
+  Enemy enemy1(0, 0, ' ', 1, 1, tmpGun);
+  Enemy enemy2(0, 0, ' ', 1, 1, tmpGun);
+  specialEnemyList->enemy = enemy1;
+  specialEnemyList->next = NULL;
+  bossEnemyList->enemy = enemy2;
+  bossEnemyList->next = NULL;
 }
 
 pEnemyList EngineGame::generateEnemy(int *enemyCount, int type, pEnemyList enemyList,
@@ -782,12 +791,22 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
   int powerUpDMG = 0;  // NUMERO DI POWERUP AL DANNO AQUISTATI
   int bananas = 0, roundPayed = 0;
   int bonusTime = 0, upgradeTime = 0, bonusType = 0, upgradeType = 0;
-  int normalEnemyCount = 1, specialEnemyCount = 1, bossEnemyCount = 1;
+  int normalEnemyCount = 1, specialEnemyCount = 0, bossEnemyCount = 0;
   int maxRoom = 1;
-  pEnemyList normalEnemyList = NULL, specialEnemyList = NULL,
-             bossEnemyList = NULL;
+  pEnemyList normalEnemyList = NULL, specialEnemyList = new EnemyList, bossEnemyList = new EnemyList;
+  generateFictionalEnemy(specialEnemyList, bossEnemyList);
   pPosition mountainList = new Position, bonusList = new Position;
   pRoom roomList = new Room;
+
+  /*
+  Gun tmpGun(' ', 10, -1, -1);
+  Enemy enemy1(0, 0, ' ', 1, 1, tmpGun);
+  Enemy enemy2(0, 0, ' ', 1, 1, tmpGun);
+  specialEnemyList->enemy = enemy1;
+  bossEnemyList->enemy = enemy2;
+  specialEnemyList->next = NULL;
+  bossEnemyList->next = NULL;
+  */
 
   Gun basicPlayerGun('~', 25, 40, 10);
   character.setGun(basicPlayerGun);
