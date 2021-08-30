@@ -843,9 +843,9 @@ pRoom DrawWindow::changeRoom(Character &character, int &normalEnemyCount, int &s
       roomList->bonusList = generateBonus(bonusList, bonusCounter);
       roomList = saveRoom(mountainList, bonusList, roomList);
       
-      normalEnemyCount = 2;  // +1 perhé maxRoom si inccrementa alla fine
-      specialEnemyCount = 2;  // +1 perhé maxRoom si inccrementa alla fine
-      bossEnemyCount = 2;  // +1 perhé maxRoom si inccrementa alla fine
+      //normalEnemyCount = 2;  // +1 perhé maxRoom si inccrementa alla fine
+      //specialEnemyCount = 2;  // +1 perhé maxRoom si inccrementa alla fine
+      //bossEnemyCount = 2;  // +1 perhé maxRoom si inccrementa alla fine
 
       if (maxRoom <= NORMAL_ENEMY_LIMIT)
         normalEnemyCount = maxRoom + 1;  // +1 perhé maxRoom si inccrementa alla fine
