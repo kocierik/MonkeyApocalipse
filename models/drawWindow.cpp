@@ -848,22 +848,21 @@ pRoom DrawWindow::changeRoom(Character &character, int &normalEnemyCount, int &s
       else 
         normalEnemyCount = NORMAL_ENEMY_LIMIT;        // NEMICI NORMALI OKKKKK
       
-      if (maxRoom % 2 == 0)
+      if (maxRoom % SPECIAL_ENEMY_FREQUENCY == 0)
         specialEnemyCount = 2;
       else
         specialEnemyCount = 0;
 
-      if (maxRoom % 3 == 0)
+      if (maxRoom % BOSS_ENEMY_FREQUENCY == 0)
         bossEnemyCount = 2;
       else
         bossEnemyCount = 0;
 
       // Serve per scorrere (nella lista dei nemici, se generata) il primo nemico, quello fittizio
       normalEnemyList = normalEnemyList->next;
-      
-      if (maxRoom % 2 == 0) 
+      if (maxRoom % SPECIAL_ENEMY_FREQUENCY == 0) 
         specialEnemyList = specialEnemyList->next;
-      if (maxRoom % 3 == 0) 
+      if (maxRoom % BOSS_ENEMY_FREQUENCY == 0)
         bossEnemyList = bossEnemyList->next;
       maxRoom += 1;
     }

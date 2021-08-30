@@ -365,7 +365,8 @@ void EngineGame::moveCharacter(
       break;
     case 'E':  // Sparo in avanti del player
     case 'e':
-      if (whileCount / 2 > 1 && character.getGun().getMagazineAmmo() > 0) {
+      // Controllo della condizione di assenza della montagna NON FUNZIONANTE (non so come mai)
+      if (whileCount / 2 > 1 && character.getGun().getMagazineAmmo() > 0 && !isMountain(character.getX() + 1, character.getY())) {
         character.decreaseMagazineAmmo(1);
         this->playerBullets =
             generateBullets(character, true, true, this->playerBullets);
@@ -374,7 +375,8 @@ void EngineGame::moveCharacter(
       break;
     case 'W':  // Sparo all'indietro del player
     case 'w':
-      if (whileCount / 2 > 1 && character.getGun().getMagazineAmmo() > 0) {
+      // Controllo della condizione di assenza della montagna NON FUNZIONANTE (non so come mai)
+      if (whileCount / 2 > 1 && character.getGun().getMagazineAmmo() > 0 && !isMountain(character.getX() - 1, character.getY())) {
         character.decreaseMagazineAmmo(1);
         this->playerBullets =
             generateBullets(character, true, false, this->playerBullets);
