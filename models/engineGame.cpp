@@ -509,8 +509,9 @@ pEnemyList EngineGame::generateEnemy(int *enemyCount, int type, pEnemyList enemy
     isEmpty = true;
   }
   if (isEmpty) {
+    gun.setBulletSkin(' ');
     pEnemyList head = new EnemyList;
-    Enemy enemy(0, 0, 'X', life, 1, gun);
+    Enemy enemy(0, 0, ' ', life, 1, gun);
     head->enemy = enemy;
     head->next = enemyList;
     enemyList = head;
