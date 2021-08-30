@@ -798,16 +798,6 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
   pPosition mountainList = new Position, bonusList = new Position;
   pRoom roomList = new Room;
 
-  /*
-  Gun tmpGun(' ', 10, -1, -1);
-  Enemy enemy1(0, 0, ' ', 1, 1, tmpGun);
-  Enemy enemy2(0, 0, ' ', 1, 1, tmpGun);
-  specialEnemyList->enemy = enemy1;
-  bossEnemyList->enemy = enemy2;
-  specialEnemyList->next = NULL;
-  bossEnemyList->next = NULL;
-  */
-
   Gun basicPlayerGun('~', 25, 40, 10);
   character.setGun(basicPlayerGun);
   clear();
