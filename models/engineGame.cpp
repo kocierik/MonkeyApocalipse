@@ -45,7 +45,10 @@ void EngineGame::baseCommand() {
 Pbullet EngineGame::generateBullets(Character character, bool isPlayerBullet,
                                     bool moveFoward, Pbullet &bulletList) {
   Pbullet bullet = new Bullet;
-  bullet->x = character.getX();
+  if (moveFoward)
+    bullet->x = character.getX() - 1;
+  else
+    bullet->x = character.getX() + 1;
   bullet->y = character.getY();
   bullet->speed = 1;
   bullet->skin = character.getGun().getBulletSkin();
@@ -282,25 +285,17 @@ void EngineGame::checkBulletCollision(Pbullet &bulletList, Character &character,
 
 bool EngineGame::isEmpty(int x, int y) { return mvinch(y, x) == ' '; }
 bool EngineGame::isBonus(int x, int y) { return mvinch(y, x) == '?'; }
-bool EngineGame::isMountain(int x, int y) { return mvinch(y, x) == '^'; }
 bool EngineGame::isPlayer(int x, int y) { return mvinch(y, x) == 'M'; }
-bool EngineGame::isEnemy(int x, int y) {
-  return mvinch(y, x) == 'e' || mvinch(y, x) == 'E' || mvinch(y, x) == 'B';
-}
-bool EngineGame::isBullet(int x, int y) {
-  return mvinch(y, x) == '~' || mvinch(y, x) == '-' || mvinch(y, x) == '=' || mvinch(y, x) == '*';
-}
+bool EngineGame::isEnemy(int x, int y) { return mvinch(y, x) == 'e' || mvinch(y, x) == 'E' || mvinch(y, x) == 'B'; }
+bool EngineGame::isBullet(int x, int y) { return mvinch(y, x) == '~' || mvinch(y, x) == '-' || mvinch(y, x) == '=' || mvinch(y, x) == '*'; }
 bool EngineGame::isPlayerBullet(int x, int y) { return mvinch(y, x) == '~'; }
-bool EngineGame::isEnemyBullet(int x, int y) {
-  return mvinch(y, x) == '-' || mvinch(y, x) == '=' || mvinch(y, x) == '*';
-}
 
 void EngineGame::moveCharacter(
     DrawWindow drawWindow, Character &character, int direction, pRoom &roomList,
     pEnemyList normalEnemyList, int &pointsOnScreen, int &bananas,
     int &powerUpDMG, bool &bonusPicked, int &bonusType, int &bonusTime,
     bool &upgradeBuyed, int &upgradeType, int &upgradeTime,
-    bool &immortalityCheck, int &immortalityTime, bool &toTheRight, int upgradeCost) {
+    bool &immortalityCheck, int &immortalityTime, bool &toTheRight, int upgradeCost, pPosition mountainList) {
   srand(time(0));
   switch (direction) {  // Movimento con wasd per il player 1 e frecce per il player 2
     case KEY_UP:
@@ -365,7 +360,7 @@ void EngineGame::moveCharacter(
     case 'E':  // Sparo in avanti del player
     case 'e':
       // Controllo della condizione di assenza della montagna NON FUNZIONANTE (non so come mai)
-      if (whileCount / 2 > 1 && character.getGun().getMagazineAmmo() > 0 && !isMountain(character.getX() + 1, character.getY())) {
+      if (whileCount / 2 > 1 && character.getGun().getMagazineAmmo() > 0) {
         character.decreaseMagazineAmmo(1);
         this->playerBullets =
             generateBullets(character, true, true, this->playerBullets);
@@ -375,7 +370,7 @@ void EngineGame::moveCharacter(
     case 'W':  // Sparo all'indietro del player
     case 'w':
       // Controllo della condizione di assenza della montagna NON FUNZIONANTE (non so come mai)
-      if (whileCount / 2 > 1 && character.getGun().getMagazineAmmo() > 0 && !isMountain(character.getX() - 1, character.getY())) {
+      if (whileCount / 2 > 1 && character.getGun().getMagazineAmmo() > 0) {
         character.decreaseMagazineAmmo(1);
         this->playerBullets =
             generateBullets(character, true, false, this->playerBullets);
@@ -810,10 +805,11 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     bossEnemyList = generateEnemy(&bossEnemyCount, 2, bossEnemyList, drawWindow);
 
     getInput(direction);
+
     moveCharacter(drawWindow, character, direction, roomList, normalEnemyList,
                   pointsOnScreen, bananas, powerUpDMG, bonusPicked, bonusType,
                   bonusTime, upgradeBuyed, upgradeType, upgradeTime, immortalityCheck,
-                  immortalityTime, toTheRight, upgradeCost);
+                  immortalityTime, toTheRight, upgradeCost, roomList->mountainList);
     clear();
 
     noEnemy = checkNoEnemy(drawWindow, normalEnemyList, specialEnemyList, bossEnemyList);

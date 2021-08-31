@@ -41,11 +41,9 @@ class EngineGame {
 
   bool isEmpty(int x, int y);
   bool isBonus(int x, int y);
-  bool isMountain(int x, int y);
   bool isEnemy(int x, int y);
   bool isPlayer(int x, int y);
   bool isBullet(int x, int y);
-  bool isEnemyBullet(int x, int y);
   bool isPlayerBullet(int x, int y);
 
   void choiceGame(DrawWindow drawWindow, int *direction, int *selection);
@@ -54,7 +52,7 @@ class EngineGame {
                      int &bananas, int &powerUpDMG, bool &bonusPicked, int &bonustype,
                      int &bonusTime, bool &upgradeBuyed, int &upgradeType,
                      int &upgradeTime, bool &immortalityCheck, int &immortalityTime,
-                     bool &toTheRight, int upgradeCost);
+                     bool &toTheRight, int upgradeCost, pPosition mountainList);
 
   void generateFictionalEnemy(pEnemyList &specialEnemyList, pEnemyList &bossEnemyList);
   pEnemyList generateEnemy(int *enemyCount, int type, pEnemyList enemyList,
