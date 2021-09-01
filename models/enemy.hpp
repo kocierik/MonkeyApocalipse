@@ -7,7 +7,7 @@ class Enemy : public Character {
   int deathScore;
  public:
   Enemy();
-  Enemy(int x, int y, char skin, int life, int numberLife, Gun gun);
+  Enemy(int x, int y, char skin, int life, int numberLife, Gun gun, int deathScore);
   int getDeathScore();
   void setDeathScore(int deathScore);
 };

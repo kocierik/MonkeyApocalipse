@@ -272,7 +272,7 @@ void EngineGame::checkBulletCollision(Pbullet &bulletList, Character &character,
     enemyList->enemy.decreaseLife(character.getGun().getDamage());
     if (enemyList->enemy.getLife() <= 0) {
       enemyList = destroyEnemy(tmp, enemyList->enemy);
-      increasePointOnScreen(pointOnScreen, scoreForKill);
+      increasePointOnScreen(pointOnScreen, enemyList->enemy.getDeathScore());
     }
   } else if (characterHit && immortalityCheck == false) {
     character.decreaseLife(enemyList->enemy.getGun().getDamage());
@@ -444,7 +444,7 @@ void EngineGame::gorillaPunch(int direction, Character &character,
         enemyList->enemy.decreaseLife(40);
         if (enemyList->enemy.getLife() <= 0) {
           enemyList = destroyEnemy(tmp, enemyList->enemy);
-          increasePointOnScreen(pointOnScreen, scoreForKill);
+          increasePointOnScreen(pointOnScreen, enemyList->enemy.getDeathScore());
         }
         attroff(COLOR_PAIR(13));
       }
@@ -470,8 +470,8 @@ void EngineGame::choiceGame(DrawWindow drawWindow, int *direction,
 
 void EngineGame::generateFictionalEnemy(pEnemyList &specialEnemyList, pEnemyList &bossEnemyList) {
   Gun tmpGun(' ', 10, -1, -1);
-  Enemy enemy1(0, 0, ' ', 1, 1, tmpGun);
-  Enemy enemy2(0, 0, ' ', 1, 1, tmpGun);
+  Enemy enemy1(0, 0, ' ', 1, 1, tmpGun, 0);
+  Enemy enemy2(0, 0, ' ', 1, 1, tmpGun, 0);
   specialEnemyList->enemy = enemy1;
   specialEnemyList->next = NULL;
   bossEnemyList->enemy = enemy2;
@@ -482,7 +482,7 @@ pEnemyList EngineGame::generateEnemy(int *enemyCount, int type, pEnemyList enemy
                                      DrawWindow drawWindow) {
   // Variables 4 basic enemies
   char skin = 'e';
-  int life = 10, deathScore = 50;
+  int life = 10, deathScore = 100;
   Gun gun('-', 10, -1, -1);
   switch (type) {
     case 0:  // Basic enemies, no variables changes
@@ -507,7 +507,7 @@ pEnemyList EngineGame::generateEnemy(int *enemyCount, int type, pEnemyList enemy
     x = drawWindow.randomPosition(40, 69).x;
     y = drawWindow.randomPosition(8, 19).y; 
     pEnemyList head = new EnemyList;
-    Enemy enemy(x, y, skin, life, 1, gun);
+    Enemy enemy(x, y, skin, life, 1, gun, deathScore);
     head->enemy = enemy;
     head->next = enemyList;
     *enemyCount -= 1;
@@ -517,7 +517,7 @@ pEnemyList EngineGame::generateEnemy(int *enemyCount, int type, pEnemyList enemy
   if (isEmpty) {
     gun.setBulletSkin(' ');
     pEnemyList head = new EnemyList;
-    Enemy enemy(0, 0, ' ', life, 1, gun);
+    Enemy enemy(0, 0, ' ', life, 1, gun, deathScore);
     head->enemy = enemy;
     head->next = enemyList;
     enemyList = head;
