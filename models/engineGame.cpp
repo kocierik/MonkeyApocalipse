@@ -10,7 +10,6 @@
 // Numero di casi dello switch che gestisce i bonus. Equivale a: n bonus
 #define BONUS 15
 
-const int scoreForKill = 300;
 float finalScore = 0;
 
 EngineGame::EngineGame(int frameGameX, int frameGameY, int topHeigth, int bottomHeigth, int leftWidth, int rightWidth) {
