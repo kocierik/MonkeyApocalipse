@@ -27,6 +27,8 @@ class DrawWindow {
   void HowToPlay(int direction);
   void printLoseScreen(float finalScore);
   void loseScreen(int direction, float finalScore);
+  void printSplashScreen();
+  void splashScreen(int direction);
   void printLeaderboardScreen();
   void leaderboardScreen(int direction);
   void drawStats(int startX, int startY, int rightWidth, int bottomHeight,

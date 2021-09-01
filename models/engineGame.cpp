@@ -677,6 +677,8 @@ void EngineGame::engine(Character character, DrawWindow drawWindow) {
     switch (selection) {
       case 0:     // FUN (single player)
         pause = false;
+        clear();
+        drawWindow.splashScreen(direction);
         runGame(character, drawWindow, direction);
         clear();
         drawWindow.loseScreen(direction, finalScore);

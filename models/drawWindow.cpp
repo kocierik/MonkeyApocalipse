@@ -873,72 +873,77 @@ pRoom DrawWindow::changeRoom(Character &character, int &normalEnemyCount, int &s
   return roomList;
 }
 
+void DrawWindow::printSplashScreen() {
+  int prog = LINES/2 - 15;
+  for(int y = 0; y < 20; y++ ){
+    init_pair(8, COLOR_BLACK, 232);
+    attron(COLOR_PAIR(8));
+    mvprintw(prog, COLS/2 - 53, "                                                                                                          ");
+    prog++;
+    attroff(COLOR_PAIR(8));
+  }
+
+  init_pair(3, COLOR_YELLOW, 232);
+  attron(COLOR_PAIR(3));
+  mvprintw(LINES/2 - 13, COLS/2 - 34, "THE FORCES OF THE UNITED NATIONS MADE THEIR WAY TO THE HEADQUARTERS.");
+  mvprintw(LINES/2 - 12, COLS/2 - 30, "TO PROTECT THE OTHER MONKEYS AND NOT STOP THE MONKEY ADVANCE,");
+  mvprintw(LINES/2 - 11, COLS/2 - 16, "THERE IS ONLY ONE THING TO DO...");
+  mvprintw(LINES/2 + 1, COLS/2 - 11, "Press [SPACE] to start!");
+  attroff(COLOR_PAIR(3));
+
+  init_pair(1, COLOR_RED, 232);
+  attron(COLOR_PAIR(1));
+  mvprintw(LINES/2 - 9, COLS/2 - 26, " _______  __    _______  __    __  .___________. __  ");
+  mvprintw(LINES/2 - 8, COLS/2 - 26, "|   ____||  |  /  _____||  |  |  | |           ||  | ");
+  mvprintw(LINES/2 - 7, COLS/2 - 26, "|  |__   |  | |  |  __  |  |__|  | `---|  |----`|  | ");
+  mvprintw(LINES/2 - 6, COLS/2 - 26, "|   __|  |  | |  | |_ | |   __   |     |  |     |  | ");
+  mvprintw(LINES/2 - 5, COLS/2 - 26, "|  |     |  | |  |__| | |  |  |  |     |  |     |__| ");
+  mvprintw(LINES/2 - 4, COLS/2 - 26, "|__|     |__|  \\______| |__|  |__|     |__|     (__) ");
+  attroff(COLOR_PAIR(1));
+
+  init_pair(4, COLOR_WHITE, 232);
+  attron(COLOR_PAIR(4));
+  mvprintw(LINES/2 + 1, COLS/2 - 11, "Press [SPACE] to start!");
+  attroff(COLOR_PAIR(4));
+
+}
+
+void DrawWindow::splashScreen(int direction) {
+  direction = 0;
+  while (direction != 32) {
+    printSplashScreen();
+    direction = getch();  // ASPETTA UN TASTO IN INPUT
+  }
+}
+
 void DrawWindow::printLoseScreen(float finalScore) {
+  int prog = LINES/2 - 15;
+  for(int y = 0; y < 20; y++ ){
+    init_pair(8, COLOR_BLACK, 232);
+    attron(COLOR_PAIR(8));
+    mvprintw(prog, COLS/2 - 53, "                                                                                                          ");
+    prog++;
+    attroff(COLOR_PAIR(8));
+  }
+
   init_pair(16, COLOR_RED, 232);
   attron(COLOR_PAIR(16));
-  mvprintw(3, 3,
-           "                                                                   "
-           "                              ");
-  mvprintw(4, 3,
-           "                          __ _  __ _ _ __ ___   ___    _____   "
-           "_____ _ __                        ");
-  mvprintw(5, 3,
-           "                         / _` |/ _` | '_ ` _ \\ / _ \\  / _ \\ \\ "
-           "/ / _ \\ '__|                       ");
-  mvprintw(6, 3,
-           "                        | (_| | (_| | | | | | |  __/ | (_) \\ V /  "
-           "__/ |                          ");
-  mvprintw(7, 3,
-           "                         \\__, |\\__,_|_| |_| |_|\\___|  \\___/ "
-           "\\_/ \\___|_|                          ");
-  mvprintw(8, 3,
-           "                         |___/                                     "
-           "                              ");
-  mvprintw(9, 3,
-           "                                                                   "
-           "                              ");
-  mvprintw(10, 3,
-           "                                                                   "
-           "                              ");
+  mvprintw(LINES/2 - 13, COLS/2 - 26,"  __ _  __ _ _ __ ___   ___    _____   _____ _ __      ");
+  mvprintw(LINES/2 - 12, COLS/2 - 26," / _` |/ _` | '_ ` _ \\ / _ \\  / _ \\ \\ / / _ \\ '__|");
+  mvprintw(LINES/2 - 11, COLS/2 - 26,"| (_| | (_| | | | | | |  __/ | (_) \\ V /  __/ |       ");
+  mvprintw(LINES/2 - 10, COLS/2 - 26," \\__, |\\__,_|_| |_| |_|\\___|  \\___/ \\_/ \\___|_|   ");
+  mvprintw(LINES/2 - 9, COLS/2 - 26, " |___/                                                  ");
   attroff(COLOR_PAIR(16));
 
   init_pair(17, COLOR_GREEN, 232);
   attron(COLOR_PAIR(17));
-  mvprintw(11, 3,
-           "               HUNTERS HAVE TRACKED YOU, SURROUNDED AND FINALLY "
-           "THEY KILLED YOU...               ");
-  mvprintw(12, 3,
-           "                                                                   "
-           "                              ");
-  mvprintw(13, 3,
-           "                             YOUR LIFE GOES AWAY WITH YOUR "
-           "REVENGE.                              ");
-  mvprintw(14, 3,
-           "                                                                   "
-           "                              ");
-  mvprintw(15, 3,
-           "            BUT DON'T GET MAD, THERE ARE THOUSANDS OF MONKEYS "
-           "READY TO REBELL AGAIN...           ");
-  mvprintw(16, 3,
-           "                                      ...SOONER OR THEN...         "
-           "                              ");
-  mvprintw(17, 3,
-           "                                                                   "
-           "                              ");
-  mvprintw(18, 3,
-           "                                                                   "
-           "                              ");
-  mvprintw(19, 3,
-           "     FINAL SCORE:                                                  "
-           "                              ");
-  mvprintw(19, 21, "%.0f", finalScore);
-  mvprintw(20, 3,
-           "                                                                    set score & exit [ENTER]     ");
-  mvprintw(21, 3,
-           "                                                                 (no name will not save score)   ");
-  mvprintw(22, 3,
-           "                                                                   "
-           "                              ");
+  mvprintw(LINES/2 - 7, COLS/2 - 35,"HUNTERS HAVE TRACKED YOU, SURROUNDED AND FINALLY ""THEY KILLED YOU...");
+  mvprintw(LINES/2 - 5, COLS/2 - 20,"YOUR LIFE GOES AWAY WITH YOUR ""REVENGE.");
+  mvprintw(LINES/2 - 3, COLS/2 - 38,"BUT DON'T GET MAD, THERE ARE THOUSANDS OF MONKEYS ""READY TO REBELL AGAIN...");
+  mvprintw(LINES/2 - 2, COLS/2 - 10,"...SOONER OR THEN...");
+  mvprintw(LINES/2 + 2, COLS/2 - 48,"FINAL SCORE: %.0f", finalScore);
+  mvprintw(LINES/2 + 2, COLS/2 + 24,"set score & exit [ENTER]");
+  mvprintw(LINES/2 + 3, COLS/2 + 21,"(no name will not save score)");
   attroff(COLOR_PAIR(17));
 }
 
@@ -977,8 +982,8 @@ void DrawWindow::loseScreen(int direction, float finalScore) {
 
     init_pair(17, COLOR_GREEN, 232);
     attron(COLOR_PAIR(17));
-    mvprintw(21, 21, "__________");
-    mvprintw(21, 8, "INSERT NAME: %s", name);
+    mvprintw(LINES/2 + 3, COLS/2 - 35, "__________");
+    mvprintw(LINES/2 + 3, COLS/2 - 48,"INSERT NAME: %s", name);
     attroff(COLOR_PAIR(17));
     refresh();
     direction = getstr(name2);
