@@ -553,17 +553,21 @@ pPosition EngineGame::getBonus(DrawWindow drawWindow, int x, int y,
           end = true;
           break;
         case 4:  // Malus name: "BANANAS SPIDER [-10 HP]"
-          if (character.getNumberLife() == 1 && character.getLife() <= 10)
-            character.setLife(5);
-          else
-            character.decreaseLife(10);
+          if(immortalitycheck == false){
+            if (character.getNumberLife() == 1 && character.getLife() <= 10)
+              character.setLife(5);
+            else
+              character.decreaseLife(10);
+          }
           end = true;
           break;
         case 5:  // Malus name: "MONKEY TRAP [-30 HP]"
-          if (character.getNumberLife() == 1 && character.getLife() <= 30)
-            character.setLife(5);
-          else
-            character.decreaseLife(30);
+          if(immortalitycheck == false){
+            if (character.getNumberLife() == 1 && character.getLife() <= 30)
+              character.setLife(5);
+            else
+              character.decreaseLife(30);
+          }
           end = true;
           break;
         case 6:  // Bonus name: "EAT 1 BANANA [+10 HP]"
