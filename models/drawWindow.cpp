@@ -189,6 +189,7 @@ void DrawWindow::printCredits() {
   attroff(COLOR_PAIR(2));
 }
 void DrawWindow::credits(int direction) {
+  direction = 0;
   while (direction != 27) {
     printCredits();       // STAMPA GLI AUTORI DEL GIOCO
     direction = getch();  // ASPETTA UN TASTO IN INPUT
@@ -356,6 +357,7 @@ void DrawWindow::printHowToPlay() {  // GESTISCE LA SCHERMATA DEL HOW TO PLAY
   attroff(COLOR_PAIR(2));  // CHIUSURA DEL COLORE VERDE
 }
 void DrawWindow::HowToPlay(int direction) {
+  direction = 0;
   while (direction != 27) {
     printHowToPlay();     // STAMPA LE HOW TO PLAY
     direction = getch();  // ASPETTA UN TASTO IN INPUT
@@ -974,6 +976,7 @@ void DrawWindow::saveRecord(float finalScore, char name[]) {
 }
 
 void DrawWindow::loseScreen(int direction, float finalScore) {
+  direction = 32;
   char name[MAXNAMECHARACTER] = {'\0'};
   char name2[MAXNAMECHARACTER] = {'\0'};
   while (direction != 0) {
