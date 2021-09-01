@@ -88,22 +88,22 @@ void DrawWindow::printCommand(int *cnt) {
   if (*cnt == 0) {
     attron(COLOR_PAIR(12));
     mvprintw(LINES/2+1, COLS/2-17, "                                    ");
-    mvprintw(LINES/2+2, COLS/2-17, "                FUN                 ");
+    mvprintw(LINES/2+2, COLS/2-17, "         FIGHT FOR FREEDOM!         ");
     mvprintw(LINES/2+3, COLS/2-17, "                                    ");
     attroff(COLOR_PAIR(12));
   } else {
     mvprintw(LINES/2+1, COLS/2-17, "                                    ");
-    mvprintw(LINES/2+2, COLS/2-17, "                FUN                 ");
+    mvprintw(LINES/2+2, COLS/2-17, "         FIGHT FOR FREEDOM!         ");
     mvprintw(LINES/2+3, COLS/2-17, "                                    ");
   } if (*cnt == 1) {
     attron(COLOR_PAIR(12));
     mvprintw(LINES/2+4, COLS/2-17, "                                    ");
-    mvprintw(LINES/2+5, COLS/2-17, "              BIG FUN               ");
+    mvprintw(LINES/2+5, COLS/2-17, "        APES STRONG TOGETHER        ");
     mvprintw(LINES/2+6, COLS/2-17, "                                    ");
     attroff(COLOR_PAIR(12));
   } else {
     mvprintw(LINES/2+4, COLS/2-17, "                                    ");
-    mvprintw(LINES/2+5, COLS/2-17, "              BIG FUN               ");
+    mvprintw(LINES/2+5, COLS/2-17, "        APES STRONG TOGETHER        ");
     mvprintw(LINES/2+6, COLS/2-17, "                                    ");
   } if (*cnt == 2) {
     attron(COLOR_PAIR(12));
