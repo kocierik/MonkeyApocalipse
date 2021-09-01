@@ -371,7 +371,7 @@ void DrawWindow::printCharacter(int x, int y, char c) {
 
 void DrawWindow::drawRect(
     int startX, int startY, int rightWidth, int bottomHeight, bool noEnemy,
-    int maxRoom, bool isScreenBound) {  // isScreenBound SI UNA PER FLAGGARE CHE È
+    int maxRoom, bool isScreenBound, pRoom roomList) {  // isScreenBound SI UNA PER FLAGGARE CHE È
                                       // IL RETTANGOLO CHE DELIMITA LO SCHERMO,
                                       // QUINDI NON DEVE APRIRSI
   for (int i = startY; i < rightWidth; ++i) {
@@ -384,7 +384,7 @@ void DrawWindow::drawRect(
       mvprintw(i, rightWidth, "|");
     }
   }
-  if (maxRoom == 1) {
+  if (lengthListRoom(roomList) == 1) {
     for (int i = startX; i < bottomHeight; ++i) {
       mvprintw(i, startY, "|");
     }
@@ -469,8 +469,8 @@ void DrawWindow::drawStats(int startX, int startY, int rightWidth, int bottomHei
 
   init_pair(11, COLOR_WHITE, 232);
   attron(COLOR_PAIR(11));
-  drawRect(startX - 4, startY - 11, rightWidth + 12, bottomHeight + 12, noEnemy, 0, true);
-  drawRect(startX - 4, startY + 65, rightWidth + 40, bottomHeight + 12, noEnemy, 0, true);
+  drawRect(startX - 4, startY - 11, rightWidth + 12, bottomHeight + 12, noEnemy, 0, true, roomList);
+  drawRect(startX - 4, startY + 65, rightWidth + 40, bottomHeight + 12, noEnemy, 0, true, roomList);
   attroff(COLOR_PAIR(11));
 
   init_pair(3, COLOR_YELLOW, -1);  // FUNZIONI PER USARE I COLORI
@@ -827,7 +827,7 @@ pRoom DrawWindow::saveRoom(pPosition mountainList, pPosition bonusList,
 pRoom DrawWindow::changeRoom(Character &character, int &normalEnemyCount, int &specialEnemyCount, int &bossEnemyCount,
                              pEnemyList &normalEnemyList, pEnemyList &specialEnemyList, pEnemyList &bossEnemyList,
                              pPosition &mountainList, pPosition &bonusList, pRoom roomList, int &maxRoom) {
-  if (character.getX() == GAMEWIDTH) {
+  if (character.getX() >= GAMEWIDTH) {
     // Questo if si "attiva" quando torni nella stanza precedente e poi ritorni nella successiva
     if (maxRoom > lengthListRoom(roomList)) {
       roomList = roomList->prev;

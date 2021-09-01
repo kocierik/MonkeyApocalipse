@@ -818,7 +818,7 @@ void EngineGame::runGame(Character character, DrawWindow drawWindow,
     drawWindow.printCharacter(character.getX(), character.getY(),
                               character.getSkin());
     drawWindow.drawRect(this->frameGameX, this->frameGameY, this->rightWidth,
-                        this->bottomHeigth, noEnemy, maxRoom, false);
+                        this->bottomHeigth, noEnemy, maxRoom, false, roomList);
     drawWindow.drawStats(this->frameGameX, this->frameGameY, this->rightWidth,
                          this->bottomHeigth, pointsOnScreen, character,
                          noEnemy, powerUpDMG, bananas, maxRoom, roomList);
