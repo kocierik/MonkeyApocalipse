@@ -109,11 +109,20 @@ void EngineGame::destroyBullet(Pbullet &bulletList, int xP1, int xP2) {
       if ((head->isPlayerBullet && head->moveFoward) ||
           (!head->isPlayerBullet && !head->moveFoward))
         range = 1;
-
+      
       mustDestroyCondition = !isEmpty(head->x + range, head->y) &&
                             !isBonus(head->x + range, head->y) && !isBullet(head->x + range, head->y);
       if (!head->isPlayerBullet)
         mustDestroyCondition &= !isEnemy(head->x + range, head->y);
+        //mustDestroyCondition &= !isEnemy(head->x + range, head->y) && (!(mvinch(head->x + range, head->y) == 'o')); // Controllo che non funziona
+
+      /* In teoria la condizione di distruzione del proiettile dovrebbe dipendere solo dai questi controlli commentati...
+      int x = head->x + range, y = head->y;
+      if (head->isPlayerBullet)
+        mustDestroyCondition = (mvinch(y, x) == '^' || mvinch(y, x) == 'B' || mvinch(y, x) == 'E' || mvinch(y, x) == 'e');
+      else
+        mustDestroyCondition = (mvinch(y, x) == '^' || mvinch(y, x) == 'M' || mvinch(y, x) == 'm');
+      */
 
       if (mustDestroyCondition || head->x > 70 || head->x < 23) {
         if (head == bulletList) {
