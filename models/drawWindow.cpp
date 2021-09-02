@@ -833,10 +833,10 @@ pRoom DrawWindow::changeRoom(Character &character, Character &character2, int &n
     if (maxRoom > lengthListRoom(roomList)) {
       roomList = roomList->prev;
       character.setX(23);
-      character2.setX(23);
+      character2.setX(24);
     } else if (maxRoom == lengthListRoom(roomList)) {
       character.setX(23);
-      character2.setX(23);
+      character2.setX(24);
       int mountainCount = rand() % 8 + 1, bonusCounter = 1;
       if (maxRoom < 2)
         bonusCounter = 0;
