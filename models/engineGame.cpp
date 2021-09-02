@@ -775,9 +775,6 @@ void EngineGame::checkDeath(bool &pause, Character &character) {
       character.setLife(100);
     }
   }
-  if (character.getNumberLife() <= 0) {
-    pause = true;
-  }
 }
 
 void EngineGame::checkMountainDamage(Pbullet bulletList,
@@ -947,8 +944,7 @@ void EngineGame::runGame(Character character, Character character2, DrawWindow d
                   pointsOnScreen, bananas, powerUpDMG, bonusPicked, bonusType,
                   bonusTime, upgradeBuyed, upgradeType, upgradeTime, immortalityCheck,
                   immortalityTime, toTheRight, upgradeCost, roomList->mountainList);
-    
-    moveCharacter2(drawWindow, character2, direction, roomList, normalEnemyList,
+    if(multiplayer) moveCharacter2(drawWindow, character2, direction, roomList, normalEnemyList,
                   pointsOnScreen, bananas, powerUpDMG, bonusPicked, bonusType,
                   bonusTime, upgradeBuyed, upgradeType, upgradeTime, immortalityCheck,
                   immortalityTime, toTheRight, upgradeCost, roomList->mountainList);
@@ -956,10 +952,12 @@ void EngineGame::runGame(Character character, Character character2, DrawWindow d
 
     noEnemy = checkNoEnemy(drawWindow, normalEnemyList, specialEnemyList, bossEnemyList);
     
-    drawWindow.printCharacter(character.getX(), character.getY(),
+    if (character.getNumberLife() >= 0) drawWindow.printCharacter(character.getX(), character.getY(),
                               character.getSkin());
-    drawWindow.printCharacter(character2.getX(), character2.getY(),
+    if(multiplayer){
+      if (character.getNumberLife() >= 0) drawWindow.printCharacter(character2.getX(), character2.getY(),
                               character2.getSkin());
+    }  
     
     drawWindow.drawRect(this->frameGameX, this->frameGameY, this->rightWidth,
                         this->bottomHeigth, noEnemy, maxRoom, false, roomList);
@@ -973,7 +971,7 @@ void EngineGame::runGame(Character character, Character character2, DrawWindow d
       drawWindow.printMountain(roomList->next->mountainList);
       drawWindow.printBonus(roomList->next->bonusList);
       checkMountainDamage(this->playerBullets, roomList->next->mountainList);
-      checkMountainDamage(this->playerBullets2, roomList->next->mountainList);
+      if(multiplayer) checkMountainDamage(this->playerBullets2, roomList->next->mountainList);
       checkMountainDamage(this->normalEnemyBullets,
                           roomList->next->mountainList);
       checkMountainDamage(this->specialEnemyBullets,
@@ -1002,13 +1000,13 @@ void EngineGame::runGame(Character character, Character character2, DrawWindow d
     generateEnemyBullets(specialEnemyList, this->specialEnemyBullets, character);
     generateEnemyBullets(bossEnemyList, this->bossEnemyBullets, character);
 
-
+  if(multiplayer){
     generateEnemyBullets(normalEnemyList, this->normalEnemyBullets, character2);
     generateEnemyBullets(specialEnemyList, this->specialEnemyBullets, character2);
     generateEnemyBullets(bossEnemyList, this->bossEnemyBullets, character2);
-
+  }
     moveBullets(this->playerBullets);
-    moveBullets(this->playerBullets2);
+  if(multiplayer) moveBullets(this->playerBullets2);
     moveBullets(this->normalEnemyBullets);
     moveBullets(this->specialEnemyBullets);
     moveBullets(this->bossEnemyBullets);
@@ -1017,10 +1015,11 @@ void EngineGame::runGame(Character character, Character character2, DrawWindow d
     checkEnemyCollision(character, specialEnemyList);
     checkEnemyCollision(character, bossEnemyList);
 
+  if(multiplayer){
     checkEnemyCollision(character2, normalEnemyList);
     checkEnemyCollision(character2, specialEnemyList);
     checkEnemyCollision(character2, bossEnemyList);
-
+  }
 
     gorillaPunch(direction, character, normalEnemyList, pointsOnScreen,
                  toTheRight);
@@ -1029,13 +1028,14 @@ void EngineGame::runGame(Character character, Character character2, DrawWindow d
     gorillaPunch(direction, character, bossEnemyList, pointsOnScreen,
                  toTheRight);
 
+  if(multiplayer){
     gorillaPunch(direction2, character2, normalEnemyList, pointsOnScreen,
                  toTheRight);
     gorillaPunch(direction2, character2, specialEnemyList, pointsOnScreen,
                  toTheRight);
     gorillaPunch(direction2, character2, bossEnemyList, pointsOnScreen,
                  toTheRight);
-
+  }
 
     money(bananas, noEnemy, maxRoom, roundPayed, character, upgradeCost);
     checkBulletCollision(this->playerBullets, character, normalEnemyList,
@@ -1044,14 +1044,14 @@ void EngineGame::runGame(Character character, Character character2, DrawWindow d
                          pointsOnScreen, immortalityCheck);
     checkBulletCollision(this->playerBullets, character, bossEnemyList,
                          pointsOnScreen, immortalityCheck);
-
+  if(multiplayer){
     checkBulletCollision(this->playerBullets2, character2, normalEnemyList,
                          pointsOnScreen, immortalityCheck);
     checkBulletCollision(this->playerBullets2, character2, specialEnemyList,
                          pointsOnScreen, immortalityCheck);
     checkBulletCollision(this->playerBullets2, character2, bossEnemyList,
                          pointsOnScreen, immortalityCheck);
-
+  }
 
     checkBulletCollision(this->normalEnemyBullets, character, normalEnemyList,
                          pointsOnScreen, immortalityCheck);
@@ -1060,25 +1060,34 @@ void EngineGame::runGame(Character character, Character character2, DrawWindow d
     checkBulletCollision(this->bossEnemyBullets, character, bossEnemyList,
                          pointsOnScreen, immortalityCheck);
     
+  if(multiplayer){
     checkBulletCollision(this->normalEnemyBullets, character2, normalEnemyList,
                          pointsOnScreen, immortalityCheck);
     checkBulletCollision(this->specialEnemyBullets, character2, specialEnemyList,
                          pointsOnScreen, immortalityCheck);
     checkBulletCollision(this->bossEnemyBullets, character2, bossEnemyList,
                          pointsOnScreen, immortalityCheck);
-
+  }
     refresh();
   
     destroyBullet(this->playerBullets, character.getX());
-    destroyBullet(this->playerBullets2, character2.getX());
     destroyBullet(this->normalEnemyBullets, character.getX());
     destroyBullet(this->specialEnemyBullets, character.getX());
     destroyBullet(this->bossEnemyBullets, character.getX());
+  if(multiplayer) {
+    destroyBullet(this->playerBullets2, character2.getX());
+    destroyBullet(this->normalEnemyBullets, character2.getX());
+    destroyBullet(this->specialEnemyBullets, character2.getX());
+    destroyBullet(this->bossEnemyBullets, character2.getX());
+  }
     drawWindow.showBonusOnScreen(upgradeBuyed, upgradeType, upgradeTime,
                                  bonusPicked, bonusType, bonusTime,
                                  immortalityCheck, immortalityTime);
     checkDeath(pause, character);
     checkDeath(pause, character2);
+    if (character.getNumberLife() <= 0 && character2.getNumberLife() <= 0) {
+      pause = true;
+    }
     timeout(50);
     isPause(direction, pause);
     finalScore = pointsOnScreen;
