@@ -775,6 +775,9 @@ void EngineGame::checkDeath(bool &pause, Character &character) {
       character.setLife(100);
     }
   }
+  if (character.getNumberLife() <= 0) {
+    pause = true;
+  }
 }
 
 void EngineGame::checkMountainDamage(Pbullet bulletList,
@@ -952,12 +955,10 @@ void EngineGame::runGame(Character character, Character character2, DrawWindow d
 
     noEnemy = checkNoEnemy(drawWindow, normalEnemyList, specialEnemyList, bossEnemyList);
     
-    if (character.getNumberLife() >= 0) drawWindow.printCharacter(character.getX(), character.getY(),
+    drawWindow.printCharacter(character.getX(), character.getY(),
                               character.getSkin());
-    if(multiplayer){
-      if (character.getNumberLife() >= 0) drawWindow.printCharacter(character2.getX(), character2.getY(),
+    if(multiplayer) drawWindow.printCharacter(character2.getX(), character2.getY(),
                               character2.getSkin());
-    }  
     
     drawWindow.drawRect(this->frameGameX, this->frameGameY, this->rightWidth,
                         this->bottomHeigth, noEnemy, maxRoom, false, roomList);
@@ -1079,15 +1080,12 @@ void EngineGame::runGame(Character character, Character character2, DrawWindow d
     destroyBullet(this->normalEnemyBullets, character2.getX());
     destroyBullet(this->specialEnemyBullets, character2.getX());
     destroyBullet(this->bossEnemyBullets, character2.getX());
-  }
+    }
     drawWindow.showBonusOnScreen(upgradeBuyed, upgradeType, upgradeTime,
                                  bonusPicked, bonusType, bonusTime,
                                  immortalityCheck, immortalityTime);
     checkDeath(pause, character);
     checkDeath(pause, character2);
-    if (character.getNumberLife() <= 0 && character2.getNumberLife() <= 0) {
-      pause = true;
-    }
     timeout(50);
     isPause(direction, pause);
     finalScore = pointsOnScreen;
