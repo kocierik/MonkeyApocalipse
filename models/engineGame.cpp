@@ -97,8 +97,8 @@ void EngineGame::moveBullets(Pbullet bulletList) {
   }
 }
 
-void EngineGame::destroyBullet(Pbullet &bulletList, int xP) {
-  if (xP == this->leftWidth || xP == this->rightWidth)
+void EngineGame::destroyBullet(Pbullet &bulletList, int xP1, int xP2) {
+  if (xP1 == this->leftWidth || xP1 == this->rightWidth || xP2 == this->leftWidth || xP2 == this->rightWidth)
     bulletList = NULL;
   else {
     Pbullet head = bulletList, prev = bulletList, tmp;
@@ -915,28 +915,32 @@ void EngineGame::runGame(DrawWindow drawWindow, int direction, bool multiplayer)
   
   Player character(this->frameGameY + 5, this->frameGameX + 5,'M', 100, 3);
   Player character2(this->frameGameY + 6, this->frameGameX + 6,'m', 100, 3);
-  bool toTheRight = true;
+  Gun basicPlayerGun('~', 25, 40, 10);
+  character.setGun(basicPlayerGun);
+  character2.setGun(basicPlayerGun);
+
+  // Variabili per la gestire logistica generale della partita
+  bool noEnemy = false;
   int direction2 = 0;
+  int normalEnemyCount = 1, specialEnemyCount = 0, bossEnemyCount = 0;
+  int maxRoom = 1, pointsOnScreen = 0;
+  long points = 0;
+
+  // Variabili per la gestire logistica di alcuni bonus
+  bool toTheRight = true;
   bool upgradeBuyed = false, bonusPicked = false, immortalityCheck = false;
   int upgradeCost = 10;
-  bool noEnemy = false;
   int immortalityTime = 0;
-  int pointsOnScreen = 0;
-  long points = 0;
   int powerUpDMG = 0;  // NUMERO DI POWERUP AL DANNO AQUISTATI
   int bananas = 0, roundPayed = 0;
   int bonusTime = 0, upgradeTime = 0, bonusType = 0, upgradeType = 0;
-  int normalEnemyCount = 1, specialEnemyCount = 0, bossEnemyCount = 0;
-  int maxRoom = 1;
+
+  // Liste delle varie entità in gioco
   pEnemyList normalEnemyList = NULL, specialEnemyList = new EnemyList, bossEnemyList = new EnemyList;
   generateFictionalEnemy(specialEnemyList, bossEnemyList);
   pPosition mountainList = new Position, bonusList = new Position;
   pRoom roomList = new Room;
-
-
-  Gun basicPlayerGun('~', 25, 40, 10);
-  character.setGun(basicPlayerGun);
-  character2.setGun(basicPlayerGun);
+  
   clear();
 
   while (!pause) {
@@ -1070,19 +1074,23 @@ void EngineGame::runGame(DrawWindow drawWindow, int direction, bool multiplayer)
   }
     refresh();
   
-    destroyBullet(this->playerBullets, character.getX());
-    destroyBullet(this->normalEnemyBullets, character.getX());
-    destroyBullet(this->specialEnemyBullets, character.getX());
-    destroyBullet(this->bossEnemyBullets, character.getX());
-  if(multiplayer) {
-    destroyBullet(this->playerBullets2, character2.getX());
-    destroyBullet(this->normalEnemyBullets, character2.getX());
-    destroyBullet(this->specialEnemyBullets, character2.getX());
-    destroyBullet(this->bossEnemyBullets, character2.getX());
-    }
+  if (multiplayer) {
+    destroyBullet(this->playerBullets, character.getX(), character2.getX());
+    destroyBullet(this->playerBullets2, character.getX(), character2.getX());
+    destroyBullet(this->normalEnemyBullets, character.getX(), character2.getX());
+    destroyBullet(this->specialEnemyBullets, character.getX(), character2.getX());
+    destroyBullet(this->bossEnemyBullets, character.getX(), character2.getX());
+  } else {
+    destroyBullet(this->playerBullets, character.getX(), 0);
+    destroyBullet(this->normalEnemyBullets, character.getX(), 0);
+    destroyBullet(this->specialEnemyBullets, character.getX(), 0);
+    destroyBullet(this->bossEnemyBullets, character.getX(), 0);
+  }
+    
     drawWindow.showBonusOnScreen(upgradeBuyed, upgradeType, upgradeTime,
                                  bonusPicked, bonusType, bonusTime,
                                  immortalityCheck, immortalityTime);
+
     checkDeath(pause, character);
     checkDeath(pause, character2);
     timeout(50);
