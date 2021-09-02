@@ -635,8 +635,8 @@ pEnemyList EngineGame::generateEnemy(int *enemyCount, int type, pEnemyList enemy
   bool isEmpty = false;
   int x, y;
   while (*enemyCount > 0) {
-    x = drawWindow.randomPosition(40, 69).x;
-    y = drawWindow.randomPosition(8, 19).y; 
+    x = drawWindow.generateRandomPosition(40, 69).x;
+    y = drawWindow.generateRandomPosition(8, 19).y; 
     pEnemyList head = new EnemyList;
     Enemy enemy(x, y, skin, life, 1, gun, deathScore);
     head->enemy = enemy;
@@ -822,6 +822,8 @@ void EngineGame::engine(DrawWindow drawWindow) {
         break;
       case 1:     // MORE FUN (multiplayer)
         pause = false;
+        clear();
+        drawWindow.splashScreen(direction);
         runGame(drawWindow, direction,true);
         clear();
         drawWindow.loseScreen(direction, finalScore);
