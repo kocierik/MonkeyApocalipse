@@ -993,9 +993,9 @@ void EngineGame::runGame(Character character, Character character2, DrawWindow d
     drawWindow.printEnemy(specialEnemyList, drawWindow);
     drawWindow.printEnemy(bossEnemyList, drawWindow);
 
-    drawWindow.moveEnemy(normalEnemyList, character, drawWindow, points);
-    drawWindow.moveEnemy(specialEnemyList, character, drawWindow, points);
-    drawWindow.moveEnemy(bossEnemyList, character, drawWindow, points);
+    drawWindow.moveEnemy(normalEnemyList, character, character2, drawWindow, points);
+    drawWindow.moveEnemy(specialEnemyList, character, character2, drawWindow, points);
+    drawWindow.moveEnemy(bossEnemyList, character, character2, drawWindow, points);
 
     generateEnemyBullets(normalEnemyList, this->normalEnemyBullets, character);
     generateEnemyBullets(specialEnemyList, this->specialEnemyBullets, character);
