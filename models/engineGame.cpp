@@ -366,8 +366,9 @@ void EngineGame::moveCharacter(
       }
       toTheRight = true;
       break;
-    case 'M':  // Sparo in avanti del P1
-    case 'm':
+    //case 'M':  // Sparo in avanti del P1
+    //case 'm':
+    case 46:  // Tasto della virgola
       // Controllo della condizione di assenza della montagna NON FUNZIONANTE (non so come mai)
       if (whileCount / 2 > 1 && character.getGun().getMagazineAmmo() > 0) {
         character.decreaseMagazineAmmo(1);
@@ -376,8 +377,9 @@ void EngineGame::moveCharacter(
         whileCount = 0;
       }
       break;
-    case 'N':  // Sparo all'indietro del P1
-    case 'n':
+    //case 'N':  // Sparo all'indietro del P1
+    //case 'n':
+    case 44:   // Tasto del punto
       // Controllo della condizione di assenza della montagna NON FUNZIONANTE (non so come mai)
       if (whileCount / 2 > 1 && character.getGun().getMagazineAmmo() > 0) {
         character.decreaseMagazineAmmo(1);
@@ -386,8 +388,8 @@ void EngineGame::moveCharacter(
         whileCount = 0;
       }
       break;
-    case 'K': // Ricarica dell'arma del P1
-    case 'k':
+    case 'L': // Ricarica dell'arma del P1
+    case 'l':
       if (character.getGun().getMagazineAmmo() >= 0 &&
           character.getGun().getMagazineAmmo() <
               character.getGun().getMagazineCapacity() &&
@@ -500,7 +502,7 @@ void EngineGame::moveCharacter2(
       toTheRight = true;
       break;
     case 'B':  // Sparo in avanti del P2
-    case 'v':
+    case 'b':
       if (whileCount / 2 > 1 && character2.getGun().getMagazineAmmo() > 0) {
         character2.decreaseMagazineAmmo(1);
         this->playerBullets2 =
@@ -1000,6 +1002,9 @@ void EngineGame::runGame(DrawWindow drawWindow, int direction, bool multiplayer)
     }
 
     increaseCount(points);
+
+    //int tmp = getch();
+    //mvprintw (4,4, "%d", tmp);
 
     drawWindow.printEnemy(normalEnemyList, drawWindow);
     drawWindow.printEnemy(specialEnemyList, drawWindow);
