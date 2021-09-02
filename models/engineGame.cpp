@@ -1,5 +1,6 @@
 #include "drawWindow.hpp"
 #include "engineGame.hpp"
+#include "player.hpp"
 
 #include <ncurses.h>
 
@@ -805,7 +806,7 @@ void EngineGame::checkMountainDamage(Pbullet bulletList,
   }
 }
 
-void EngineGame::engine(Character character,Character character2, DrawWindow drawWindow) {
+void EngineGame::engine(DrawWindow drawWindow) {
   int direction, selection;
   baseCommand();
   choiceGame(drawWindow, &direction, &selection);
@@ -815,14 +816,14 @@ void EngineGame::engine(Character character,Character character2, DrawWindow dra
         pause = false;
         clear();
         drawWindow.splashScreen(direction);
-        runGame(character,character2, drawWindow, direction,false);
+        runGame(drawWindow, direction,false);
         clear();
         drawWindow.loseScreen(direction, finalScore);
         selection = 6;
         break;
       case 1:     // MORE FUN (multiplayer)
         pause = false;
-        runGame(character, character2, drawWindow, direction,true);
+        runGame(drawWindow, direction,true);
         clear();
         drawWindow.loseScreen(direction, finalScore);
         selection = 6;
@@ -849,7 +850,7 @@ void EngineGame::engine(Character character,Character character2, DrawWindow dra
         break;
       case 6:     // MENU INIZIALE
         clear();
-        engine(character, character2, drawWindow);
+        engine(drawWindow);
         break;
     }
   }
@@ -910,8 +911,10 @@ void EngineGame::increasePointOnScreen(int &pointOnScreen, int pointsAdded) {
   pointOnScreen += pointsAdded;
 }
 
-void EngineGame::runGame(Character character, Character character2, DrawWindow drawWindow,
-                         int direction, bool multiplayer) {
+void EngineGame::runGame(DrawWindow drawWindow, int direction, bool multiplayer) {
+  
+  Player character(this->frameGameY + 5, this->frameGameX + 5,'M', 100, 3);
+  Player character2(this->frameGameY + 6, this->frameGameX + 6,'m', 100, 3);
   bool toTheRight = true;
   int direction2 = 0;
   bool upgradeBuyed = false, bonusPicked = false, immortalityCheck = false;
@@ -929,6 +932,7 @@ void EngineGame::runGame(Character character, Character character2, DrawWindow d
   generateFictionalEnemy(specialEnemyList, bossEnemyList);
   pPosition mountainList = new Position, bonusList = new Position;
   pRoom roomList = new Room;
+
 
   Gun basicPlayerGun('~', 25, 40, 10);
   character.setGun(basicPlayerGun);

@@ -75,12 +75,12 @@ void moveCharacter2(
   void checkDeath(bool &pause, Character &character);
   void checkMountainDamage(Pbullet bulletList, pPosition &mountainList);
 
-  void engine(Character character, Character character2, DrawWindow printer);
+  void engine(DrawWindow printer);
   void increaseCount(long &points);
 
   void getInput(int &direction);
   void isPause(int &direction, bool &pause);
-  void runGame(Character character, Character character2, DrawWindow drawWindow, int direction, bool multiplayer);
+  void runGame(DrawWindow drawWindow, int direction, bool multiplayer);
 
   void money(int &bananas, bool noEnemy, int maxRoom, int &roundPayed,
              Character &character, int upgradeCost);
