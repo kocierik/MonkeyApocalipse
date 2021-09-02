@@ -563,9 +563,20 @@ void EngineGame::moveCharacter2(
 
 void EngineGame::gorillaPunch(int direction, Character &character,
                               pEnemyList enemyList, int &pointOnScreen,
-                              bool toTheRight) {
+                              bool toTheRight, bool multiplayer, bool isFirstPlayer) {
   pEnemyList tmp = enemyList;
-  if (direction == 32) {
+  bool condition;
+  if (multiplayer) {
+    if (isFirstPlayer)
+      condition = direction == 32;
+    else
+      // In teoria dovrebbe il P2 dovrebbe cacciare i pungi quando premi 'k' o 'K', ma non va
+      condition = direction == 107 || direction == 75;
+  }
+  else
+    condition = direction == 32;
+
+  if (condition) {
     int range = -1;
     if (toTheRight) range = 1;
     // Con questa condizione, l'animazione del danno è più chiara
@@ -825,7 +836,7 @@ void EngineGame::engine(DrawWindow drawWindow) {
         pause = false;
         clear();
         drawWindow.splashScreen(direction);
-        runGame(drawWindow, direction,false);
+        runGame(drawWindow, direction, false);
         clear();
         drawWindow.loseScreen(direction, finalScore);
         selection = 6;
@@ -834,7 +845,7 @@ void EngineGame::engine(DrawWindow drawWindow) {
         pause = false;
         clear();
         drawWindow.splashScreen(direction);
-        runGame(drawWindow, direction,true);
+        runGame(drawWindow, direction, true);
         clear();
         drawWindow.loseScreen(direction, finalScore);
         selection = 6;
@@ -1039,18 +1050,18 @@ void EngineGame::runGame(DrawWindow drawWindow, int direction, bool multiplayer)
     }
 
     gorillaPunch(direction, character, normalEnemyList, pointsOnScreen,
-                 toTheRight);
+                 toTheRight, multiplayer, true);
     gorillaPunch(direction, character, specialEnemyList, pointsOnScreen,
-                 toTheRight);
+                 toTheRight, multiplayer, true);
     gorillaPunch(direction, character, bossEnemyList, pointsOnScreen,
-                 toTheRight);
+                 toTheRight, multiplayer, true);
     if (multiplayer) {
       gorillaPunch(direction2, character2, normalEnemyList, pointsOnScreen,
-                  toTheRight);
+                  toTheRight, multiplayer, false);
       gorillaPunch(direction2, character2, specialEnemyList, pointsOnScreen,
-                  toTheRight);
+                  toTheRight, multiplayer, false);
       gorillaPunch(direction2, character2, bossEnemyList, pointsOnScreen,
-                  toTheRight);
+                  toTheRight, multiplayer, false);
     }
 
     money(bananas, noEnemy, maxRoom, roundPayed, character, upgradeCost);
