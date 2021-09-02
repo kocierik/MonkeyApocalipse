@@ -824,16 +824,18 @@ pRoom DrawWindow::saveRoom(pPosition mountainList, pPosition bonusList,
   return roomList;
 }
 
-pRoom DrawWindow::changeRoom(Character &character, int &normalEnemyCount, int &specialEnemyCount, int &bossEnemyCount,
+pRoom DrawWindow::changeRoom(Character &character, Character &character2, int &normalEnemyCount, int &specialEnemyCount, int &bossEnemyCount,
                              pEnemyList &normalEnemyList, pEnemyList &specialEnemyList, pEnemyList &bossEnemyList,
                              pPosition &mountainList, pPosition &bonusList, pRoom roomList, int &maxRoom) {
-  if (character.getX() >= GAMEWIDTH) {
+  if (character.getX() >= GAMEWIDTH || character2.getX() >= GAMEWIDTH) {
     // Questo if si "attiva" quando torni nella stanza precedente e poi ritorni nella successiva
     if (maxRoom > lengthListRoom(roomList)) {
       roomList = roomList->prev;
       character.setX(23);
+      character2.setX(23);
     } else if (maxRoom == lengthListRoom(roomList)) {
       character.setX(23);
+      character2.setX(23);
       int mountainCount = rand() % 8 + 1, bonusCounter = 1;
       if (maxRoom < 2)
         bonusCounter = 0;
@@ -868,8 +870,9 @@ pRoom DrawWindow::changeRoom(Character &character, int &normalEnemyCount, int &s
         bossEnemyList = bossEnemyList->next;
       maxRoom += 1;
     }
-  } else if (character.getX() == 22) {
+  } else if (character.getX() == 22 || character2.getX() == 22) {
     character.setX(GAMEWIDTH - 1);
+    character2.setX(GAMEWIDTH - 1);
     roomList = roomList->next;
   }
   return roomList;

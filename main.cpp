@@ -13,7 +13,8 @@
 int main() {
   EngineGame game(FRAMEGAMEX, FRAMEGAMEY, LIMIT_TOP, LIMIT_BOTTOM, LIMIT_LEFT, LIMIT_RIGHT);
   Player character(FRAMEGAMEY + 5, FRAMEGAMEX + 5,'M', 100, 3);
+  Player character2(FRAMEGAMEY + 6, FRAMEGAMEX + 6,'N', 100, 3);
   DrawWindow drawWindow;
-  game.engine(character, drawWindow);
+  game.engine(character, character2, drawWindow);
   return 0;
 }

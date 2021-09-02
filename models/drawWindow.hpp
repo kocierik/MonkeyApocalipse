@@ -39,7 +39,7 @@ class DrawWindow {
   int lengthListRoom(pRoom roomList);
   void printCharacterStats(pEnemyList enemyList, pEnemyList specialEnemyList, pEnemyList bossEnemyList, Character character);
   void printEnemy(pEnemyList enemyList, DrawWindow drawWindow);
-  pRoom changeRoom(Character &character, int &normalEnemyCount, int &specialEnemyCount, int &bossEnemyCount,
+  pRoom changeRoom(Character &character, Character &character2, int &normalEnemyCount, int &specialEnemyCount, int &bossEnemyCount,
                    pEnemyList &normalEnemyList, pEnemyList &specialEnemyList, pEnemyList &bossEnemyList,
                    pPosition &mountainList, pPosition &bonusList, pRoom roomList, int &maxRoom);
 
