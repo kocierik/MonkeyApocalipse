@@ -43,7 +43,6 @@ class EngineGame {
   bool isEmpty(int x, int y);
   bool isBonus(int x, int y);
   bool isEnemy(int x, int y);
-  bool isPlayer(int x, int y);
   bool isBullet(int x, int y);
   bool isPlayerBullet(int x, int y);
 

@@ -286,7 +286,6 @@ void EngineGame::checkBulletCollision(Pbullet &bulletList, Character &character,
 
 bool EngineGame::isEmpty(int x, int y) { return mvinch(y, x) == ' '; }
 bool EngineGame::isBonus(int x, int y) { return mvinch(y, x) == '?'; }
-bool EngineGame::isPlayer(int x, int y) { return mvinch(y, x) == 'M'; }
 bool EngineGame::isEnemy(int x, int y) { return mvinch(y, x) == 'e' || mvinch(y, x) == 'E' || mvinch(y, x) == 'B'; }
 bool EngineGame::isBullet(int x, int y) { return mvinch(y, x) == '~' || mvinch(y, x) == '-' || mvinch(y, x) == '=' || mvinch(y, x) == '*'; }
 bool EngineGame::isPlayerBullet(int x, int y) { return mvinch(y, x) == '~'; }
@@ -1093,7 +1092,7 @@ void EngineGame::runGame(DrawWindow drawWindow, int direction, bool multiplayer)
                                  immortalityCheck, immortalityTime);
 
     checkDeath(pause, character);
-    checkDeath(pause, character2);
+    if (multiplayer) checkDeath(pause, character2);
     timeout(50);
     isPause(direction, pause);
     finalScore = pointsOnScreen;
