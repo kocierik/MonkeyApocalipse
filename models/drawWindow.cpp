@@ -43,7 +43,6 @@ DrawWindow::DrawWindow() {}
   - GIALLO = 22
   - ROSSO = 23
 
-
   (questi sono riservati solo per la barra della salute):
   - ROSSO = 5
   - GIALLO = 6
@@ -494,7 +493,7 @@ void DrawWindow::drawStats(int startX, int startY, int rightWidth, int bottomHei
   attroff(COLOR_PAIR(3));  // CHIUSURA DEL COLORE
 }
 
-Position DrawWindow::randomPosition(int startRange, int endRange) {
+Position DrawWindow::generateRandomPosition(int startRange, int endRange) {
   Position pos;
   pos.x = startRange + (std::rand() % (endRange - startRange + 1));
   pos.y = startRange + (std::rand() % (endRange - startRange + 1));
@@ -507,8 +506,8 @@ Position DrawWindow::randomPosition(int startRange, int endRange) {
 
 pPosition DrawWindow::generateMountain(pPosition mountainList, int &mountainCount) {
   while (mountainCount > 0) {
-    int x = randomPosition(40, 70).x;
-    int y = randomPosition(8, 19).y;
+    int x = generateRandomPosition(40, 70).x;
+    int y = generateRandomPosition(8, 19).y;
     pPosition head = new Position;
     head->x = x;
     head->y = y;
@@ -529,8 +528,8 @@ pPosition DrawWindow::generateBonus(pPosition bonusList, int &bonusCount) {
   srand(time(0));
   while (bonusCount > 0) {
     pPosition tmpHead = new Position;
-    tmpHead->x = randomPosition(26, 30).x;
-    tmpHead->y = randomPosition(11, 18).y;
+    tmpHead->x = generateRandomPosition(26, 30).x;
+    tmpHead->y = generateRandomPosition(11, 18).y;
     tmpHead->skin = '?';
     tmpHead->next = bonusList;
     bonusList = tmpHead;
