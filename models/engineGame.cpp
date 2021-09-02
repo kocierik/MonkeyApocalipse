@@ -307,7 +307,7 @@ void EngineGame::moveCharacter(
     bool &immortalityCheck, int &immortalityTime, bool &toTheRight, int upgradeCost, pPosition mountainList) {
   srand(time(0));
   switch (direction) {  // Movimento con wasd per il player 1 e frecce per il player 2
-    case KEY_UP:
+    case KEY_UP: // Movimento in alto del P2
       if (isEmpty(character.getX(), character.getY() - 1))
         character.directionUp();
       else if (isBonus(character.getX(), character.getY() - 1)) {
@@ -322,7 +322,7 @@ void EngineGame::moveCharacter(
         character.directionUp();
       }
       break;
-    case KEY_DOWN:
+    case KEY_DOWN: // Movimento in basso del P2
       if (isEmpty(character.getX(), character.getY() + 1))
         character.directionDown();
       else if (isBonus(character.getX(), character.getY() + 1)) {
@@ -336,7 +336,7 @@ void EngineGame::moveCharacter(
         character.directionDown();
       }
       break;
-    case KEY_LEFT:
+    case KEY_LEFT: // Movimento a sx del P2
       if (isEmpty(character.getX() - 1, character.getY()))
         character.directionLeft();
       else if (isBonus(character.getX() - 1, character.getY())) {
@@ -351,7 +351,7 @@ void EngineGame::moveCharacter(
       }
       toTheRight = false;
       break;
-    case KEY_RIGHT:
+    case KEY_RIGHT: // Movimento a dx del P2
       if (isEmpty(character.getX() + 1, character.getY()))
         character.directionRight();
       else if (isBonus(character.getX() + 1, character.getY())) {
@@ -366,7 +366,7 @@ void EngineGame::moveCharacter(
       }
       toTheRight = true;
       break;
-    case 'M':  // Sparo in avanti del player
+    case 'M':  // Sparo in avanti del P1
     case 'm':
       // Controllo della condizione di assenza della montagna NON FUNZIONANTE (non so come mai)
       if (whileCount / 2 > 1 && character.getGun().getMagazineAmmo() > 0) {
@@ -376,7 +376,7 @@ void EngineGame::moveCharacter(
         whileCount = 0;
       }
       break;
-    case 'N':  // Sparo all'indietro del player
+    case 'N':  // Sparo all'indietro del P1
     case 'n':
       // Controllo della condizione di assenza della montagna NON FUNZIONANTE (non so come mai)
       if (whileCount / 2 > 1 && character.getGun().getMagazineAmmo() > 0) {
@@ -386,15 +386,15 @@ void EngineGame::moveCharacter(
         whileCount = 0;
       }
       break;
-    case 'L':
-    case 'l':
+    case 'K': // Ricarica dell'arma del P1
+    case 'k':
       if (character.getGun().getMagazineAmmo() >= 0 &&
           character.getGun().getMagazineAmmo() <
               character.getGun().getMagazineCapacity() &&
           character.getGun().getTotalAmmo() > 0)
         character.reload();
       break;
-    case 'o':  // CONTROLLA L'AQUISTO DI VITE, MASSIMO 3 -------------------
+    case '9':  // Tasto per l'acquisto di una vita del P2
       if (bananas >= (upgradeCost/2) && character.getNumberLife() < 3) {
         upgradeBuyed = true;  // INDICA CHE È STATO COMPRATO UN UPGRADE
         upgradeType = 0;      // INDICA IL TIPO DI UPGRADE.
@@ -404,8 +404,7 @@ void EngineGame::moveCharacter(
         bananas = bananas - (upgradeCost/2);
       }
       break;
-    case 'p':  // CONTROLLA L'AQUISTO DI POWERUP AL DANNO, SONO ACQUISTABILI AL
-               // MASSIMO 4 DURANTE TUTTA LA RUN
+    case '0':  // Tasto per l'acquisto dell'aumento del danno dell'arma del P2
       if (character.getGun().getDamage() < 50) {
         if (bananas >= upgradeCost && powerUpDMG < 3) {
           upgradeBuyed = true;
@@ -437,6 +436,7 @@ void EngineGame::moveCharacter2(
     bool &upgradeBuyed, int &upgradeType, int &upgradeTime,
     bool &immortalityCheck, int &immortalityTime, bool &toTheRight, int upgradeCost, pPosition mountainList) {
   switch (direction) {  // Movimento con wasd per il player 1 e frecce per il player 2
+  case 'W': // Movimento in alto del P2
   case 'w':
       if (isEmpty(character2.getX(), character2.getY() - 1))
         character2.directionUp();
@@ -452,6 +452,7 @@ void EngineGame::moveCharacter2(
         character2.directionUp();
       }
       break;
+    case 'S': // Movimento in basso del P2
     case 's':
       if (isEmpty(character2.getX(), character2.getY() + 1))
         character2.directionDown();
@@ -466,6 +467,7 @@ void EngineGame::moveCharacter2(
         character2.directionDown();
       }
       break;
+    case 'A': // Movimento a sx del P2
     case 'a':
       if (isEmpty(character2.getX() - 1, character2.getY()))
         character2.directionLeft();
@@ -481,6 +483,7 @@ void EngineGame::moveCharacter2(
       }
       toTheRight = false;
       break;
+    case 'D': // Movimento a dx del P2
     case 'd':
       if (isEmpty(character2.getX() + 1, character2.getY()))
         character2.directionRight();
@@ -496,9 +499,8 @@ void EngineGame::moveCharacter2(
       }
       toTheRight = true;
       break;
-    case 'C':  // Sparo in avanti del player
-    case 'c':
-      // Controllo della condizione di assenza della montagna NON FUNZIONANTE (non so come mai)
+    case 'B':  // Sparo in avanti del P2
+    case 'v':
       if (whileCount / 2 > 1 && character2.getGun().getMagazineAmmo() > 0) {
         character2.decreaseMagazineAmmo(1);
         this->playerBullets2 =
@@ -506,9 +508,8 @@ void EngineGame::moveCharacter2(
         whileCount = 0;
       }
       break;
-    case 'X':  // Sparo all'indietro del player
-    case 'x':
-      // Controllo della condizione di assenza della montagna NON FUNZIONANTE (non so come mai)
+    case 'V':  // Sparo all'indietro del P2
+    case 'v':
       if (whileCount / 2 > 1 && character2.getGun().getMagazineAmmo() > 0) {
         character2.decreaseMagazineAmmo(1);
         this->playerBullets2 =
@@ -516,7 +517,7 @@ void EngineGame::moveCharacter2(
         whileCount = 0;
       }
       break;
-    case 'R':
+    case 'R': // Ricarica dell'arma del P2
     case 'r':
       if (character2.getGun().getMagazineAmmo() >= 0 &&
           character2.getGun().getMagazineAmmo() <
@@ -524,7 +525,7 @@ void EngineGame::moveCharacter2(
           character2.getGun().getTotalAmmo() > 0)
         character2.reload();
       break;
-    case 'f':  // CONTROLLA L'AQUISTO DI VITE, MASSIMO 3 -------------------
+    case '1':  // Tasto per l'acquisto di una vita del P2
       if (bananas >= (upgradeCost/2) && character2.getNumberLife() < 3) {
         upgradeBuyed = true;  // INDICA CHE È STATO COMPRATO UN UPGRADE
         upgradeType = 0;      // INDICA IL TIPO DI UPGRADE.
@@ -534,8 +535,7 @@ void EngineGame::moveCharacter2(
         bananas = bananas - (upgradeCost/2);
       }
       break;
-    case 'g':  // CONTROLLA L'AQUISTO DI POWERUP AL DANNO, SONO ACQUISTABILI AL
-               // MASSIMO 4 DURANTE TUTTA LA RUN
+    case '2':  // Tasto per l'acquisto dell'aumento del danno dell'arma del P2
       if (character2.getGun().getDamage() < 50) {
         if (bananas >= upgradeCost && powerUpDMG < 3) {
           upgradeBuyed = true;
@@ -557,7 +557,6 @@ void EngineGame::moveCharacter2(
       }
       break;
     }
-
 }
 
 void EngineGame::gorillaPunch(int direction, Character &character,
@@ -1013,7 +1012,6 @@ void EngineGame::runGame(DrawWindow drawWindow, int direction, bool multiplayer)
     generateEnemyBullets(normalEnemyList, this->normalEnemyBullets, character);
     generateEnemyBullets(specialEnemyList, this->specialEnemyBullets, character);
     generateEnemyBullets(bossEnemyList, this->bossEnemyBullets, character);
-
     if (multiplayer) {
       generateEnemyBullets(normalEnemyList, this->normalEnemyBullets, character2);
       generateEnemyBullets(specialEnemyList, this->specialEnemyBullets, character2);
@@ -1051,6 +1049,8 @@ void EngineGame::runGame(DrawWindow drawWindow, int direction, bool multiplayer)
     }
 
     money(bananas, noEnemy, maxRoom, roundPayed, character, upgradeCost);
+    
+    // Si constrolla se i colpi dei players hanno colpito i nemici
     checkBulletCollision(this->playerBullets, character, normalEnemyList,
                          pointsOnScreen, immortalityCheck);
     checkBulletCollision(this->playerBullets, character, specialEnemyList,
@@ -1066,13 +1066,13 @@ void EngineGame::runGame(DrawWindow drawWindow, int direction, bool multiplayer)
                           pointsOnScreen, immortalityCheck);
     }
 
+    // Si constrolla se i colpi dei nemici hanno colpito i players
     checkBulletCollision(this->normalEnemyBullets, character, normalEnemyList,
                          pointsOnScreen, immortalityCheck);
     checkBulletCollision(this->specialEnemyBullets, character, specialEnemyList,
                          pointsOnScreen, immortalityCheck);
     checkBulletCollision(this->bossEnemyBullets, character, bossEnemyList,
                          pointsOnScreen, immortalityCheck);
-    
     if (multiplayer) {
       checkBulletCollision(this->normalEnemyBullets, character2, normalEnemyList,
                           pointsOnScreen, immortalityCheck);
@@ -1103,6 +1103,7 @@ void EngineGame::runGame(DrawWindow drawWindow, int direction, bool multiplayer)
 
     checkDeath(pause, character);
     if (multiplayer) checkDeath(pause, character2);
+    
     timeout(50);
     isPause(direction, pause);
     finalScore = pointsOnScreen;
