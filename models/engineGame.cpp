@@ -201,14 +201,14 @@ bool EngineGame::checkNoEnemy(DrawWindow drawWindow, pEnemyList enemyList1, pEne
   else return false;
 }
 
-/**
- * Funzione per la collisione fisica tra player e nemici.
- * Controlla la presenza di uno scontro in qualsiasi direzione,
- * danneggia 1 il player, 3 il nemico (soluzione kamikaze efficace),
- * e colora di rosso i protagonisti dello scontro.
- */
 void EngineGame::checkEnemyCollision(Character &character,
                                      pEnemyList enemyList) {
+  /**
+  * Funzione per la collisione fisica tra player e nemici.
+  * Controlla la presenza di uno scontro in qualsiasi direzione,
+  * danneggia 1 il player, 3 il nemico (soluzione kamikaze efficace),
+  * e colora di rosso i protagonisti dello scontro.
+  */
   pEnemyList tmp = enemyList;
   char tmpSkin[2];
   int xP = character.getX(), yP = character.getY();
@@ -562,13 +562,13 @@ void EngineGame::gorillaPunch(int direction, Character &character,
     if (isEmpty(character.getY(), character.getX() + range))
       mvprintw(character.getY(), character.getX() + range, "o");
 
+    char tmpSkin[0];
     while (enemyList != NULL) {
       if (character.getX() + range == enemyList->enemy.getX() &&
           character.getY() == enemyList->enemy.getY()) {
         // Nemico rosso quando riceve il punch
         init_pair(13, COLOR_RED, -1);
         attron(COLOR_PAIR(13));
-        char tmpSkin[0];
         tmpSkin[0] = enemyList->enemy.getSkin();
         mvprintw(enemyList->enemy.getY(), enemyList->enemy.getX(), tmpSkin);
 
@@ -1032,7 +1032,6 @@ void EngineGame::runGame(DrawWindow drawWindow, int direction, bool multiplayer)
                  toTheRight);
     gorillaPunch(direction, character, bossEnemyList, pointsOnScreen,
                  toTheRight);
-
     if (multiplayer) {
       gorillaPunch(direction2, character2, normalEnemyList, pointsOnScreen,
                   toTheRight);

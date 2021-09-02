@@ -505,10 +505,12 @@ Position DrawWindow::generateRandomPosition(int startRange, int endRange) {
 }
 
 pPosition DrawWindow::generateMountain(pPosition mountainList, int &mountainCount) {
+  int x, y;
+  pPosition head = NULL;
   while (mountainCount > 0) {
-    int x = generateRandomPosition(40, 70).x;
-    int y = generateRandomPosition(8, 19).y;
-    pPosition head = new Position;
+    x = generateRandomPosition(40, 70).x;
+    y = generateRandomPosition(8, 19).y;
+    head = new Position;
     head->x = x;
     head->y = y;
     head->skin = '^';
@@ -525,9 +527,10 @@ pPosition DrawWindow::generateBonus(pPosition bonusList, int &bonusCount) {
    * Genera la lista dei bonus (coordinate e skin), l'effetto di tali bonus è
    * decretato altrove.
    */
+  pPosition tmpHead = NULL;
   srand(time(0));
   while (bonusCount > 0) {
-    pPosition tmpHead = new Position;
+    tmpHead = new Position;
     tmpHead->x = generateRandomPosition(26, 30).x;
     tmpHead->y = generateRandomPosition(11, 18).y;
     tmpHead->skin = '?';
@@ -742,9 +745,8 @@ void DrawWindow::printCharacterStats(pEnemyList enemyList, pEnemyList specialEne
   // FINE CODICE BARRA DELLA VITA
   // ------------------------------------------------------------------------------------------
 
-  while (enemyList != NULL &&
-         reachBound < 8) {  // REACHBOUND SERVE A DETERMINARE IL LIMITE DI
-                            // NEMICI VISUALIZZABILI NELLA LISTA DELL'HUD
+  // REACHBOUND SERVE A DETERMINARE IL LIMITE DI NEMICI VISUALIZZABILI NELLA LISTA DELL'HUD
+  while (enemyList != NULL && reachBound < 8) {
     if (enemyList->enemy.getX() != 0) {
       i++;
       mvprintw(i, X_ElencoNemici, "- UN soldier: %d HP",
@@ -753,9 +755,9 @@ void DrawWindow::printCharacterStats(pEnemyList enemyList, pEnemyList specialEne
     reachBound++;
     enemyList = enemyList->next;
   }
-  while (specialEnemyList != NULL &&
-         reachBound < 8) {  // REACHBOUND SERVE A DETERMINARE IL LIMITE DI
-                            // NEMICI VISUALIZZABILI NELLA LISTA DELL'HUD
+
+  // REACHBOUND SERVE A DETERMINARE IL LIMITE DI NEMICI VISUALIZZABILI NELLA LISTA DELL'HUD
+  while (specialEnemyList != NULL && reachBound < 8) {
     if (specialEnemyList->enemy.getX() != 0) {
           i++;
       mvprintw(i, X_ElencoNemici, "- Elite soldier: %d HP",
@@ -764,9 +766,9 @@ void DrawWindow::printCharacterStats(pEnemyList enemyList, pEnemyList specialEne
     reachBound++;
     specialEnemyList = specialEnemyList->next;
   }
-  while (bossEnemyList != NULL &&
-         reachBound < 8) {  // REACHBOUND SERVE A DETERMINARE IL LIMITE DI
-                            // NEMICI VISUALIZZABILI NELLA LISTA DELL'HUD
+  
+  // REACHBOUND SERVE A DETERMINARE IL LIMITE DI NEMICI VISUALIZZABILI NELLA LISTA DELL'HUD
+  while (bossEnemyList != NULL && reachBound < 8) {
     if (bossEnemyList->enemy.getX() != 0) {
       i++;
       mvprintw(i, X_ElencoNemici, "- BOSS: %d HP",
@@ -793,7 +795,6 @@ void DrawWindow::moveEnemy(pEnemyList enemyList, Character character, Character 
   int movementSpeedFactor = 1;
   
   while (enemyList != NULL) {
-
     // Più è alto il valore aggiunto e più lento sarà il nemico
     if (enemyList->enemy.getSkin() == 'e') movementSpeedFactor = rand() % 10 + 15;
     else if (enemyList->enemy.getSkin() == 'E') movementSpeedFactor = rand() % 10 + 20;
@@ -969,7 +970,7 @@ void DrawWindow::saveRecord(float finalScore, char name[]) {
   board.open("leaderBoard.txt", std::ios::app);
   if ((board) && (finalScore > 0) && (!ghostName)) {  // lo score è salvato solo se maggiore di 0 e il nome non è vuoto o solo spazi
     board << name << ":";
-    while(nameLen < nameMax){
+    while (nameLen < nameMax) {
       board << " ";
       nameLen++;
     }
