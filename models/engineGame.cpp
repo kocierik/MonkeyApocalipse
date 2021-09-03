@@ -889,7 +889,7 @@ void EngineGame::increaseCount(long &points) {
 }
 
 void EngineGame::money(int &bananas, bool noEnemy, int maxRoom, int &roundPayed, Character &character, int upgradeCost) {
-  srand(time(NULL));
+  srand(time(0));
   if (noEnemy && (maxRoom != roundPayed)) {  // CONTROLLA CHE LA STANZA SIA PULITA E CHE L'ULTIMO ROUND SIA STATO PAGATO
     bananas = bananas + rand() % 3 + 1;
     character.increaseLife((rand() % 20 + 20));
@@ -955,7 +955,7 @@ void EngineGame::runGame(DrawWindow drawWindow, int direction, bool multiplayer)
   int upgradeCost = 10;
   int immortalityTime = 0;
   int powerUpDMG = 0;  // NUMERO DI POWERUP AL DANNO AQUISTATI
-  int bananas = 0, roundPayed = 0;
+  int bananas = 0, bananasP2 = 0, roundPayed = 0;
   int bonusTime = 0, upgradeTime = 0, bonusType = 0, upgradeType = 0;
 
   // Liste delle varie entità in gioco
@@ -996,9 +996,16 @@ void EngineGame::runGame(DrawWindow drawWindow, int direction, bool multiplayer)
                         this->bottomHeigth, noEnemy, maxRoom, false, roomList);
     drawWindow.drawStats(this->frameGameX, this->frameGameY, this->rightWidth,
                          this->bottomHeigth, pointsOnScreen, character,
-                         noEnemy, powerUpDMG, bananas, maxRoom, roomList);
+                         noEnemy, powerUpDMG, bananas, bananasP2, maxRoom, roomList, true);
+    drawWindow.printCharacterStats(character, true);
+    if(multiplayer){
+      drawWindow.drawStats(this->frameGameX, this->frameGameY, this->rightWidth,
+                         this->bottomHeigth, pointsOnScreen, character2,
+                         noEnemy, powerUpDMG, bananas, bananasP2, maxRoom, roomList, false);
+      drawWindow.printCharacterStats(character2, false);
+    }
+    else{ drawWindow.printEnemyLeftList(normalEnemyList, specialEnemyList, bossEnemyList); }
     drawWindow.drawLeaderboardOnScreen();
-    drawWindow.printCharacterStats(normalEnemyList, specialEnemyList, bossEnemyList, character);
 
     if (drawWindow.lengthListRoom(roomList) > 1) {
       drawWindow.printMountain(roomList->next->mountainList);
@@ -1066,6 +1073,7 @@ void EngineGame::runGame(DrawWindow drawWindow, int direction, bool multiplayer)
     }
 
     money(bananas, noEnemy, maxRoom, roundPayed, character, upgradeCost);
+    if(multiplayer){ money(bananasP2, noEnemy, maxRoom, roundPayed, character2, upgradeCost);}
     
     // Si constrolla se i colpi dei players hanno colpito i nemici
     checkBulletCollision(this->playerBullets, character, normalEnemyList,

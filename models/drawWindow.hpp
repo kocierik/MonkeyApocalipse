@@ -21,7 +21,7 @@ class DrawWindow {
                 bool noEnemy, int maxRoom, bool isScreenBound, pRoom listRoom);
   void drawStats(int startX, int startY, int rightWidth, int bottomHeight,
                  int pointsOnScreen, Character character, bool noEnemy,
-                 int powerUp, int bananas, int maxRoom, pRoom roomList);
+                 int powerUp, int bananas,int babanasP2, int maxRoom, pRoom roomList, bool isPlayer1);
   void drawLeaderboardOnScreen();
   void drawMenu();
 
@@ -44,7 +44,8 @@ class DrawWindow {
   int lengthEnemyList(pEnemyList enemyList);
   int lengthListRoom(pRoom roomList);
 
-  void printCharacterStats(pEnemyList enemyList, pEnemyList specialEnemyList, pEnemyList bossEnemyList, Character character);
+  void printCharacterStats(Character character, bool isPlayer1);
+  void printEnemyLeftList(pEnemyList enemyList, pEnemyList specialEnemyList, pEnemyList bossEnemyList);
   void printEnemy(pEnemyList enemyList, DrawWindow drawWindow);
 
   void showBonusOnScreen(bool &upgradeBuyed, int &upgradeType, int &upgradeTime,

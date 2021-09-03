@@ -428,19 +428,21 @@ void DrawWindow::drawLeaderboardOnScreen(){
 
 void DrawWindow::drawStats(int startX, int startY, int rightWidth, int bottomHeight,
                            int pointsOnScreen, Character character,
-                           bool noEnemy, int powerUp, int bananas,
-                           int maxRoom, pRoom roomList) {
+                           bool noEnemy, int powerUp, int bananas, int bananasP2,
+                           int maxRoom, pRoom roomList, bool isPlayer1) {
   int powerUp_y = 52;
   int powerUp_x = 23;
+  int P2Offsetx = 0;
+  int P2Offsety = 0;
+  if(!isPlayer1){ powerUp_y = 18; P2Offsetx = 34; P2Offsety = 1;}
   int statusAmmoColor = 0;
 
   mvprintw(startX - 2, startY + 5, "SCORE:");
-  mvprintw(startX - 2, startX + 47, "LIFE:");
   mvprintw(powerUp_x, powerUp_y, "POWER-UP");
 
-  mvprintw(26, 52, "MAGAZINE");
-  mvprintw(26, 76, "%d", character.getGun().getMagazineAmmo());
-  mvprintw(27, 52, "BANANA PEELS");
+  mvprintw(26, 52 - P2Offsetx, "MAGAZINE");
+  mvprintw(26, 76 - P2Offsetx, "%d", character.getGun().getMagazineAmmo());
+  mvprintw(27, 52 - P2Offsetx, "BANANA PEELS");
 
   if (character.getGun().getTotalAmmo() > 30) {
     statusAmmoColor = 21;
@@ -456,11 +458,11 @@ void DrawWindow::drawStats(int startX, int startY, int rightWidth, int bottomHei
     init_pair(statusAmmoColor, COLOR_RED, -1);
     attron(COLOR_PAIR(statusAmmoColor));
   }
-  mvprintw(27, 76, "%d", character.getGun().getTotalAmmo());
+  mvprintw(27, 76 - P2Offsetx, "%d", character.getGun().getTotalAmmo());
   attroff(COLOR_PAIR(statusAmmoColor));
 
-  mvprintw(28, 52, "BANANAS");
-  mvprintw(28, 76, "%d", bananas);
+  mvprintw(28, 52 - P2Offsetx, "BANANAS");
+  if(isPlayer1){mvprintw(28, 76 - P2Offsetx, "%d", bananas);} else {mvprintw(28, 76 - P2Offsetx, "%d", bananasP2);}
   mvprintw(29, 52, "ROOM");
   mvprintw(29, 76, "%d/%d", lengthListRoom(roomList), maxRoom);
   mvprintw(30, 52, "MAX ROOM");
@@ -472,16 +474,32 @@ void DrawWindow::drawStats(int startX, int startY, int rightWidth, int bottomHei
   drawRect(startX - 4, startY + 65, rightWidth + 40, bottomHeight + 12, noEnemy, 0, true, roomList);
   attroff(COLOR_PAIR(11));
 
-  init_pair(3, COLOR_YELLOW, -1);  // FUNZIONI PER USARE I COLORI
-  attron(COLOR_PAIR(3));
-  mvprintw(startX - 2, startY + 12, "%d", pointsOnScreen);
-  if (character.getNumberLife() == 3)
-    mvprintw(startX - 2, startY + 38, "[C] [C] [C]");
-  else if (character.getNumberLife() == 2)
-    mvprintw(startX - 2, startY + 38, "[C] [C] [ ]");
-  else if (character.getNumberLife() == 1)
-    mvprintw(startX - 2, startY + 38, "[C] [ ] [ ]");
-  attroff(COLOR_PAIR(3));  // CHIUSURA DEL COLORE
+  if(isPlayer1){
+    mvprintw(startX - 2, startX + 47, "LIFE:");
+    init_pair(3, COLOR_YELLOW, -1);  // FUNZIONI PER USARE I COLORI
+    attron(COLOR_PAIR(3));
+    mvprintw(startX - 2, startY + 12, "%d", pointsOnScreen);
+    if (character.getNumberLife() == 3)
+      mvprintw(startX - 2, startY + 38, "[C] [C] [C]");
+    else if (character.getNumberLife() == 2)
+      mvprintw(startX - 2, startY + 38, "[C] [C] [ ]");
+    else if (character.getNumberLife() == 1)
+      mvprintw(startX - 2, startY + 38, "[C] [ ] [ ]");
+    attroff(COLOR_PAIR(3));  // CHIUSURA DEL COLORE
+  }
+  else{
+    mvprintw(30, 18, "LIFE:");
+    init_pair(3, COLOR_YELLOW, -1);  // FUNZIONI PER USARE I COLORI
+    attron(COLOR_PAIR(3));
+    if (character.getNumberLife() == 3)
+      mvprintw(30, 24, "[C] [C] [C]");
+    else if (character.getNumberLife() == 2)
+      mvprintw(30, 24, "[C] [C] [ ]");
+    else if (character.getNumberLife() == 1)
+      mvprintw(30, 24, "[C] [ ] [ ]");
+    attroff(COLOR_PAIR(3));  // CHIUSURA DEL COLORE
+  }
+
 
   init_pair(3, COLOR_YELLOW, -1);  // FUNZIONI PER USARE I COLORI
   attron(COLOR_PAIR(3));
@@ -672,33 +690,75 @@ int DrawWindow::lengthListRoom(pRoom roomList) {
   return i;
 }
 
-void DrawWindow::printCharacterStats(pEnemyList enemyList, pEnemyList specialEnemyList, pEnemyList bossEnemyList, Character character) {
+void DrawWindow::printEnemyLeftList(pEnemyList enemyList, pEnemyList specialEnemyList, pEnemyList bossEnemyList){
+
   int enemyLeftOnScreen = lengthEnemyList(enemyList) + lengthEnemyList(specialEnemyList) + lengthEnemyList(bossEnemyList);
+
+  // gestione posizionamento della lista nello schermo
   int i = 22;
-  int reachBound = 0;       // VEDI RIGA 363
-  int X_ElencoNemici = 19;  // gestisce la x da dove inizia la lista dei nemici
-  int BarStart = 56;        // gestisce dove partono gli oggetti della barra
+  int reachBound = 0;
+  int X_ElencoNemici = 19; 
+
+
+  if (enemyLeftOnScreen > 0) {
+      mvprintw(i, X_ElencoNemici, "Enemy left: %d", enemyLeftOnScreen);
+    } else {
+      mvprintw(i, X_ElencoNemici, "[ALL ENEMY DEFEATED!]");
+    }
+
+  // PARTE RISERVATA AI NEMICI NORMALI
+  while (enemyList != NULL && reachBound < 8) {
+    if (enemyList->enemy.getX() != 0) {
+      i++;
+      mvprintw(i, X_ElencoNemici, "- UN soldier: %d HP",
+               enemyList->enemy.getLife());
+    }
+    reachBound++;
+    enemyList = enemyList->next;
+  }
+
+  // PARTE RISERVATA AI NEMICI SPECIALI
+  while (specialEnemyList != NULL && reachBound < 8) {
+    if (specialEnemyList->enemy.getX() != 0) {
+          i++;
+      mvprintw(i, X_ElencoNemici, "- Elite soldier: %d HP",
+                specialEnemyList->enemy.getLife());
+    }
+    reachBound++;
+    specialEnemyList = specialEnemyList->next;
+  }
+  
+  // PARTE RISERVATA AI BOSS
+  while (bossEnemyList != NULL && reachBound < 8) {
+    if (bossEnemyList->enemy.getX() != 0) {
+      i++;
+      mvprintw(i, X_ElencoNemici, "- BOSS: %d HP",
+               bossEnemyList->enemy.getLife());
+    }
+    reachBound++;
+    bossEnemyList = bossEnemyList->next;
+  }
+}
+
+void DrawWindow::printCharacterStats(Character character, bool isPlayer1) {
+  
+  int i = 22;
+  int BarStart;        // gestisce dove partono gli oggetti della barra
+  if(isPlayer1){ BarStart = 56; }else{ BarStart = 22;} // gestisce la posizione della barra per il P1 e il P2
   int AddBar = BarStart;    // cicla per aggiungere un cordinata
   int healtColorPair = 0;
 
-  if (enemyLeftOnScreen > 0) {
-    mvprintw(i, X_ElencoNemici, "Enemy left: %d", enemyLeftOnScreen);
-  } else {
-    mvprintw(i, X_ElencoNemici, "[ALL ENEMY DEFEATED!]");
-  }
-
+  // gestisce l'apparizione dei banner
   if (character.getGun().getTotalAmmo() == 0 &&
       character.getGun().getMagazineAmmo() == 0) {
     init_pair(25, COLOR_RED, -1);
     attron(COLOR_PAIR(25));
-    mvprintw(26, 76, "%d", character.getGun().getMagazineAmmo());
-    mvprintw(25, 52, "OUT OF AMMO!");
+    mvprintw(25, BarStart - 4, "OUT OF AMMO!");
     attroff(COLOR_PAIR(25));
   } else if (character.getGun().getMagazineAmmo() == 0) {
     init_pair(25, COLOR_RED, -1);
     attron(COLOR_PAIR(25));
-    mvprintw(26, 76, "%d", character.getGun().getMagazineAmmo());
-    mvprintw(25, 52, "PRESS [R] TO RELOAD!");
+    mvprintw(25, BarStart - 4, "PRESS [R] TO RELOAD!");
     attroff(COLOR_PAIR(25));
   }
 
@@ -744,39 +804,6 @@ void DrawWindow::printCharacterStats(pEnemyList enemyList, pEnemyList specialEne
 
   // FINE CODICE BARRA DELLA VITA
   // ------------------------------------------------------------------------------------------
-
-  // REACHBOUND SERVE A DETERMINARE IL LIMITE DI NEMICI VISUALIZZABILI NELLA LISTA DELL'HUD
-  while (enemyList != NULL && reachBound < 8) {
-    if (enemyList->enemy.getX() != 0) {
-      i++;
-      mvprintw(i, X_ElencoNemici, "- UN soldier: %d HP",
-               enemyList->enemy.getLife());
-    }
-    reachBound++;
-    enemyList = enemyList->next;
-  }
-
-  // REACHBOUND SERVE A DETERMINARE IL LIMITE DI NEMICI VISUALIZZABILI NELLA LISTA DELL'HUD
-  while (specialEnemyList != NULL && reachBound < 8) {
-    if (specialEnemyList->enemy.getX() != 0) {
-          i++;
-      mvprintw(i, X_ElencoNemici, "- Elite soldier: %d HP",
-                specialEnemyList->enemy.getLife());
-    }
-    reachBound++;
-    specialEnemyList = specialEnemyList->next;
-  }
-  
-  // REACHBOUND SERVE A DETERMINARE IL LIMITE DI NEMICI VISUALIZZABILI NELLA LISTA DELL'HUD
-  while (bossEnemyList != NULL && reachBound < 8) {
-    if (bossEnemyList->enemy.getX() != 0) {
-      i++;
-      mvprintw(i, X_ElencoNemici, "- BOSS: %d HP",
-               bossEnemyList->enemy.getLife());
-    }
-    reachBound++;
-    bossEnemyList = bossEnemyList->next;
-  }
 }
 
 void DrawWindow::printEnemy(pEnemyList enemyList, DrawWindow drawWindow) {
