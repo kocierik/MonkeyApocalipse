@@ -306,8 +306,8 @@ void EngineGame::moveCharacter(
     bool &upgradeBuyed, int &upgradeType, int &upgradeTime,
     bool &immortalityCheck, int &immortalityTime, bool &toTheRight, int upgradeCost, pPosition mountainList) {
   srand(time(0));
-  switch (direction) {  // Movimento con wasd per il player 1 e frecce per il player 2
-    case KEY_UP: // Movimento in alto del P2
+  switch (direction) {  // Movimento con wasd per il player 2 e frecce per il player 1
+    case KEY_UP: // Movimento in alto del P1
       if (isEmpty(character.getX(), character.getY() - 1))
         character.directionUp();
       else if (isBonus(character.getX(), character.getY() - 1)) {
@@ -322,7 +322,7 @@ void EngineGame::moveCharacter(
         character.directionUp();
       }
       break;
-    case KEY_DOWN: // Movimento in basso del P2
+    case KEY_DOWN: // Movimento in basso del P1
       if (isEmpty(character.getX(), character.getY() + 1))
         character.directionDown();
       else if (isBonus(character.getX(), character.getY() + 1)) {
@@ -336,7 +336,7 @@ void EngineGame::moveCharacter(
         character.directionDown();
       }
       break;
-    case KEY_LEFT: // Movimento a sx del P2
+    case KEY_LEFT: // Movimento a sx del P1
       if (isEmpty(character.getX() - 1, character.getY()))
         character.directionLeft();
       else if (isBonus(character.getX() - 1, character.getY())) {
@@ -351,7 +351,7 @@ void EngineGame::moveCharacter(
       }
       toTheRight = false;
       break;
-    case KEY_RIGHT: // Movimento a dx del P2
+    case KEY_RIGHT: // Movimento a dx del P1
       if (isEmpty(character.getX() + 1, character.getY()))
         character.directionRight();
       else if (isBonus(character.getX() + 1, character.getY())) {
@@ -563,18 +563,20 @@ void EngineGame::moveCharacter2(
 
 void EngineGame::gorillaPunch(int direction, Character &character,
                               pEnemyList enemyList, int &pointOnScreen,
-                              bool toTheRight, bool multiplayer, bool isFirstPlayer) {
+                              bool toTheRight, bool multiplayer, bool isPlayer1) {
   pEnemyList tmp = enemyList;
-  bool condition;
+  bool condition = false;
+
   if (multiplayer) {
-    if (isFirstPlayer)
-      condition = direction == 32;
+    if (isPlayer1){ 
+      if (direction == 'k'){ condition = true; }
+    }
     else
-      // In teoria dovrebbe il P2 dovrebbe cacciare i pungi quando premi 'k' o 'K', ma non va
-      condition = direction == 107 || direction == 75;
+      if(direction == 'q'){ condition = true; }
   }
   else
-    condition = direction == 32;
+    if(direction == 32){ condition = true; }
+
 
   if (condition) {
     int range = -1;
@@ -943,13 +945,12 @@ void EngineGame::runGame(DrawWindow drawWindow, int direction, bool multiplayer)
 
   // Variabili per la gestire logistica generale della partita
   bool noEnemy = false;
-  int direction2 = 0;
   int normalEnemyCount = 1, specialEnemyCount = 0, bossEnemyCount = 0;
   int maxRoom = 1, pointsOnScreen = 0;
   long points = 0;
+  bool toTheRight = true, toTheRightP2 = true;
 
   // Variabili per la gestire logistica di alcuni bonus
-  bool toTheRight = true;
   bool upgradeBuyed = false, bonusPicked = false, immortalityCheck = false;
   int upgradeCost = 10;
   int immortalityTime = 0;
@@ -981,7 +982,7 @@ void EngineGame::runGame(DrawWindow drawWindow, int direction, bool multiplayer)
     if (multiplayer) moveCharacter2(drawWindow, character2, direction, roomList, normalEnemyList,
                   pointsOnScreen, bananas, powerUpDMG, bonusPicked, bonusType,
                   bonusTime, upgradeBuyed, upgradeType, upgradeTime, immortalityCheck,
-                  immortalityTime, toTheRight, upgradeCost, roomList->mountainList);
+                  immortalityTime, toTheRightP2, upgradeCost, roomList->mountainList);
     clear();
 
     noEnemy = checkNoEnemy(drawWindow, normalEnemyList, specialEnemyList, bossEnemyList);
@@ -1056,12 +1057,12 @@ void EngineGame::runGame(DrawWindow drawWindow, int direction, bool multiplayer)
     gorillaPunch(direction, character, bossEnemyList, pointsOnScreen,
                  toTheRight, multiplayer, true);
     if (multiplayer) {
-      gorillaPunch(direction2, character2, normalEnemyList, pointsOnScreen,
-                  toTheRight, multiplayer, false);
-      gorillaPunch(direction2, character2, specialEnemyList, pointsOnScreen,
-                  toTheRight, multiplayer, false);
-      gorillaPunch(direction2, character2, bossEnemyList, pointsOnScreen,
-                  toTheRight, multiplayer, false);
+      gorillaPunch(direction, character2, normalEnemyList, pointsOnScreen,
+                  toTheRightP2, multiplayer, false);
+      gorillaPunch(direction, character2, specialEnemyList, pointsOnScreen,
+                  toTheRightP2, multiplayer, false);
+      gorillaPunch(direction, character2, bossEnemyList, pointsOnScreen,
+                  toTheRightP2, multiplayer, false);
     }
 
     money(bananas, noEnemy, maxRoom, roundPayed, character, upgradeCost);
