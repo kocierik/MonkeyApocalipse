@@ -14,8 +14,8 @@
 #define GAMEHEIGTH 20  // 13
 
 #define NORMAL_ENEMY_LIMIT 7
-#define SPECIAL_ENEMY_FREQUENCY 2   // Spawn ogni 5 round
-#define BOSS_ENEMY_FREQUENCY 3      // Spawn ogni 10 round
+#define SPECIAL_ENEMY_FREQUENCY 5   // Spawn ogni 5 round
+#define BOSS_ENEMY_FREQUENCY 10      // Spawn ogni 10 round
 #define MOUNTAIN_LIFE 10
 const int MAXNAMECHARACTER = 10; 
 
@@ -898,7 +898,7 @@ pRoom DrawWindow::saveRoom(pPosition mountainList, pPosition bonusList,
 
 pRoom DrawWindow::changeRoom(Character &character, Character &character2, int &normalEnemyCount, int &specialEnemyCount, int &bossEnemyCount,
                              pEnemyList &normalEnemyList, pEnemyList &specialEnemyList, pEnemyList &bossEnemyList,
-                             pPosition &mountainList, pPosition &bonusList, pRoom roomList, int &maxRoom) {
+                             pPosition &mountainList, pPosition &bonusList, pRoom roomList, int &maxRoom, bool multiplayer) {
   if (character.getX() >= GAMEWIDTH || character2.getX() >= GAMEWIDTH) {
     // Questo if si "attiva" quando torni nella stanza precedente e poi ritorni nella successiva
     if (maxRoom > lengthListRoom(roomList)) {
@@ -919,20 +919,40 @@ pRoom DrawWindow::changeRoom(Character &character, Character &character2, int &n
       roomList->bonusList = generateBonus(bonusList, bonusCounter);
       roomList = saveRoom(mountainList, bonusList, roomList);
       
-      if (maxRoom <= NORMAL_ENEMY_LIMIT)
-        normalEnemyCount = maxRoom + 1;  // +1 perhé maxRoom si incrementa alla fine
-      else 
-        normalEnemyCount = NORMAL_ENEMY_LIMIT;        // NEMICI NORMALI OKKKKK
+      if (maxRoom <= NORMAL_ENEMY_LIMIT) {
+        normalEnemyCount = maxRoom + 1;
+        if (multiplayer)
+          normalEnemyCount += 2;
+      }
+      else {
+        normalEnemyCount = NORMAL_ENEMY_LIMIT;
+        if (multiplayer)
+          normalEnemyCount += 4;
+      }
       
-      if (maxRoom % SPECIAL_ENEMY_FREQUENCY == 0)
-        specialEnemyCount = 2;
-      else
-        specialEnemyCount = 0;
+      if (maxRoom % SPECIAL_ENEMY_FREQUENCY == 0) {
+        if (maxRoom == 5)
+          specialEnemyCount = 2;
+        else if (maxRoom == 10)
+          specialEnemyCount = 3;
+        else if (maxRoom >= 15)
+          specialEnemyCount = 4;
+        else
+          specialEnemyCount = 0;
+        if (multiplayer && specialEnemyCount != 0)
+          specialEnemyCount += 1;
+      }
 
-      if (maxRoom % BOSS_ENEMY_FREQUENCY == 0)
-        bossEnemyCount = 2;
-      else
-        bossEnemyCount = 0;
+      if (maxRoom % BOSS_ENEMY_FREQUENCY == 0) {
+        if (maxRoom == 10)
+          bossEnemyCount = 1;
+        else if (maxRoom >= 20)
+          bossEnemyCount = 2;
+        else
+          bossEnemyCount = 0;
+        if (multiplayer && bossEnemyCount != 0)
+          bossEnemyCount += 1;
+      }
 
       // Serve per scorrere (nella lista dei nemici, se generata) il primo nemico, quello fittizio
       normalEnemyList = normalEnemyList->next;

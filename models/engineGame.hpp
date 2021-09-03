@@ -25,9 +25,6 @@ class EngineGame {
   EngineGame(int frameGameX, int frameGameY, int topHeigth, int bottomHeigt, int leftWidth, int rightWidth);
   void printList(pPosition positionList);
   void baseCommand();
-  Pbullet generateBullets(Character character, bool isPlayerBullet,
-                          bool moveFoward, Pbullet &bulletList);
-  void generateEnemyBullets(pEnemyList enemyList, Pbullet &enemyBulletList, Character character);
 
   void moveBullets(Pbullet bulletList);
 
@@ -64,6 +61,10 @@ void moveCharacter2(
   void generateFictionalEnemy(pEnemyList &specialEnemyList, pEnemyList &bossEnemyList);
   pEnemyList generateEnemy(int *enemyCount, int type, pEnemyList enemyList,
                            DrawWindow drawWindow);
+
+  void generateEnemyBullets(pEnemyList enemyList, Pbullet &enemyBulletList, Character character);
+  Pbullet generateBullets(Character character, bool isPlayerBullet,
+                          bool moveFoward, Pbullet &bulletList);
 
   pPosition getBonus(DrawWindow drawWindow, int x, int y, pPosition bonusList,
                      pEnemyList &enemyList, int &pointsOnScreen, Character &character,

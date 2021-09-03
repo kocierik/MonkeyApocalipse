@@ -572,16 +572,17 @@ void EngineGame::gorillaPunch(int direction, Character &character,
   pEnemyList tmp = enemyList;
   bool condition = false;
 
+  //mvprintw (3,3,"%d",direction);
+
   if (multiplayer) {
-    if (isPlayer1){ 
-      if (direction == 'k'){ condition = true; }
+    if (isPlayer1) { 
+      if (direction == 'k') { condition = true; }
     }
     else
-      if(direction == 'q'){ condition = true; }
+      if (direction == 'q') { condition = true; }
   }
   else
-    if(direction == 32){ condition = true; }
-
+    if (direction == 32) { condition = true; }
 
   if (condition) {
     int range = -1;
@@ -975,7 +976,7 @@ void EngineGame::runGame(DrawWindow drawWindow, int direction, bool multiplayer)
 
   while (!pause) {
     roomList = drawWindow.changeRoom(character, character2, normalEnemyCount, specialEnemyCount, bossEnemyCount, normalEnemyList, specialEnemyList,
-                                     bossEnemyList, mountainList, bonusList, roomList, maxRoom);
+                                     bossEnemyList, mountainList, bonusList, roomList, maxRoom, multiplayer);
     normalEnemyList = generateEnemy(&normalEnemyCount, 0, normalEnemyList, drawWindow);
     specialEnemyList = generateEnemy(&specialEnemyCount, 1, specialEnemyList, drawWindow);
     bossEnemyList = generateEnemy(&bossEnemyCount, 2, bossEnemyList, drawWindow);
@@ -1070,6 +1071,10 @@ void EngineGame::runGame(DrawWindow drawWindow, int direction, bool multiplayer)
       checkEnemyCollision(character2, bossEnemyList);
     }
 
+    //int tmp = getch();
+    //mvprintw (3,3,"%d",tmp);
+    //mvprintw (3,3,"%d",direction);
+
     gorillaPunch(direction, character, normalEnemyList, pointsOnScreen,
                  toTheRight, multiplayer, true);
     gorillaPunch(direction, character, specialEnemyList, pointsOnScreen,
@@ -1085,8 +1090,8 @@ void EngineGame::runGame(DrawWindow drawWindow, int direction, bool multiplayer)
                   toTheRightP2, multiplayer, false);
     }
 
-    money(bananas, noEnemy, maxRoom, roundPayed, character, upgradeCost, multiplayer, true);
-    if(multiplayer){money(bananasP2, noEnemy, maxRoom, roundPayed, character2, upgradeCost, multiplayer, false);}
+    money (bananas, noEnemy, maxRoom, roundPayed, character, upgradeCost, multiplayer, true);
+    if (multiplayer) { money(bananasP2, noEnemy, maxRoom, roundPayed, character2, upgradeCost, multiplayer, false); }
 
 
     // Si constrolla se i colpi dei players hanno colpito i nemici

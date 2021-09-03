@@ -54,7 +54,7 @@ class DrawWindow {
 
   pRoom changeRoom(Character &character, Character &character2, int &normalEnemyCount, int &specialEnemyCount, int &bossEnemyCount,
                    pEnemyList &normalEnemyList, pEnemyList &specialEnemyList, pEnemyList &bossEnemyList,
-                   pPosition &mountainList, pPosition &bonusList, pRoom roomList, int &maxRoom);
+                   pPosition &mountainList, pPosition &bonusList, pRoom roomList, int &maxRoom, bool multiplayer);
 
   Position generateRandomPosition(int startRange, int endRange);
   pPosition generateMountain(pPosition mountainList, int &mountainCount);
