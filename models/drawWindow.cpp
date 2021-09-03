@@ -433,8 +433,7 @@ void DrawWindow::drawStats(int startX, int startY, int rightWidth, int bottomHei
   int powerUp_y = 52;
   int powerUp_x = 23;
   int P2Offsetx = 0;
-  int P2Offsety = 0;
-  if(!isPlayer1){ powerUp_y = 18; P2Offsetx = 34; P2Offsety = 1;}
+  if(!isPlayer1){ powerUp_y = 18; P2Offsetx = 34;}
   int statusAmmoColor = 0;
 
   mvprintw(startX - 2, startY + 5, "SCORE:");
