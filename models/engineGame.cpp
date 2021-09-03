@@ -46,10 +46,15 @@ void EngineGame::baseCommand() {
 Pbullet EngineGame::generateBullets(Character character, bool isPlayerBullet,
                                     bool moveFoward, Pbullet &bulletList) {
   Pbullet bullet = new Bullet;
+  int range = 1;
   if (moveFoward)
-    bullet->x = character.getX() - 1;
-  else
-    bullet->x = character.getX() + 1;
+    range = -1;
+  if (!isPlayerBullet) {
+    if (range == -1) range = 1;
+    else if (range == 1) range = 0;
+  }
+
+  bullet->x = character.getX() + range;
   bullet->y = character.getY();
   bullet->speed = 1;
   bullet->skin = character.getGun().getBulletSkin();
@@ -645,13 +650,13 @@ pEnemyList EngineGame::generateEnemy(int *enemyCount, int type, pEnemyList enemy
       skin = 'E';
       life = 10, deathScore = 250;
       gun.setBulletSkin('=');
-      gun.setDamage(15);
+      gun.setDamage(20);
       break;
     case 2:  // Boss enemy
       skin = 'B';
       life = 10, deathScore = 800;
       gun.setBulletSkin('*');
-      gun.setDamage(25);
+      gun.setDamage(35);
       break;
   }
 
