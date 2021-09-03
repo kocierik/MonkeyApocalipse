@@ -757,7 +757,7 @@ void DrawWindow::printCharacterStats(Character character, bool isPlayer1) {
   } else if (character.getGun().getMagazineAmmo() == 0) {
     init_pair(25, COLOR_RED, -1);
     attron(COLOR_PAIR(25));
-    mvprintw(25, BarStart - 4, "PRESS [R] TO RELOAD!");
+    if(isPlayer1){ mvprintw(25, BarStart - 4, "PRESS [L] TO RELOAD!");} else {mvprintw(25, BarStart - 4, "PRESS [R] TO RELOAD!");}
     attroff(COLOR_PAIR(25));
   }
 

@@ -890,6 +890,8 @@ void EngineGame::increaseCount(long &points) {
 
 void EngineGame::money(int &bananas, bool noEnemy, int maxRoom, int &roundPayed, Character &character, int upgradeCost, bool multiplayer, bool isPlayer1) {
   srand(time(NULL));
+  int P2Offsetx = 0;
+  if(!isPlayer1){ P2Offsetx = 34;}
   if (noEnemy && (maxRoom != roundPayed)) {  // CONTROLLA CHE LA STANZA SIA PULITA E CHE L'ULTIMO ROUND SIA STATO PAGATO
     bananas = bananas + rand() % 3 + 1;
     character.increaseLife((rand() % 20 + 20));
@@ -907,9 +909,9 @@ void EngineGame::money(int &bananas, bool noEnemy, int maxRoom, int &roundPayed,
   attron(COLOR_PAIR(20));
   if (bananas >= upgradeCost) {
     if (character.getNumberLife() < 3)
-      mvprintw(24, 52, "BUYABLE LIFE OR DAMAGE UPGRADE");
+      mvprintw(24, 52 - P2Offsetx, "BUYABLE LIFE OR DAMAGE UPGRADE");
     else
-      mvprintw(24, 52, "BUYABLE DAMAGE UPGRADE!");
+      mvprintw(24, 52 - P2Offsetx, "BUYABLE DAMAGE UPGRADE!");
   }
   else if(bananas >= (upgradeCost/2) && character.getNumberLife() < 3)
     mvprintw(24, 52, "BUYABLE EXTRA LIFE!"); 
@@ -954,7 +956,7 @@ void EngineGame::runGame(DrawWindow drawWindow, int direction, bool multiplayer)
   bool upgradeBuyed = false, bonusPicked = false, immortalityCheck = false;
   int upgradeCost = 10;
   int immortalityTime = 0;
-  int powerUpDMG = 0;  // NUMERO DI POWERUP AL DANNO AQUISTATI
+  int powerUpDMG = 0, powerUpDMGP2 = 0;  // NUMERO DI POWERUP AL DANNO AQUISTATI
   int bananas = 0, bananasP2 = 0, roundPayed = 0;
   int bonusTime = 0, upgradeTime = 0, bonusType = 0, upgradeType = 0;
 
@@ -980,7 +982,7 @@ void EngineGame::runGame(DrawWindow drawWindow, int direction, bool multiplayer)
                   bonusTime, upgradeBuyed, upgradeType, upgradeTime, immortalityCheck,
                   immortalityTime, toTheRight, upgradeCost, roomList->mountainList);
     if (multiplayer) moveCharacter2(drawWindow, character2, direction, roomList, normalEnemyList,
-                  pointsOnScreen, bananasP2, powerUpDMG, bonusPicked, bonusType,
+                  pointsOnScreen, bananasP2, powerUpDMGP2, bonusPicked, bonusType,
                   bonusTime, upgradeBuyed, upgradeType, upgradeTime, immortalityCheck,
                   immortalityTime, toTheRightP2, upgradeCost, roomList->mountainList);
     clear();
@@ -1001,7 +1003,7 @@ void EngineGame::runGame(DrawWindow drawWindow, int direction, bool multiplayer)
     if(multiplayer){
       drawWindow.drawStats(this->frameGameX, this->frameGameY, this->rightWidth,
                          this->bottomHeigth, pointsOnScreen, character2,
-                         noEnemy, powerUpDMG, bananas, bananasP2, maxRoom, roomList, false);
+                         noEnemy, powerUpDMGP2, bananas, bananasP2, maxRoom, roomList, false);
       drawWindow.printCharacterStats(character2, false);
     }
     else{ drawWindow.printEnemyLeftList(normalEnemyList, specialEnemyList, bossEnemyList); }
