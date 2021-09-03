@@ -82,7 +82,7 @@ void moveCharacter2(
   void runGame(DrawWindow drawWindow, int direction, bool multiplayer);
 
   void money(int &bananas, bool noEnemy, int maxRoom, int &roundPayed,
-             Character &character, int upgradeCost);
+             Character &character, int upgradeCost, bool multiplayer, bool isPlayer1);
   void increasePointOnScreen(int &pointOnScreen, int pointsAdded);
   void gorillaPunch(int direction, Character &character, pEnemyList enemyList,
                     int &pointOnScreen, bool toTheRight, bool multiplayer, bool isPlayer1);

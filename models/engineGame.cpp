@@ -888,8 +888,8 @@ void EngineGame::increaseCount(long &points) {
   this->whileCountEnemy += 1;
 }
 
-void EngineGame::money(int &bananas, bool noEnemy, int maxRoom, int &roundPayed, Character &character, int upgradeCost) {
-  srand(time(0));
+void EngineGame::money(int &bananas, bool noEnemy, int maxRoom, int &roundPayed, Character &character, int upgradeCost, bool multiplayer, bool isPlayer1) {
+  srand(time(NULL));
   if (noEnemy && (maxRoom != roundPayed)) {  // CONTROLLA CHE LA STANZA SIA PULITA E CHE L'ULTIMO ROUND SIA STATO PAGATO
     bananas = bananas + rand() % 3 + 1;
     character.increaseLife((rand() % 20 + 20));
@@ -901,7 +901,7 @@ void EngineGame::money(int &bananas, bool noEnemy, int maxRoom, int &roundPayed,
       character.increaseTotalAmmo(50);
     else if (maxRoom > 15)
       character.increaseTotalAmmo(80);
-    roundPayed++;
+    if(multiplayer == false || isPlayer1 == false) roundPayed++;
   }
   init_pair(20, COLOR_GREEN, -1);
   attron(COLOR_PAIR(20));
@@ -980,7 +980,7 @@ void EngineGame::runGame(DrawWindow drawWindow, int direction, bool multiplayer)
                   bonusTime, upgradeBuyed, upgradeType, upgradeTime, immortalityCheck,
                   immortalityTime, toTheRight, upgradeCost, roomList->mountainList);
     if (multiplayer) moveCharacter2(drawWindow, character2, direction, roomList, normalEnemyList,
-                  pointsOnScreen, bananas, powerUpDMG, bonusPicked, bonusType,
+                  pointsOnScreen, bananasP2, powerUpDMG, bonusPicked, bonusType,
                   bonusTime, upgradeBuyed, upgradeType, upgradeTime, immortalityCheck,
                   immortalityTime, toTheRightP2, upgradeCost, roomList->mountainList);
     clear();
@@ -1078,9 +1078,10 @@ void EngineGame::runGame(DrawWindow drawWindow, int direction, bool multiplayer)
                   toTheRightP2, multiplayer, false);
     }
 
-    money(bananas, noEnemy, maxRoom, roundPayed, character, upgradeCost);
-    if(multiplayer){ money(bananasP2, noEnemy, maxRoom, roundPayed, character2, upgradeCost);}
-    
+    money(bananas, noEnemy, maxRoom, roundPayed, character, upgradeCost, multiplayer, true);
+    if(multiplayer){money(bananasP2, noEnemy, maxRoom, roundPayed, character2, upgradeCost, multiplayer, false);}
+
+
     // Si constrolla se i colpi dei players hanno colpito i nemici
     checkBulletCollision(this->playerBullets, character, normalEnemyList,
                          pointsOnScreen, immortalityCheck);
