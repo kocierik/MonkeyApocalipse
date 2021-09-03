@@ -15,7 +15,7 @@
 
 #define NORMAL_ENEMY_LIMIT 7
 #define SPECIAL_ENEMY_FREQUENCY 5   // Spawn ogni 5 round
-#define BOSS_ENEMY_FREQUENCY 10      // Spawn ogni 10 round
+#define BOSS_ENEMY_FREQUENCY 10     // Spawn ogni 10 round
 #define MOUNTAIN_LIFE 10
 const int MAXNAMECHARACTER = 10; 
 
@@ -919,40 +919,8 @@ pRoom DrawWindow::changeRoom(Character &character, Character &character2, int &n
       roomList->bonusList = generateBonus(bonusList, bonusCounter);
       roomList = saveRoom(mountainList, bonusList, roomList);
       
-      if (maxRoom <= NORMAL_ENEMY_LIMIT) {
-        normalEnemyCount = maxRoom + 1;
-        if (multiplayer)
-          normalEnemyCount += 2;
-      }
-      else {
-        normalEnemyCount = NORMAL_ENEMY_LIMIT;
-        if (multiplayer)
-          normalEnemyCount += 4;
-      }
-      
-      if (maxRoom % SPECIAL_ENEMY_FREQUENCY == 0) {
-        if (maxRoom == 5)
-          specialEnemyCount = 2;
-        else if (maxRoom == 10)
-          specialEnemyCount = 3;
-        else if (maxRoom >= 15)
-          specialEnemyCount = 4;
-        else
-          specialEnemyCount = 0;
-        if (multiplayer && specialEnemyCount != 0)
-          specialEnemyCount += 1;
-      }
-
-      if (maxRoom % BOSS_ENEMY_FREQUENCY == 0) {
-        if (maxRoom == 10)
-          bossEnemyCount = 1;
-        else if (maxRoom >= 20)
-          bossEnemyCount = 2;
-        else
-          bossEnemyCount = 0;
-        if (multiplayer && bossEnemyCount != 0)
-          bossEnemyCount += 1;
-      }
+      // Si assegna i valori alle variaibli che rappresentano i nemici da generare
+      howMuchEnemies (maxRoom, multiplayer, normalEnemyCount, specialEnemyCount, bossEnemyCount);
 
       // Serve per scorrere (nella lista dei nemici, se generata) il primo nemico, quello fittizio
       normalEnemyList = normalEnemyList->next;
@@ -968,6 +936,45 @@ pRoom DrawWindow::changeRoom(Character &character, Character &character2, int &n
     roomList = roomList->next;
   }
   return roomList;
+}
+
+void DrawWindow::howMuchEnemies (int maxRoom, bool multiplayer, int &normalEnemyCount, int &specialEnemyCount, int &bossEnemyCount) {
+  if (maxRoom <= NORMAL_ENEMY_LIMIT) {
+    normalEnemyCount = maxRoom + 1;
+    if (multiplayer)
+      normalEnemyCount += 2;
+  } else {
+    normalEnemyCount = NORMAL_ENEMY_LIMIT;
+     
+    if (multiplayer)
+      normalEnemyCount += 4;
+  }
+        
+  if (maxRoom % SPECIAL_ENEMY_FREQUENCY == 0) {
+    if (maxRoom < 10)
+      specialEnemyCount = 2;
+    else if (maxRoom >= 10 && maxRoom < 15)
+      specialEnemyCount = 3;
+    else if (maxRoom >= 15)
+      specialEnemyCount = 4;
+    else
+      specialEnemyCount = 0;
+        
+    if (multiplayer && specialEnemyCount != 0)
+      specialEnemyCount += 1;
+    }
+
+  if (maxRoom % BOSS_ENEMY_FREQUENCY == 0) {
+    if (maxRoom <= 10)
+      bossEnemyCount = 1;
+    else if (maxRoom > 10)
+      bossEnemyCount = 2;
+    else
+      bossEnemyCount = 0;
+   
+    if (multiplayer && bossEnemyCount != 0)
+      bossEnemyCount += 1;
+  }
 }
 
 void DrawWindow::printSplashScreen() {
