@@ -1138,7 +1138,7 @@ void EngineGame::runGame(DrawWindow drawWindow, int direction, bool multiplayer)
     
     drawWindow.showBonusOnScreen(upgradeBuyed, upgradeType, upgradeTime,
                                  bonusPicked, bonusType, bonusTime,
-                                 immortalityCheck, immortalityTime);
+                                 immortalityCheck, immortalityTime, multiplayer);
 
     checkDeath(pause, character);
     if (multiplayer) checkDeath(pause, character2);

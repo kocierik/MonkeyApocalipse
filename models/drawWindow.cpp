@@ -598,7 +598,7 @@ void DrawWindow::showBonusOnScreen(bool &upgradeBuyed, int &upgradeType,
                                    int &upgradeTime, bool &bonusPicked,
                                    int bonustype, int &bonusTime,
                                    bool &immortalityCheck,
-                                   int &immortalityTime) {
+                                   int &immortalityTime, bool multiplayer) {
   int x = 25;
   int y = 6;
   int disclaimerTimeLimit = 40;
@@ -654,7 +654,7 @@ void DrawWindow::showBonusOnScreen(bool &upgradeBuyed, int &upgradeType,
     init_pair(24, -1, COLOR_MAGENTA);
     attron(COLOR_PAIR(24));
     mvprintw(22, 56, "                    ");
-    mvprintw(22, 22, "                    ");
+    if(multiplayer){ mvprintw(22, 22, "                    "); }
     attroff(COLOR_PAIR(24));
     immortalityTime++;
   }

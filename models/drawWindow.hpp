@@ -50,7 +50,7 @@ class DrawWindow {
 
   void showBonusOnScreen(bool &upgradeBuyed, int &upgradeType, int &upgradeTime,
                          bool &bonusPicked, int bonusType, int &bonusTime,
-                         bool &immortalitycheck, int &immortalityTime);
+                         bool &immortalitycheck, int &immortalityTime, bool multiplayer);
 
   pRoom changeRoom(Character &character, Character &character2, int &normalEnemyCount, int &specialEnemyCount, int &bossEnemyCount,
                    pEnemyList &normalEnemyList, pEnemyList &specialEnemyList, pEnemyList &bossEnemyList,
