@@ -60,7 +60,9 @@ class DrawWindow {
   pPosition generateMountain(pPosition mountainList, int &mountainCount);
   pPosition generateBonus(pPosition bonusList, int &bonusCount);
 
-  void moveEnemy(pEnemyList enemyList, Character character, Character character2, DrawWindow drawWindow,
+  void moveEnemyMultiplayer(pEnemyList enemyList, Character character, Character character2, DrawWindow drawWindow,
+                 long points);
+  void moveEnemySinglePlayer(pEnemyList enemyList, Character character, DrawWindow drawWindow,
                  long points);
   
   void printMountain(pPosition mountainList);

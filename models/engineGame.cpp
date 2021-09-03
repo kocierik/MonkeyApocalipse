@@ -1028,10 +1028,16 @@ void EngineGame::runGame(DrawWindow drawWindow, int direction, bool multiplayer)
     drawWindow.printEnemy(normalEnemyList, drawWindow);
     drawWindow.printEnemy(specialEnemyList, drawWindow);
     drawWindow.printEnemy(bossEnemyList, drawWindow);
-
-    drawWindow.moveEnemy(normalEnemyList, character, character2, drawWindow, points);
-    drawWindow.moveEnemy(specialEnemyList, character, character2, drawWindow, points);
-    drawWindow.moveEnemy(bossEnemyList, character, character2, drawWindow, points);
+    
+    drawWindow.moveEnemySinglePlayer(normalEnemyList, character, drawWindow, points);
+    drawWindow.moveEnemySinglePlayer(specialEnemyList, character, drawWindow, points);
+    drawWindow.moveEnemySinglePlayer(bossEnemyList, character, drawWindow, points);
+    
+    if(multiplayer){ 
+      drawWindow.moveEnemyMultiplayer(normalEnemyList, character, character2, drawWindow, points);
+      drawWindow.moveEnemyMultiplayer(specialEnemyList, character, character2, drawWindow, points);
+      drawWindow.moveEnemyMultiplayer(bossEnemyList, character, character2, drawWindow, points);
+    }
 
     generateEnemyBullets(normalEnemyList, this->normalEnemyBullets, character);
     generateEnemyBullets(specialEnemyList, this->specialEnemyBullets, character);
