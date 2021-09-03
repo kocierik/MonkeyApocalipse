@@ -299,14 +299,14 @@ void DrawWindow::printHowToPlay() {  // GESTISCE LA SCHERMATA DEL HOW TO PLAY
            "       ELIMINATE THE ENEMIES, CLEAN THE ROOM, MOVE TO THE NEXT ONE "
            "AND COLLECT BANANAS!              ");
   mvprintw(LINES/2-4, COLS/2-50,
-           "       USE THE [ARROWS] TO MOVE AND [W]/[E] TO USE THE "
+           "       USE THE [ARROWS] TO MOVE AND [,]/[.] TO USE THE "
            "BANANACANNON, WATCH OUT FOR AMMO!             ");
   mvprintw(LINES/2-3, COLS/2-50,
            "                                                                   "
            "                                  ");
   mvprintw(LINES/2-2, COLS/2-50,
-           "       IF YOU RUN OUT FOR AMMO, DONT FORGET YOU CAN USE [SPACE] "
-           "FOR YOUR TREMENDOUS PUNCHES!         ");
+           "       IF YOU RUN OUT FOR AMMO, DONT FORGET YOU CAN USE [K] "
+           "FOR YOUR TREMENDOUS PUNCHES!             ");
   mvprintw(LINES/2-1, COLS/2-50,
            "                                                                   "
            "                                  ");
@@ -320,11 +320,11 @@ void DrawWindow::printHowToPlay() {  // GESTISCE LA SCHERMATA DEL HOW TO PLAY
            "                                                                   "
            "                                  ");
   mvprintw(LINES/2+3, COLS/2-50,
-           "       WHEN YOU HAVE %d BANANAS PRESS [S] TO UPGRADE THE BANANA "
+           "       WHEN YOU HAVE %d BANANAS PRESS [0] TO UPGRADE THE BANANA "
            "CANNON                               ",
            10);
   mvprintw(LINES/2+4, COLS/2-50,
-           "       OR [A] TO RECOVER A LOST LIFE                               "
+           "       OR [9] TO RECOVER A LOST LIFE                               "
            "                                  ");
   mvprintw(LINES/2+5, COLS/2-50,
            "                                                                   "
@@ -339,18 +339,33 @@ void DrawWindow::printHowToPlay() {  // GESTISCE LA SCHERMATA DEL HOW TO PLAY
            "                                                                   "
            "                                  ");
   mvprintw(LINES/2+9, COLS/2-50,
-           "          [F][G] = SHOOT   [WASD] = MOVE    [Z] = BUY EXTRA LIFE   "
-           "  [X] = DAMAGE UPGRADE            ");
+           "          [,][.] = SHOOT    [ARROW] = MOVE    [9] = BUY EXTRA LIFE "
+           "  [0] = DAMAGE UPGRADE            ");
   mvprintw(LINES/2+10, COLS/2-50,
-           "                            [R] = RELOAD AMMO    [SPACE] = PUNCH   "
+           "                                [L] = RELOAD AMMO    [K] = PUNCH   "
            "                                  ");
   mvprintw(LINES/2+11, COLS/2-50,
            "                                                                   "
            "                                  ");
   mvprintw(LINES/2+12, COLS/2-50,
-           "                                              menu [ESC]           "
+           "                                              <Player 2>           "
            "                                  ");
   mvprintw(LINES/2+13, COLS/2-50,
+           "                                                                   "
+           "                                  ");
+  mvprintw(LINES/2+14, COLS/2-50,
+           "          [V][B] = SHOOT    [WASD] = MOVE     [1] = BUY EXTRA LIFE "
+           "  [2] = DAMAGE UPGRADE            ");
+  mvprintw(LINES/2+15, COLS/2-50,
+           "                                [R] = RELOAD AMMO    [Q] = PUNCH   "
+           "                                  ");
+  mvprintw(LINES/2+16, COLS/2-50,
+           "                                                                   "
+           "                                  ");
+  mvprintw(LINES/2+17, COLS/2-50,
+           "                                              menu [ESC]           "
+           "                                  ");
+  mvprintw(LINES/2+18, COLS/2-50,
            "                                                                   "
            "                                  ");
   attroff(COLOR_PAIR(2));  // CHIUSURA DEL COLORE VERDE
