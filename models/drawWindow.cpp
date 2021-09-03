@@ -787,7 +787,7 @@ void DrawWindow::printEnemy(pEnemyList enemyList, DrawWindow drawWindow) {
   }
 }
 
-void DrawWindow::moveEnemy(pEnemyList enemyList, Character character, Character character2,
+void DrawWindow::moveEnemyMultiplayer(pEnemyList enemyList, Character character, Character character2,
                            DrawWindow drawWindow, long points) {
   int yP = character.getY(), xE, yE;
   int yP2 = character2.getY();
@@ -813,6 +813,35 @@ void DrawWindow::moveEnemy(pEnemyList enemyList, Character character, Character 
     enemyList = enemyList->next;
   }
 }
+
+void DrawWindow::moveEnemySinglePlayer(pEnemyList enemyList, Character character,
+                           DrawWindow drawWindow, long points) {
+  int yP = character.getY(), xE, yE;
+  srand(time(0));
+  int movementSpeedFactor = 1;
+  
+  while (enemyList != NULL) {
+    // Più è alto il valore aggiunto e più lento sarà il nemico
+    if (enemyList->enemy.getSkin() == 'e') movementSpeedFactor = rand() % 10 + 15;
+    else if (enemyList->enemy.getSkin() == 'E') movementSpeedFactor = rand() % 10 + 20;
+    else if (enemyList->enemy.getSkin() == 'B') movementSpeedFactor = rand() % 10 + 30;
+
+    if (points % movementSpeedFactor == 0) {
+      xE = enemyList->enemy.getX(), yE = enemyList->enemy.getY();
+      if ((yP > yE) && (mvinch(yE + 1, xE) == ' ' || mvinch(yE + 1, xE) == '?')) {
+        enemyList->enemy.setY(yE + 1);
+        drawWindow.printCharacter(xE, yE, enemyList->enemy.getSkin());
+      } else if ((yP < yE) && (mvinch(yE - 1, xE) == ' ' || mvinch(yE - 1, xE) == '?')) {
+        enemyList->enemy.setY(yE - 1);
+        drawWindow.printCharacter(xE, yE, enemyList->enemy.getSkin());
+      }
+    }
+    enemyList = enemyList->next;
+  }
+}
+
+
+
 
 pRoom DrawWindow::saveRoom(pPosition mountainList, pPosition bonusList,
                            pRoom roomList) {
