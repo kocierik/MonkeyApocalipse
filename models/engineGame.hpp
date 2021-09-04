@@ -86,5 +86,5 @@ void moveCharacter2(
              Character &character, int upgradeCost, bool multiplayer, bool isPlayer1);
   void increasePointOnScreen(int &pointOnScreen, int pointsAdded);
   void gorillaPunch(int direction, Character &character, pEnemyList enemyList,
-                    int &pointOnScreen, bool toTheRight, bool multiplayer, bool isPlayer1);
+                    int &pointOnScreen, bool toTheRight, bool isPlayer1);
 };

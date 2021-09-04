@@ -568,21 +568,15 @@ void EngineGame::moveCharacter2(
 
 void EngineGame::gorillaPunch(int direction, Character &character,
                               pEnemyList enemyList, int &pointOnScreen,
-                              bool toTheRight, bool multiplayer, bool isPlayer1) {
+                              bool toTheRight, bool isPlayer1) {
   pEnemyList tmp = enemyList;
   bool condition = false;
 
-  //mvprintw (3,3,"%d",direction);
-
-  if (multiplayer) {
     if (isPlayer1) { 
-      if (direction == 'k') { condition = true; }
+      if (direction == 'k' || direction == 'K') { condition = true; }
     }
     else
-      if (direction == 'q') { condition = true; }
-  }
-  else
-    if (direction == 32) { condition = true; }
+      if (direction == 'q' || direction == 'Q') { condition = true; }
 
   if (condition) {
     int range = -1;
@@ -1076,18 +1070,18 @@ void EngineGame::runGame(DrawWindow drawWindow, int direction, bool multiplayer)
     //mvprintw (3,3,"%d",direction);
 
     gorillaPunch(direction, character, normalEnemyList, pointsOnScreen,
-                 toTheRight, multiplayer, true);
+                 toTheRight, true);
     gorillaPunch(direction, character, specialEnemyList, pointsOnScreen,
-                 toTheRight, multiplayer, true);
+                 toTheRight, true);
     gorillaPunch(direction, character, bossEnemyList, pointsOnScreen,
-                 toTheRight, multiplayer, true);
+                 toTheRight, true);
     if (multiplayer) {
       gorillaPunch(direction, character2, normalEnemyList, pointsOnScreen,
-                  toTheRightP2, multiplayer, false);
+                  toTheRightP2, false);
       gorillaPunch(direction, character2, specialEnemyList, pointsOnScreen,
-                  toTheRightP2, multiplayer, false);
+                  toTheRightP2, false);
       gorillaPunch(direction, character2, bossEnemyList, pointsOnScreen,
-                  toTheRightP2, multiplayer, false);
+                  toTheRightP2, false);
     }
 
     money (bananas, noEnemy, maxRoom, roundPayed, character, upgradeCost, multiplayer, true);
