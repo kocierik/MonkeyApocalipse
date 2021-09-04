@@ -22,7 +22,6 @@ const int MAXNAMECHARACTER = 10;
 DrawWindow::DrawWindow() {}
 
 /*
-  I COLORI SONO IMPARENTATI DA UN ID (IL PRIMO VALORE DI INIT_PAIR)
   I COLORI HANNO ID:
   - ROSSO = 1
   - VERDE = 2
@@ -51,9 +50,10 @@ DrawWindow::DrawWindow() {}
   - VIOLA IMMORTALE = 24
 */
 
+// FUNZIONE CHE STAMPA LA GRAFICA DEL LOGO NEL MENU
 void DrawWindow::drawMenu() {
-  init_pair(1, COLOR_RED, 232);  // 1 INDICA UN ID, POI METTI IL COLORE CHE VUOI
-  attron(COLOR_PAIR(1));         // APRTURA COLORE ROSSO
+  init_pair(1, COLOR_RED, 232);
+  attron(COLOR_PAIR(1));
   mvprintw(LINES / 2 - 10, COLS / 2 - 54,
            "                                                                   "
            "                                         ");
@@ -78,9 +78,10 @@ void DrawWindow::drawMenu() {
   mvprintw(LINES / 2 - 3, COLS / 2 - 54,
            "                                                                   "
            "                                         ");
-  attroff(COLOR_PAIR(1));  // CHIUSURA DEL COLORE ROSSO E NERO
+  attroff(COLOR_PAIR(1));
 }
 
+// FUNZIONE CHE STAMPA E GESTISCE LE VOCI DEL MENU
 void DrawWindow::printCommand(int *cnt) {
   init_pair(12, COLOR_BLACK, COLOR_RED);
 
@@ -191,8 +192,9 @@ void DrawWindow::printCommand(int *cnt) {
            "Press [SPACE] to continue or use the arrow to move.");
 }
 
+// FUNZIONE CHE STAMPA LA GRAFICA DELLA SCHERMATA DEI CREDITS
 void DrawWindow::printCredits() {
-  init_pair(3, COLOR_YELLOW, 232);  // FUNZIONI PER USARE IL COLORE GIALLO
+  init_pair(3, COLOR_YELLOW, 232); 
   attron(COLOR_PAIR(3));
   mvprintw(LINES / 2 - 10, COLS / 2 - 51,
            "                                ___ ___ ___ ___ ___ _____   _____ "
@@ -208,7 +210,7 @@ void DrawWindow::printCredits() {
            "\\___/                                ");
   attroff(COLOR_PAIR(3));
 
-  init_pair(2, COLOR_GREEN, 232);  // FUNZIONI PER USARE I COLORI VEDI MENU.CPP
+  init_pair(2, COLOR_GREEN, 232);  
   attron(COLOR_PAIR(2));
   mvprintw(LINES / 2 - 6, COLS / 2 - 51,
            "                                                                   "
@@ -239,14 +241,17 @@ void DrawWindow::printCredits() {
            "                                   ");
   attroff(COLOR_PAIR(2));
 }
+
+// FUNZIONE CHE GESTISCE LA LOGICA DELLA SCHERMATA DEI CREDITS
 void DrawWindow::credits(int direction) {
   direction = 0;
   while (direction != 27) {
-    printCredits();       // STAMPA GLI AUTORI DEL GIOCO
-    direction = getch();  // ASPETTA UN TASTO IN INPUT
+    printCredits();
+    direction = getch();
   }
 }
 
+// FUNZIONE CHE STAMPA LA SCHERMATA DELLA LEADERBOARD
 void DrawWindow::printLeaderboardScreen() {
   int prog = LINES / 2 - 15;
   for (int y = 0; y < 36; y++) {
@@ -321,16 +326,19 @@ void DrawWindow::printLeaderboardScreen() {
     leaderboard.close();
   }
 }
+
+//FUNZIONE CHE GESTISCE LA LOGICA DELLA SCHERMATA DELLA LEADERBOARDS
 void DrawWindow::leaderboardScreen(int direction) {
   while (direction != 27) {
     printLeaderboardScreen();
-    direction = getch();  // ASPETTA UN TASTO IN INPUT
+    direction = getch();
   }
 }
 
-void DrawWindow::printHowToPlay() {  // GESTISCE LA SCHERMATA DEL HOW TO PLAY
+// FUNZIONE CHE STAMPA LA SCHERMATA DELL'HOW TO PLAY
+void DrawWindow::printHowToPlay() {
 
-  init_pair(3, COLOR_YELLOW, 232);  // FUNZIONI PER USARE IL COLORE GIALLO
+  init_pair(3, COLOR_YELLOW, 232);
   attron(COLOR_PAIR(3));
   mvprintw(LINES / 2 - 12, COLS / 2 - 50,
            "                     _____ _____ _ _ _    _____ _____    _____ __  "
@@ -432,6 +440,8 @@ void DrawWindow::printHowToPlay() {  // GESTISCE LA SCHERMATA DEL HOW TO PLAY
            "                                  ");
   attroff(COLOR_PAIR(2));  // CHIUSURA DEL COLORE VERDE
 }
+
+// FUNZIONE CHE GESTISCE LA LOGICA DELLA SCHERMATA DELL'HOW TO PLAY
 void DrawWindow::HowToPlay(int direction) {
   direction = 0;
   while (direction != 27) {
@@ -440,11 +450,13 @@ void DrawWindow::HowToPlay(int direction) {
   }
 }
 
+// FUNZIONE CHE STAMPA A SCHERMO IL CARATTERE DEL PLAYER
 void DrawWindow::printCharacter(int x, int y, char c) {
   move(y, x);
   printw("%c", c);
 }
 
+// FUNZIONE CHE STAMPA I RETTANGOLI DI DIMENSIONI DATE E GESTISCE QUANDO E SE SI DEVONO APRIRE
 void DrawWindow::drawRect(
     int startX, int startY, int rightWidth, int bottomHeight, bool noEnemy,
     int maxRoom, bool isScreenBound,
@@ -472,6 +484,7 @@ void DrawWindow::drawRect(
   mvprintw(bottomHeight, rightWidth, "o");
 }
 
+// FUNZIONE CHE STAMPA A SCHERMO LA CLASSIFICA RECENTE DELLE ULTIME 11 PARTITE
 void DrawWindow::drawLeaderboardOnScreen() {
   std::string localScore[44] = {"NULL"};
   std::string line;
@@ -503,6 +516,7 @@ void DrawWindow::drawLeaderboardOnScreen() {
   }
 }
 
+// FUNZIONE CHE STAMPA E GESTISCE LE STATS A SCHERMO DURANTE LA PARTITA
 void DrawWindow::drawStats(int startX, int startY, int rightWidth,
                            int bottomHeight, int pointsOnScreen,
                            Character character, bool noEnemy, int powerUp,
@@ -600,6 +614,7 @@ void DrawWindow::drawStats(int startX, int startY, int rightWidth,
   attroff(COLOR_PAIR(3));  // CHIUSURA DEL COLORE
 }
 
+// FUNZIONE CHE GENERA DELLE COORDINATE CASUALI IN UN DETERMINATO RANGE
 Position DrawWindow::generateRandomPosition(int startRange, int endRange) {
   Position pos;
   pos.x = startRange + (std::rand() % (endRange - startRange + 1));
@@ -611,10 +626,12 @@ Position DrawWindow::generateRandomPosition(int startRange, int endRange) {
   return pos;
 }
 
+// FUNZIONE CHE GESTISCE LA GENERAZIONE DELLE MONTAGNE
 pPosition DrawWindow::generateMountain(pPosition mountainList,
                                        int &mountainCount) {
   int x, y;
   pPosition head = NULL;
+  
   while (mountainCount > 0) {
     x = generateRandomPosition(40, 70).x;
     y = generateRandomPosition(8, 19).y;
@@ -630,6 +647,7 @@ pPosition DrawWindow::generateMountain(pPosition mountainList,
   return mountainList;
 }
 
+// FUNZIONE CHE GESTISCE LA GENERAZIONE DEI BONUS/MALUS
 pPosition DrawWindow::generateBonus(pPosition bonusList, int &bonusCount) {
   /**
    * Genera la lista dei bonus (coordinate e skin), l'effetto di tali bonus è
@@ -649,6 +667,7 @@ pPosition DrawWindow::generateBonus(pPosition bonusList, int &bonusCount) {
   return bonusList;
 }
 
+// FUNZIONE CHE STAMPA A SCHERMO LE MONTAGNE
 void DrawWindow::printMountain(pPosition mountainList) {
   while (mountainList != NULL) {
     init_pair(15, COLOR_YELLOW, -1);
@@ -659,6 +678,7 @@ void DrawWindow::printMountain(pPosition mountainList) {
   }
 }
 
+// FUNZIONE CHE STAMAPA A SCHERMO I BONUS/MALUS
 void DrawWindow::printBonus(pPosition bonusList) {
   bool first = true;
   while (bonusList != NULL) {
@@ -670,6 +690,7 @@ void DrawWindow::printBonus(pPosition bonusList) {
   }
 }
 
+// FUNZIONE CHE GESTISCE L'APPARIZIONE TEMPORANEA DEL BANNER CHE TI MOSTRA CHE POWER-UP HAI RACCOLTO
 void DrawWindow::showBonusOnScreen(bool &upgradeBuyed, int &upgradeType,
                                    int &upgradeTime, bool &bonusPicked,
                                    int bonustype, int &bonusTime,
@@ -764,14 +785,14 @@ void DrawWindow::showBonusOnScreen(bool &upgradeBuyed, int &upgradeType,
   }
 }
 
+// FUNZIONE CHE CONTA QUANTI NEMICI SONO PRESENTI NELLA LORO LISTA
 int DrawWindow::lengthEnemyList(pEnemyList enemyList) {
   int i;
   if (enemyList == NULL) {
     i = 0;
   } else {
     i = -1;
-  }  // serve a far indicare 0 quando è vuota, invece di -1 che è utile quando
-     // si conta.
+  }
   while (enemyList != NULL) {
     i++;
     enemyList = enemyList->next;
@@ -779,6 +800,7 @@ int DrawWindow::lengthEnemyList(pEnemyList enemyList) {
   return i;
 }
 
+// FUNZIONE CHE CONTA A CHE STANZA È IL PLAYER
 int DrawWindow::lengthListRoom(pRoom roomList) {
   int i = 0;
   while (roomList != NULL) {
@@ -788,6 +810,7 @@ int DrawWindow::lengthListRoom(pRoom roomList) {
   return i;
 }
 
+// FUNZIONE CHE STAMPA A SCHERMO IL NUMERO E LA LISTA DEI NEMICI RIMASTI NELLA MAPPA
 void DrawWindow::printEnemyLeftList(pEnemyList enemyList,
                                     pEnemyList specialEnemyList,
                                     pEnemyList bossEnemyList) {
@@ -795,7 +818,6 @@ void DrawWindow::printEnemyLeftList(pEnemyList enemyList,
                           lengthEnemyList(specialEnemyList) +
                           lengthEnemyList(bossEnemyList);
 
-  // gestione posizionamento della lista nello schermo
   int i = 22;
   int reachBound = 0;
   int X_ElencoNemici = 19;
@@ -840,18 +862,19 @@ void DrawWindow::printEnemyLeftList(pEnemyList enemyList,
   }
 }
 
+// FUNZIONE CHE STAMPA E GESTISCE LE STATS A SCHERMO DURANTE LA PARTITA
 void DrawWindow::printCharacterStats(Character character, bool isPlayer1) {
   int i = 22;
-  int BarStart;  // gestisce dove partono gli oggetti della barra
+  int BarStart;
   if (isPlayer1) {
     BarStart = 56;
   } else {
     BarStart = 22;
-  }                       // gestisce la posizione della barra per il P1 e il P2
-  int AddBar = BarStart;  // cicla per aggiungere un cordinata
+  }     
+  int AddBar = BarStart;
   int healtColorPair = 0;
 
-  // gestisce l'apparizione dei banner
+  // GESTISCE L'APPARIZIONE DEI BANNER RIGUARDANTI LE MUNIZIONI
   if (character.getGun().getTotalAmmo() == 0 &&
       character.getGun().getMagazineAmmo() == 0) {
     init_pair(25, COLOR_RED, -1);
@@ -909,10 +932,11 @@ void DrawWindow::printCharacterStats(Character character, bool isPlayer1) {
            "[");  // GERERA I CARATTERI PER IL CONTENITORE DELLA VITA
   mvprintw(i, BarStart + 20, "]");
 
-  // FINE CODICE BARRA DELLA VITA
   // ------------------------------------------------------------------------------------------
+  // FINE CODICE BARRA DELLA VITA
 }
 
+// FUNZIONE CHE STAMPA A SCHERMO I NEMICI PRESENTI NELLA LISTA DATA
 void DrawWindow::printEnemy(pEnemyList enemyList, DrawWindow drawWindow) {
   while (enemyList != NULL) {
     drawWindow.printCharacter(enemyList->enemy.getX(), enemyList->enemy.getY(),
@@ -921,6 +945,7 @@ void DrawWindow::printEnemy(pEnemyList enemyList, DrawWindow drawWindow) {
   }
 }
 
+// FUNZIONE CHE GESTISCE I MOVIMENTI DEI NEMICI NELLA MODALITÀ MULTIPLAYER
 void DrawWindow::moveEnemyMultiplayer(pEnemyList enemyList, Character character,
                                       Character character2,
                                       DrawWindow drawWindow, long points) {
@@ -930,7 +955,6 @@ void DrawWindow::moveEnemyMultiplayer(pEnemyList enemyList, Character character,
   int movementSpeedFactor = 1;
 
   while (enemyList != NULL) {
-    // Più è alto il valore aggiunto e più lento sarà il nemico
     if (enemyList->enemy.getSkin() == 'e')
       movementSpeedFactor = rand() % 10 + 15;
     else if (enemyList->enemy.getSkin() == 'E')
@@ -954,6 +978,7 @@ void DrawWindow::moveEnemyMultiplayer(pEnemyList enemyList, Character character,
   }
 }
 
+// FUNZIONE CHE GESTISCE I MOVIMENTI DEI NEMICI NELLA MODALITÀ SINGLEPLAYER
 void DrawWindow::moveEnemySinglePlayer(pEnemyList enemyList,
                                        Character character,
                                        DrawWindow drawWindow, long points) {
@@ -986,6 +1011,7 @@ void DrawWindow::moveEnemySinglePlayer(pEnemyList enemyList,
   }
 }
 
+// FUNZIONE CHE SALVA LO STATO DI UNA STANZA
 pRoom DrawWindow::saveRoom(pPosition mountainList, pPosition bonusList,
                            pRoom roomList) {
   pRoom head = new Room;
@@ -997,6 +1023,7 @@ pRoom DrawWindow::saveRoom(pPosition mountainList, pPosition bonusList,
   return roomList;
 }
 
+// FUNZIONE CHE GESTISCE LO SPOSTAMENTO E LA GENERAZIONE DEGLI ELEMENTI NELLA NUOVA STANZA
 pRoom DrawWindow::changeRoom(Character &character, Character &character2,
                              int &normalEnemyCount, int &specialEnemyCount,
                              int &bossEnemyCount, pEnemyList &normalEnemyList,
@@ -1029,9 +1056,6 @@ pRoom DrawWindow::changeRoom(Character &character, Character &character2,
       // generare
       howMuchEnemies(maxRoom, multiplayer, normalEnemyCount, specialEnemyCount,
                      bossEnemyCount);
-
-      // Serve per scorrere (nella lista dei nemici, se generata) il primo
-      // nemico, quello fittizio
       normalEnemyList = normalEnemyList->next;
       if (maxRoom % SPECIAL_ENEMY_FREQUENCY == 0)
         specialEnemyList = specialEnemyList->next;
@@ -1047,6 +1071,7 @@ pRoom DrawWindow::changeRoom(Character &character, Character &character2,
   return roomList;
 }
 
+// FUNZIONE CHE GESTISCE SE E QUANTI NEMICI GENERARE
 void DrawWindow::howMuchEnemies(int maxRoom, bool multiplayer,
                                 int &normalEnemyCount, int &specialEnemyCount,
                                 int &bossEnemyCount) {
@@ -1084,6 +1109,7 @@ void DrawWindow::howMuchEnemies(int maxRoom, bool multiplayer,
   }
 }
 
+// FUNZIONE CHE STAMPA LA SPLASHSCREEN APPENA SI AVVIA LA PARTITA
 void DrawWindow::printSplashScreen() {
   int prog = LINES / 2 - 15;
   for (int y = 0; y < 20; y++) {
@@ -1129,6 +1155,7 @@ void DrawWindow::printSplashScreen() {
   attroff(COLOR_PAIR(4));
 }
 
+// FUNZIONE CHE GESTISCE LA LOGICA DELLA SPLASHSCREEN
 void DrawWindow::splashScreen(int direction) {
   direction = 0;
   while (direction != 32) {
@@ -1137,6 +1164,7 @@ void DrawWindow::splashScreen(int direction) {
   }
 }
 
+// FUNZIONE CHE STAMPA LA SCHERMATA DI GAME OVER
 void DrawWindow::printLoseScreen(float finalScore) {
   int prog = LINES / 2 - 15;
   for (int y = 0; y < 20; y++) {
@@ -1181,6 +1209,7 @@ void DrawWindow::printLoseScreen(float finalScore) {
   attroff(COLOR_PAIR(17));
 }
 
+// FUNZIONE CHE SI ACCERTA CHE IL NOME RISPETTI GLI STANDARD DI VALIDITÀ
 bool DrawWindow::ghostNameRecognizer(char name[]) {
   bool GhostName = true;
   int i = 0;
@@ -1190,6 +1219,7 @@ bool DrawWindow::ghostNameRecognizer(char name[]) {
   return GhostName;
 }
 
+// FUNZIONE CHE GESTISCE IL SALVATAGGIO DELLO SCORE SUL FILE TXT
 void DrawWindow::saveRecord(float finalScore, char name[]) {
   bool ghostName = ghostNameRecognizer(name);
   int nameLen = strlen(name);
@@ -1209,6 +1239,7 @@ void DrawWindow::saveRecord(float finalScore, char name[]) {
   board.close();
 }
 
+// FUNZIONE CHE GESTISCE LA LOGICA DELLA SCHERMATA DI GAME OVER E L'INSERIMENTO DEL NOME PER LO SCORE
 void DrawWindow::loseScreen(int direction, float finalScore) {
   direction = 32;
   char name[MAXNAMECHARACTER] = {'\0'};
