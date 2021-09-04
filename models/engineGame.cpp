@@ -832,6 +832,7 @@ void EngineGame::engine(DrawWindow drawWindow) {
   int direction, selection;
   baseCommand();
   choiceGame(drawWindow, &direction, &selection);
+  clear();
   while (pause) {
     switch (selection) {
       case 0:     // FUN (single player)
@@ -869,7 +870,7 @@ void EngineGame::engine(DrawWindow drawWindow) {
         break;
       case 5:     // QUIT!
         refresh();
-        std::cout << "Thanks for playing ;) ";
+        std::cout << "Thanks for playing!" << std::endl;
         exit(1);
         break;
       case 6:     // MENU INIZIALE
