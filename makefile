@@ -5,7 +5,6 @@ LIBRARY = -lncurses
 
 main: $(OBJECTS)
 	$(CC) -o main $(OBJECTS) $(LIBRARY)
-	./main
 
 main.o: main.cpp models/engineGame.hpp models/character.hpp models/drawWindow.hpp models/player.hpp models/enemy.hpp models/coordinate.hpp models/gun.hpp
 	$(CC) $(CFLAGS) main.cpp
@@ -33,6 +32,9 @@ gun.o: models/gun.cpp models/gun.hpp
 
 clean:
 	rm *.o main
+
+launch:
+	./main
 
 format:
 	clang-format -i -style=google ./**/*.cpp ./**/*.hpp
