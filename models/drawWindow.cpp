@@ -14,10 +14,10 @@
 #define GAMEHEIGTH 20  // 13
 
 #define NORMAL_ENEMY_LIMIT 7
-#define SPECIAL_ENEMY_FREQUENCY 5   // Spawn ogni 5 round
-#define BOSS_ENEMY_FREQUENCY 10     // Spawn ogni 10 round
+#define SPECIAL_ENEMY_FREQUENCY 5  // Spawn ogni 5 round
+#define BOSS_ENEMY_FREQUENCY 10    // Spawn ogni 10 round
 #define MOUNTAIN_LIFE 10
-const int MAXNAMECHARACTER = 10; 
+const int MAXNAMECHARACTER = 10;
 
 DrawWindow::DrawWindow() {}
 
@@ -54,135 +54,187 @@ DrawWindow::DrawWindow() {}
 void DrawWindow::drawMenu() {
   init_pair(1, COLOR_RED, 232);  // 1 INDICA UN ID, POI METTI IL COLORE CHE VUOI
   attron(COLOR_PAIR(1));         // APRTURA COLORE ROSSO
-  mvprintw(LINES/2-10, COLS/2-54,
-           "                                                                                                            ");
-  mvprintw(LINES/2-9, COLS/2-54,
-           "    b    d  P*Y  8b 8 8  d 88888 Yb  dP        A   8**Y  P*Y   "
-           "P**b8   b    8     Yb  dP 8**Y .P*Y8 88888   ");
-  mvprintw(LINES/2-8, COLS/2-54,
-           "    8b  d8 P   Y 8Yb8 8od  8__    YbdP        PY   8__P P   Y P   "
-           "`*   PY   8      YbdP  8__P `Yo.* 8__     ");
-  mvprintw(LINES/2-7, COLS/2-54,
-           "    8Yb P8 b   d 8 Y8 8*Y  8**     8P        P__Y  8**  b   P Y    "
-           "   P__Y  8  .o   8P   8**  o.`Y8 8**     ");
-  mvprintw(LINES/2-6, COLS/2-54,
-           "    8 Y  8  Ybo  8  Y 8  Y 88888  dP        P****Y 8     P*Y   "
-           "YoodP P****Y 8ood8  dP    8     8oP* 88888   ");
-  mvprintw(LINES/2-5, COLS/2-54,
+  mvprintw(LINES / 2 - 10, COLS / 2 - 54,
            "                                                                   "
            "                                         ");
-  mvprintw(LINES/2-4, COLS/2-54,
+  mvprintw(LINES / 2 - 9, COLS / 2 - 54,
+           "    b    d  P*Y  8b 8 8  d 88888 Yb  dP        A   8**Y  P*Y   "
+           "P**b8   b    8     Yb  dP 8**Y .P*Y8 88888   ");
+  mvprintw(LINES / 2 - 8, COLS / 2 - 54,
+           "    8b  d8 P   Y 8Yb8 8od  8__    YbdP        PY   8__P P   Y P   "
+           "`*   PY   8      YbdP  8__P `Yo.* 8__     ");
+  mvprintw(LINES / 2 - 7, COLS / 2 - 54,
+           "    8Yb P8 b   d 8 Y8 8*Y  8**     8P        P__Y  8**  b   P Y    "
+           "   P__Y  8  .o   8P   8**  o.`Y8 8**     ");
+  mvprintw(LINES / 2 - 6, COLS / 2 - 54,
+           "    8 Y  8  Ybo  8  Y 8  Y 88888  dP        P****Y 8     P*Y   "
+           "YoodP P****Y 8ood8  dP    8     8oP* 88888   ");
+  mvprintw(LINES / 2 - 5, COLS / 2 - 54,
+           "                                                                   "
+           "                                         ");
+  mvprintw(LINES / 2 - 4, COLS / 2 - 54,
            "     THE REVENGE OF THE MONKEYS HAS JUST BEGUN!                    "
            "                                         ");
-  mvprintw(LINES/2-3, COLS/2-54,
+  mvprintw(LINES / 2 - 3, COLS / 2 - 54,
            "                                                                   "
            "                                         ");
   attroff(COLOR_PAIR(1));  // CHIUSURA DEL COLORE ROSSO E NERO
 }
 
 void DrawWindow::printCommand(int *cnt) {
-
   init_pair(12, COLOR_BLACK, COLOR_RED);
 
   if (*cnt == 0) {
     attron(COLOR_PAIR(12));
-    mvprintw(LINES/2+1, COLS/2-17, "                                    ");
-    mvprintw(LINES/2+2, COLS/2-17, "         FIGHT FOR FREEDOM!         ");
-    mvprintw(LINES/2+3, COLS/2-17, "                                    ");
+    mvprintw(LINES / 2 + 1, COLS / 2 - 17,
+             "                                    ");
+    mvprintw(LINES / 2 + 2, COLS / 2 - 17,
+             "         FIGHT FOR FREEDOM!         ");
+    mvprintw(LINES / 2 + 3, COLS / 2 - 17,
+             "                                    ");
     attroff(COLOR_PAIR(12));
   } else {
-    mvprintw(LINES/2+1, COLS/2-17, "                                    ");
-    mvprintw(LINES/2+2, COLS/2-17, "         FIGHT FOR FREEDOM!         ");
-    mvprintw(LINES/2+3, COLS/2-17, "                                    ");
-  } if (*cnt == 1) {
+    mvprintw(LINES / 2 + 1, COLS / 2 - 17,
+             "                                    ");
+    mvprintw(LINES / 2 + 2, COLS / 2 - 17,
+             "         FIGHT FOR FREEDOM!         ");
+    mvprintw(LINES / 2 + 3, COLS / 2 - 17,
+             "                                    ");
+  }
+  if (*cnt == 1) {
     attron(COLOR_PAIR(12));
-    mvprintw(LINES/2+4, COLS/2-17, "                                    ");
-    mvprintw(LINES/2+5, COLS/2-17, "        APES STRONG TOGETHER        ");
-    mvprintw(LINES/2+6, COLS/2-17, "                                    ");
+    mvprintw(LINES / 2 + 4, COLS / 2 - 17,
+             "                                    ");
+    mvprintw(LINES / 2 + 5, COLS / 2 - 17,
+             "        APES STRONG TOGETHER        ");
+    mvprintw(LINES / 2 + 6, COLS / 2 - 17,
+             "                                    ");
     attroff(COLOR_PAIR(12));
   } else {
-    mvprintw(LINES/2+4, COLS/2-17, "                                    ");
-    mvprintw(LINES/2+5, COLS/2-17, "        APES STRONG TOGETHER        ");
-    mvprintw(LINES/2+6, COLS/2-17, "                                    ");
-  } if (*cnt == 2) {
+    mvprintw(LINES / 2 + 4, COLS / 2 - 17,
+             "                                    ");
+    mvprintw(LINES / 2 + 5, COLS / 2 - 17,
+             "        APES STRONG TOGETHER        ");
+    mvprintw(LINES / 2 + 6, COLS / 2 - 17,
+             "                                    ");
+  }
+  if (*cnt == 2) {
     attron(COLOR_PAIR(12));
-    mvprintw(LINES/2+7, COLS/2-17, "                                    ");
-    mvprintw(LINES/2+8, COLS/2-17, "            HOW TO PLAY             ");
-    mvprintw(LINES/2+9, COLS/2-17, "                                    ");
+    mvprintw(LINES / 2 + 7, COLS / 2 - 17,
+             "                                    ");
+    mvprintw(LINES / 2 + 8, COLS / 2 - 17,
+             "            HOW TO PLAY             ");
+    mvprintw(LINES / 2 + 9, COLS / 2 - 17,
+             "                                    ");
     attroff(COLOR_PAIR(12));
   } else {
-    mvprintw(LINES/2+7, COLS/2-17, "                                    ");
-    mvprintw(LINES/2+8, COLS/2-17, "            HOW TO PLAY             ");
-    mvprintw(LINES/2+9, COLS/2-17, "                                    ");
-  } if (*cnt == 3) {
+    mvprintw(LINES / 2 + 7, COLS / 2 - 17,
+             "                                    ");
+    mvprintw(LINES / 2 + 8, COLS / 2 - 17,
+             "            HOW TO PLAY             ");
+    mvprintw(LINES / 2 + 9, COLS / 2 - 17,
+             "                                    ");
+  }
+  if (*cnt == 3) {
     attron(COLOR_PAIR(12));
-    mvprintw(LINES/2+10, COLS/2-17, "                                    ");
-    mvprintw(LINES/2+11, COLS/2-17, "            LEADERBOARD             ");
-    mvprintw(LINES/2+12, COLS/2-17, "                                    ");
+    mvprintw(LINES / 2 + 10, COLS / 2 - 17,
+             "                                    ");
+    mvprintw(LINES / 2 + 11, COLS / 2 - 17,
+             "            LEADERBOARD             ");
+    mvprintw(LINES / 2 + 12, COLS / 2 - 17,
+             "                                    ");
     attroff(COLOR_PAIR(12));
   } else {
-    mvprintw(LINES/2+10, COLS/2-17, "                                    ");
-    mvprintw(LINES/2+11, COLS/2-17, "            LEADERBOARD             ");
-    mvprintw(LINES/2+12, COLS/2-17, "                                    ");
-  } if (*cnt == 4) {
+    mvprintw(LINES / 2 + 10, COLS / 2 - 17,
+             "                                    ");
+    mvprintw(LINES / 2 + 11, COLS / 2 - 17,
+             "            LEADERBOARD             ");
+    mvprintw(LINES / 2 + 12, COLS / 2 - 17,
+             "                                    ");
+  }
+  if (*cnt == 4) {
     attron(COLOR_PAIR(12));
-    mvprintw(LINES/2+13, COLS/2-17, "                                    ");
-    mvprintw(LINES/2+14, COLS/2-17, "              CREDITS               ");
-    mvprintw(LINES/2+15, COLS/2-17, "                                    ");
+    mvprintw(LINES / 2 + 13, COLS / 2 - 17,
+             "                                    ");
+    mvprintw(LINES / 2 + 14, COLS / 2 - 17,
+             "              CREDITS               ");
+    mvprintw(LINES / 2 + 15, COLS / 2 - 17,
+             "                                    ");
     attroff(COLOR_PAIR(12));
   } else {
-    mvprintw(LINES/2+13, COLS/2-17, "                                    ");
-    mvprintw(LINES/2+14, COLS/2-17, "              CREDITS               ");
-    mvprintw(LINES/2+15, COLS/2-17, "                                    ");
-  } if (*cnt == 5) {
+    mvprintw(LINES / 2 + 13, COLS / 2 - 17,
+             "                                    ");
+    mvprintw(LINES / 2 + 14, COLS / 2 - 17,
+             "              CREDITS               ");
+    mvprintw(LINES / 2 + 15, COLS / 2 - 17,
+             "                                    ");
+  }
+  if (*cnt == 5) {
     attron(COLOR_PAIR(12));
-    mvprintw(LINES/2+16, COLS/2-17, "                                    ");
-    mvprintw(LINES/2+17, COLS/2-17, "               QUIT!                ");
-    mvprintw(LINES/2+18, COLS/2-17, "                                    ");
+    mvprintw(LINES / 2 + 16, COLS / 2 - 17,
+             "                                    ");
+    mvprintw(LINES / 2 + 17, COLS / 2 - 17,
+             "               QUIT!                ");
+    mvprintw(LINES / 2 + 18, COLS / 2 - 17,
+             "                                    ");
     attroff(COLOR_PAIR(12));
   } else {
-    mvprintw(LINES/2+16, COLS/2-17, "                                    ");
-    mvprintw(LINES/2+17, COLS/2-17, "               QUIT!                ");
-    mvprintw(LINES/2+18, COLS/2-17, "                                    ");
+    mvprintw(LINES / 2 + 16, COLS / 2 - 17,
+             "                                    ");
+    mvprintw(LINES / 2 + 17, COLS / 2 - 17,
+             "               QUIT!                ");
+    mvprintw(LINES / 2 + 18, COLS / 2 - 17,
+             "                                    ");
   }
 
-  mvprintw(LINES/2+20, COLS/2-24, "Press [SPACE] to continue or use the arrow to move.");
+  mvprintw(LINES / 2 + 20, COLS / 2 - 24,
+           "Press [SPACE] to continue or use the arrow to move.");
 }
 
 void DrawWindow::printCredits() {
   init_pair(3, COLOR_YELLOW, 232);  // FUNZIONI PER USARE IL COLORE GIALLO
   attron(COLOR_PAIR(3));
-  mvprintw(LINES/2-10, COLS/2-51,
-           "                                ___ ___ ___ ___ ___ _____   _____ ___                                 ");
-  mvprintw(LINES/2-9, COLS/2-51,
-           "                               / __| _ \\ __|   \\_ _|_   _| |_   _/ _ \\                                ");
-  mvprintw(LINES/2-8, COLS/2-51,
-           "                              | (__|   / _|| |) | |  | |     | || (_) |                               ");
-  mvprintw(LINES/2-7, COLS/2-51,
-           "                               \\___|_|_\\___|___/___| |_|     |_| \\___/                                ");
+  mvprintw(LINES / 2 - 10, COLS / 2 - 51,
+           "                                ___ ___ ___ ___ ___ _____   _____ "
+           "___                                 ");
+  mvprintw(LINES / 2 - 9, COLS / 2 - 51,
+           "                               / __| _ \\ __|   \\_ _|_   _| |_   "
+           "_/ _ \\                                ");
+  mvprintw(LINES / 2 - 8, COLS / 2 - 51,
+           "                              | (__|   / _|| |) | |  | |     | || "
+           "(_) |                               ");
+  mvprintw(LINES / 2 - 7, COLS / 2 - 51,
+           "                               \\___|_|_\\___|___/___| |_|     |_| "
+           "\\___/                                ");
   attroff(COLOR_PAIR(3));
 
   init_pair(2, COLOR_GREEN, 232);  // FUNZIONI PER USARE I COLORI VEDI MENU.CPP
   attron(COLOR_PAIR(2));
-  mvprintw(LINES/2-6, COLS/2-51,
+  mvprintw(LINES / 2 - 6, COLS / 2 - 51,
            "                                                                   "
            "                                   ");
-  mvprintw(LINES/2-5, COLS/2-51,
+  mvprintw(LINES / 2 - 5, COLS / 2 - 51,
            "                                                                   "
            "                                   ");
-  mvprintw(LINES/2-4, COLS/2-51,"          ____ ____ _ _  _                 ____ _  _ ____             ___  ____ ___  ___  ____        ");
-  mvprintw(LINES/2-3, COLS/2-51,"          |___ |__/ | |_/                  |___ |\\/| |__|             |__] |___ |__] |__] |___        ");
-  mvprintw(LINES/2-2, COLS/2-51,"          |___ |  \\ | | \\_                 |___ |  | |  |             |__] |___ |    |    |___        ");
-  mvprintw(LINES/2-1, COLS/2-51,
+  mvprintw(LINES / 2 - 4, COLS / 2 - 51,
+           "          ____ ____ _ _  _                 ____ _  _ ____          "
+           "   ___  ____ ___  ___  ____        ");
+  mvprintw(LINES / 2 - 3, COLS / 2 - 51,
+           "          |___ |__/ | |_/                  |___ |\\/| |__|         "
+           "    |__] |___ |__] |__] |___        ");
+  mvprintw(LINES / 2 - 2, COLS / 2 - 51,
+           "          |___ |  \\ | | \\_                 |___ |  | |  |        "
+           "     |__] |___ |    |    |___        ");
+  mvprintw(LINES / 2 - 1, COLS / 2 - 51,
            "                                                                   "
            "                                   ");
-  mvprintw(LINES/2, COLS/2-51,
+  mvprintw(LINES / 2, COLS / 2 - 51,
            "                                                                   "
            "                                   ");
-  mvprintw(LINES/2+1, COLS/2-51,
+  mvprintw(LINES / 2 + 1, COLS / 2 - 51,
            "                                              menu [ESC]           "
            "                                   ");
-  mvprintw(LINES/2+2, COLS/2-51,
+  mvprintw(LINES / 2 + 2, COLS / 2 - 51,
            "                                                                   "
            "                                   ");
   attroff(COLOR_PAIR(2));
@@ -196,68 +248,78 @@ void DrawWindow::credits(int direction) {
 }
 
 void DrawWindow::printLeaderboardScreen() {
-  int prog = LINES/2 - 15;
-  for(int y = 0; y < 36; y++ ){
+  int prog = LINES / 2 - 15;
+  for (int y = 0; y < 36; y++) {
     init_pair(8, COLOR_BLACK, 232);
     attron(COLOR_PAIR(8));
-    mvprintw(prog, COLS/2 - 53, "                                                                                                          ");
+    mvprintw(prog, COLS / 2 - 53,
+             "                                                                 "
+             "                                         ");
     prog++;
     attroff(COLOR_PAIR(8));
   }
 
   init_pair(3, COLOR_YELLOW, 232);
   attron(COLOR_PAIR(3));
-  mvprintw(LINES/2 - 13, COLS/2 - 33, " __    _____ _____ ____  _____ _____ _____ _____ _____ _____ ____  ");
-  mvprintw(LINES/2 - 12, COLS/2 - 33, "|  |  |   __|  _  |    \\|   __| __  | __  |     |  _  | __  |    \\ ");
-  mvprintw(LINES/2 - 11, COLS/2 - 33, "|  |__|   __|     |  |  |   __|    -| __ -|  |  |     |    -|  |  |");
-  mvprintw(LINES/2 - 10, COLS/2 - 33, "|_____|_____|__|__|____/|_____|__|__|_____|_____|__|__|__|__|____/ ");
+  mvprintw(
+      LINES / 2 - 13, COLS / 2 - 33,
+      " __    _____ _____ ____  _____ _____ _____ _____ _____ _____ ____  ");
+  mvprintw(
+      LINES / 2 - 12, COLS / 2 - 33,
+      "|  |  |   __|  _  |    \\|   __| __  | __  |     |  _  | __  |    \\ ");
+  mvprintw(
+      LINES / 2 - 11, COLS / 2 - 33,
+      "|  |__|   __|     |  |  |   __|    -| __ -|  |  |     |    -|  |  |");
+  mvprintw(
+      LINES / 2 - 10, COLS / 2 - 33,
+      "|_____|_____|__|__|____/|_____|__|__|_____|_____|__|__|__|__|____/ ");
 
-  mvprintw(LINES/2 - 8, COLS/2 - 46, "--------------------------------------------------------------------------------------------");
-  mvprintw(LINES/2 + 17, COLS/2 - 40, "col. 1");
-  mvprintw(LINES/2 + 17, COLS/2 - 15, "col. 2");
-  mvprintw(LINES/2 + 17, COLS/2 + 10, "col. 3");
-  mvprintw(LINES/2 + 17, COLS/2 + 35, "col. 4");
-  mvprintw(LINES/2 + 19, COLS/2 - 5, "menu [ESC]");
+  mvprintw(LINES / 2 - 8, COLS / 2 - 46,
+           "-------------------------------------------------------------------"
+           "-------------------------");
+  mvprintw(LINES / 2 + 17, COLS / 2 - 40, "col. 1");
+  mvprintw(LINES / 2 + 17, COLS / 2 - 15, "col. 2");
+  mvprintw(LINES / 2 + 17, COLS / 2 + 10, "col. 3");
+  mvprintw(LINES / 2 + 17, COLS / 2 + 35, "col. 4");
+  mvprintw(LINES / 2 + 19, COLS / 2 - 5, "menu [ESC]");
   attroff(COLOR_PAIR(3));
-  
-  
+
   std::string line;
   std::ifstream leaderboard("leaderBoard.txt");
   if (leaderboard.is_open()) {
-    int i = LINES/2 - 6;
+    int i = LINES / 2 - 6;
     int maxNameShowed = 0;
     init_pair(4, COLOR_WHITE, COLOR_BLACK);
     attron(COLOR_PAIR(4));
     while ((maxNameShowed < 11) && (getline(leaderboard, line))) {
-      mvprintw(i, COLS/2 - 46, " %s ", line.c_str());
+      mvprintw(i, COLS / 2 - 46, " %s ", line.c_str());
       i += 2;
       maxNameShowed++;
     }
-    i = LINES/2 - 6;
+    i = LINES / 2 - 6;
     maxNameShowed = 0;
     while ((maxNameShowed < 11) && (getline(leaderboard, line))) {
-      mvprintw(i, COLS/2 - 21, " %s ", line.c_str());
+      mvprintw(i, COLS / 2 - 21, " %s ", line.c_str());
       i += 2;
       maxNameShowed++;
     }
-    i = LINES/2 - 6;
+    i = LINES / 2 - 6;
     maxNameShowed = 0;
     while ((maxNameShowed < 11) && (getline(leaderboard, line))) {
-      mvprintw(i, COLS/2 + 4, " %s ", line.c_str());
+      mvprintw(i, COLS / 2 + 4, " %s ", line.c_str());
       i += 2;
       maxNameShowed++;
     }
-    i = LINES/2 - 6;
+    i = LINES / 2 - 6;
     maxNameShowed = 0;
     while ((maxNameShowed < 11) && (getline(leaderboard, line))) {
-      mvprintw(i, COLS/2 + 29, " %s ", line.c_str());
+      mvprintw(i, COLS / 2 + 29, " %s ", line.c_str());
       i += 2;
       maxNameShowed++;
     }
     attroff(COLOR_PAIR(4));
     leaderboard.close();
   }
-  
 }
 void DrawWindow::leaderboardScreen(int direction) {
   while (direction != 27) {
@@ -268,104 +330,104 @@ void DrawWindow::leaderboardScreen(int direction) {
 
 void DrawWindow::printHowToPlay() {  // GESTISCE LA SCHERMATA DEL HOW TO PLAY
 
-  init_pair(3, COLOR_YELLOW, 232);   // FUNZIONI PER USARE IL COLORE GIALLO
+  init_pair(3, COLOR_YELLOW, 232);  // FUNZIONI PER USARE IL COLORE GIALLO
   attron(COLOR_PAIR(3));
-  mvprintw(LINES/2-12, COLS/2-50,
+  mvprintw(LINES / 2 - 12, COLS / 2 - 50,
            "                     _____ _____ _ _ _    _____ _____    _____ __  "
            "  _____ __ __                     ");
-  mvprintw(LINES/2-11, COLS/2-50,
+  mvprintw(LINES / 2 - 11, COLS / 2 - 50,
            "                    |  |  |     | | | |  |_   _|     |  |  _  |  | "
            " |  _  |  |  |                    ");
-  mvprintw(LINES/2-10, COLS/2-50,
+  mvprintw(LINES / 2 - 10, COLS / 2 - 50,
            "                    |     |  |  | | | |    | | |  |  |  |   __|  "
            "|__|     |_   _|                    ");
-  mvprintw(LINES/2-9, COLS/2-50,
+  mvprintw(LINES / 2 - 9, COLS / 2 - 50,
            "                    |__|__|_____|_____|    |_| |_____|  |__|  "
            "|_____|__|__| |_|                      ");
-  mvprintw(LINES/2-8, COLS/2-50,
+  mvprintw(LINES / 2 - 8, COLS / 2 - 50,
            "                                                                   "
            "                                  ");
   attroff(COLOR_PAIR(3));  // CHIUSURA DEL COLORE GIALLO
 
   init_pair(2, COLOR_GREEN, 232);  // FUNZIONI PER USARE IL VERDE
   attron(COLOR_PAIR(2));
-  mvprintw(LINES/2-7, COLS/2-50,
+  mvprintw(LINES / 2 - 7, COLS / 2 - 50,
            "       PLAY THIS ADVENTURE FROM THE POINT OF VIEW OF THE MONKEY "
            "THAT STARTED THE REVOLUTION!         ");
-  mvprintw(LINES/2-6, COLS/2-50,
+  mvprintw(LINES / 2 - 6, COLS / 2 - 50,
            "                                                                   "
            "                                  ");
-  mvprintw(LINES/2-5, COLS/2-50,
+  mvprintw(LINES / 2 - 5, COLS / 2 - 50,
            "       ELIMINATE THE ENEMIES, CLEAN THE ROOM, MOVE TO THE NEXT ONE "
            "AND COLLECT BANANAS!              ");
-  mvprintw(LINES/2-4, COLS/2-50,
+  mvprintw(LINES / 2 - 4, COLS / 2 - 50,
            "       USE THE [ARROWS] TO MOVE AND [,]/[.] TO USE THE "
            "BANANACANNON, WATCH OUT FOR AMMO!             ");
-  mvprintw(LINES/2-3, COLS/2-50,
+  mvprintw(LINES / 2 - 3, COLS / 2 - 50,
            "                                                                   "
            "                                  ");
-  mvprintw(LINES/2-2, COLS/2-50,
+  mvprintw(LINES / 2 - 2, COLS / 2 - 50,
            "       IF YOU RUN OUT FOR AMMO, DONT FORGET YOU CAN USE [K] "
            "FOR YOUR TREMENDOUS PUNCHES!             ");
-  mvprintw(LINES/2-1, COLS/2-50,
+  mvprintw(LINES / 2 - 1, COLS / 2 - 50,
            "                                                                   "
            "                                  ");
-  mvprintw(LINES/2, COLS/2-50,
+  mvprintw(LINES / 2, COLS / 2 - 50,
            "       WITH YOUR BANANAS YOU WILL BE ABLE TO BUY UPGRADES FOR THE "
            "BANANACANNON                       ");
-  mvprintw(LINES/2+1, COLS/2-50,
+  mvprintw(LINES / 2 + 1, COLS / 2 - 50,
            "       OR BUY BACK LIVES YOU HAVE LOST                             "
            "                                  ");
-  mvprintw(LINES/2+2, COLS/2-50,
+  mvprintw(LINES / 2 + 2, COLS / 2 - 50,
            "                                                                   "
            "                                  ");
-  mvprintw(LINES/2+3, COLS/2-50,
+  mvprintw(LINES / 2 + 3, COLS / 2 - 50,
            "       WHEN YOU HAVE %d BANANAS PRESS [0] TO UPGRADE THE BANANA "
            "CANNON                               ",
            10);
-  mvprintw(LINES/2+4, COLS/2-50,
+  mvprintw(LINES / 2 + 4, COLS / 2 - 50,
            "       OR [9] TO RECOVER A LOST LIFE                               "
            "                                  ");
-  mvprintw(LINES/2+5, COLS/2-50,
+  mvprintw(LINES / 2 + 5, COLS / 2 - 50,
            "                                                                   "
            "                                  ");
-  mvprintw(LINES/2+6, COLS/2-50,
+  mvprintw(LINES / 2 + 6, COLS / 2 - 50,
            "       COLLECT AS MUCH BONUSES AS POSSIBLE, BUT BEWARE! THEY CAN "
            "HIDE TRAPS!                         ");
-  mvprintw(LINES/2+7, COLS/2-50,
+  mvprintw(LINES / 2 + 7, COLS / 2 - 50,
            "                                                                   "
            "                                  ");
-  mvprintw(LINES/2+8, COLS/2-50,
+  mvprintw(LINES / 2 + 8, COLS / 2 - 50,
            "                                                                   "
            "                                  ");
-  mvprintw(LINES/2+9, COLS/2-50,
+  mvprintw(LINES / 2 + 9, COLS / 2 - 50,
            "          [,][.] = SHOOT    [ARROW] = MOVE    [9] = BUY EXTRA LIFE "
            "  [0] = DAMAGE UPGRADE            ");
-  mvprintw(LINES/2+10, COLS/2-50,
+  mvprintw(LINES / 2 + 10, COLS / 2 - 50,
            "                                [L] = RELOAD AMMO    [K] = PUNCH   "
            "                                  ");
-  mvprintw(LINES/2+11, COLS/2-50,
+  mvprintw(LINES / 2 + 11, COLS / 2 - 50,
            "                                                                   "
            "                                  ");
-  mvprintw(LINES/2+12, COLS/2-50,
+  mvprintw(LINES / 2 + 12, COLS / 2 - 50,
            "                                              <Player 2>           "
            "                                  ");
-  mvprintw(LINES/2+13, COLS/2-50,
+  mvprintw(LINES / 2 + 13, COLS / 2 - 50,
            "                                                                   "
            "                                  ");
-  mvprintw(LINES/2+14, COLS/2-50,
+  mvprintw(LINES / 2 + 14, COLS / 2 - 50,
            "          [V][B] = SHOOT    [WASD] = MOVE     [1] = BUY EXTRA LIFE "
            "  [2] = DAMAGE UPGRADE            ");
-  mvprintw(LINES/2+15, COLS/2-50,
+  mvprintw(LINES / 2 + 15, COLS / 2 - 50,
            "                                [R] = RELOAD AMMO    [Q] = PUNCH   "
            "                                  ");
-  mvprintw(LINES/2+16, COLS/2-50,
+  mvprintw(LINES / 2 + 16, COLS / 2 - 50,
            "                                                                   "
            "                                  ");
-  mvprintw(LINES/2+17, COLS/2-50,
+  mvprintw(LINES / 2 + 17, COLS / 2 - 50,
            "                                              menu [ESC]           "
            "                                  ");
-  mvprintw(LINES/2+18, COLS/2-50,
+  mvprintw(LINES / 2 + 18, COLS / 2 - 50,
            "                                                                   "
            "                                  ");
   attroff(COLOR_PAIR(2));  // CHIUSURA DEL COLORE VERDE
@@ -385,9 +447,10 @@ void DrawWindow::printCharacter(int x, int y, char c) {
 
 void DrawWindow::drawRect(
     int startX, int startY, int rightWidth, int bottomHeight, bool noEnemy,
-    int maxRoom, bool isScreenBound, pRoom roomList) {  // isScreenBound SI UNA PER FLAGGARE CHE È
-                                      // IL RETTANGOLO CHE DELIMITA LO SCHERMO,
-                                      // QUINDI NON DEVE APRIRSI
+    int maxRoom, bool isScreenBound,
+    pRoom roomList) {  // isScreenBound SI UNA PER FLAGGARE CHE È
+                       // IL RETTANGOLO CHE DELIMITA LO SCHERMO,
+                       // QUINDI NON DEVE APRIRSI
   for (int i = startY; i < rightWidth; ++i) {
     mvprintw(startX, i, "-");
     mvprintw(bottomHeight, i, "-");
@@ -409,7 +472,7 @@ void DrawWindow::drawRect(
   mvprintw(bottomHeight, rightWidth, "o");
 }
 
-void DrawWindow::drawLeaderboardOnScreen(){
+void DrawWindow::drawLeaderboardOnScreen() {
   std::string localScore[44] = {"NULL"};
   std::string line;
   std::ifstream leaderboard("leaderBoard.txt");
@@ -419,7 +482,6 @@ void DrawWindow::drawLeaderboardOnScreen(){
   mvprintw(5, 94, "LEADERBOARD");
   attroff(COLOR_PAIR(3));
   mvprintw(7, 88, "-----------------------");
-
 
   if (leaderboard.is_open()) {
     int i = 9;
@@ -441,14 +503,18 @@ void DrawWindow::drawLeaderboardOnScreen(){
   }
 }
 
-void DrawWindow::drawStats(int startX, int startY, int rightWidth, int bottomHeight,
-                           int pointsOnScreen, Character character,
-                           bool noEnemy, int powerUp, int bananas, int bananasP2,
-                           int maxRoom, pRoom roomList, bool isPlayer1) {
+void DrawWindow::drawStats(int startX, int startY, int rightWidth,
+                           int bottomHeight, int pointsOnScreen,
+                           Character character, bool noEnemy, int powerUp,
+                           int bananas, int bananasP2, int maxRoom,
+                           pRoom roomList, bool isPlayer1) {
   int powerUp_y = 52;
   int powerUp_x = 23;
   int P2Offsetx = 0;
-  if(!isPlayer1){ powerUp_y = 18; P2Offsetx = 34;}
+  if (!isPlayer1) {
+    powerUp_y = 18;
+    P2Offsetx = 34;
+  }
   int statusAmmoColor = 0;
 
   mvprintw(startX - 2, startY + 5, "SCORE:");
@@ -476,7 +542,11 @@ void DrawWindow::drawStats(int startX, int startY, int rightWidth, int bottomHei
   attroff(COLOR_PAIR(statusAmmoColor));
 
   mvprintw(28, 52 - P2Offsetx, "BANANAS");
-  if(isPlayer1){mvprintw(28, 76 - P2Offsetx, "%d", bananas);} else {mvprintw(28, 76 - P2Offsetx, "%d", bananasP2);}
+  if (isPlayer1) {
+    mvprintw(28, 76 - P2Offsetx, "%d", bananas);
+  } else {
+    mvprintw(28, 76 - P2Offsetx, "%d", bananasP2);
+  }
   mvprintw(29, 52, "ROOM");
   mvprintw(29, 76, "%d/%d", lengthListRoom(roomList), maxRoom);
   mvprintw(30, 52, "MAX ROOM");
@@ -484,11 +554,13 @@ void DrawWindow::drawStats(int startX, int startY, int rightWidth, int bottomHei
 
   init_pair(11, COLOR_WHITE, 232);
   attron(COLOR_PAIR(11));
-  drawRect(startX - 4, startY - 11, rightWidth + 12, bottomHeight + 12, noEnemy, 0, true, roomList);
-  drawRect(startX - 4, startY + 65, rightWidth + 40, bottomHeight + 12, noEnemy, 0, true, roomList);
+  drawRect(startX - 4, startY - 11, rightWidth + 12, bottomHeight + 12, noEnemy,
+           0, true, roomList);
+  drawRect(startX - 4, startY + 65, rightWidth + 40, bottomHeight + 12, noEnemy,
+           0, true, roomList);
   attroff(COLOR_PAIR(11));
 
-  if(isPlayer1){
+  if (isPlayer1) {
     mvprintw(startX - 2, startX + 47, "LIFE:");
     init_pair(3, COLOR_YELLOW, -1);  // FUNZIONI PER USARE I COLORI
     attron(COLOR_PAIR(3));
@@ -500,8 +572,7 @@ void DrawWindow::drawStats(int startX, int startY, int rightWidth, int bottomHei
     else if (character.getNumberLife() == 1)
       mvprintw(startX - 2, startY + 38, "[C] [ ] [ ]");
     attroff(COLOR_PAIR(3));  // CHIUSURA DEL COLORE
-  }
-  else{
+  } else {
     mvprintw(30, 18, "LIFE:");
     init_pair(3, COLOR_YELLOW, -1);  // FUNZIONI PER USARE I COLORI
     attron(COLOR_PAIR(3));
@@ -514,14 +585,18 @@ void DrawWindow::drawStats(int startX, int startY, int rightWidth, int bottomHei
     attroff(COLOR_PAIR(3));  // CHIUSURA DEL COLORE
   }
 
-
   init_pair(3, COLOR_YELLOW, -1);  // FUNZIONI PER USARE I COLORI
   attron(COLOR_PAIR(3));
-  if (powerUp == 4) mvprintw(powerUp_x, powerUp_y + 10, "[X] [X] [X] [X]");
-  else if (powerUp == 3) mvprintw(powerUp_x, powerUp_y + 10, "[X] [X] [X] [ ]");
-  else if (powerUp == 2) mvprintw(powerUp_x, powerUp_y + 10, "[X] [X] [ ] [ ]");
-  else if (powerUp == 1) mvprintw(powerUp_x, powerUp_y + 10, "[X] [ ] [ ] [ ]");
-  else if (powerUp == 0) mvprintw(powerUp_x, powerUp_y + 10, "[ ] [ ] [ ] [ ]");
+  if (powerUp == 4)
+    mvprintw(powerUp_x, powerUp_y + 10, "[X] [X] [X] [X]");
+  else if (powerUp == 3)
+    mvprintw(powerUp_x, powerUp_y + 10, "[X] [X] [X] [ ]");
+  else if (powerUp == 2)
+    mvprintw(powerUp_x, powerUp_y + 10, "[X] [X] [ ] [ ]");
+  else if (powerUp == 1)
+    mvprintw(powerUp_x, powerUp_y + 10, "[X] [ ] [ ] [ ]");
+  else if (powerUp == 0)
+    mvprintw(powerUp_x, powerUp_y + 10, "[ ] [ ] [ ] [ ]");
   attroff(COLOR_PAIR(3));  // CHIUSURA DEL COLORE
 }
 
@@ -536,7 +611,8 @@ Position DrawWindow::generateRandomPosition(int startRange, int endRange) {
   return pos;
 }
 
-pPosition DrawWindow::generateMountain(pPosition mountainList, int &mountainCount) {
+pPosition DrawWindow::generateMountain(pPosition mountainList,
+                                       int &mountainCount) {
   int x, y;
   pPosition head = NULL;
   while (mountainCount > 0) {
@@ -597,8 +673,8 @@ void DrawWindow::printBonus(pPosition bonusList) {
 void DrawWindow::showBonusOnScreen(bool &upgradeBuyed, int &upgradeType,
                                    int &upgradeTime, bool &bonusPicked,
                                    int bonustype, int &bonusTime,
-                                   bool &immortalityCheck,
-                                   int &immortalityTime, bool multiplayer) {
+                                   bool &immortalityCheck, int &immortalityTime,
+                                   bool multiplayer) {
   int x = 25;
   int y = 6;
   int disclaimerTimeLimit = 40;
@@ -654,7 +730,9 @@ void DrawWindow::showBonusOnScreen(bool &upgradeBuyed, int &upgradeType,
     init_pair(24, -1, COLOR_MAGENTA);
     attron(COLOR_PAIR(24));
     mvprintw(22, 56, "                    ");
-    if(multiplayer){ mvprintw(22, 22, "                    "); }
+    if (multiplayer) {
+      mvprintw(22, 22, "                    ");
+    }
     attroff(COLOR_PAIR(24));
     immortalityTime++;
   }
@@ -688,7 +766,12 @@ void DrawWindow::showBonusOnScreen(bool &upgradeBuyed, int &upgradeType,
 
 int DrawWindow::lengthEnemyList(pEnemyList enemyList) {
   int i;
-  if (enemyList == NULL) { i = 0; } else { i = -1; }  // serve a far indicare 0 quando è vuota, invece di -1 che è utile quando si conta.
+  if (enemyList == NULL) {
+    i = 0;
+  } else {
+    i = -1;
+  }  // serve a far indicare 0 quando è vuota, invece di -1 che è utile quando
+     // si conta.
   while (enemyList != NULL) {
     i++;
     enemyList = enemyList->next;
@@ -705,21 +788,23 @@ int DrawWindow::lengthListRoom(pRoom roomList) {
   return i;
 }
 
-void DrawWindow::printEnemyLeftList(pEnemyList enemyList, pEnemyList specialEnemyList, pEnemyList bossEnemyList){
-
-  int enemyLeftOnScreen = lengthEnemyList(enemyList) + lengthEnemyList(specialEnemyList) + lengthEnemyList(bossEnemyList);
+void DrawWindow::printEnemyLeftList(pEnemyList enemyList,
+                                    pEnemyList specialEnemyList,
+                                    pEnemyList bossEnemyList) {
+  int enemyLeftOnScreen = lengthEnemyList(enemyList) +
+                          lengthEnemyList(specialEnemyList) +
+                          lengthEnemyList(bossEnemyList);
 
   // gestione posizionamento della lista nello schermo
   int i = 22;
   int reachBound = 0;
-  int X_ElencoNemici = 19; 
-
+  int X_ElencoNemici = 19;
 
   if (enemyLeftOnScreen > 0) {
-      mvprintw(i, X_ElencoNemici, "Enemy left: %d", enemyLeftOnScreen);
-    } else {
-      mvprintw(i, X_ElencoNemici, "[ALL ENEMY DEFEATED!]");
-    }
+    mvprintw(i, X_ElencoNemici, "Enemy left: %d", enemyLeftOnScreen);
+  } else {
+    mvprintw(i, X_ElencoNemici, "[ALL ENEMY DEFEATED!]");
+  }
 
   // PARTE RISERVATA AI NEMICI NORMALI
   while (enemyList != NULL && reachBound < 8) {
@@ -735,14 +820,14 @@ void DrawWindow::printEnemyLeftList(pEnemyList enemyList, pEnemyList specialEnem
   // PARTE RISERVATA AI NEMICI SPECIALI
   while (specialEnemyList != NULL && reachBound < 8) {
     if (specialEnemyList->enemy.getX() != 0) {
-          i++;
+      i++;
       mvprintw(i, X_ElencoNemici, "- Elite soldier: %d HP",
-                specialEnemyList->enemy.getLife());
+               specialEnemyList->enemy.getLife());
     }
     reachBound++;
     specialEnemyList = specialEnemyList->next;
   }
-  
+
   // PARTE RISERVATA AI BOSS
   while (bossEnemyList != NULL && reachBound < 8) {
     if (bossEnemyList->enemy.getX() != 0) {
@@ -756,11 +841,14 @@ void DrawWindow::printEnemyLeftList(pEnemyList enemyList, pEnemyList specialEnem
 }
 
 void DrawWindow::printCharacterStats(Character character, bool isPlayer1) {
-  
   int i = 22;
-  int BarStart;        // gestisce dove partono gli oggetti della barra
-  if(isPlayer1){ BarStart = 56; }else{ BarStart = 22;} // gestisce la posizione della barra per il P1 e il P2
-  int AddBar = BarStart;    // cicla per aggiungere un cordinata
+  int BarStart;  // gestisce dove partono gli oggetti della barra
+  if (isPlayer1) {
+    BarStart = 56;
+  } else {
+    BarStart = 22;
+  }                       // gestisce la posizione della barra per il P1 e il P2
+  int AddBar = BarStart;  // cicla per aggiungere un cordinata
   int healtColorPair = 0;
 
   // gestisce l'apparizione dei banner
@@ -773,7 +861,11 @@ void DrawWindow::printCharacterStats(Character character, bool isPlayer1) {
   } else if (character.getGun().getMagazineAmmo() == 0) {
     init_pair(25, COLOR_RED, -1);
     attron(COLOR_PAIR(25));
-    if(isPlayer1){ mvprintw(25, BarStart - 4, "PRESS [L] TO RELOAD!");} else {mvprintw(25, BarStart - 4, "PRESS [R] TO RELOAD!");}
+    if (isPlayer1) {
+      mvprintw(25, BarStart - 4, "PRESS [L] TO RELOAD!");
+    } else {
+      mvprintw(25, BarStart - 4, "PRESS [R] TO RELOAD!");
+    }
     attroff(COLOR_PAIR(25));
   }
 
@@ -829,25 +921,31 @@ void DrawWindow::printEnemy(pEnemyList enemyList, DrawWindow drawWindow) {
   }
 }
 
-void DrawWindow::moveEnemyMultiplayer(pEnemyList enemyList, Character character, Character character2,
-                           DrawWindow drawWindow, long points) {
+void DrawWindow::moveEnemyMultiplayer(pEnemyList enemyList, Character character,
+                                      Character character2,
+                                      DrawWindow drawWindow, long points) {
   int yP = character.getY(), xE, yE;
   int yP2 = character2.getY();
   srand(time(0));
   int movementSpeedFactor = 1;
-  
+
   while (enemyList != NULL) {
     // Più è alto il valore aggiunto e più lento sarà il nemico
-    if (enemyList->enemy.getSkin() == 'e') movementSpeedFactor = rand() % 10 + 15;
-    else if (enemyList->enemy.getSkin() == 'E') movementSpeedFactor = rand() % 10 + 20;
-    else if (enemyList->enemy.getSkin() == 'B') movementSpeedFactor = rand() % 10 + 30;
+    if (enemyList->enemy.getSkin() == 'e')
+      movementSpeedFactor = rand() % 10 + 15;
+    else if (enemyList->enemy.getSkin() == 'E')
+      movementSpeedFactor = rand() % 10 + 20;
+    else if (enemyList->enemy.getSkin() == 'B')
+      movementSpeedFactor = rand() % 10 + 30;
 
     if (points % movementSpeedFactor == 0) {
       xE = enemyList->enemy.getX(), yE = enemyList->enemy.getY();
-      if ((yP > yE || yP2 > yE) && (mvinch(yE + 1, xE) == ' ' || mvinch(yE + 1, xE) == '?')) {
+      if ((yP > yE || yP2 > yE) &&
+          (mvinch(yE + 1, xE) == ' ' || mvinch(yE + 1, xE) == '?')) {
         enemyList->enemy.setY(yE + 1);
         drawWindow.printCharacter(xE, yE, enemyList->enemy.getSkin());
-      } else if ((yP < yE || yP2 <yE) && (mvinch(yE - 1, xE) == ' ' || mvinch(yE - 1, xE) == '?')) {
+      } else if ((yP < yE || yP2 < yE) &&
+                 (mvinch(yE - 1, xE) == ' ' || mvinch(yE - 1, xE) == '?')) {
         enemyList->enemy.setY(yE - 1);
         drawWindow.printCharacter(xE, yE, enemyList->enemy.getSkin());
       }
@@ -856,24 +954,30 @@ void DrawWindow::moveEnemyMultiplayer(pEnemyList enemyList, Character character,
   }
 }
 
-void DrawWindow::moveEnemySinglePlayer(pEnemyList enemyList, Character character,
-                           DrawWindow drawWindow, long points) {
+void DrawWindow::moveEnemySinglePlayer(pEnemyList enemyList,
+                                       Character character,
+                                       DrawWindow drawWindow, long points) {
   int yP = character.getY(), xE, yE;
   srand(time(0));
   int movementSpeedFactor = 1;
-  
+
   while (enemyList != NULL) {
     // Più è alto il valore aggiunto e più lento sarà il nemico
-    if (enemyList->enemy.getSkin() == 'e') movementSpeedFactor = rand() % 10 + 15;
-    else if (enemyList->enemy.getSkin() == 'E') movementSpeedFactor = rand() % 10 + 20;
-    else if (enemyList->enemy.getSkin() == 'B') movementSpeedFactor = rand() % 10 + 30;
+    if (enemyList->enemy.getSkin() == 'e')
+      movementSpeedFactor = rand() % 10 + 15;
+    else if (enemyList->enemy.getSkin() == 'E')
+      movementSpeedFactor = rand() % 10 + 20;
+    else if (enemyList->enemy.getSkin() == 'B')
+      movementSpeedFactor = rand() % 10 + 30;
 
     if (points % movementSpeedFactor == 0) {
       xE = enemyList->enemy.getX(), yE = enemyList->enemy.getY();
-      if ((yP > yE) && (mvinch(yE + 1, xE) == ' ' || mvinch(yE + 1, xE) == '?')) {
+      if ((yP > yE) &&
+          (mvinch(yE + 1, xE) == ' ' || mvinch(yE + 1, xE) == '?')) {
         enemyList->enemy.setY(yE + 1);
         drawWindow.printCharacter(xE, yE, enemyList->enemy.getSkin());
-      } else if ((yP < yE) && (mvinch(yE - 1, xE) == ' ' || mvinch(yE - 1, xE) == '?')) {
+      } else if ((yP < yE) &&
+                 (mvinch(yE - 1, xE) == ' ' || mvinch(yE - 1, xE) == '?')) {
         enemyList->enemy.setY(yE - 1);
         drawWindow.printCharacter(xE, yE, enemyList->enemy.getSkin());
       }
@@ -881,9 +985,6 @@ void DrawWindow::moveEnemySinglePlayer(pEnemyList enemyList, Character character
     enemyList = enemyList->next;
   }
 }
-
-
-
 
 pRoom DrawWindow::saveRoom(pPosition mountainList, pPosition bonusList,
                            pRoom roomList) {
@@ -896,11 +997,16 @@ pRoom DrawWindow::saveRoom(pPosition mountainList, pPosition bonusList,
   return roomList;
 }
 
-pRoom DrawWindow::changeRoom(Character &character, Character &character2, int &normalEnemyCount, int &specialEnemyCount, int &bossEnemyCount,
-                             pEnemyList &normalEnemyList, pEnemyList &specialEnemyList, pEnemyList &bossEnemyList,
-                             pPosition &mountainList, pPosition &bonusList, pRoom roomList, int &maxRoom, bool multiplayer) {
+pRoom DrawWindow::changeRoom(Character &character, Character &character2,
+                             int &normalEnemyCount, int &specialEnemyCount,
+                             int &bossEnemyCount, pEnemyList &normalEnemyList,
+                             pEnemyList &specialEnemyList,
+                             pEnemyList &bossEnemyList, pPosition &mountainList,
+                             pPosition &bonusList, pRoom roomList, int &maxRoom,
+                             bool multiplayer) {
   if (character.getX() >= GAMEWIDTH || character2.getX() >= GAMEWIDTH) {
-    // Questo if si "attiva" quando torni nella stanza precedente e poi ritorni nella successiva
+    // Questo if si "attiva" quando torni nella stanza precedente e poi ritorni
+    // nella successiva
     if (maxRoom > lengthListRoom(roomList)) {
       roomList = roomList->prev;
       character.setX(23);
@@ -918,13 +1024,16 @@ pRoom DrawWindow::changeRoom(Character &character, Character &character2, int &n
       roomList->mountainList = generateMountain(mountainList, mountainCount);
       roomList->bonusList = generateBonus(bonusList, bonusCounter);
       roomList = saveRoom(mountainList, bonusList, roomList);
-      
-      // Si assegna i valori alle variaibli che rappresentano i nemici da generare
-      howMuchEnemies (maxRoom, multiplayer, normalEnemyCount, specialEnemyCount, bossEnemyCount);
 
-      // Serve per scorrere (nella lista dei nemici, se generata) il primo nemico, quello fittizio
+      // Si assegna i valori alle variaibli che rappresentano i nemici da
+      // generare
+      howMuchEnemies(maxRoom, multiplayer, normalEnemyCount, specialEnemyCount,
+                     bossEnemyCount);
+
+      // Serve per scorrere (nella lista dei nemici, se generata) il primo
+      // nemico, quello fittizio
       normalEnemyList = normalEnemyList->next;
-      if (maxRoom % SPECIAL_ENEMY_FREQUENCY == 0) 
+      if (maxRoom % SPECIAL_ENEMY_FREQUENCY == 0)
         specialEnemyList = specialEnemyList->next;
       if (maxRoom % BOSS_ENEMY_FREQUENCY == 0)
         bossEnemyList = bossEnemyList->next;
@@ -938,18 +1047,18 @@ pRoom DrawWindow::changeRoom(Character &character, Character &character2, int &n
   return roomList;
 }
 
-void DrawWindow::howMuchEnemies (int maxRoom, bool multiplayer, int &normalEnemyCount, int &specialEnemyCount, int &bossEnemyCount) {
+void DrawWindow::howMuchEnemies(int maxRoom, bool multiplayer,
+                                int &normalEnemyCount, int &specialEnemyCount,
+                                int &bossEnemyCount) {
   if (maxRoom <= NORMAL_ENEMY_LIMIT) {
     normalEnemyCount = maxRoom + 1;
-    if (multiplayer)
-      normalEnemyCount += 2;
+    if (multiplayer) normalEnemyCount += 2;
   } else {
     normalEnemyCount = NORMAL_ENEMY_LIMIT;
-     
-    if (multiplayer)
-      normalEnemyCount += 4;
+
+    if (multiplayer) normalEnemyCount += 4;
   }
-        
+
   if (maxRoom % SPECIAL_ENEMY_FREQUENCY == 0) {
     if (maxRoom < 10)
       specialEnemyCount = 2;
@@ -959,10 +1068,9 @@ void DrawWindow::howMuchEnemies (int maxRoom, bool multiplayer, int &normalEnemy
       specialEnemyCount = 4;
     else
       specialEnemyCount = 0;
-        
-    if (multiplayer && specialEnemyCount != 0)
-      specialEnemyCount += 1;
-    }
+
+    if (multiplayer && specialEnemyCount != 0) specialEnemyCount += 1;
+  }
 
   if (maxRoom % BOSS_ENEMY_FREQUENCY == 0) {
     if (maxRoom <= 10)
@@ -971,45 +1079,54 @@ void DrawWindow::howMuchEnemies (int maxRoom, bool multiplayer, int &normalEnemy
       bossEnemyCount = 2;
     else
       bossEnemyCount = 0;
-   
-    if (multiplayer && bossEnemyCount != 0)
-      bossEnemyCount += 1;
+
+    if (multiplayer && bossEnemyCount != 0) bossEnemyCount += 1;
   }
 }
 
 void DrawWindow::printSplashScreen() {
-  int prog = LINES/2 - 15;
-  for(int y = 0; y < 20; y++ ){
+  int prog = LINES / 2 - 15;
+  for (int y = 0; y < 20; y++) {
     init_pair(8, COLOR_BLACK, 232);
     attron(COLOR_PAIR(8));
-    mvprintw(prog, COLS/2 - 53, "                                                                                                          ");
+    mvprintw(prog, COLS / 2 - 53,
+             "                                                                 "
+             "                                         ");
     prog++;
     attroff(COLOR_PAIR(8));
   }
 
   init_pair(3, COLOR_YELLOW, 232);
   attron(COLOR_PAIR(3));
-  mvprintw(LINES/2 - 13, COLS/2 - 34, "THE FORCES OF THE UNITED NATIONS MADE THEIR WAY TO THE HEADQUARTERS.");
-  mvprintw(LINES/2 - 12, COLS/2 - 30, "TO PROTECT THE OTHER MONKEYS AND NOT STOP THE MONKEY ADVANCE,");
-  mvprintw(LINES/2 - 11, COLS/2 - 16, "THERE IS ONLY ONE THING TO DO...");
-  mvprintw(LINES/2 + 1, COLS/2 - 11, "Press [SPACE] to start!");
+  mvprintw(
+      LINES / 2 - 13, COLS / 2 - 34,
+      "THE FORCES OF THE UNITED NATIONS MADE THEIR WAY TO THE HEADQUARTERS.");
+  mvprintw(LINES / 2 - 12, COLS / 2 - 30,
+           "TO PROTECT THE OTHER MONKEYS AND NOT STOP THE MONKEY ADVANCE,");
+  mvprintw(LINES / 2 - 11, COLS / 2 - 16, "THERE IS ONLY ONE THING TO DO...");
+  mvprintw(LINES / 2 + 1, COLS / 2 - 11, "Press [SPACE] to start!");
   attroff(COLOR_PAIR(3));
 
   init_pair(1, COLOR_RED, 232);
   attron(COLOR_PAIR(1));
-  mvprintw(LINES/2 - 9, COLS/2 - 26, " _______  __    _______  __    __  .___________. __  ");
-  mvprintw(LINES/2 - 8, COLS/2 - 26, "|   ____||  |  /  _____||  |  |  | |           ||  | ");
-  mvprintw(LINES/2 - 7, COLS/2 - 26, "|  |__   |  | |  |  __  |  |__|  | `---|  |----`|  | ");
-  mvprintw(LINES/2 - 6, COLS/2 - 26, "|   __|  |  | |  | |_ | |   __   |     |  |     |  | ");
-  mvprintw(LINES/2 - 5, COLS/2 - 26, "|  |     |  | |  |__| | |  |  |  |     |  |     |__| ");
-  mvprintw(LINES/2 - 4, COLS/2 - 26, "|__|     |__|  \\______| |__|  |__|     |__|     (__) ");
+  mvprintw(LINES / 2 - 9, COLS / 2 - 26,
+           " _______  __    _______  __    __  .___________. __  ");
+  mvprintw(LINES / 2 - 8, COLS / 2 - 26,
+           "|   ____||  |  /  _____||  |  |  | |           ||  | ");
+  mvprintw(LINES / 2 - 7, COLS / 2 - 26,
+           "|  |__   |  | |  |  __  |  |__|  | `---|  |----`|  | ");
+  mvprintw(LINES / 2 - 6, COLS / 2 - 26,
+           "|   __|  |  | |  | |_ | |   __   |     |  |     |  | ");
+  mvprintw(LINES / 2 - 5, COLS / 2 - 26,
+           "|  |     |  | |  |__| | |  |  |  |     |  |     |__| ");
+  mvprintw(LINES / 2 - 4, COLS / 2 - 26,
+           "|__|     |__|  \\______| |__|  |__|     |__|     (__) ");
   attroff(COLOR_PAIR(1));
 
   init_pair(4, COLOR_WHITE, 232);
   attron(COLOR_PAIR(4));
-  mvprintw(LINES/2 + 1, COLS/2 - 11, "Press [SPACE] to start!");
+  mvprintw(LINES / 2 + 1, COLS / 2 - 11, "Press [SPACE] to start!");
   attroff(COLOR_PAIR(4));
-
 }
 
 void DrawWindow::splashScreen(int direction) {
@@ -1021,41 +1138,54 @@ void DrawWindow::splashScreen(int direction) {
 }
 
 void DrawWindow::printLoseScreen(float finalScore) {
-  int prog = LINES/2 - 15;
-  for(int y = 0; y < 20; y++ ){
+  int prog = LINES / 2 - 15;
+  for (int y = 0; y < 20; y++) {
     init_pair(8, COLOR_BLACK, 232);
     attron(COLOR_PAIR(8));
-    mvprintw(prog, COLS/2 - 53, "                                                                                                          ");
+    mvprintw(prog, COLS / 2 - 53,
+             "                                                                 "
+             "                                         ");
     prog++;
     attroff(COLOR_PAIR(8));
   }
 
   init_pair(16, COLOR_RED, 232);
   attron(COLOR_PAIR(16));
-  mvprintw(LINES/2 - 13, COLS/2 - 26,"  __ _  __ _ _ __ ___   ___    _____   _____ _ __      ");
-  mvprintw(LINES/2 - 12, COLS/2 - 26," / _` |/ _` | '_ ` _ \\ / _ \\  / _ \\ \\ / / _ \\ '__|");
-  mvprintw(LINES/2 - 11, COLS/2 - 26,"| (_| | (_| | | | | | |  __/ | (_) \\ V /  __/ |       ");
-  mvprintw(LINES/2 - 10, COLS/2 - 26," \\__, |\\__,_|_| |_| |_|\\___|  \\___/ \\_/ \\___|_|   ");
-  mvprintw(LINES/2 - 9, COLS/2 - 26, " |___/                                                  ");
+  mvprintw(LINES / 2 - 13, COLS / 2 - 26,
+           "  __ _  __ _ _ __ ___   ___    _____   _____ _ __      ");
+  mvprintw(LINES / 2 - 12, COLS / 2 - 26,
+           " / _` |/ _` | '_ ` _ \\ / _ \\  / _ \\ \\ / / _ \\ '__|");
+  mvprintw(LINES / 2 - 11, COLS / 2 - 26,
+           "| (_| | (_| | | | | | |  __/ | (_) \\ V /  __/ |       ");
+  mvprintw(LINES / 2 - 10, COLS / 2 - 26,
+           " \\__, |\\__,_|_| |_| |_|\\___|  \\___/ \\_/ \\___|_|   ");
+  mvprintw(LINES / 2 - 9, COLS / 2 - 26,
+           " |___/                                                  ");
   attroff(COLOR_PAIR(16));
 
   init_pair(17, COLOR_GREEN, 232);
   attron(COLOR_PAIR(17));
-  mvprintw(LINES/2 - 7, COLS/2 - 35,"HUNTERS HAVE TRACKED YOU, SURROUNDED AND FINALLY ""THEY KILLED YOU...");
-  mvprintw(LINES/2 - 5, COLS/2 - 20,"YOUR LIFE GOES AWAY WITH YOUR ""REVENGE.");
-  mvprintw(LINES/2 - 3, COLS/2 - 38,"BUT DON'T GET MAD, THERE ARE THOUSANDS OF MONKEYS ""READY TO REBELL AGAIN...");
-  mvprintw(LINES/2 - 2, COLS/2 - 10,"...SOONER OR THEN...");
-  mvprintw(LINES/2 + 2, COLS/2 - 48,"FINAL SCORE: %.0f", finalScore);
-  mvprintw(LINES/2 + 2, COLS/2 + 24,"set score & exit [ENTER]");
-  mvprintw(LINES/2 + 3, COLS/2 + 21,"(no name will not save score)");
+  mvprintw(LINES / 2 - 7, COLS / 2 - 35,
+           "HUNTERS HAVE TRACKED YOU, SURROUNDED AND FINALLY "
+           "THEY KILLED YOU...");
+  mvprintw(LINES / 2 - 5, COLS / 2 - 20,
+           "YOUR LIFE GOES AWAY WITH YOUR "
+           "REVENGE.");
+  mvprintw(LINES / 2 - 3, COLS / 2 - 38,
+           "BUT DON'T GET MAD, THERE ARE THOUSANDS OF MONKEYS "
+           "READY TO REBELL AGAIN...");
+  mvprintw(LINES / 2 - 2, COLS / 2 - 10, "...SOONER OR THEN...");
+  mvprintw(LINES / 2 + 2, COLS / 2 - 48, "FINAL SCORE: %.0f", finalScore);
+  mvprintw(LINES / 2 + 2, COLS / 2 + 24, "set score & exit [ENTER]");
+  mvprintw(LINES / 2 + 3, COLS / 2 + 21, "(no name will not save score)");
   attroff(COLOR_PAIR(17));
 }
 
-bool DrawWindow::ghostNameRecognizer(char name[]){
+bool DrawWindow::ghostNameRecognizer(char name[]) {
   bool GhostName = true;
   int i = 0;
-  for(i = 0; i < MAXNAMECHARACTER; i++){
-    GhostName = GhostName && ((name[i] == ' ') || (name[i] == '\0')) ;
+  for (i = 0; i < MAXNAMECHARACTER; i++) {
+    GhostName = GhostName && ((name[i] == ' ') || (name[i] == '\0'));
   }
   return GhostName;
 }
@@ -1066,7 +1196,9 @@ void DrawWindow::saveRecord(float finalScore, char name[]) {
   int nameMax = 12;
   std::fstream board;
   board.open("leaderBoard.txt", std::ios::app);
-  if ((board) && (finalScore > 0) && (!ghostName)) {  // lo score è salvato solo se maggiore di 0 e il nome non è vuoto o solo spazi
+  if ((board) && (finalScore > 0) &&
+      (!ghostName)) {  // lo score è salvato solo se maggiore di 0 e il nome non
+                       // è vuoto o solo spazi
     board << name << ":";
     while (nameLen < nameMax) {
       board << " ";
@@ -1087,8 +1219,8 @@ void DrawWindow::loseScreen(int direction, float finalScore) {
 
     init_pair(17, COLOR_GREEN, 232);
     attron(COLOR_PAIR(17));
-    mvprintw(LINES/2 + 3, COLS/2 - 35, "__________");
-    mvprintw(LINES/2 + 3, COLS/2 - 48,"INSERT NAME: %s", name);
+    mvprintw(LINES / 2 + 3, COLS / 2 - 35, "__________");
+    mvprintw(LINES / 2 + 3, COLS / 2 - 48, "INSERT NAME: %s", name);
     attroff(COLOR_PAIR(17));
     refresh();
     direction = getstr(name2);

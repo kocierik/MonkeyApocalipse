@@ -39,7 +39,10 @@ void Character::directionLeft() { this->x--; }
 char Character::getSkin() { return this->skin; }
 void Character::setSkin(char skin) { this->skin = skin; }
 
-void Character::increaseLife(int life) { this->life += life; if(this->life > 100) this->life = 100;}
+void Character::increaseLife(int life) {
+  this->life += life;
+  if (this->life > 100) this->life = 100;
+}
 void Character::decreaseLife(int life) { this->life -= life; }
 int Character::getLife() { return this->life; }
 void Character::setLife(int life) { this->life = life; }
@@ -48,9 +51,7 @@ void Character::setNumberLife(int numberLife) { this->numberLife = numberLife; }
 
 Gun Character::getGun() { return this->gun; }
 void Character::setGun(Gun in_gun) { this->gun = in_gun; }
-void Character::setGunDamage(int damage) {
-  this->gun.setDamage(damage);
-}
+void Character::setGunDamage(int damage) { this->gun.setDamage(damage); }
 void Character::increaseDamageGun(int damage) {
   this->gun.increaseDamage(damage);
 }
