@@ -228,7 +228,7 @@ pPosition EngineGame::deletePosition(pPosition positionList,
 bool EngineGame::checkNoEnemy(DrawWindow drawWindow, pEnemyList enemyList1,
                               pEnemyList enemyList2, pEnemyList enemyList3) {
   /**
-   * Ritorna true se vi è l'assenza di nemici, false altrimenti.
+   * Ritorna true se non vi sono nemici nella stanza, false altrimenti.
    */
   int length1 = drawWindow.lengthEnemyList(enemyList1);
   int length2 = drawWindow.lengthEnemyList(enemyList2);
@@ -276,6 +276,10 @@ void EngineGame::checkEnemyCollision(Character &character,
 void EngineGame::checkBulletCollision(Pbullet &bulletList, Character &character,
                                       pEnemyList enemyList, int &pointOnScreen,
                                       bool immortalityCheck) {
+  /**
+   * Funzione per il check si una collisione del proiettile con un giocatore
+   * o con un nemico.
+   */
   bool enemyHit = false, characterHit = false, pause = false;
   Pbullet head = bulletList;
   pEnemyList tmp = enemyList;
@@ -322,6 +326,10 @@ void EngineGame::checkBulletCollision(Pbullet &bulletList, Character &character,
   attroff(COLOR_PAIR(13));
 }
 
+/**
+ * Funzioni per il controllo della prensenza (tramite il carattere)
+ * di vari elementi sulla mappa.
+ */
 bool EngineGame::isEmpty(int x, int y) { return mvinch(y, x) == ' '; }
 bool EngineGame::isBonus(int x, int y) { return mvinch(y, x) == '?'; }
 bool EngineGame::isEnemy(int x, int y) {
@@ -342,16 +350,18 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
                                int &upgradeTime, bool &immortalityCheck,
                                int &immortalityTime, bool &toTheRight,
                                int upgradeCost, pPosition mountainList) {
+  /**
+   * Funzioni che gestisce gli input del giocatore.
+   * Gestisce il movimento, lo sparo e il reload dell'arma.
+   */
   srand(time(0));
-  switch (direction) {  // Movimento con wasd per il player 2 e frecce per il
-                        // player 1
+  switch (direction) {  // Movimento con le frecce per il player 1
     case KEY_UP:        // Movimento in alto del P1
       if (isEmpty(character.getX(), character.getY() - 1))
         character.directionUp();
       else if (isBonus(character.getX(), character.getY() - 1)) {
-        bonusTime = 0;       // RESETTA IL TEMPO DI APPARIZIONE SE IL TIMER
-                             // ERA GIA ATTIVO PER IL PRECEDENTE BONUS.
-        bonusPicked = true;  // FLAG CHE INDICA SE È STATO RACCOLTO
+        bonusTime = 0;
+        bonusPicked = true;
         bonusType = rand() % BONUS;  // 0 <= bonusType < BONUS
         roomList->bonusList =
             getBonus(drawWindow, character.getX(), character.getY() - 1,
@@ -380,7 +390,7 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
       else if (isBonus(character.getX() - 1, character.getY())) {
         bonusTime = 0;
         bonusPicked = true;
-        bonusType = rand() % BONUS;  // GENERA IL TIPO DI BONUS.
+        bonusType = rand() % BONUS;
         roomList->bonusList =
             getBonus(drawWindow, character.getX() - 1, character.getY(),
                      roomList->next->bonusList, normalEnemyList, pointsOnScreen,
@@ -404,11 +414,7 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
       }
       toTheRight = true;
       break;
-    // case 'M':  // Sparo in avanti del P1
-    // case 'm':
-    case 46:  // Tasto della virgola
-      // Controllo della condizione di assenza della montagna NON FUNZIONANTE
-      // (non so come mai)
+    case 46:  // Sparo in avanti del P1 (tasto della virgola)
       if (whileCount / 2 > 1 && character.getGun().getMagazineAmmo() > 0) {
         character.decreaseMagazineAmmo(1);
         this->playerBullets =
@@ -416,11 +422,7 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
         whileCount = 0;
       }
       break;
-    // case 'N':  // Sparo all'indietro del P1
-    // case 'n':
-    case 44:  // Tasto del punto
-      // Controllo della condizione di assenza della montagna NON FUNZIONANTE
-      // (non so come mai)
+    case 44:  // Sparo all'indietro del P1 (tasto del punto)
       if (whileCount / 2 > 1 && character.getGun().getMagazineAmmo() > 0) {
         character.decreaseMagazineAmmo(1);
         this->playerBullets =
@@ -438,10 +440,8 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
       break;
     case '9':  // Tasto per l'acquisto di una vita del P2
       if (bananas >= (upgradeCost / 2) && character.getNumberLife() < 3) {
-        upgradeBuyed = true;  // INDICA CHE È STATO COMPRATO UN UPGRADE
-        upgradeType = 0;      // INDICA IL TIPO DI UPGRADE.
-        upgradeTime = 0;  // RESETTA IL TEMPO DI APPARIZIONE SE HAI COMPRATO UN
-                          // ALTRO UPGRADE
+        upgradeBuyed = true;
+        upgradeType = 0, upgradeTime = 0;
         character.setNumberLife(character.getNumberLife() + 1);
         bananas = bananas - (upgradeCost / 2);
       }
@@ -463,30 +463,30 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
           bananas = bananas - upgradeCost;
           powerUpDMG++;
         }
-        // MESSAGGIO CHE SEGNALE IL FATTO CHE QUESTO UPGRADE NON è DISPONIBILE
-        // mvprintw(?, ?, "MAX DAMAGE OBTAINED");
       }
       break;
   }
 }
 
-void EngineGame::moveCharacter2(
+void EngineGame::moveCharacter2 (
     DrawWindow drawWindow, Character &character2, int direction,
     pRoom &roomList, pEnemyList normalEnemyList, int &pointsOnScreen,
     int &bananas, int &powerUpDMG, bool &bonusPicked, int &bonusType,
     int &bonusTime, bool &upgradeBuyed, int &upgradeType, int &upgradeTime,
     bool &immortalityCheck, int &immortalityTime, bool &toTheRight,
     int upgradeCost, pPosition mountainList) {
-  switch (direction) {  // Movimento con wasd per il player 1 e frecce per il
-                        // player 2
+  /**
+   * Funzioni che gestisce gli input del giocatore 2.
+   * Gestisce il movimento, lo sparo e il reload dell'arma.
+   */
+  switch (direction) {  // Movimento con wasd per il player 2
     case 'W':           // Movimento in alto del P2
     case 'w':
       if (isEmpty(character2.getX(), character2.getY() - 1))
         character2.directionUp();
       else if (isBonus(character2.getX(), character2.getY() - 1)) {
-        bonusTime = 0;       // RESETTA IL TEMPO DI APPARIZIONE SE IL TIMER
-                             // ERA GIA ATTIVO PER IL PRECEDENTE BONUS.
-        bonusPicked = true;  // FLAG CHE INDICA SE È STATO RACCOLTO
+        bonusTime = 0;
+        bonusPicked = true;
         bonusType = rand() % BONUS;  // 0 <= bonusType < BONUS
         roomList->bonusList =
             getBonus(drawWindow, character2.getX(), character2.getY() - 1,
@@ -517,7 +517,7 @@ void EngineGame::moveCharacter2(
       else if (isBonus(character2.getX() - 1, character2.getY())) {
         bonusTime = 0;
         bonusPicked = true;
-        bonusType = rand() % BONUS;  // GENERA IL TIPO DI BONUS.
+        bonusType = rand() % BONUS;
         roomList->bonusList =
             getBonus(drawWindow, character2.getX() - 1, character2.getY(),
                      roomList->next->bonusList, normalEnemyList, pointsOnScreen,
@@ -570,10 +570,8 @@ void EngineGame::moveCharacter2(
       break;
     case '1':  // Tasto per l'acquisto di una vita del P2
       if (bananas >= (upgradeCost / 2) && character2.getNumberLife() < 3) {
-        upgradeBuyed = true;  // INDICA CHE È STATO COMPRATO UN UPGRADE
-        upgradeType = 0;      // INDICA IL TIPO DI UPGRADE.
-        upgradeTime = 0;  // RESETTA IL TEMPO DI APPARIZIONE SE HAI COMPRATO UN
-                          // ALTRO UPGRADE
+        upgradeBuyed = true;
+        upgradeType = 0, upgradeTime = 0;
         character2.setNumberLife(character2.getNumberLife() + 1);
         bananas = bananas - (upgradeCost / 2);
       }
@@ -597,8 +595,6 @@ void EngineGame::moveCharacter2(
           bananas = bananas - upgradeCost;
           powerUpDMG++;
         }
-        // MESSAGGIO CHE SEGNALE IL FATTO CHE QUESTO UPGRADE NON è DISPONIBILE
-        // mvprintw(?, ?, "MAX DAMAGE OBTAINED");
       }
       break;
   }
@@ -607,6 +603,10 @@ void EngineGame::moveCharacter2(
 void EngineGame::gorillaPunch(int direction, Character &character,
                               pEnemyList enemyList, int &pointOnScreen,
                               bool toTheRight, bool isPlayer1) {
+  /**
+   * Funzione che gestisce l'input del pugno del giocatore e
+   * le relative collisioni.
+  */
   pEnemyList tmp = enemyList;
   bool condition = false;
 
@@ -629,7 +629,6 @@ void EngineGame::gorillaPunch(int direction, Character &character,
     while (enemyList != NULL) {
       if (character.getX() + range == enemyList->enemy.getX() &&
           character.getY() == enemyList->enemy.getY()) {
-        // Nemico rosso quando riceve il punch
         init_pair(13, COLOR_RED, -1);
         attron(COLOR_PAIR(13));
         tmpSkin[0] = enemyList->enemy.getSkin();
@@ -677,6 +676,10 @@ void EngineGame::generateFictionalEnemy(pEnemyList &specialEnemyList,
 pEnemyList EngineGame::generateEnemy(int *enemyCount, int type,
                                      pEnemyList enemyList,
                                      DrawWindow drawWindow) {
+  /**
+   * Funzione che genera la lista di nemici in una stanza.
+  */
+
   // Variables 4 basic enemies
   char skin = 'e';
   int life = 100, deathScore = 100;
@@ -728,6 +731,11 @@ pPosition EngineGame::getBonus(DrawWindow drawWindow, int x, int y,
                                int &pointsOnScreen, Character &character,
                                int &bonusType, bool &immortalitycheck,
                                int &immortalityTime) {
+  /**
+   * Funzione che gestisce la raccolta del bonus, scegliendo in maniera
+   * pseudo-casuale il l'effetto del bonus (o malus) raccolto.
+  */
+
   pPosition tmpHead = bonusList;
   bool end;
   while (bonusList->next != NULL) {
@@ -816,13 +824,6 @@ pPosition EngineGame::getBonus(DrawWindow drawWindow, int x, int y,
           immortalitycheck = true;
           end = true;
           break;
-          /*
-         case n:     // Malus name: "BANANA FRAGRANCE" // Genera n nemici
-             int tmpQuantity = 3, tmpRound = round;
-             enemyList = generateNormalEnemy (&tmpQuantity, 'X', 10, 100,
-         enemyList, tmpRound, drawWindow); drawWindow.printEnemy (enemyList,
-         drawWindow); end = true; break;
-         */
       }
       if (end) {
         bonusList = deletePosition(tmpHead, bonusList);
@@ -848,6 +849,12 @@ void EngineGame::checkDeath(bool &pause, Character &character) {
 
 void EngineGame::checkMountainDamage(Pbullet bulletList,
                                      pPosition &mountainList) {
+  /**
+   * Funzione che controlla se un proiettile colpisce una
+   * montagna. Scorre tutta la lista dei colpi e delle
+   * montagne per verificare la condizione di una
+   * collisione.
+  */
   pPosition tmpMountainList = mountainList;
   int range;
   while (bulletList != NULL) {
