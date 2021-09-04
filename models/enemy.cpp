@@ -7,4 +7,4 @@ Enemy::Enemy(int x, int y, char skin, int life, int numberLife, Gun gun, int dea
 }
 
 int Enemy::getDeathScore(){ return this->deathScore; }
-void Enemy::setDeathScore(int deathscore){ this->deathScore = deathScore; }
+void Enemy::setDeathScore(int deathscore){ this->deathScore = deathscore; }
