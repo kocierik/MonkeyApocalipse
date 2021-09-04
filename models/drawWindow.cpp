@@ -562,7 +562,7 @@ void DrawWindow::drawStats(int startX, int startY, int rightWidth,
     mvprintw(28, 76 - P2Offsetx, "%d", bananasP2);
   }
   mvprintw(29, 52, "ROOM");
-  mvprintw(29, 76, "%d/%d", lengthListRoom(roomList), maxRoom);
+  mvprintw(29, 76, "%d/%d", lengthListRoom(roomList) - 1, maxRoom - 1);
   mvprintw(30, 52, "MAX ROOM");
   mvprintw(30, 76, "%d", maxRoom - 1);
 

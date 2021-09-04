@@ -47,6 +47,11 @@ void EngineGame::baseCommand() {
 
 Pbullet EngineGame::generateBullets(Character character, bool isPlayerBullet,
                                     bool moveFoward, Pbullet &bulletList) {
+  /**
+   * Funzione per la generazione della singola struttura Bullet.
+   * In base ai parametri passati si saprà se il proiettile sia nemico o
+   * meno, e se sia sparato verso dx o sx.
+   */
   Pbullet bullet = new Bullet;
   int range = 1;
   if (moveFoward) range = -1;
@@ -70,6 +75,9 @@ Pbullet EngineGame::generateBullets(Character character, bool isPlayerBullet,
 void EngineGame::generateEnemyBullets(pEnemyList enemyList,
                                       Pbullet &enemyBulletList,
                                       Character character) {
+  /**
+   * Funzione per la generazione dei proiettili dei nemici.
+   */
   bool shootFoward;
   while (enemyList != NULL) {
     if (this->whileCountEnemy % 20 == 0) {
@@ -85,6 +93,9 @@ void EngineGame::generateEnemyBullets(pEnemyList enemyList,
 }
 
 void EngineGame::moveBullets(Pbullet bulletList) {
+  /**
+   * Funzione per il movimento dei proiettili.
+   */
   char tmpSkin[2];
   while (bulletList != NULL) {
     if ((bulletList->isPlayerBullet && bulletList->moveFoward) ||
@@ -96,7 +107,7 @@ void EngineGame::moveBullets(Pbullet bulletList) {
     move(bulletList->y, bulletList->x);
     tmpSkin[0] = bulletList->skin;
     if (bulletList->isPlayerBullet) {
-      init_pair(10, COLOR_YELLOW, -1);  // SPARA BANANE GIALLE
+      init_pair(10, COLOR_YELLOW, -1);
       attron(COLOR_PAIR(10));
       printw(tmpSkin);
       attroff(COLOR_PAIR(10));
@@ -107,6 +118,11 @@ void EngineGame::moveBullets(Pbullet bulletList) {
 }
 
 void EngineGame::destroyBullet(Pbullet &bulletList, int xP1, int xP2) {
+  /**
+   * Funzione per la distruzione dei proiettili.
+   * Scorre la lista data e controlla se le condizioni per
+   * l'eliminazione dell'elemento sono soddisfatte.
+   */
   if (xP1 == this->leftWidth || xP1 == this->rightWidth ||
       xP2 == this->leftWidth || xP2 == this->rightWidth)
     bulletList = NULL;
@@ -125,17 +141,6 @@ void EngineGame::destroyBullet(Pbullet &bulletList, int xP1, int xP2) {
                              !isBullet(head->x + range, head->y);
       if (!head->isPlayerBullet)
         mustDestroyCondition &= !isEnemy(head->x + range, head->y);
-      // mustDestroyCondition &= !isEnemy(head->x + range, head->y) &&
-      // (!(mvinch(head->x + range, head->y) == 'o')); // Controllo che non
-      // funziona
-
-      /* In teoria la condizione di distruzione del proiettile dovrebbe
-      dipendere solo dai questi controlli commentati... int x = head->x + range,
-      y = head->y; if (head->isPlayerBullet) mustDestroyCondition = (mvinch(y,
-      x) == '^' || mvinch(y, x) == 'B' || mvinch(y, x) == 'E' || mvinch(y, x) ==
-      'e'); else mustDestroyCondition = (mvinch(y, x) == '^' || mvinch(y, x) ==
-      'M' || mvinch(y, x) == 'm');
-      */
 
       if (mustDestroyCondition || head->x > 70 || head->x < 23) {
         if (head == bulletList) {
@@ -159,6 +164,11 @@ void EngineGame::destroyBullet(Pbullet &bulletList, int xP1, int xP2) {
 }
 
 pEnemyList EngineGame::destroyEnemy(pEnemyList enemyList, Enemy enemy) {
+  /**
+   * Funzione per la distruzione dei nemici.
+   * Scorre la lista data e controlla se le condizioni per
+   * l'eliminazione dell'elemento sono soddisfatte.
+   */
   pEnemyList head = enemyList, prev = enemyList, tmp;
   char tmpSkin[2];
   while (enemyList != NULL) {
@@ -189,9 +199,8 @@ pEnemyList EngineGame::destroyEnemy(pEnemyList enemyList, Enemy enemy) {
 pPosition EngineGame::deletePosition(pPosition positionList,
                                      pPosition toDelete) {
   /**
-   * Essendo bonus e montagne la stessa tipologia di dato (pPosition), questa
-   * funzione elimina un elemento (toDelete) da una lista, che sia un bonus o
-   * una montagna.
+   * Funzione per l'eliminazione di bonus e montagne,
+   * ovvero elementi pPosition.
    */
   pPosition head = positionList, prev = positionList, tmp;
   while (positionList != NULL) {
@@ -218,6 +227,9 @@ pPosition EngineGame::deletePosition(pPosition positionList,
 
 bool EngineGame::checkNoEnemy(DrawWindow drawWindow, pEnemyList enemyList1,
                               pEnemyList enemyList2, pEnemyList enemyList3) {
+  /**
+   * Ritorna true se vi è l'assenza di nemici, false altrimenti.
+   */
   int length1 = drawWindow.lengthEnemyList(enemyList1);
   int length2 = drawWindow.lengthEnemyList(enemyList2);
   int length3 = drawWindow.lengthEnemyList(enemyList3);
@@ -667,20 +679,20 @@ pEnemyList EngineGame::generateEnemy(int *enemyCount, int type,
                                      DrawWindow drawWindow) {
   // Variables 4 basic enemies
   char skin = 'e';
-  int life = 10, deathScore = 100;
+  int life = 100, deathScore = 100;
   Gun gun('-', 10, -1, -1);
   switch (type) {
     case 0:  // Basic enemies, no variables changes
       break;
     case 1:  // Elite enemies
       skin = 'E';
-      life = 10, deathScore = 250;
+      life = 200, deathScore = 250;
       gun.setBulletSkin('=');
       gun.setDamage(20);
       break;
     case 2:  // Boss enemy
       skin = 'B';
-      life = 10, deathScore = 800;
+      life = 450, deathScore = 800;
       gun.setBulletSkin('*');
       gun.setDamage(35);
       break;
