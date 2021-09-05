@@ -463,25 +463,17 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
 
 }
 
-void EngineGame::gorillaPunch(int direction, Character &character,
+void EngineGame::gorillaPunch(int direction, int* commands, Character &character,
                               pEnemyList enemyList, int &pointOnScreen,
                               bool toTheRight, bool isPlayer1) {
   /**
    * Funzione che gestisce l'input del pugno del giocatore e
    * le relative collisioni.
   */
+  
   pEnemyList tmp = enemyList;
-  bool condition = false;
 
-  if (isPlayer1) {
-    if (direction == 'k' || direction == 'K') {
-      condition = true;
-    }
-  } else if (direction == 'q' || direction == 'Q') {
-    condition = true;
-  }
-
-  if (condition) {
+  if (direction == commands[14] || direction == commands[15]) {
     int range = -1;
     if (toTheRight) range = 1;
     // Con questa condizione, l'animazione del danno è più chiara
@@ -1072,18 +1064,18 @@ void EngineGame::runGame(DrawWindow drawWindow, int direction,
       checkEnemyCollision(character2, bossEnemyList);
     }
 
-    gorillaPunch(direction, character, normalEnemyList, pointsOnScreen,
+    gorillaPunch(direction, commands_P1, character, normalEnemyList, pointsOnScreen,
                  toTheRight, true);
-    gorillaPunch(direction, character, specialEnemyList, pointsOnScreen,
+    gorillaPunch(direction, commands_P1, character, specialEnemyList, pointsOnScreen,
                  toTheRight, true);
-    gorillaPunch(direction, character, bossEnemyList, pointsOnScreen,
+    gorillaPunch(direction, commands_P1, character, bossEnemyList, pointsOnScreen,
                  toTheRight, true);
     if (multiplayer) {
-      gorillaPunch(direction, character2, normalEnemyList, pointsOnScreen,
+      gorillaPunch(direction, commands_P2, character2, normalEnemyList, pointsOnScreen,
                    toTheRightP2, false);
-      gorillaPunch(direction, character2, specialEnemyList, pointsOnScreen,
+      gorillaPunch(direction, commands_P2, character2, specialEnemyList, pointsOnScreen,
                    toTheRightP2, false);
-      gorillaPunch(direction, character2, bossEnemyList, pointsOnScreen,
+      gorillaPunch(direction, commands_P2, character2, bossEnemyList, pointsOnScreen,
                    toTheRightP2, false);
     }
 

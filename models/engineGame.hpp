@@ -97,6 +97,6 @@ class EngineGame {
              Character &character, int upgradeCost, bool multiplayer,
              bool isPlayer1);
   void increasePointOnScreen(int &pointOnScreen, int pointsAdded);
-  void gorillaPunch(int direction, Character &character, pEnemyList enemyList,
+  void gorillaPunch(int direction, int* commands, Character &character, pEnemyList enemyList,
                     int &pointOnScreen, bool toTheRight, bool isPlayer1);
 };
