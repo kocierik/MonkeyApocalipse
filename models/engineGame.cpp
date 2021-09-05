@@ -1066,18 +1066,18 @@ void EngineGame::runGame(DrawWindow drawWindow, int direction,
     }
 
     gorillaPunch(direction, commands_P1, character, normalEnemyList, pointsOnScreen,
-                 toTheRight, true);
+                 toTheRight);
     gorillaPunch(direction, commands_P1, character, specialEnemyList, pointsOnScreen,
-                 toTheRight, true);
+                 toTheRight);
     gorillaPunch(direction, commands_P1, character, bossEnemyList, pointsOnScreen,
-                 toTheRight, true);
+                 toTheRight);
     if (multiplayer) {
       gorillaPunch(direction, commands_P2, character2, normalEnemyList, pointsOnScreen,
-                   toTheRightP2, false);
+                   toTheRightP2);
       gorillaPunch(direction, commands_P2, character2, specialEnemyList, pointsOnScreen,
-                   toTheRightP2, false);
+                   toTheRightP2);
       gorillaPunch(direction, commands_P2, character2, bossEnemyList, pointsOnScreen,
-                   toTheRightP2, false);
+                   toTheRightP2);
     }
 
     money(bananas, noEnemy, maxRoom, roundPayed, character, upgradeCost,
