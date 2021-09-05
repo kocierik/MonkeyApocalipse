@@ -470,7 +470,7 @@ void EngineGame::gorillaPunch(int direction, int* commands, Character &character
    * Funzione che gestisce l'input del pugno del giocatore e
    * le relative collisioni.
   */
-  
+
   pEnemyList tmp = enemyList;
 
   if (direction == commands[14] || direction == commands[15]) {
@@ -935,7 +935,7 @@ void EngineGame::runGame(DrawWindow drawWindow, int direction,
   bool upgradeBuyed = false, bonusPicked = false, immortalityCheck = false;
   int upgradeCost = 10;
   int immortalityTime = 0;
-  int powerUpDMG = 0, powerUpDMGP2 = 0;  // NUMERO DI POWERUP AL DANNO AQUISTATI
+  int powerUpDMG = 0, powerUpDMGP2 = 0;
   int bananas = 0, bananasP2 = 0, roundPayed = 0;
   int bonusTime = 0, upgradeTime = 0, bonusType = 0, upgradeType = 0;
 
