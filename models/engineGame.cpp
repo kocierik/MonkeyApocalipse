@@ -11,6 +11,8 @@
 
 // Numero di casi dello switch che gestisce i bonus. Equivale a: n bonus
 #define BONUS 15
+// Dimensioni doppie rispetto al numero di tasti usari per includere anche le maiuscole
+#define NUMBER_OF_COMMANDS 20
 
 float finalScore = 0;
 
@@ -342,7 +344,7 @@ bool EngineGame::isBullet(int x, int y) {
 bool EngineGame::isPlayerBullet(int x, int y) { return mvinch(y, x) == '~'; }
 
 void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
-                               int direction, pRoom &roomList,
+                               int direction, int* commands, pRoom &roomList,
                                pEnemyList normalEnemyList, int &pointsOnScreen,
                                int &bananas, int &powerUpDMG, bool &bonusPicked,
                                int &bonusType, int &bonusTime,
@@ -353,38 +355,25 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
   /**
    * Funzioni che gestisce gli input del giocatore.
    * Gestisce il movimento, lo sparo e il reload dell'arma.
+   *
+   * Movimento: P1 -> Frecce ; P2 -> WASD
    */
+
   srand(time(0));
-  switch (direction) {  // Movimento con le frecce per il player 1
-    case KEY_UP:        // Movimento in alto del P1
-      if (isEmpty(character.getX(), character.getY() - 1))
-        character.directionUp();
-      else if (isBonus(character.getX(), character.getY() - 1)) {
-        bonusTime = 0;
-        bonusPicked = true;
-        bonusType = rand() % BONUS;  // 0 <= bonusType < BONUS
-        roomList->bonusList =
-            getBonus(drawWindow, character.getX(), character.getY() - 1,
-                     roomList->next->bonusList, normalEnemyList, pointsOnScreen,
-                     character, bonusType, immortalityCheck, immortalityTime);
-        character.directionUp();
-      }
-      break;
-    case KEY_DOWN:  // Movimento in basso del P1
-      if (isEmpty(character.getX(), character.getY() + 1))
-        character.directionDown();
-      else if (isBonus(character.getX(), character.getY() + 1)) {
-        bonusTime = 0;
-        bonusPicked = true;
-        bonusType = rand() % BONUS;
-        roomList->bonusList =
-            getBonus(drawWindow, character.getX(), character.getY() + 1,
-                     roomList->next->bonusList, normalEnemyList, pointsOnScreen,
-                     character, bonusType, immortalityCheck, immortalityTime);
-        character.directionDown();
-      }
-      break;
-    case KEY_LEFT:  // Movimento a sx del P1
+  if (direction == commands[0] || direction == commands[1]) {   // Movimento in alto
+    if (isEmpty(character.getX(), character.getY() - 1))
+      character.directionUp();
+    else if (isBonus(character.getX(), character.getY() - 1)) {
+      bonusTime = 0;
+      bonusPicked = true;
+      bonusType = rand() % BONUS;  // 0 <= bonusType < BONUS
+      roomList->bonusList =
+          getBonus(drawWindow, character.getX(), character.getY() - 1,
+                   roomList->next->bonusList, normalEnemyList, pointsOnScreen,
+                   character, bonusType, immortalityCheck, immortalityTime);
+      character.directionUp();
+    }
+  } else if (direction == commands[2] || direction == commands[3]) {  // Movimento a sx
       if (isEmpty(character.getX() - 1, character.getY()))
         character.directionLeft();
       else if (isBonus(character.getX() - 1, character.getY())) {
@@ -398,8 +387,20 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
         character.directionLeft();
       }
       toTheRight = false;
-      break;
-    case KEY_RIGHT:  // Movimento a dx del P1
+  } else if (direction == commands[4] || direction == commands[5]) {  // Movimento in basso
+      if (isEmpty(character.getX(), character.getY() + 1))
+        character.directionDown();
+      else if (isBonus(character.getX(), character.getY() + 1)) {
+        bonusTime = 0;
+        bonusPicked = true;
+        bonusType = rand() % BONUS;
+        roomList->bonusList =
+            getBonus(drawWindow, character.getX(), character.getY() + 1,
+                     roomList->next->bonusList, normalEnemyList, pointsOnScreen,
+                     character, bonusType, immortalityCheck, immortalityTime);
+        character.directionDown();
+      }
+  } else if (direction == commands[6] || direction == commands[7]) {  // Movimento a dx
       if (isEmpty(character.getX() + 1, character.getY()))
         character.directionRight();
       else if (isBonus(character.getX() + 1, character.getY())) {
@@ -413,41 +414,35 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
         character.directionRight();
       }
       toTheRight = true;
-      break;
-    case 46:  // Sparo in avanti del P1 (tasto della virgola)
+  } else if (direction == commands[8] || direction == commands[9]) {  // Sparo in avanti (tasto della virgola)
       if (whileCount / 2 > 1 && character.getGun().getMagazineAmmo() > 0) {
         character.decreaseMagazineAmmo(1);
         this->playerBullets =
             generateBullets(character, true, true, this->playerBullets);
         whileCount = 0;
       }
-      break;
-    case 44:  // Sparo all'indietro del P1 (tasto del punto)
-      if (whileCount / 2 > 1 && character.getGun().getMagazineAmmo() > 0) {
+  } else if (direction == commands[10] || direction == commands[11]) {  // Sparo all'indietro (tasto del punto)
+    if (whileCount / 2 > 1 && character.getGun().getMagazineAmmo() > 0) {
         character.decreaseMagazineAmmo(1);
         this->playerBullets =
             generateBullets(character, true, false, this->playerBullets);
         whileCount = 0;
       }
-      break;
-    case 'L':  // Ricarica dell'arma del P1
-    case 'l':
-      if (character.getGun().getMagazineAmmo() >= 0 &&
+  } else if (direction == commands[12] || direction == commands[13]) {  // Ricarica dell'arma
+    if (character.getGun().getMagazineAmmo() >= 0 &&
           character.getGun().getMagazineAmmo() <
               character.getGun().getMagazineCapacity() &&
           character.getGun().getTotalAmmo() > 0)
         character.reload();
-      break;
-    case '9':  // Tasto per l'acquisto di una vita del P2
-      if (bananas >= (upgradeCost / 2) && character.getNumberLife() < 3) {
+  } else if (direction == commands[16] || direction == commands[17]) {  // Tasto per l'acquisto di una vita
+    if (bananas >= (upgradeCost / 2) && character.getNumberLife() < 3) {
         upgradeBuyed = true;
         upgradeType = 0, upgradeTime = 0;
         character.setNumberLife(character.getNumberLife() + 1);
         bananas = bananas - (upgradeCost / 2);
       }
-      break;
-    case '0':  // Tasto per l'acquisto dell'aumento del danno dell'arma del P2
-      if (character.getGun().getDamage() < 50) {
+  } else if (direction == commands[18] || direction == commands[19]) {  // Tasto per l'acquisto di una vita
+    if (character.getGun().getDamage() < 50) {
         if (bananas >= upgradeCost && powerUpDMG < 3) {
           upgradeBuyed = true;
           upgradeType = 1, upgradeTime = 0;
@@ -464,10 +459,11 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
           powerUpDMG++;
         }
       }
-      break;
   }
+
 }
 
+/*
 void EngineGame::moveCharacter2 (
     DrawWindow drawWindow, Character &character2, int direction,
     pRoom &roomList, pEnemyList normalEnemyList, int &pointsOnScreen,
@@ -599,6 +595,7 @@ void EngineGame::moveCharacter2 (
       break;
   }
 }
+*/
 
 void EngineGame::gorillaPunch(int direction, Character &character,
                               pEnemyList enemyList, int &pointOnScreen,
@@ -667,7 +664,7 @@ void EngineGame::choiceGame(DrawWindow drawWindow, int *direction,
 
 void EngineGame::generateFictionalEnemy(pEnemyList &specialEnemyList,
                                         pEnemyList &bossEnemyList) {
-    /**
+  /**
    * Genera un nemico fittizio iniziale per evitare che la lista sia nulla
    */
   Gun tmpGun(' ', 10, -1, -1);
@@ -842,7 +839,7 @@ pPosition EngineGame::getBonus(DrawWindow drawWindow, int x, int y,
 }
 
 void EngineGame::checkDeath(bool &pause, Character &character) {
-    /**
+  /**
    * Verifica se la vita del player è sufficiente per continuare
    * a giocare
    */
@@ -888,31 +885,69 @@ void EngineGame::checkMountainDamage(Pbullet bulletList,
   }
 }
 
+int* EngineGame::decreesCommands(bool isPlayer1) {
+  /**
+   * Funzione che decreta quali pulsanti della tastiera
+   * saranno rilevati come input.
+  */
+ 	int *commands = new int[NUMBER_OF_COMMANDS];
+	if (isPlayer1) {
+    // Tasti per il movimento
+    commands[0] = 259;    // KEY_UP
+    commands[2] = 260;    // KEY_LEFT
+    commands[4] = 258;    // KEY_DOWN
+    commands[6] = 261;    // KEY_RIGHT
+    // Tasti per lo sparo e la ricarica dell'arma
+    commands[8] = 46;     // '.'
+    commands[10] = 44;    // ','
+    commands[12] = 108; commands[13] = 76;  // 'l' 'L'
+    // Tasti per il pugno e l'acquisto di power-up
+    commands[14] = 107; commands[15] = 75;  // 'k' 'K'
+    commands[16] = 48;    // '0'
+    commands[18] = 57;    // '9'
+  } else {
+    // Tasti per il movimento
+    commands[0] = 119;  commands[1] = 87;   // 'w' 'W'
+    commands[2] = 97;  commands[3] = 65;    // 'a' 'A'
+    commands[4] = 115;  commands[5] = 83;   // 's' 'S'
+    commands[6] = 100;  commands[7] = 68;   // 'd' 'D'
+    // Tasti per lo sparo e la ricarica dell'arma
+    commands[8] = 98;  commands[9] = 66;    // 'b' 'B'
+    commands[10] = 118; commands[11] = 86;  // 'v' 'V'
+    commands[12] = 114; commands[13] = 82;  // 'r' 'R'
+    // Tasti per il pugno e l'acquisto di power-up
+    commands[14] = 113; commands[15] = 81;  // 'q' 'Q'
+    commands[16] = 49;  // '1'
+    commands[18] = 50;  // '2'
+  }
+  return commands;
+}
 void EngineGame::engine(DrawWindow drawWindow) {
-    /**
+  /**
    * Funzione che reindirizza il giocatore in base
    * alla scelta effettuata nel menù principale
    */
   int direction, selection;
+  bool multiplayer;
   baseCommand();
   choiceGame(drawWindow, &direction, &selection);
   clear();
   while (pause) {
     switch (selection) {
       case 0:  // FUN (single player)
-        pause = false;
+        pause = false, multiplayer = false;
         clear();
         drawWindow.splashScreen(direction);
-        runGame(drawWindow, direction, false);
+        runGame(drawWindow, direction, multiplayer);
         clear();
         drawWindow.loseScreen(direction, finalScore);
         selection = 6;
         break;
       case 1:  // MORE FUN (multiplayer)
-        pause = false;
+        pause = false, multiplayer = true;
         clear();
         drawWindow.splashScreen(direction);
-        runGame(drawWindow, direction, true);
+        runGame(drawWindow, direction, multiplayer);
         clear();
         drawWindow.loseScreen(direction, finalScore);
         selection = 6;
@@ -947,7 +982,7 @@ void EngineGame::engine(DrawWindow drawWindow) {
 }
 
 void EngineGame::increaseCount(long &points) {
-    /**
+  /**
    * funzione che gestisce il punteggio di gioco
    */
   whileCount += 1;
@@ -959,7 +994,7 @@ void EngineGame::increaseCount(long &points) {
 void EngineGame::money(int &bananas, bool noEnemy, int maxRoom, int &roundPayed,
                        Character &character, int upgradeCost, bool multiplayer,
                        bool isPlayer1) {
-    /**
+  /**
    * Funzione che gestisce i banner qualora si avessero
    * abbastanza monete per aquistare potenziamenti
    */
@@ -968,9 +1003,7 @@ void EngineGame::money(int &bananas, bool noEnemy, int maxRoom, int &roundPayed,
   if (!isPlayer1) {
     P2Offsetx = 34;
   }
-  if (noEnemy &&
-      (maxRoom != roundPayed)) {  // CONTROLLA CHE LA STANZA SIA PULITA E CHE
-                                  // L'ULTIMO ROUND SIA STATO PAGATO
+  if (noEnemy && (maxRoom != roundPayed)) {
     bananas = bananas + rand() % 3 + 1;
     character.increaseLife((rand() % 20 + 20));
     if (maxRoom >= 2 && maxRoom <= 5)
@@ -996,7 +1029,7 @@ void EngineGame::money(int &bananas, bool noEnemy, int maxRoom, int &roundPayed,
 }
 
 void EngineGame::printList(pPosition positionList) {
-    /**
+  /**
    * Stampa una lista
    */
   int i = 2;
@@ -1027,6 +1060,10 @@ void EngineGame::runGame(DrawWindow drawWindow, int direction,
   Gun basicPlayerGun('~', 25, 40, 10);
   character.setGun(basicPlayerGun);
   character2.setGun(basicPlayerGun);
+
+  // Array contenenti i tasti interagibili
+  int* commands_P1 = decreesCommands(true); int* commands_P2;
+  if (multiplayer) commands_P2 = decreesCommands(false);
 
   // Variabili per la gestire logistica generale della partita
   bool noEnemy = false;
@@ -1066,17 +1103,23 @@ void EngineGame::runGame(DrawWindow drawWindow, int direction,
 
     getInput(direction);
 
-    moveCharacter(drawWindow, character, direction, roomList, normalEnemyList,
+    moveCharacter(drawWindow, character, direction, commands_P1, roomList, normalEnemyList,
                   pointsOnScreen, bananas, powerUpDMG, bonusPicked, bonusType,
                   bonusTime, upgradeBuyed, upgradeType, upgradeTime,
                   immortalityCheck, immortalityTime, toTheRight, upgradeCost,
                   roomList->mountainList);
     if (multiplayer)
+      moveCharacter(drawWindow, character2, direction, commands_P2, roomList, normalEnemyList,
+                  pointsOnScreen, bananasP2, powerUpDMGP2, bonusPicked, bonusType,
+                  bonusTime, upgradeBuyed, upgradeType, upgradeTime, immortalityCheck,
+                  immortalityTime, toTheRightP2, upgradeCost, roomList->mountainList);
+                  /*
       moveCharacter2(
           drawWindow, character2, direction, roomList, normalEnemyList,
           pointsOnScreen, bananasP2, powerUpDMGP2, bonusPicked, bonusType,
           bonusTime, upgradeBuyed, upgradeType, upgradeTime, immortalityCheck,
           immortalityTime, toTheRightP2, upgradeCost, roomList->mountainList);
+          */
     clear();
 
     noEnemy = checkNoEnemy(drawWindow, normalEnemyList, specialEnemyList,
@@ -1121,9 +1164,6 @@ void EngineGame::runGame(DrawWindow drawWindow, int direction,
     }
 
     increaseCount(points);
-
-    // int tmp = getch();
-    // mvprintw (4,4, "%d", tmp);
 
     drawWindow.printEnemy(normalEnemyList, drawWindow);
     drawWindow.printEnemy(specialEnemyList, drawWindow);
@@ -1171,10 +1211,6 @@ void EngineGame::runGame(DrawWindow drawWindow, int direction,
       checkEnemyCollision(character2, specialEnemyList);
       checkEnemyCollision(character2, bossEnemyList);
     }
-
-    // int tmp = getch();
-    // mvprintw (3,3,"%d",tmp);
-    // mvprintw (3,3,"%d",direction);
 
     gorillaPunch(direction, character, normalEnemyList, pointsOnScreen,
                  toTheRight, true);
@@ -1260,4 +1296,3 @@ void EngineGame::runGame(DrawWindow drawWindow, int direction,
     finalScore = pointsOnScreen;
   }
 }
-// x = 23 | y = 8 HL | end | x = 70 | y = 19 | RD

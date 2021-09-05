@@ -26,6 +26,7 @@ class EngineGame {
              int leftWidth, int rightWidth);
   void printList(pPosition positionList);
   void baseCommand();
+  int* decreesCommands(bool isPlayer1);
 
   void moveBullets(Pbullet bulletList);
 
@@ -46,7 +47,7 @@ class EngineGame {
 
   void choiceGame(DrawWindow drawWindow, int *direction, int *selection);
   void moveCharacter(DrawWindow drawWindow, Character &character, int direction,
-                     pRoom &roomList, pEnemyList normalEnemyList,
+                     int* commands, pRoom &roomList, pEnemyList normalEnemyList,
                      int &pointsOnScreen, int &bananas, int &powerUpDMG,
                      bool &bonusPicked, int &bonustype, int &bonusTime,
                      bool &upgradeBuyed, int &upgradeType, int &upgradeTime,
