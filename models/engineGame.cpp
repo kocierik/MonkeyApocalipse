@@ -435,14 +435,14 @@ void EngineGame::playerInputs(DrawWindow drawWindow, Character &character,
               character.getGun().getMagazineCapacity() &&
           character.getGun().getTotalAmmo() > 0)
         character.reload();
-  } else if (direction == commands[16] || direction == commands[17]) {  // Tasto per l'acquisto di una vita
+  } else if (direction == commands[16]) {  // Tasto per l'acquisto di una vita
     if (bananas >= (upgradeCost / 2) && character.getNumberLife() < 3) {
         upgradeBuyed = true;
         upgradeType = 0, upgradeTime = 0;
         character.setNumberLife(character.getNumberLife() + 1);
         bananas = bananas - (upgradeCost / 2);
       }
-  } else if (direction == commands[18] || direction == commands[19]) {  // Tasto per l'acquisto di una vita
+  } else if (direction == commands[17]) {  // Tasto per l'acquisto del power-up
     if (character.getGun().getDamage() < 50) {
         if (bananas >= upgradeCost && powerUpDMG < 3) {
           upgradeBuyed = true;
@@ -762,8 +762,8 @@ int* EngineGame::decreesCommands(bool isPlayer1) {
     commands[12] = 108; commands[13] = 76;  // 'l' 'L'
     // Tasti per il pugno e l'acquisto di power-up
     commands[14] = 107; commands[15] = 75;  // 'k' 'K'
-    commands[16] = 48;    // '0'
-    commands[18] = 57;    // '9'
+    commands[16] = 57;    // '9'
+    commands[17] = 48;    // '0'
   } else {
     // Tasti per il movimento
     commands[0] = 119;  commands[1] = 87;   // 'w' 'W'
@@ -777,7 +777,7 @@ int* EngineGame::decreesCommands(bool isPlayer1) {
     // Tasti per il pugno e l'acquisto di power-up
     commands[14] = 113; commands[15] = 81;  // 'q' 'Q'
     commands[16] = 49;  // '1'
-    commands[18] = 50;  // '2'
+    commands[17] = 50;  // '2'
   }
   return commands;
 }
