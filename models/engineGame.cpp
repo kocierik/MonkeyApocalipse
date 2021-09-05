@@ -505,7 +505,7 @@ void EngineGame::gorillaPunch(int direction, int* commands, Character &character
 
 void EngineGame::choiceGame(DrawWindow drawWindow, int *direction,
                             int *selection) {
- /**
+  /**
    * Funzione che seleziona la scelta di gioco nel menù principale
    */
   int cnt = 0;
@@ -975,15 +975,14 @@ void EngineGame::runGame(DrawWindow drawWindow, int direction,
                   immortalityTime, toTheRightP2, upgradeCost, roomList->mountainList);
     clear();
 
-    noEnemy = checkNoEnemy(drawWindow, normalEnemyList, specialEnemyList,
-                           bossEnemyList);
-
     drawWindow.printCharacter(character.getX(), character.getY(),
                               character.getSkin());
     if (multiplayer)
       drawWindow.printCharacter(character2.getX(), character2.getY(),
                                 character2.getSkin());
 
+    noEnemy = checkNoEnemy(drawWindow, normalEnemyList, specialEnemyList,
+                           bossEnemyList);
     drawWindow.drawRect(this->frameGameX, this->frameGameY, this->rightWidth,
                         this->bottomHeigth, noEnemy, maxRoom, false, roomList);
     drawWindow.drawStats(this->frameGameX, this->frameGameY, this->rightWidth,
