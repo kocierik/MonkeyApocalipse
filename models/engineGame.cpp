@@ -478,7 +478,7 @@ void EngineGame::gorillaPunch(int direction, int* commands, Character &character
     int range = -1;
     if (toTheRight) range = 1;
     // Con questa condizione, l'animazione del danno è più chiara
-    if (isEmpty(character.getY(), character.getX() + range))
+    if (isEmpty(character.getX() + range,character.getY()))
       mvprintw(character.getY(), character.getX() + range, "o");
 
     char tmpSkin[0];
