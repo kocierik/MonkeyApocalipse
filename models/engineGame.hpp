@@ -46,23 +46,13 @@ class EngineGame {
   bool isPlayerBullet(int x, int y);
 
   void choiceGame(DrawWindow drawWindow, int *direction, int *selection);
-  void moveCharacter(DrawWindow drawWindow, Character &character, int direction,
+  void playerInputs(DrawWindow drawWindow, Character &character, int direction,
                      int* commands, pRoom &roomList, pEnemyList normalEnemyList,
                      int &pointsOnScreen, int &bananas, int &powerUpDMG,
                      bool &bonusPicked, int &bonustype, int &bonusTime,
                      bool &upgradeBuyed, int &upgradeType, int &upgradeTime,
                      bool &immortalityCheck, int &immortalityTime,
                      bool &toTheRight, int upgradeCost, pPosition mountainList);
-
-  void moveCharacter2(DrawWindow drawWindow, Character &character2,
-                      int direction, pRoom &roomList,
-                      pEnemyList normalEnemyList, int &pointsOnScreen,
-                      int &bananas, int &powerUpDMG, bool &bonusPicked,
-                      int &bonusType, int &bonusTime, bool &upgradeBuyed,
-                      int &upgradeType, int &upgradeTime,
-                      bool &immortalityCheck, int &immortalityTime,
-                      bool &toTheRight, int upgradeCost,
-                      pPosition mountainList);
 
   void generateFictionalEnemy(pEnemyList &specialEnemyList,
                               pEnemyList &bossEnemyList);
@@ -98,5 +88,5 @@ class EngineGame {
              bool isPlayer1);
   void increasePointOnScreen(int &pointOnScreen, int pointsAdded);
   void gorillaPunch(int direction, int* commands, Character &character, pEnemyList enemyList,
-                    int &pointOnScreen, bool toTheRight, bool isPlayer1);
+                    int &pointOnScreen, bool toTheRight);
 };

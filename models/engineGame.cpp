@@ -343,7 +343,7 @@ bool EngineGame::isBullet(int x, int y) {
 }
 bool EngineGame::isPlayerBullet(int x, int y) { return mvinch(y, x) == '~'; }
 
-void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
+void EngineGame::playerInputs(DrawWindow drawWindow, Character &character,
                                int direction, int* commands, pRoom &roomList,
                                pEnemyList normalEnemyList, int &pointsOnScreen,
                                int &bananas, int &powerUpDMG, bool &bonusPicked,
@@ -360,6 +360,7 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
    */
 
   srand(time(0));
+  // Serie di if-else per il check del tasto premuto
   if (direction == commands[0] || direction == commands[1]) {   // Movimento in alto
     if (isEmpty(character.getX(), character.getY() - 1))
       character.directionUp();
@@ -465,7 +466,7 @@ void EngineGame::moveCharacter(DrawWindow drawWindow, Character &character,
 
 void EngineGame::gorillaPunch(int direction, int* commands, Character &character,
                               pEnemyList enemyList, int &pointOnScreen,
-                              bool toTheRight, bool isPlayer1) {
+                              bool toTheRight) {
   /**
    * Funzione che gestisce l'input del pugno del giocatore e
    * le relative collisioni.
@@ -962,13 +963,13 @@ void EngineGame::runGame(DrawWindow drawWindow, int direction,
 
     getInput(direction);
 
-    moveCharacter(drawWindow, character, direction, commands_P1, roomList, normalEnemyList,
+    playerInputs(drawWindow, character, direction, commands_P1, roomList, normalEnemyList,
                   pointsOnScreen, bananas, powerUpDMG, bonusPicked, bonusType,
                   bonusTime, upgradeBuyed, upgradeType, upgradeTime,
                   immortalityCheck, immortalityTime, toTheRight, upgradeCost,
                   roomList->mountainList);
     if (multiplayer)
-      moveCharacter(drawWindow, character2, direction, commands_P2, roomList, normalEnemyList,
+      playerInputs(drawWindow, character2, direction, commands_P2, roomList, normalEnemyList,
                   pointsOnScreen, bananasP2, powerUpDMGP2, bonusPicked, bonusType,
                   bonusTime, upgradeBuyed, upgradeType, upgradeTime, immortalityCheck,
                   immortalityTime, toTheRightP2, upgradeCost, roomList->mountainList);
