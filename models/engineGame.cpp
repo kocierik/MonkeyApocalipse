@@ -649,6 +649,9 @@ void EngineGame::gorillaPunch(int direction, Character &character,
 
 void EngineGame::choiceGame(DrawWindow drawWindow, int *direction,
                             int *selection) {
+ /**
+   * Funzione che seleziona la scelta di gioco nel menù principale
+   */
   int cnt = 0;
   while (*direction != 32) {
     drawWindow.drawMenu();
@@ -664,6 +667,9 @@ void EngineGame::choiceGame(DrawWindow drawWindow, int *direction,
 
 void EngineGame::generateFictionalEnemy(pEnemyList &specialEnemyList,
                                         pEnemyList &bossEnemyList) {
+    /**
+   * Genera un nemico fittizio iniziale per evitare che la lista sia nulla
+   */
   Gun tmpGun(' ', 10, -1, -1);
   Enemy enemy1(0, 0, ' ', 1, 1, tmpGun, 0);
   Enemy enemy2(0, 0, ' ', 1, 1, tmpGun, 0);
@@ -836,6 +842,10 @@ pPosition EngineGame::getBonus(DrawWindow drawWindow, int x, int y,
 }
 
 void EngineGame::checkDeath(bool &pause, Character &character) {
+    /**
+   * Verifica se la vita del player è sufficiente per continuare
+   * a giocare
+   */
   if (character.getLife() <= 0) {
     character.setNumberLife(character.getNumberLife() - 1);
     if (character.getNumberLife() > 0) {
@@ -879,6 +889,10 @@ void EngineGame::checkMountainDamage(Pbullet bulletList,
 }
 
 void EngineGame::engine(DrawWindow drawWindow) {
+    /**
+   * Funzione che reindirizza il giocatore in base
+   * alla scelta effettuata nel menù principale
+   */
   int direction, selection;
   baseCommand();
   choiceGame(drawWindow, &direction, &selection);
@@ -933,6 +947,9 @@ void EngineGame::engine(DrawWindow drawWindow) {
 }
 
 void EngineGame::increaseCount(long &points) {
+    /**
+   * funzione che gestisce il punteggio di gioco
+   */
   whileCount += 1;
   points += 1;
   if (points > 500) points = 0;
@@ -942,6 +959,10 @@ void EngineGame::increaseCount(long &points) {
 void EngineGame::money(int &bananas, bool noEnemy, int maxRoom, int &roundPayed,
                        Character &character, int upgradeCost, bool multiplayer,
                        bool isPlayer1) {
+    /**
+   * Funzione che gestisce i banner qualora si avessero
+   * abbastanza monete per aquistare potenziamenti
+   */
   srand(time(NULL));
   int P2Offsetx = 0;
   if (!isPlayer1) {
@@ -975,6 +996,9 @@ void EngineGame::money(int &bananas, bool noEnemy, int maxRoom, int &roundPayed,
 }
 
 void EngineGame::printList(pPosition positionList) {
+    /**
+   * Stampa una lista
+   */
   int i = 2;
   while (positionList != NULL) {
     mvprintw(i, 0, "Vita montagna  %d", positionList->life);
@@ -983,12 +1007,15 @@ void EngineGame::printList(pPosition positionList) {
   }
 }
 
+// Prende un tasto da tastiera in input
 void EngineGame::getInput(int &direction) { direction = getch(); }
 
+// verifica se il gioco è in pausa
 void EngineGame::isPause(int &direction, bool &pause) {
   if (direction == 27) pause = true;
 }
 
+// Aumento del punteggio a video
 void EngineGame::increasePointOnScreen(int &pointOnScreen, int pointsAdded) {
   pointOnScreen += pointsAdded;
 }
