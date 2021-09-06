@@ -16,6 +16,17 @@ typedef Room *pRoom;
 class DrawWindow {
  public:
   DrawWindow();
+  // Funzioni per la stampa del menu e le sue voci
+  void drawMenu();
+  void printCommand(int *cnt);
+  void printCredits();
+  void credits(int direction);
+  void printLeaderboardScreen();
+  void leaderboardScreen(int direction);
+  void printHowToPlay();
+  void HowToPlay(int direction);
+
+  // Funzioni per le stampe di una partita
   void printCharacter(int x, int y, char c);
   void drawRect(int startX, int startY, int rightWidth, int bottomHeight,
                 bool noEnemy, int maxRoom, bool isScreenBound, pRoom listRoom);
@@ -24,23 +35,12 @@ class DrawWindow {
                  int powerUp, int bananas, int babanasP2, int maxRoom,
                  pRoom roomList, bool isPlayer1);
   void drawLeaderboardOnScreen();
-  void drawMenu();
-
-  void printCommand(int *cnt);
-  void printCredits();
-  void credits(int direction);
-
-  void printHowToPlay();
-  void HowToPlay(int direction);
 
   void printLoseScreen(float finalScore);
   void loseScreen(int direction, float finalScore);
 
   void printSplashScreen();
   void splashScreen(int direction);
-
-  void printLeaderboardScreen();
-  void leaderboardScreen(int direction);
 
   int lengthEnemyList(pEnemyList enemyList);
   int lengthListRoom(pRoom roomList);

@@ -327,7 +327,7 @@ void DrawWindow::printLeaderboardScreen() {
   }
 }
 
-//FUNZIONE CHE GESTISCE LA LOGICA DELLA SCHERMATA DELLA LEADERBOARDS
+// FUNZIONE CHE GESTISCE LA LOGICA DELLA SCHERMATA DELLA LEADERBOARDS DEL MENU
 void DrawWindow::leaderboardScreen(int direction) {
   while (direction != 27) {
     printLeaderboardScreen();
@@ -484,38 +484,6 @@ void DrawWindow::drawRect(
   mvprintw(bottomHeight, rightWidth, "o");
 }
 
-// FUNZIONE CHE STAMPA A SCHERMO LA CLASSIFICA RECENTE DELLE ULTIME 11 PARTITE
-void DrawWindow::drawLeaderboardOnScreen() {
-  std::string localScore[44] = {"NULL"};
-  std::string line;
-  std::ifstream leaderboard("leaderBoard.txt");
-
-  init_pair(3, COLOR_YELLOW, -1);
-  attron(COLOR_PAIR(3));
-  mvprintw(5, 94, "LEADERBOARD");
-  attroff(COLOR_PAIR(3));
-  mvprintw(7, 88, "-----------------------");
-
-  if (leaderboard.is_open()) {
-    int i = 9;
-    int linesName = 0;
-    int maxNameOnScreen = 0;
-    while (getline(leaderboard, line) && (linesName < 44)) {
-      localScore[linesName] = line.c_str();
-      linesName++;
-    }
-    leaderboard.close();
-    linesName--;
-
-    while (linesName >= 0 && maxNameOnScreen < 11) {
-      mvprintw(i, 90, "%s", localScore[linesName].c_str());
-      i = i + 2;
-      linesName--;
-      maxNameOnScreen++;
-    }
-  }
-}
-
 // FUNZIONE CHE STAMPA E GESTISCE LE STATS A SCHERMO DURANTE LA PARTITA
 void DrawWindow::drawStats(int startX, int startY, int rightWidth,
                            int bottomHeight, int pointsOnScreen,
@@ -612,6 +580,103 @@ void DrawWindow::drawStats(int startX, int startY, int rightWidth,
   else if (powerUp == 0)
     mvprintw(powerUp_x, powerUp_y + 10, "[ ] [ ] [ ] [ ]");
   attroff(COLOR_PAIR(3));  // CHIUSURA DEL COLORE
+}
+
+// FUNZIONE CHE STAMPA (MENTRE SI GIOCA) LA CLASSIFICA RECENTE DELLE ULTIME 11 PARTITE
+void DrawWindow::drawLeaderboardOnScreen() {
+  std::string localScore[44] = {"NULL"};
+  std::string line;
+  std::ifstream leaderboard("leaderBoard.txt");
+
+  init_pair(3, COLOR_YELLOW, -1);
+  attron(COLOR_PAIR(3));
+  mvprintw(5, 94, "LEADERBOARD");
+  attroff(COLOR_PAIR(3));
+  mvprintw(7, 88, "-----------------------");
+
+  if (leaderboard.is_open()) {
+    int i = 9;
+    int linesName = 0;
+    int maxNameOnScreen = 0;
+    while (getline(leaderboard, line) && (linesName < 44)) {
+      localScore[linesName] = line.c_str();
+      linesName++;
+    }
+    leaderboard.close();
+    linesName--;
+
+    while (linesName >= 0 && maxNameOnScreen < 11) {
+      mvprintw(i, 90, "%s", localScore[linesName].c_str());
+      i = i + 2;
+      linesName--;
+      maxNameOnScreen++;
+    }
+  }
+}
+
+// FUNZIONE CHE STAMPA LA SCHERMATA DI GAME OVER
+void DrawWindow::printLoseScreen(float finalScore) {
+  int prog = LINES / 2 - 15;
+  for (int y = 0; y < 20; y++) {
+    init_pair(8, COLOR_BLACK, 232);
+    attron(COLOR_PAIR(8));
+    mvprintw(prog, COLS / 2 - 53,
+             "                                                                 "
+             "                                         ");
+    prog++;
+    attroff(COLOR_PAIR(8));
+  }
+
+  init_pair(16, COLOR_RED, 232);
+  attron(COLOR_PAIR(16));
+  mvprintw(LINES / 2 - 13, COLS / 2 - 26,
+           "  __ _  __ _ _ __ ___   ___    _____   _____ _ __      ");
+  mvprintw(LINES / 2 - 12, COLS / 2 - 26,
+           " / _` |/ _` | '_ ` _ \\ / _ \\  / _ \\ \\ / / _ \\ '__|");
+  mvprintw(LINES / 2 - 11, COLS / 2 - 26,
+           "| (_| | (_| | | | | | |  __/ | (_) \\ V /  __/ |       ");
+  mvprintw(LINES / 2 - 10, COLS / 2 - 26,
+           " \\__, |\\__,_|_| |_| |_|\\___|  \\___/ \\_/ \\___|_|   ");
+  mvprintw(LINES / 2 - 9, COLS / 2 - 26,
+           " |___/                                                  ");
+  attroff(COLOR_PAIR(16));
+
+  init_pair(17, COLOR_GREEN, 232);
+  attron(COLOR_PAIR(17));
+  mvprintw(LINES / 2 - 7, COLS / 2 - 35,
+           "HUNTERS HAVE TRACKED YOU, SURROUNDED AND FINALLY "
+           "THEY KILLED YOU...");
+  mvprintw(LINES / 2 - 5, COLS / 2 - 20,
+           "YOUR LIFE GOES AWAY WITH YOUR "
+           "REVENGE.");
+  mvprintw(LINES / 2 - 3, COLS / 2 - 38,
+           "BUT DON'T GET MAD, THERE ARE THOUSANDS OF MONKEYS "
+           "READY TO REBELL AGAIN...");
+  mvprintw(LINES / 2 - 2, COLS / 2 - 10, "...SOONER OR THEN...");
+  mvprintw(LINES / 2 + 2, COLS / 2 - 48, "FINAL SCORE: %.0f", finalScore);
+  mvprintw(LINES / 2 + 2, COLS / 2 + 24, "set score & exit [ENTER]");
+  mvprintw(LINES / 2 + 3, COLS / 2 + 21, "(no name will not save score)");
+  attroff(COLOR_PAIR(17));
+}
+
+// FUNZIONE CHE GESTISCE LA LOGICA DELLA SCHERMATA DI GAME OVER E L'INSERIMENTO DEL NOME PER LO SCORE
+void DrawWindow::loseScreen(int direction, float finalScore) {
+  direction = 32;
+  char name[MAXNAMECHARACTER] = {'\0'};
+  char name2[MAXNAMECHARACTER] = {'\0'};
+  while (direction != 0) {
+    printLoseScreen(finalScore);
+    strcat(name, name2);
+
+    init_pair(17, COLOR_GREEN, 232);
+    attron(COLOR_PAIR(17));
+    mvprintw(LINES / 2 + 3, COLS / 2 - 35, "__________");
+    mvprintw(LINES / 2 + 3, COLS / 2 - 48, "INSERT NAME: %s", name);
+    attroff(COLOR_PAIR(17));
+    refresh();
+    direction = getstr(name2);
+  }
+  saveRecord(finalScore, name);
 }
 
 // FUNZIONE CHE GENERA DELLE COORDINATE CASUALI IN UN DETERMINATO RANGE
@@ -1164,51 +1229,6 @@ void DrawWindow::splashScreen(int direction) {
   }
 }
 
-// FUNZIONE CHE STAMPA LA SCHERMATA DI GAME OVER
-void DrawWindow::printLoseScreen(float finalScore) {
-  int prog = LINES / 2 - 15;
-  for (int y = 0; y < 20; y++) {
-    init_pair(8, COLOR_BLACK, 232);
-    attron(COLOR_PAIR(8));
-    mvprintw(prog, COLS / 2 - 53,
-             "                                                                 "
-             "                                         ");
-    prog++;
-    attroff(COLOR_PAIR(8));
-  }
-
-  init_pair(16, COLOR_RED, 232);
-  attron(COLOR_PAIR(16));
-  mvprintw(LINES / 2 - 13, COLS / 2 - 26,
-           "  __ _  __ _ _ __ ___   ___    _____   _____ _ __      ");
-  mvprintw(LINES / 2 - 12, COLS / 2 - 26,
-           " / _` |/ _` | '_ ` _ \\ / _ \\  / _ \\ \\ / / _ \\ '__|");
-  mvprintw(LINES / 2 - 11, COLS / 2 - 26,
-           "| (_| | (_| | | | | | |  __/ | (_) \\ V /  __/ |       ");
-  mvprintw(LINES / 2 - 10, COLS / 2 - 26,
-           " \\__, |\\__,_|_| |_| |_|\\___|  \\___/ \\_/ \\___|_|   ");
-  mvprintw(LINES / 2 - 9, COLS / 2 - 26,
-           " |___/                                                  ");
-  attroff(COLOR_PAIR(16));
-
-  init_pair(17, COLOR_GREEN, 232);
-  attron(COLOR_PAIR(17));
-  mvprintw(LINES / 2 - 7, COLS / 2 - 35,
-           "HUNTERS HAVE TRACKED YOU, SURROUNDED AND FINALLY "
-           "THEY KILLED YOU...");
-  mvprintw(LINES / 2 - 5, COLS / 2 - 20,
-           "YOUR LIFE GOES AWAY WITH YOUR "
-           "REVENGE.");
-  mvprintw(LINES / 2 - 3, COLS / 2 - 38,
-           "BUT DON'T GET MAD, THERE ARE THOUSANDS OF MONKEYS "
-           "READY TO REBELL AGAIN...");
-  mvprintw(LINES / 2 - 2, COLS / 2 - 10, "...SOONER OR THEN...");
-  mvprintw(LINES / 2 + 2, COLS / 2 - 48, "FINAL SCORE: %.0f", finalScore);
-  mvprintw(LINES / 2 + 2, COLS / 2 + 24, "set score & exit [ENTER]");
-  mvprintw(LINES / 2 + 3, COLS / 2 + 21, "(no name will not save score)");
-  attroff(COLOR_PAIR(17));
-}
-
 // FUNZIONE CHE SI ACCERTA CHE IL NOME RISPETTI GLI STANDARD DI VALIDITÀ
 bool DrawWindow::ghostNameRecognizer(char name[]) {
   bool GhostName = true;
@@ -1239,22 +1259,4 @@ void DrawWindow::saveRecord(float finalScore, char name[]) {
   board.close();
 }
 
-// FUNZIONE CHE GESTISCE LA LOGICA DELLA SCHERMATA DI GAME OVER E L'INSERIMENTO DEL NOME PER LO SCORE
-void DrawWindow::loseScreen(int direction, float finalScore) {
-  direction = 32;
-  char name[MAXNAMECHARACTER] = {'\0'};
-  char name2[MAXNAMECHARACTER] = {'\0'};
-  while (direction != 0) {
-    printLoseScreen(finalScore);
-    strcat(name, name2);
 
-    init_pair(17, COLOR_GREEN, 232);
-    attron(COLOR_PAIR(17));
-    mvprintw(LINES / 2 + 3, COLS / 2 - 35, "__________");
-    mvprintw(LINES / 2 + 3, COLS / 2 - 48, "INSERT NAME: %s", name);
-    attroff(COLOR_PAIR(17));
-    refresh();
-    direction = getstr(name2);
-  }
-  saveRecord(finalScore, name);
-}

@@ -55,8 +55,8 @@ void Character::setGunDamage(int damage) { this->gun.setDamage(damage); }
 void Character::increaseDamageGun(int damage) {
   this->gun.increaseDamage(damage);
 }
-void Character::setTotalAmmo(int ammo) { this->gun.setTotalAmmo(ammo); }
 
+void Character::setTotalAmmo(int ammo) { this->gun.setTotalAmmo(ammo); }
 void Character::increaseTotalAmmo(int plusAmmo) {
   this->gun.setTotalAmmo(gun.getTotalAmmo() + plusAmmo);
 }

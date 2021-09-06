@@ -53,12 +53,12 @@ class Character {
   int getNumberLife();
   void setNumberLife(int numberLife);
 
-  void setGunDamage(int damage);
-  void increaseDamageGun(int damage);
   Gun getGun();
   void setGun(Gun in_gun);
-  void setTotalAmmo(int lessAmmo);
+  void setGunDamage(int damage);
+  void increaseDamageGun(int damage);
 
+  void setTotalAmmo(int lessAmmo);
   void increaseTotalAmmo(int plusAmmo);
   void decreaseTotalAmmo(int lessAmmo);
   void increaseMagazineAmmo(int plusAmmo);
