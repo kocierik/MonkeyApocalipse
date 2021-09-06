@@ -36,5 +36,9 @@ clean:
 launch:
 	./main
 
+cleanscores:
+	rm leaderBoard.txt
+	touch leaderBoard.txt
+
 format:
 	clang-format -i -style=google ./**/*.cpp ./**/*.hpp
