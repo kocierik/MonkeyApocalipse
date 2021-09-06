@@ -867,13 +867,13 @@ void EngineGame::money(int &bananas, bool noEnemy, int maxRoom, int &roundPayed,
     bananas = bananas + rand() % 3 + 1;
     character.increaseLife((rand() % 20 + 20));
     if (maxRoom >= 2 && maxRoom <= 5)
-      character.increaseTotalAmmo(30);
-    else if (maxRoom > 5 && maxRoom <= 8)
       character.increaseTotalAmmo(40);
-    else if (maxRoom > 8 && maxRoom <= 12)
+    else if (maxRoom > 5 && maxRoom <= 8)
       character.increaseTotalAmmo(50);
+    else if (maxRoom > 8 && maxRoom <= 12)
+      character.increaseTotalAmmo(60);
     else if (maxRoom > 15)
-      character.increaseTotalAmmo(80);
+      character.increaseTotalAmmo(95);
     if (multiplayer == false || isPlayer1 == false) roundPayed++;
   }
   init_pair(20, COLOR_GREEN, -1);
