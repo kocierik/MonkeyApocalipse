@@ -16,3 +16,5 @@ La mappa deve avere una grafica ASCII, è possibile utilizzare solo le librerie 
 - `make launch`   eseguire
   
 - `make clean`   eliminare file di compilazione
+
+- `make cleanscores`   ripristina il file della leaderboard
