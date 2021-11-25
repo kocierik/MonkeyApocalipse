@@ -290,7 +290,7 @@ void DrawWindow::printLeaderboardScreen() {
   attroff(COLOR_PAIR(3));
 
   std::string line;
-  std::ifstream leaderboard("leaderBoard.txt");
+  std::ifstream leaderboard("static/leaderBoard.txt");
   if (leaderboard.is_open()) {
     int i = LINES / 2 - 6;
     int maxNameShowed = 0;
@@ -586,7 +586,7 @@ void DrawWindow::drawStats(int startX, int startY, int rightWidth,
 void DrawWindow::drawLeaderboardOnScreen() {
   std::string localScore[44] = {"NULL"};
   std::string line;
-  std::ifstream leaderboard("leaderBoard.txt");
+  std::ifstream leaderboard("static/leaderBoard.txt");
 
   init_pair(3, COLOR_YELLOW, -1);
   attron(COLOR_PAIR(3));

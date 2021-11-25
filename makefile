@@ -37,8 +37,8 @@ launch:
 	./main
 
 cleanscores:
-	rm leaderBoard.txt
-	touch leaderBoard.txt
+	rm static/leaderBoard.txt
+	touch static/leaderBoard.txt
 
 format:
 	clang-format -i -style=google ./**/*.cpp ./**/*.hpp
