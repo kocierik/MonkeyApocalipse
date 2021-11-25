@@ -1245,7 +1245,7 @@ void DrawWindow::saveRecord(float finalScore, char name[]) {
   int nameLen = strlen(name);
   int nameMax = 12;
   std::fstream board;
-  board.open("leaderBoard.txt", std::ios::app);
+  board.open("static/leaderBoard.txt", std::ios::app);
   if ((board) && (finalScore > 0) &&
       (!ghostName)) {  // lo score è salvato solo se maggiore di 0 e il nome non
                        // è vuoto o solo spazi
