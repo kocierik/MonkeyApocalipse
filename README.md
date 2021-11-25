@@ -1,20 +1,17 @@
-## Progetto Programmazione a.a. 2020/2021
-
-La mappa deve avere una grafica ASCII, è possibile utilizzare solo le librerie conio.h, windows.h e curses/ncurses.h</p>
-
+## Project Programmazione a.a. 2020/2021
 ---
 
- #### Libreria utilizzata:
+ ### Library:
  - ncurses.h
 
 ---
 
-### Comandi makefile:
+### Usage:
 
-- `make`       compilare
+- `make`       compile
 
-- `make launch`   eseguire
+- `make launch`   launch the game
   
-- `make clean`   eliminare file di compilazione
+- `make clean`  delete compiled file
 
-- `make cleanscores`   ripristina il file della leaderboard
+- `make cleanscores`   erase leaderBoard
