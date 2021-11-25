@@ -15,3 +15,14 @@
 - `make clean`  delete compiled file
 
 - `make cleanscores`   erase leaderBoard
+---
+
+<div align="center">
+ 
+ <table style="width:100%">
+  <tr>
+    <td><img width="500px" src="static/images/menu.png" /></td>
+    <td><img width="500px" src="static/images/game.png" /></td>
+  </tr>
+</table>
+ </div>
